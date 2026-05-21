@@ -1,0 +1,246 @@
+:root {
+  --ink: #f4ead6;
+  --muted: #c6b9a4;
+  --gold: #c99d57;
+  --line: rgba(244, 234, 214, 0.2);
+  --panel: rgba(14, 13, 12, 0.88);
+  --shadow: 0 22px 70px rgba(0, 0, 0, 0.46);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  background: #050505;
+}
+
+button {
+  font: inherit;
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #050505;
+}
+
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.4) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.28));
+}
+
+.scene-image {
+  grid-area: 1 / 1;
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  background: #050505;
+  user-select: none;
+}
+
+.hotspot-layer {
+  grid-area: 1 / 1;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.hotspot {
+  fill: rgba(201, 157, 87, 0);
+  stroke: rgba(201, 157, 87, 0);
+  stroke-width: 8;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+
+.hotspot:hover,
+.hotspot:focus-visible {
+  fill: rgba(201, 157, 87, 0.12);
+  stroke: rgba(244, 234, 214, 0.42);
+  outline: none;
+}
+
+.journal-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 3;
+  min-width: 54px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid rgba(244, 234, 214, 0.22);
+  border-radius: 7px;
+  color: var(--ink);
+  background: rgba(9, 8, 7, 0.62);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.journal-toggle:hover {
+  border-color: rgba(201, 157, 87, 0.8);
+}
+
+.journal-panel {
+  position: fixed;
+  right: 18px;
+  bottom: 72px;
+  z-index: 4;
+  width: min(380px, calc(100vw - 36px));
+  max-height: min(620px, calc(100vh - 100px));
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid rgba(244, 234, 214, 0.2);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.journal-panel.hidden,
+.message-layer.hidden {
+  display: none;
+}
+
+.journal-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.plain-button {
+  min-height: 32px;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.plain-button:hover {
+  color: var(--ink);
+}
+
+.journal-list {
+  display: grid;
+  gap: 8px;
+}
+
+.empty-note,
+.journal-card {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.journal-card h2 {
+  margin: 0 0 5px;
+  color: var(--gold);
+  font-size: 16px;
+}
+
+.journal-card p,
+.empty-note {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.journal-card p {
+  margin: 0;
+}
+
+.message-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.48);
+}
+
+.message-box {
+  width: min(540px, 100%);
+  padding: 22px;
+  border: 1px solid rgba(201, 157, 87, 0.52);
+  border-radius: 8px;
+  background: rgba(13, 12, 11, 0.94);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.message-box h1 {
+  margin: 8px 0 10px;
+  font-size: 25px;
+  line-height: 1.2;
+}
+
+.message-box p {
+  margin: 0 0 16px;
+  color: #e8dcc7;
+  line-height: 1.85;
+}
+
+.primary-button {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid rgba(201, 157, 87, 0.72);
+  border-radius: 7px;
+  color: var(--ink);
+  background: rgba(201, 157, 87, 0.18);
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background: rgba(201, 157, 87, 0.28);
+}
+
+@media (max-width: 720px) {
+  .journal-toggle {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .journal-panel {
+    right: 12px;
+    bottom: 62px;
+    width: calc(100vw - 24px);
+  }
+
+  .message-box {
+    padding: 18px;
+  }
+}
