@@ -33,6 +33,72 @@
       </article>
     </div>
 
+    <div id="runePuzzleLayer" class="puzzle-layer hidden" role="dialog" aria-modal="true" aria-labelledby="runePuzzleTitle">
+      <article class="puzzle-box">
+        <header class="puzzle-header">
+          <p class="eyebrow">墓门验证</p>
+          <button id="runePuzzleClose" class="plain-button" type="button">稍后</button>
+        </header>
+        <h1 id="runePuzzleTitle">整理记录，验证墓门</h1>
+        <p class="puzzle-copy">
+          门洞后的通道仍被封门意象压住。按记录夹中的空间线索，由外到内点亮四枚符记。
+        </p>
+        <div id="runeSequence" class="rune-sequence" aria-label="当前验证顺序">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="rune-options" aria-label="墓门符记">
+          <button class="rune-option" data-rune="额" type="button">
+            <strong>额</strong>
+            <span>门额背画</span>
+          </button>
+          <button class="rune-option" data-rune="砂" type="button">
+            <strong>砂</strong>
+            <span>砖缝石英</span>
+          </button>
+          <button class="rune-option" data-rune="雾" type="button">
+            <strong>雾</strong>
+            <span>墙面水汽</span>
+          </button>
+          <button class="rune-option" data-rune="门" type="button">
+            <strong>门</strong>
+            <span>门洞深处</span>
+          </button>
+        </div>
+        <p id="runePuzzleFeedback" class="puzzle-feedback">提示：从门额、封门砖缝、墓道环境到门洞深处。</p>
+      </article>
+    </div>
+
+    <div id="patternPuzzleLayer" class="puzzle-layer hidden" role="dialog" aria-modal="true" aria-labelledby="patternPuzzleTitle">
+      <article class="puzzle-box">
+        <header class="puzzle-header">
+          <p class="eyebrow">甬道校准</p>
+          <button id="patternPuzzleClose" class="plain-button" type="button">稍后</button>
+        </header>
+        <h1 id="patternPuzzleTitle">校准叠胜彩画</h1>
+        <p class="puzzle-copy">
+          东侧第三个菱形单元与西侧错开约两寸。点击三枚纹样块，复原它们在中线上的对接关系。
+        </p>
+        <div class="pattern-board" aria-label="叠胜纹样校准板">
+          <button class="pattern-tile shift-left" data-index="0" type="button">
+            <span class="diamond"></span>
+            <em>偏左</em>
+          </button>
+          <button class="pattern-tile shift-right" data-index="1" type="button">
+            <span class="diamond"></span>
+            <em>偏右</em>
+          </button>
+          <button class="pattern-tile shift-left" data-index="2" type="button">
+            <span class="diamond"></span>
+            <em>偏左</em>
+          </button>
+        </div>
+        <p id="patternPuzzleFeedback" class="puzzle-feedback">提示：让菱形尖角回到中线，刮痕才会显露出重绘痕迹。</p>
+      </article>
+    </div>
+
     <script src="data/scenes.js?v=source-text-20260520-clean"></script>
     <script src="game.js?v=source-text-20260520-clean"></script>
   </body>

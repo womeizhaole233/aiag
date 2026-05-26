@@ -6,6 +6,7 @@ const state = {
   visitedSceneIds: [],
   visitedViewIds: {},
   completedSceneIds: [],
+  completedPuzzleIds: [],
   records: [],
   journalOpen: false,
   pendingNavigation: null
@@ -23,7 +24,28 @@ const messageKicker = document.querySelector("#messageKicker");
 const messageTitle = document.querySelector("#messageTitle");
 const messageBody = document.querySelector("#messageBody");
 const messageClose = document.querySelector("#messageClose");
+const runePuzzleLayer = document.querySelector("#runePuzzleLayer");
+const runePuzzleClose = document.querySelector("#runePuzzleClose");
+const runePuzzleFeedback = document.querySelector("#runePuzzleFeedback");
+const runeSequenceSlots = [...document.querySelectorAll("#runeSequence span")];
+const runeOptions = [...document.querySelectorAll(".rune-option")];
+const patternPuzzleLayer = document.querySelector("#patternPuzzleLayer");
+const patternPuzzleClose = document.querySelector("#patternPuzzleClose");
+const patternPuzzleFeedback = document.querySelector("#patternPuzzleFeedback");
+const patternTiles = [...document.querySelectorAll(".pattern-tile")];
 let positionMapLayer = null;
+let runeSequence = [];
+let patternStates = [];
+
+const RUNE_PUZZLE_ID = "tomb_gate_rune_verify";
+const RUNE_ANSWER = ["额", "砂", "雾", "门"];
+const PATTERN_PUZZLE_ID = "corridor_pattern_align";
+const PATTERN_STATES = ["left", "center", "right"];
+const PATTERN_LABELS = {
+  left: "偏左",
+  center: "居中",
+  right: "偏右"
+};
 
 function getCurrentScene() {
   return SCENES[state.currentSceneId] || SCENES[START_SCENE_ID];
@@ -63,9 +85,18 @@ function hasCompletedScene(sceneId) {
   return state.completedSceneIds.includes(sceneId);
 }
 
+function hasCompletedPuzzle(puzzleId) {
+  return state.completedPuzzleIds.includes(puzzleId);
+}
+
 function completeScene(sceneId) {
   if (!sceneId || hasCompletedScene(sceneId)) return;
   state.completedSceneIds.push(sceneId);
+}
+
+function completePuzzle(puzzleId) {
+  if (!puzzleId || hasCompletedPuzzle(puzzleId)) return;
+  state.completedPuzzleIds.push(puzzleId);
 }
 
 function markVisited(sceneId = state.currentSceneId, viewId = getCurrentView().id) {
@@ -98,7 +129,8 @@ function canEnterCorridor() {
 function canEnterFrontChamber() {
   return (
     hasCompletedScene("corridor") ||
-    (hasRecord("corridor:corridor_mid") &&
+    (hasCompletedPuzzle(PATTERN_PUZZLE_ID) &&
+      hasRecord("corridor:corridor_mid") &&
       hasRecord("corridor:corridor_roof") &&
       hasRecord("corridor:overlapping_pattern"))
   );
@@ -180,6 +212,11 @@ function normalizeRecord(record) {
 }
 
 function load() {
+  if (new URLSearchParams(window.location.search).get("reset") === "1") {
+    localStorage.removeItem(SAVE_KEY);
+    window.history.replaceState(null, "", window.location.pathname);
+  }
+
   const raw = localStorage.getItem(SAVE_KEY);
   if (!raw) return;
   try {
@@ -192,6 +229,7 @@ function load() {
         ? data.visitedViewIds
         : {};
     state.completedSceneIds = Array.isArray(data.completedSceneIds) ? data.completedSceneIds : [];
+    state.completedPuzzleIds = Array.isArray(data.completedPuzzleIds) ? data.completedPuzzleIds : [];
     state.records = Array.isArray(data.records)
       ? data.records.map(normalizeRecord).filter((record) => !isNavigationRecord(record))
       : [];
@@ -270,6 +308,20 @@ function openMessage(hotspot) {
         : null;
   const activeTransition = transition || viewTransition || closeupTransition;
 
+  if (shouldOpenRunePuzzle(hotspot, transition, navigation)) {
+    save();
+    renderJournal();
+    openRunePuzzle();
+    return;
+  }
+
+  if (shouldOpenPatternPuzzle(hotspot)) {
+    save();
+    renderJournal();
+    openPatternPuzzle();
+    return;
+  }
+
   save();
   renderJournal();
   messageKicker.textContent = "现场观察";
@@ -278,6 +330,122 @@ function openMessage(hotspot) {
   messageClose.textContent = activeTransition?.closeLabel || "收录";
   state.pendingNavigation = navigation;
   messageLayer.classList.remove("hidden");
+}
+
+function shouldOpenRunePuzzle(hotspot, transition, navigation) {
+  return (
+    hotspot.id === "door_opening" &&
+    transition?.targetSceneId === "corridor" &&
+    navigation?.completeSceneId === "tomb_gate" &&
+    !hasCompletedPuzzle(RUNE_PUZZLE_ID)
+  );
+}
+
+function shouldOpenPatternPuzzle(hotspot) {
+  if (state.currentSceneId !== "corridor" || hasCompletedPuzzle(PATTERN_PUZZLE_ID)) return false;
+  if (!hasRecord("corridor:corridor_roof") || !hasRecord("corridor:overlapping_pattern")) return false;
+  return hotspot.id === "overlapping_pattern" || hotspot.id === "front_chamber_entry";
+}
+
+function openRunePuzzle() {
+  runeSequence = [];
+  renderRunePuzzle();
+  runePuzzleFeedback.textContent = "提示：从门额、封门砖缝、墓道环境到门洞深处。";
+  runePuzzleFeedback.className = "puzzle-feedback";
+  runePuzzleLayer.classList.remove("hidden");
+}
+
+function closeRunePuzzle() {
+  runePuzzleLayer.classList.add("hidden");
+}
+
+function renderRunePuzzle() {
+  runeSequenceSlots.forEach((slot, index) => {
+    slot.textContent = runeSequence[index] || "";
+  });
+  runeOptions.forEach((button) => {
+    button.classList.toggle("active", runeSequence.includes(button.dataset.rune));
+    button.classList.remove("error");
+  });
+}
+
+function handleRuneChoice(button) {
+  const rune = button.dataset.rune;
+  const index = runeSequence.length;
+  runeSequence.push(rune);
+  renderRunePuzzle();
+
+  if (rune !== RUNE_ANSWER[index]) {
+    button.classList.add("error");
+    runePuzzleFeedback.textContent = "符记熄灭了。顺序应按现场记录从外到内整理。";
+    runePuzzleFeedback.className = "puzzle-feedback error";
+    setTimeout(() => {
+      runeSequence = [];
+      renderRunePuzzle();
+    }, 650);
+    return;
+  }
+
+  if (runeSequence.length < RUNE_ANSWER.length) {
+    runePuzzleFeedback.textContent = "符记亮起。继续选择下一处记录对应的符记。";
+    runePuzzleFeedback.className = "puzzle-feedback";
+    return;
+  }
+
+  completePuzzle(RUNE_PUZZLE_ID);
+  completeScene("tomb_gate");
+  save();
+  runePuzzleFeedback.textContent = "墓门验证完成。封门意象被整理为可通行的路径，甬道已经解锁。";
+  runePuzzleFeedback.className = "puzzle-feedback success";
+  setTimeout(() => {
+    closeRunePuzzle();
+    navigateTo({ sceneId: "corridor" });
+    save();
+    renderScene();
+    renderJournal();
+  }, 850);
+}
+
+function openPatternPuzzle() {
+  patternStates = ["left", "right", "left"];
+  renderPatternPuzzle();
+  patternPuzzleFeedback.textContent = "提示：让菱形尖角回到中线，刮痕才会显露出重绘痕迹。";
+  patternPuzzleFeedback.className = "puzzle-feedback";
+  patternPuzzleLayer.classList.remove("hidden");
+}
+
+function closePatternPuzzle() {
+  patternPuzzleLayer.classList.add("hidden");
+}
+
+function renderPatternPuzzle() {
+  patternTiles.forEach((tile, index) => {
+    const stateName = patternStates[index] || "left";
+    tile.classList.remove("shift-left", "shift-center", "shift-right", "solved", "error");
+    tile.classList.add(`shift-${stateName}`);
+    tile.querySelector("em").textContent = PATTERN_LABELS[stateName];
+  });
+}
+
+function handlePatternChoice(tile) {
+  const index = Number(tile.dataset.index);
+  const current = patternStates[index] || "left";
+  const next = PATTERN_STATES[(PATTERN_STATES.indexOf(current) + 1) % PATTERN_STATES.length];
+  patternStates[index] = next;
+  renderPatternPuzzle();
+
+  if (!patternStates.every((stateName) => stateName === "center")) {
+    patternPuzzleFeedback.textContent = "纹样仍有错位。继续把每个菱形尖角校准到中线。";
+    patternPuzzleFeedback.className = "puzzle-feedback";
+    return;
+  }
+
+  patternTiles.forEach((item) => item.classList.add("solved"));
+  completePuzzle(PATTERN_PUZZLE_ID);
+  completeScene("corridor");
+  save();
+  patternPuzzleFeedback.textContent = "叠胜纹校准完成。偏移不是施工误差，而是刮除后重绘留下的二次修改痕迹。前室路径已经解锁。";
+  patternPuzzleFeedback.className = "puzzle-feedback success";
 }
 
 function closeMessage() {
@@ -682,9 +850,25 @@ messageClose.addEventListener("click", closeMessage);
 messageLayer.addEventListener("click", (event) => {
   if (event.target === messageLayer) closeMessage();
 });
+runePuzzleClose.addEventListener("click", closeRunePuzzle);
+runePuzzleLayer.addEventListener("click", (event) => {
+  if (event.target === runePuzzleLayer) closeRunePuzzle();
+});
+runeOptions.forEach((button) => {
+  button.addEventListener("click", () => handleRuneChoice(button));
+});
+patternPuzzleClose.addEventListener("click", closePatternPuzzle);
+patternPuzzleLayer.addEventListener("click", (event) => {
+  if (event.target === patternPuzzleLayer) closePatternPuzzle();
+});
+patternTiles.forEach((tile) => {
+  tile.addEventListener("click", () => handlePatternChoice(tile));
+});
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeMessage();
+    closeRunePuzzle();
+    closePatternPuzzle();
     setJournal(false);
   }
 });

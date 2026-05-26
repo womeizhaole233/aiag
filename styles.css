@@ -121,7 +121,8 @@ button {
 }
 
 .journal-panel.hidden,
-.message-layer.hidden {
+.message-layer.hidden,
+.puzzle-layer.hidden {
   display: none;
 }
 
@@ -228,6 +229,201 @@ button {
   background: rgba(201, 157, 87, 0.28);
 }
 
+.puzzle-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.puzzle-box {
+  width: min(620px, 100%);
+  padding: 22px;
+  border: 1px solid rgba(201, 157, 87, 0.55);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(31, 25, 18, 0.96), rgba(12, 11, 10, 0.96)),
+    rgba(13, 12, 11, 0.94);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.puzzle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.puzzle-box h1 {
+  margin: 0 0 10px;
+  font-size: 25px;
+  line-height: 1.2;
+}
+
+.puzzle-copy {
+  margin: 0 0 16px;
+  color: #e8dcc7;
+  line-height: 1.8;
+}
+
+.rune-sequence {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.rune-sequence span {
+  display: grid;
+  place-items: center;
+  min-height: 54px;
+  border: 1px solid rgba(244, 234, 214, 0.2);
+  border-radius: 7px;
+  color: var(--gold);
+  background: rgba(255, 255, 255, 0.045);
+  font-size: 24px;
+}
+
+.rune-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.rune-option {
+  min-height: 96px;
+  border: 1px solid rgba(201, 157, 87, 0.36);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(201, 157, 87, 0.12);
+  cursor: pointer;
+}
+
+.rune-option:hover,
+.rune-option.active {
+  border-color: rgba(244, 234, 214, 0.72);
+  background: rgba(201, 157, 87, 0.22);
+}
+
+.rune-option.error {
+  border-color: rgba(210, 86, 70, 0.9);
+  background: rgba(137, 45, 37, 0.28);
+}
+
+.rune-option strong,
+.rune-option span {
+  display: block;
+}
+
+.rune-option strong {
+  margin-bottom: 6px;
+  color: var(--gold);
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.rune-option span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.puzzle-feedback {
+  min-height: 46px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.puzzle-feedback.success {
+  color: #9ed0b1;
+}
+
+.puzzle-feedback.error {
+  color: #f0a095;
+}
+
+.pattern-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+  padding: 18px 0;
+}
+
+.pattern-board::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  height: 1px;
+  background: rgba(244, 234, 214, 0.28);
+}
+
+.pattern-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 126px;
+  border: 1px solid rgba(201, 157, 87, 0.36);
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(45deg, rgba(201, 157, 87, 0.08) 0 8px, transparent 8px 16px),
+    rgba(255, 255, 255, 0.045);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.pattern-tile:hover {
+  border-color: rgba(244, 234, 214, 0.72);
+}
+
+.pattern-tile.solved {
+  border-color: rgba(158, 208, 177, 0.88);
+  background: rgba(81, 119, 95, 0.18);
+}
+
+.pattern-tile.error {
+  border-color: rgba(210, 86, 70, 0.9);
+}
+
+.diamond {
+  width: 54px;
+  height: 54px;
+  border: 2px solid var(--gold);
+  background: rgba(71, 130, 108, 0.38);
+  transform: rotate(45deg);
+  transition: translate 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.shift-left .diamond {
+  translate: -22px 0;
+}
+
+.shift-center .diamond {
+  translate: 0 0;
+  border-color: #9ed0b1;
+  background: rgba(87, 151, 122, 0.48);
+}
+
+.shift-right .diamond {
+  translate: 22px 0;
+}
+
+.pattern-tile em {
+  position: absolute;
+  bottom: 10px;
+  color: var(--muted);
+  font-style: normal;
+  font-size: 13px;
+}
+
 @media (max-width: 720px) {
   .journal-toggle {
     right: 12px;
@@ -242,5 +438,13 @@ button {
 
   .message-box {
     padding: 18px;
+  }
+
+  .rune-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pattern-board {
+    grid-template-columns: 1fr;
   }
 }

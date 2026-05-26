@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .museum-shell {
+    @apply bg-[#efe5d3] text-[#3a2a1e];
+  }
+
+  .museum-header {
+    @apply bg-[#f4ead8]/95 border-[#6f4f34]/35 text-[#3a2a1e];
+    box-shadow: 0 1px 0 rgba(86, 58, 36, 0.16);
+  }
+
+  .museum-panel {
+    @apply bg-[#f6eddf]/95 border-[#6f4f34]/35 text-[#3a2a1e];
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  }
+
+  .museum-button {
+    @apply rounded-lg border border-[#6f4f34]/35 bg-[#efe4d2] text-[#3a2a1e] font-medium transition-colors;
+  }
+
+  .museum-button:hover {
+    background: #e4d4bf;
+  }
+
+  .museum-button-primary {
+    @apply rounded-lg border border-[#6f4f34]/45 bg-[#b27a39] text-[#fff8ec] font-semibold transition-colors;
+  }
+
+  .museum-button-primary:hover {
+    background: #9b6930;
+  }
+
+  .museum-button-danger {
+    @apply rounded-lg border border-[#8a4a36]/45 bg-[#9b5138] text-[#fff8ec] font-semibold transition-colors;
+  }
+
+  .museum-button-danger:hover {
+    background: #844331;
+  }
+}
+
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+canvas {
+  touch-action: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Custom scrollbar for brush settings */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.gray.600') transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: theme('colors.gray.600');
+  border-radius: 3px;
+}
+
+/* Range input styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+  background: #374151;
+  height: 6px;
+  border-radius: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #D97706;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin-top: -7px;
+  border: 2px solid white;
+}
+
+input[type="range"]::-moz-range-track {
+  background: #374151;
+  height: 6px;
+  border-radius: 3px;
+  border: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: #D97706;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Button active state for mobile */
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled:active {
+  transform: none;
+}
+
+/* Touch feedback */
+.touch-feedback {
+  position: relative;
+  overflow: hidden;
+}
+
+.touch-feedback::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.touch-feedback:active::after {
+  width: 100px;
+  height: 100px;
+}
+
+/* Neon glow effect for debug */
+.neon-glow {
+  text-shadow: 0 0 10px #D97706, 0 0 20px #D97706, 0 0 30px #D97706;
+}
+
+/* Loading animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Prevents zoom on double tap in iOS */
+@supports (-webkit-touch-callout: none) {
+  html {
+    touch-action: manipulation;
+  }
+}
