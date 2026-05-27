@@ -292,15 +292,34 @@
         const TYPE_BRICK  = 4; // 砖块
         const TYPE_TRASH  = 5; // 垃圾
 
-        // 类型显示符号&颜色风格
-        const TYPE_INFO = {
-            [TYPE_SOIL]:   { icon: "⛰️", name:"泥土",  color1:"#8b5a2b", color2:"#c28a3e", accent:"#4e2a13", text:"土" },
-            [TYPE_STONE]:  { icon: "🪨", name:"碎石",  color1:"#6c6f6a", color2:"#9a9c93", accent:"#2c2b26", text:"石" },
-            [TYPE_SHARD]:  { icon: "🥏", name:"残片",  color1:"#6b7c8a", color2:"#4a5d6e", accent:"#2a3a4a", text:"片" },
-            [TYPE_DUST]:   { icon: "💨", name:"灰尘",  color1:"#b0a090", color2:"#8a7a6a", accent:"#5a4a3a", text:"尘" },
-            [TYPE_BRICK]:  { icon: "🧱", name:"砖块",  color1:"#a05040", color2:"#7a3525", accent:"#4a2010", text:"砖" },
-            [TYPE_TRASH]:  { icon: "🗑️", name:"垃圾",  color1:"#5a6a4a", color2:"#3a4a2a", accent:"#1a2a0a", text:"圾" }
+        // 方块图片资源
+        const BLOCK_IMAGES = {
+            [TYPE_SOIL]:   'picture/block_soil.png',
+            [TYPE_STONE]:  'picture/block_stone.png',
+            [TYPE_SHARD]:  'picture/block_shard.png',
+            [TYPE_DUST]:   'picture/block_dust.png',
+            [TYPE_BRICK]:  'picture/block_brick.png',
+            [TYPE_TRASH]:  'picture/block_trash.png'
         };
+
+        // 预加载图片
+        let loadedImages = {};
+        let imagesLoaded = 0;
+        let totalImages = 6;
+
+        function loadImages(callback) {
+            for(let type in BLOCK_IMAGES) {
+                let img = new Image();
+                img.onload = function() {
+                    imagesLoaded++;
+                    if(imagesLoaded === totalImages) {
+                        callback();
+                    }
+                };
+                img.src = BLOCK_IMAGES[type];
+                loadedImages[type] = img;
+            }
+        }
 
         let gameGrid = [];
         let selectedRow = -1, selectedCol = -1;
@@ -415,146 +434,95 @@
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        // 准备下落动画数据（重力下落版本 - 预先计算目标位置）
+        // 准备下落动画数据（独立下落距离版本）
         function prepareFallAnimation(matches) {
             let blocks = [];
             let affectedCols = [...new Set(matches.map(m => m.col))];
 
             for(let c of affectedCols) {
+                // 获取该列所有消除的行
                 let eliminatedRows = matches.filter(m => m.col === c).map(m => m.row);
                 eliminatedRows.sort((a,b) => a-b);
-                let minEliminatedRow = eliminatedRows[0];
-                let eliminatedCount = eliminatedRows.length;
-
-                // 步骤1：收集被消除位置上方的所有方块（包括有方块和没方块的行）
-                let aboveCells = [];
-                for(let r = 0; r < minEliminatedRow; r++) {
-                    aboveCells.push({
-                        type: gameGrid[r][c],
-                        startRow: r
-                    });
-                }
-
-                // 步骤2：计算这些方块下落后的目标位置
-                // 从被消除位置的最底部开始，往上填补
-                let targetPositions = [];
-                let writeRow = minEliminatedRow + eliminatedCount - 1; // 最下面的被消除行
+                let totalEliminated = eliminatedRows.length;
                 
-                // 从下往上遍历上方的方块
-                for(let i = aboveCells.length - 1; i >= 0; i--) {
-                    let cell = aboveCells[i];
-                    if(cell.type >= 0) {
-                        // 有方块，它下落到 writeRow
-                        targetPositions.unshift({
-                            type: cell.type,
-                            startRow: cell.startRow,
-                            targetRow: writeRow
-                        });
-                        writeRow--;
+                // 创建消除行集合，方便查找
+                let eliminatedSet = new Set(eliminatedRows);
+                
+                // 计算每个保留方块的下落距离 = 下方消除的方块数量
+                for(let r = 0; r < ROWS; r++) {
+                    if(gameGrid[r][c] >= 0 && !eliminatedSet.has(r)) {
+                        // 计算该方块下方有多少个消除
+                        let dropDistance = 0;
+                        for(let er of eliminatedRows) {
+                            if(er > r) {
+                                dropDistance++;
+                            }
+                        }
+                        
+                        if(dropDistance > 0) {
+                            blocks.push({
+                                col: c,
+                                type: gameGrid[r][c],
+                                startRow: r,
+                                targetRow: r + dropDistance,
+                                startY: r * CELL_H,
+                                targetY: (r + dropDistance) * CELL_H,
+                                currentY: r * CELL_H
+                            });
+                        }
                     }
-                    // 如果是空的，writeRow 不变，相当于空隙被消除了
                 }
-
-                // 步骤3：新方块填补剩余的空位（顶部）
-                let newBlockCount = eliminatedCount;
-                // 但如果上方有空隙，实际下落距离可能不同
-                // 新方块从上方生成，数量等于消除数量
-                for(let i = 0; i < newBlockCount; i++) {
-                    targetPositions.unshift({
+                
+                // 新方块：在最上方生成，下落距离 = 总消除数量
+                for(let i = 0; i < totalEliminated; i++) {
+                    let startRow = -(totalEliminated - i);
+                    blocks.push({
+                        col: c,
                         type: getRandomBlockType(),
-                        startRow: -(newBlockCount - i),  // 在画布上方
-                        targetRow: writeRow
+                        startRow: startRow,
+                        targetRow: startRow + totalEliminated,
+                        startY: startRow * CELL_H,
+                        targetY: (startRow + totalEliminated) * CELL_H,
+                        currentY: startRow * CELL_H
                     });
-                    writeRow--;
-                }
-
-                // 步骤4：创建动画方块（只添加位置会改变的）
-                for(let pos of targetPositions) {
-                    if(pos.startRow !== pos.targetRow) {
-                        blocks.push({
-                            col: c,
-                            type: pos.type,
-                            startRow: pos.startRow,
-                            targetRow: pos.targetRow,
-                            currentRow: pos.startRow,
-                            currentY: pos.startRow * CELL_H,
-                            velocity: 0,
-                            stopped: false
-                        });
-                    }
                 }
             }
 
             return blocks;
         }
 
-        // 执行下落动画（物理重力版本）
+        // 缓动函数 - easeOutCubic，让动画先快后慢，落地更自然
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        // 执行下落动画（独立下落距离版本，总时长0.5秒）
         function runFallAnimation() {
             return new Promise(resolve => {
-                const GRAVITY = 2.0;
-                const MAX_SPEED = 25;
-
-                function step() {
-                    let allStopped = true;
-
-                    // 按从下到上顺序处理（下方方块先停止）
-                    let sortedBlocks = [...fallingBlocks].sort((a, b) => b.currentRow - a.currentRow);
-
-                    for(let block of sortedBlocks) {
-                        if(block.stopped) continue;
-
-                        // 应用重力
-                        block.velocity = Math.min(block.velocity + GRAVITY, MAX_SPEED);
-                        block.currentY += block.velocity;
-
-                        // 计算当前逻辑行
-                        let logicalRow = Math.floor(block.currentY / CELL_H);
-
-                        // 检查是否到达或超过目标行
-                        if(logicalRow >= block.targetRow) {
-                            block.currentY = block.targetRow * CELL_H;
-                            block.currentRow = block.targetRow;
-                            block.stopped = true;
-                            continue;
-                        }
-
-                        // 检查下一行是否有已停止的方块（同列）
-                        let nextRow = logicalRow + 1;
-                        let blocked = false;
-
-                        // 检查 gameGrid 中是否有固定方块
-                        if(nextRow <= block.targetRow && gameGrid[nextRow][block.col] >= 0) {
-                            blocked = true;
-                        }
-
-                        // 检查其他已停止的下落方块
-                        if(!blocked) {
-                            for(let other of fallingBlocks) {
-                                if(other !== block && other.stopped && other.col === block.col) {
-                                    if(other.currentRow === nextRow) {
-                                        blocked = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if(blocked) {
-                            // 停在当前行
-                            block.currentY = logicalRow * CELL_H;
-                            block.currentRow = logicalRow;
-                            block.stopped = true;
-                        } else {
-                            block.currentRow = logicalRow;
-                            allStopped = false;
-                        }
+                let startTime = null;
+                
+                function step(timestamp) {
+                    if(!startTime) startTime = timestamp;
+                    let elapsed = timestamp - startTime;
+                    let progress = Math.min(elapsed / FALL_DURATION, 1);
+                    let easedProgress = easeOutCubic(progress);
+                    
+                    // 每个方块根据自己的下落距离独立计算位置
+                    for(let block of fallingBlocks) {
+                        let totalDistance = block.targetY - block.startY;
+                        block.currentY = block.startY + totalDistance * easedProgress;
                     }
-
+                    
                     drawCanvas();
-
-                    if(!allStopped) {
+                    
+                    if(progress < 1) {
                         animationFrameId = requestAnimationFrame(step);
                     } else {
+                        // 动画结束，确保所有方块精确到达目标位置
+                        for(let block of fallingBlocks) {
+                            block.currentY = block.targetY;
+                        }
+                        drawCanvas();
                         resolve();
                     }
                 }
@@ -573,7 +541,7 @@
             }
             // 设置最终位置
             for(let block of fallingBlocks) {
-                gameGrid[block.currentRow][block.col] = block.type;
+                gameGrid[block.targetRow][block.col] = block.type;
             }
         }
 
@@ -710,53 +678,23 @@
 
         // 绘制单个方块
         function drawBlockAt(x, y, type, isHighlight = false) {
-            let info = TYPE_INFO[type];
-            let grad = ctx.createLinearGradient(x, y, x+CELL_W, y+CELL_H);
-            if(isHighlight) {
-                grad.addColorStop(0, lightenColor(info.color1, 20));
-                grad.addColorStop(1, lightenColor(info.color2, 20));
-            } else {
-                grad.addColorStop(0, info.color1);
-                grad.addColorStop(1, info.color2);
+            let img = loadedImages[type];
+            if(img) {
+                // 绘制图片，保持比例并居中
+                let padding = 2;
+                let drawSize = CELL_W - padding * 2;
+                ctx.drawImage(img, x + padding, y + padding, drawSize, drawSize);
             }
-            ctx.fillStyle = grad;
-            ctx.fillRect(x, y, CELL_W-1, CELL_H-1);
-
-            // 浮雕边
-            ctx.strokeStyle = "#3a2a1a";
-            ctx.lineWidth = 1;
-            ctx.strokeRect(x+0.5, y+0.5, CELL_W-2, CELL_H-2);
-
-            // 绘制图标
-            ctx.font = `${CELL_W * 0.5}px "Segoe UI Emoji"`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillStyle = isHighlight ? lightenColor(info.accent, 20) : info.accent;
-            ctx.fillText(info.icon, x+CELL_W/2, y+CELL_H/2-5);
-            ctx.fillStyle = isHighlight ? "#fff5c4" : "#ead5a3";
-            ctx.font = `${CELL_W * 0.28}px monospace`;
-            ctx.fillText(info.text, x+CELL_W/2, y+CELL_H/2+15);
 
             // 高亮边框
             if(isHighlight) {
                 ctx.strokeStyle = "#f7d44a";
-                ctx.lineWidth = 3;
-                ctx.shadowBlur = 8;
+                ctx.lineWidth = 4;
+                ctx.shadowBlur = 10;
                 ctx.shadowColor = "#ffbf40";
                 ctx.strokeRect(x+2, y+2, CELL_W-5, CELL_H-5);
                 ctx.shadowBlur = 0;
             }
-        }
-
-        // 颜色提亮辅助函数
-        function lightenColor(hex, percent) {
-            let r = parseInt(hex.substring(1,3), 16);
-            let g = parseInt(hex.substring(3,5), 16);
-            let b = parseInt(hex.substring(5,7), 16);
-            r = Math.min(255, Math.floor(r * (1 + percent/100)));
-            g = Math.min(255, Math.floor(g * (1 + percent/100)));
-            b = Math.min(255, Math.floor(b * (1 + percent/100)));
-            return `rgb(${r},${g},${b})`;
         }
 
         // ---------- 绘制古墓风格画布 ----------
@@ -848,10 +786,6 @@
                 ctx.shadowBlur = 0;
             }
 
-            // 装饰符文
-            ctx.font = "bold 18px 'Cinema'";
-            ctx.fillStyle = "#ebc27a66";
-            ctx.fillText("⚰️ 尘封咒阵 ⚰️", 20, 35);
         }
 
         // 显示toast
@@ -959,7 +893,10 @@
             document.getElementById('exitBtn').addEventListener('click', onExit);
         }
 
-        initGame();
+        // 等待图片加载完成后初始化游戏
+        loadImages(function() {
+            initGame();
+        });
     })();
 </script>
 </body>
