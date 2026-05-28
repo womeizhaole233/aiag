@@ -1,0 +1,537 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    overflow: hidden;
+    font-family: "STKaiti", "KaiTi", "Microsoft YaHei", serif;
+}
+
+.game-container {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100vh; overflow: hidden;
+}
+
+/* 背景 */
+.background-layer {
+    position: absolute; inset: 0; z-index: 1;
+}
+.scene-background {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #3d2a1a 0%, #1a0a00 100%);
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease;
+}
+
+/* 人物立绘（可选，背景之上、对话框之下） */
+.portrait-layer {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 230px; /* 避开对话框 */
+}
+.portrait-layer img {
+    max-height: 72vh;
+    max-width: 42vw;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 24px rgba(0,0,0,0.55));
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+.portrait-layer img.visible { opacity: 1; }
+@media (max-width: 768px) {
+    .portrait-layer { padding-bottom: 200px; }
+    .portrait-layer img { max-width: 70vw; }
+}
+
+/* ===== 逆转裁判式底部全宽对话框 ===== */
+.dialogue-layer {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    width: 100%;
+    z-index: 10;
+    padding-top: 32px;
+    pointer-events: none;
+}
+
+.dialogue-body {
+    position: relative;
+    background: rgba(8, 4, 2, 0.78);
+    backdrop-filter: blur(8px);
+    border-top: 3px solid #c99d57;
+    border-bottom: 2px solid #5a3a14;
+    box-shadow: 0 -10px 36px rgba(0,0,0,0.6);
+    padding: 26px 56px 22px 56px;
+    pointer-events: auto;
+}
+.dialogue-body::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, #c99d57 18%, #f5ecd8 50%, #c99d57 82%, transparent 100%);
+}
+
+.dialogue-header {
+    position: absolute;
+    top: -28px;
+    left: 40px;
+    z-index: 3;
+}
+.brown-bar { display: none; }
+
+.hexagon-nameplate {
+    min-width: 180px;
+    height: 44px;
+    padding: 0 28px;
+    background: linear-gradient(180deg, #b8862d 0%, #8b6914 50%, #5a3a14 100%);
+    clip-path: polygon(6% 0%, 94% 0%, 100% 50%, 94% 100%, 6% 100%, 0% 50%);
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.55);
+    border: 1px solid #d4a543;
+}
+.hexagon-nameplate span {
+    color: #fff8e0;
+    font-size: 18px; font-weight: bold; letter-spacing: 4px;
+    font-family: "STKaiti", "KaiTi", serif;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    white-space: nowrap;
+}
+
+.dialogue-text {
+    font-size: 19px; line-height: 1.85;
+    color: #f5ecd8;
+    min-height: 110px;
+    max-height: 32vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    letter-spacing: 1px;
+}
+
+.continue-area {
+    display: flex; justify-content: flex-end;
+    margin-top: 10px;
+}
+.continue-btn {
+    background: rgba(139, 105, 20, 0.85);
+    border: none; color: #f5ecd8;
+    padding: 6px 22px; cursor: pointer;
+    border-radius: 30px;
+    font-size: 13px;
+    font-family: "STKaiti", "KaiTi", serif;
+    transition: all 0.2s;
+}
+.continue-btn:hover, .continue-btn.focused {
+    background: #c99d57; color: #1a1a0a;
+    transform: scale(1.03);
+    outline: none;
+}
+
+.choices-area {
+    display: flex; flex-direction: column;
+    gap: 10px; margin-top: 14px;
+    max-width: 880px;
+    margin-left: auto; margin-right: auto;
+}
+.choice-btn {
+    background: rgba(0, 0, 0, 0.55);
+    border: 1.5px solid #8b6914;
+    color: #f5ecd8;
+    padding: 12px 22px;
+    cursor: pointer;
+    border-radius: 26px;
+    font-size: 16px;
+    font-family: "STKaiti", "KaiTi", serif;
+    text-align: left;
+    transition: all 0.15s;
+}
+.choice-btn:hover, .choice-btn.focused {
+    background: #c99d57; color: #1a1a0a;
+    border-color: #c99d57;
+    outline: none;
+    transform: translateX(-4px);
+}
+
+.hint {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #c99d57;
+    opacity: 0.6;
+    text-align: right;
+    font-family: "STKaiti", "KaiTi", serif;
+}
+
+/* 控制按钮 */
+.controls {
+    position: absolute;
+    top: 15px; right: 15px;
+    z-index: 20;
+}
+.ctrl-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #8b6914;
+    color: #d4a543;
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: "STKaiti", "KaiTi", serif;
+}
+.ctrl-btn:hover { background: #8b6914; color: #1a1a0a; }
+
+/* 调试面板 */
+.debug-panel {
+    position: absolute;
+    left: 12px; top: 12px;
+    background: rgba(0,0,0,0.85);
+    border: 1px solid #c99d57;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 11px;
+    color: #f4ead6;
+    font-family: ui-monospace, monospace;
+    line-height: 1.55;
+    z-index: 30;
+    width: 280px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.debug-panel h4 {
+    color: #c99d57; font-size: 11px; letter-spacing: 2px;
+    margin-bottom: 6px; display: flex; justify-content: space-between;
+}
+.debug-panel .row { display: flex; justify-content: space-between; gap: 8px; }
+.debug-panel .row span:last-child { color: #ffe9a8; }
+.debug-panel .ok { color: #8fc7aa; }
+.debug-panel .bad { color: #ff8a6b; }
+.debug-panel select, .debug-panel input {
+    width: 100%;
+    background: #1a1a0a; color: #f4ead6;
+    border: 1px solid #5a3a14;
+    padding: 4px 6px; margin-top: 4px;
+    font-family: inherit; font-size: 11px;
+}
+.debug-panel button.dbg-btn {
+    width: 100%; margin-top: 4px;
+    background: #5a3a14; color: #f4ead6;
+    border: 1px solid #c99d57;
+    padding: 4px; cursor: pointer;
+    font-family: inherit; font-size: 11px;
+}
+.debug-panel button.dbg-btn:hover { background: #c99d57; color: #1a1a0a; }
+.debug-panel .history {
+    max-height: 80px; overflow-y: auto;
+    margin-top: 4px; padding: 4px;
+    background: rgba(0,0,0,0.5);
+    border: 1px dashed rgba(201,157,87,0.3);
+    font-size: 10px; color: #aaa;
+}
+.debug-panel .history div { padding: 1px 0; }
+.debug-panel .toggle-collapse {
+    background: none; border: none; color: #c99d57;
+    cursor: pointer; font-size: 11px; padding: 0;
+}
+.debug-panel.collapsed .body { display: none; }
+
+@media (max-width: 768px) {
+    .dialogue-body { padding: 22px 22px 18px 22px; }
+    .dialogue-header { left: 18px; top: -24px; }
+    .hexagon-nameplate { min-width: 140px; height: 36px; padding: 0 20px; }
+    .hexagon-nameplate span { font-size: 14px; letter-spacing: 2px; }
+    .dialogue-text { font-size: 16px; max-height: 40vh; }
+    .choice-btn { font-size: 14px; padding: 10px 16px; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="game-container">
+    <div class="background-layer">
+        <div class="scene-background" id="sceneBackground"></div>
+    </div>
+
+    <div class="portrait-layer">
+        <img id="portraitImg" alt="">
+    </div>
+
+    <div class="dialogue-layer">
+        <div class="dialogue-body">
+            <div class="dialogue-header">
+                <div class="brown-bar"></div>
+                <div class="hexagon-nameplate">
+                    <span id="hexagonSpeaker">白沙手记</span>
+                </div>
+            </div>
+
+            <div class="dialogue-text" id="dialogueText"></div>
+
+            <div class="continue-area" id="continueArea" style="display:none;">
+                <button class="continue-btn" id="continueBtn">▼ 继续 (Space / →)</button>
+            </div>
+
+            <div class="choices-area" id="choicesArea" style="display:none;"></div>
+
+            <div class="hint" id="hint">↑↓←→ 选择 ・ Space / Enter 确认</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="ctrl-btn" onclick="resetGame()">🔄 重来</button>
+    </div>
+
+    <div class="debug-panel" id="debugPanel">
+        <h4>
+            <span>🔍 DEBUG</span>
+            <button class="toggle-collapse" id="dbgToggle">[折叠]</button>
+        </h4>
+        <div class="body">
+            <div class="row"><span>当前节点:</span><span id="dbgNode">-</span></div>
+            <div class="row"><span>说话人:</span><span id="dbgSpeaker">-</span></div>
+            <div class="row"><span>模式:</span><span id="dbgMode">-</span></div>
+            <div class="row"><span>下一节点:</span><span id="dbgNext">-</span></div>
+            <div class="row"><span>选项数:</span><span id="dbgChoices">0</span></div>
+            <div class="row"><span>解谜标记:</span><span id="dbgPuzzle">-</span></div>
+            <div style="margin-top:8px">最近路径:</div>
+            <div class="history" id="dbgHistory"></div>
+            <div style="margin-top:8px">跳转到节点:</div>
+            <select id="dbgJumpSelect"><option value="">-- 加载中 --</option></select>
+            <button class="dbg-btn" id="dbgJumpBtn">→ 跳转</button>
+            <button class="dbg-btn" id="dbgRefresh">↻ 重读当前节点</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let pendingNext = null;
+let pendingChoices = null;
+let focusIndex = 0; // 当前键盘焦点索引（用于 choices）
+let mode = 'idle';  // 'continue' | 'choices' | 'idle'
+let dbgHistory = [];
+let dbgCurrent = {id:'-', speaker:'-', next:'-', choices:0, puzzle:'-'};
+
+function updateHexagon(speaker) {
+    document.getElementById('hexagonSpeaker').textContent = speaker || '白沙手记';
+}
+
+function setBackground(img) {
+    const bg = document.getElementById('sceneBackground');
+    if (img) {
+        bg.style.backgroundImage = `url('/${img.replace(/^\/?/, '')}')`;
+    }
+}
+
+function setPortrait(img) {
+    const el = document.getElementById('portraitImg');
+    if (img) {
+        el.src = `/${img.replace(/^\/?/, '')}`;
+        el.classList.add('visible');
+    } else {
+        el.classList.remove('visible');
+        el.removeAttribute('src');
+    }
+}
+
+function renderChoices() {
+    const div = document.getElementById('choicesArea');
+    div.style.display = 'flex';
+    div.innerHTML = pendingChoices.map((c, i) =>
+        `<button class="choice-btn" data-idx="${i}" onclick="pickChoice(${i})">${c.text}</button>`
+    ).join('');
+    focusIndex = 0;
+    refreshFocus();
+}
+
+function refreshFocus() {
+    if (mode === 'choices') {
+        document.querySelectorAll('.choice-btn').forEach((b, i) => {
+            b.classList.toggle('focused', i === focusIndex);
+            if (i === focusIndex) b.scrollIntoView({block: 'nearest'});
+        });
+    } else if (mode === 'continue') {
+        document.getElementById('continueBtn').classList.add('focused');
+    }
+}
+
+function pickChoice(i) {
+    if (!pendingChoices || !pendingChoices[i]) return;
+    const next = pendingChoices[i].next;
+    pendingChoices = null;
+    mode = 'idle';
+    loadDialogue(next);
+}
+
+function onContinue() {
+    if (mode === 'continue' && pendingChoices && pendingChoices.length > 0) {
+        document.getElementById('continueArea').style.display = 'none';
+        mode = 'choices';
+        renderChoices();
+    } else if (mode === 'continue' && pendingNext) {
+        document.getElementById('continueArea').style.display = 'none';
+        const n = pendingNext;
+        pendingNext = null;
+        mode = 'idle';
+        loadDialogue(n);
+    }
+}
+
+async function loadDialogue(choiceNext = null) {
+    document.getElementById('choicesArea').style.display = 'none';
+    document.getElementById('choicesArea').innerHTML = '';
+    document.getElementById('continueArea').style.display = 'none';
+    mode = 'idle';
+
+    try {
+        const r = await fetch('/api/dialogue', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({choice_next: choiceNext})
+        });
+        const data = await r.json();
+
+        // 调试信息
+        dbgCurrent = {
+            id: data.id || '?',
+            speaker: data.speaker || '?',
+            next: data.next || '(无)',
+            choices: (data.choices || []).length,
+            puzzle: data.puzzle || '(无)'
+        };
+        if (dbgHistory[dbgHistory.length-1] !== data.id) {
+            dbgHistory.push(data.id);
+            if (dbgHistory.length > 20) dbgHistory.shift();
+        }
+        refreshDebug();
+
+        // 立即整段显示
+        document.getElementById('dialogueText').textContent = data.text;
+        updateHexagon(data.speaker);
+        if (data.background_image) setBackground(data.background_image);
+        setPortrait(data.portrait);
+
+        // 触发墓门解密
+        if (data.puzzle === 'tomb_gate') {
+            setTimeout(() => { window.location.href = '/game/tomb_gate'; }, 200);
+            return;
+        }
+
+        if (data.choices && data.choices.length > 0) {
+            pendingChoices = data.choices;
+            pendingNext = null;
+            // 跳过继续按钮，直接显示选项（更顺手）
+            mode = 'choices';
+            renderChoices();
+        } else if (data.next === 'game_end') {
+            setTimeout(() => {
+                if (confirm('✨ 一段尘封的历史被揭开……\n\n点击确定重新开始')) resetGame();
+            }, 400);
+        } else if (data.next === 'game_over') {
+            setTimeout(() => {
+                if (confirm('💀 故事未尽……\n\n点击确定重来')) resetGame();
+            }, 400);
+        } else if (data.next) {
+            pendingNext = data.next;
+            document.getElementById('continueArea').style.display = 'flex';
+            mode = 'continue';
+            refreshFocus();
+        }
+        refreshDebug();
+    } catch (e) {
+        console.error(e);
+        document.getElementById('dialogueText').textContent = '岁月模糊了字迹，请刷新重试……';
+    }
+}
+
+async function resetGame() {
+    if (!confirm('确定要重翻旧卷吗？当前进度将会遗失。')) return;
+    await fetch('/api/reset', {method: 'POST'});
+    document.getElementById('sceneBackground').style.backgroundImage = '';
+    loadDialogue('start');
+}
+
+// ========== 键盘控制 ==========
+document.addEventListener('keydown', (e) => {
+    const k = e.key;
+
+    if (mode === 'continue') {
+        if (k === ' ' || k === 'Enter' || k === 'ArrowRight' || k === 'ArrowDown') {
+            e.preventDefault();
+            onContinue();
+        }
+    } else if (mode === 'choices') {
+        if (k === 'ArrowDown' || k === 'ArrowRight') {
+            e.preventDefault();
+            focusIndex = (focusIndex + 1) % pendingChoices.length;
+            refreshFocus();
+        } else if (k === 'ArrowUp' || k === 'ArrowLeft') {
+            e.preventDefault();
+            focusIndex = (focusIndex - 1 + pendingChoices.length) % pendingChoices.length;
+            refreshFocus();
+        } else if (k === ' ' || k === 'Enter') {
+            e.preventDefault();
+            pickChoice(focusIndex);
+        } else if (/^[1-9]$/.test(k)) {
+            const i = parseInt(k) - 1;
+            if (i < pendingChoices.length) {
+                e.preventDefault();
+                pickChoice(i);
+            }
+        }
+    }
+});
+
+document.getElementById('continueBtn').addEventListener('click', onContinue);
+
+// ========== 调试面板 ==========
+function refreshDebug() {
+    document.getElementById('dbgNode').textContent = dbgCurrent.id;
+    document.getElementById('dbgSpeaker').textContent = dbgCurrent.speaker;
+    document.getElementById('dbgMode').textContent = mode;
+    document.getElementById('dbgNext').textContent = dbgCurrent.next;
+    document.getElementById('dbgChoices').textContent = dbgCurrent.choices;
+    const pz = document.getElementById('dbgPuzzle');
+    pz.textContent = dbgCurrent.puzzle;
+    pz.className = (dbgCurrent.puzzle && dbgCurrent.puzzle !== '(无)') ? 'ok' : '';
+    const hist = document.getElementById('dbgHistory');
+    hist.innerHTML = dbgHistory.map((h,i) =>
+        `<div>${i === dbgHistory.length-1 ? '▶' : '·'} ${h}</div>`
+    ).join('');
+    hist.scrollTop = hist.scrollHeight;
+}
+
+async function loadJumpList() {
+    try {
+        const r = await fetch('/api/dialogue/list');
+        const data = await r.json();
+        const sel = document.getElementById('dbgJumpSelect');
+        sel.innerHTML = data.nodes.map(n => {
+            const tag = n.puzzle ? ' 🧭' : (n.has_choices ? ' ❖' : '');
+            return `<option value="${n.id}">${n.id}${tag} · ${n.speaker} · ${n.preview}</option>`;
+        }).join('');
+        sel.value = data.current;
+    } catch (e) { console.error(e); }
+}
+
+document.getElementById('dbgJumpBtn').addEventListener('click', () => {
+    const id = document.getElementById('dbgJumpSelect').value;
+    if (id) loadDialogue(id);
+});
+document.getElementById('dbgRefresh').addEventListener('click', () => loadDialogue());
+document.getElementById('dbgToggle').addEventListener('click', () => {
+    const p = document.getElementById('debugPanel');
+    p.classList.toggle('collapsed');
+    document.getElementById('dbgToggle').textContent =
+        p.classList.contains('collapsed') ? '[展开]' : '[折叠]';
+});
+
+loadJumpList();
+loadDialogue();
+</script>
+{% endblock %}

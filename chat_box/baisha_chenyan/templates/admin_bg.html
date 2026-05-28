@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>剧本编辑 · 白沙尘烟</title>
+<style>
+  :root{--bg:#1c1a17;--panel:#252320;--panel2:#2e2a25;--line:#3a3530;--text:#e8e2d6;--mute:#9a9286;--accent:#c9a36b;--ok:#7bb37b;--warn:#d68a3c;--lock:#a05c5c;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;}
+  .app{display:grid;grid-template-columns:300px 1fr 380px;height:100vh;}
+  .col{border-right:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;}
+  .col:last-child{border-right:none}
+  header{padding:10px 12px;border-bottom:1px solid var(--line);background:var(--panel);font-weight:600;display:flex;align-items:center;gap:8px;}
+  header .sub{color:var(--mute);font-weight:400;font-size:12px;margin-left:auto;}
+  .toolbar{padding:8px 10px;border-bottom:1px solid var(--line);display:flex;gap:6px;align-items:center;background:var(--panel);}
+  .toolbar input[type=text]{flex:1;background:#1a1815;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:6px 8px;}
+  .toolbar select,.toolbar button{background:#1a1815;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:5px 8px;cursor:pointer;}
+  .toolbar button:hover{border-color:var(--accent)}
+
+  .node-list{flex:1;overflow:auto;}
+  .node{padding:8px 12px;border-bottom:1px solid #2a2622;cursor:pointer;display:flex;align-items:center;gap:8px;}
+  .node:hover{background:#2b2722}
+  .node.active{background:#3a322a}
+  .node .id{font-family:Menlo,Consolas,monospace;color:var(--accent);font-size:12px;}
+  .node .pv{color:var(--mute);font-size:12px;margin-top:2px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .node .left{flex:1;min-width:0;}
+  .dot{width:8px;height:8px;border-radius:50%;background:#666;flex-shrink:0;}
+  .dot.has{background:var(--ok)}
+  .dot.over{background:var(--warn)}
+  .dot.lock{background:var(--lock)}
+  .dot.custom{background:#7a8fc9}
+  .node .badge-mini{display:inline-block;padding:1px 6px;border-radius:8px;font-size:10px;border:1px solid var(--line);color:var(--mute);margin-left:4px;}
+  .node .badge-mini.custom{color:#9bb0e0;border-color:#7a8fc9;}
+  .node .badge-mini.term{color:#d68a3c;border-color:#d68a3c;}
+
+  .center{display:flex;flex-direction:column;}
+  .meta{padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel);font-size:13px;}
+  .meta .row{margin:4px 0;}
+  .meta .lbl{color:var(--mute);margin-right:6px;}
+  .meta .nid{font-family:Menlo,Consolas,monospace;color:var(--accent);}
+  .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;margin-left:6px;border:1px solid var(--line);}
+  .badge.over{color:var(--warn);border-color:var(--warn)}
+  .badge.lock{color:var(--lock);border-color:var(--lock)}
+  .badge.def{color:var(--mute)}
+
+  .editor{flex:1;overflow:auto;padding:12px 14px;}
+  .field{margin-bottom:14px;}
+  .field-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .field-head label{color:var(--accent);font-size:12px;letter-spacing:.5px;}
+  .field-head .actions{margin-left:auto;display:flex;gap:6px;}
+  .field-head .small{font-size:11px;padding:2px 8px;}
+  .field input[type=text], .field textarea{width:100%;background:#0e0d0b;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-family:inherit;font-size:14px;line-height:1.7;}
+  .field textarea{resize:vertical;min-height:140px;white-space:pre-wrap;}
+  .field input:focus, .field textarea:focus{outline:none;border-color:var(--accent);}
+  .field .hint{color:var(--mute);font-size:11px;margin-top:4px;}
+  .field.dirty input, .field.dirty textarea{border-color:var(--warn);}
+  .field.locked .lockmsg{color:var(--lock);font-size:12px;margin-top:4px;}
+
+  .bg-preview{background:#0e0d0b;border:1px solid var(--line);border-radius:4px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .bg-preview img{max-width:100%;max-height:240px;border:1px solid var(--line);}
+  .bg-preview .empty{color:var(--mute);font-style:italic;padding:30px 0;}
+  .bg-preview .imgpath{color:var(--mute);font-size:11px;font-family:Menlo,Consolas,monospace;text-align:center;word-break:break-all;}
+
+  .btn{background:#1a1815;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:6px 12px;cursor:pointer;font-size:13px;}
+  .btn:hover{border-color:var(--accent)}
+  .btn.primary{background:var(--accent);color:#1a1410;border-color:var(--accent);}
+  .btn.danger{border-color:var(--lock);color:#e0a0a0}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+
+  .lib{display:flex;flex-direction:column;}
+  .lib-toolbar{padding:8px 10px;border-bottom:1px solid var(--line);background:var(--panel);}
+  .lib-toolbar input{width:100%;background:#1a1815;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:6px 8px;}
+  .lib-list{flex:1;overflow:auto;padding:8px;}
+  details{margin-bottom:6px;border:1px solid var(--line);border-radius:4px;background:var(--panel2);}
+  details>summary{padding:6px 10px;cursor:pointer;color:var(--accent);font-size:13px;list-style:none;}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"▶ ";font-size:10px;color:var(--mute);}
+  details[open]>summary::before{content:"▼ ";}
+  .thumbs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;padding:8px;}
+  .thumb{position:relative;border:1px solid var(--line);border-radius:3px;background:#0e0d0b;cursor:pointer;overflow:hidden;aspect-ratio:4/3;}
+  .thumb:hover{border-color:var(--accent)}
+  .thumb.cur{border-color:var(--ok);box-shadow:0 0 0 2px var(--ok) inset;}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .thumb .name{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);color:#ddd;font-size:10px;padding:2px 4px;line-height:1.2;max-height:50%;overflow:hidden;}
+
+  .toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#332e26;color:var(--text);padding:8px 16px;border:1px solid var(--accent);border-radius:4px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;}
+  .toast.show{opacity:1}
+  .footer{padding:8px 14px;border-top:1px solid var(--line);background:var(--panel);display:flex;gap:8px;align-items:center;}
+  .footer .grow{flex:1;color:var(--mute);font-size:12px;}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:200;}
+  .modal-bg.show{display:flex;}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px 20px;width:380px;max-width:92vw;}
+  .modal h3{margin:0 0 12px 0;color:var(--accent);font-size:15px;}
+  .modal label{display:block;color:var(--mute);font-size:12px;margin:8px 0 4px;}
+  .modal input,.modal textarea{width:100%;background:#0e0d0b;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:6px 8px;font-family:inherit;}
+  .modal textarea{min-height:80px;resize:vertical;}
+  .modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;}
+  .modal .err{color:#e08080;font-size:12px;margin-top:6px;min-height:1em;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="col">
+    <header>节点列表 <span class="sub" id="stat"></span></header>
+    <div class="toolbar">
+      <input id="q" type="text" placeholder="搜索 id / 文本">
+      <select id="filter">
+        <option value="all">全部</option>
+        <option value="over">已自定义</option>
+        <option value="def">使用默认</option>
+        <option value="none">未配图</option>
+        <option value="lock">背景锁定</option>
+        <option value="custom">新增节点</option>
+        <option value="term">终止节点</option>
+      </select>
+      <button class="btn" id="btnNew" title="新建节点">+</button>
+    </div>
+    <div class="node-list" id="nodeList"></div>
+  </div>
+
+  <div class="col center">
+    <header>节点详情 <span class="sub" id="centerSub"></span></header>
+    <div class="meta" id="meta"><span class="lbl">未选择节点</span></div>
+    <div class="editor" id="editor">
+      <div style="color:var(--mute);text-align:center;padding:30px;">点击左栏节点开始编辑</div>
+    </div>
+    <div class="footer">
+      <span class="grow" id="actMsg"></span>
+      <button class="btn" id="btnExport">导出 JSON</button>
+    </div>
+  </div>
+
+  <div class="col lib">
+    <header>图片库 <span class="sub" id="libSub"></span></header>
+    <div class="lib-toolbar" style="display:flex;gap:6px;align-items:center;">
+      <input id="qImg" type="text" placeholder="搜索文件名" style="flex:1;">
+      <select id="libTarget" title="点击图片时写入哪个字段">
+        <option value="bg">→ 背景</option>
+        <option value="portrait">→ 立绘</option>
+      </select>
+    </div>
+    <div class="lib-list" id="libList"></div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+<datalist id="nodeIdList"></datalist>
+<div class="modal-bg" id="newModal">
+  <div class="modal">
+    <h3>新建节点</h3>
+    <label>节点 ID（仅字母数字下划线）</label>
+    <input type="text" id="newId" placeholder="例如 custom_scene_1" autocomplete="off">
+    <label>说话人 (可选)</label>
+    <input type="text" id="newSpeaker" placeholder="例如 苏轶">
+    <label>对话文本 (可选)</label>
+    <textarea id="newText" placeholder="该节点显示的文本..."></textarea>
+    <label>下一节点 next (可选)</label>
+    <input type="text" id="newNext" list="nodeIdList" placeholder="留空表示流程在此暂停">
+    <div class="err" id="newErr"></div>
+    <div class="row">
+      <button class="btn" id="newCancel">取消</button>
+      <button class="btn primary" id="newOk">创建</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let DATA = null;
+let cur = null;
+
+const $ = sel => document.querySelector(sel);
+const escapeHtml = s => (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);}
+
+async function loadData(){
+  const r = await fetch('/api/admin/bg/data');
+  DATA = await r.json();
+  renderNodes(); renderImages(); renderStats(); renderNodeIdList();
+}
+
+function renderNodeIdList(){
+  const dl = $('#nodeIdList'); if(!dl) return;
+  const ids = DATA.nodes.map(n=>n.id).concat(DATA.terminal_nexts || ['game_end','game_over']);
+  dl.innerHTML = ids.map(id=>`<option value="${escapeHtml(id)}">`).join('');
+}
+
+function renderStats(){
+  const total = DATA.nodes.length;
+  const over = DATA.nodes.filter(n => n.override_bg || n.override_speaker || n.override_text != null).length;
+  const none = DATA.nodes.filter(n=>!n.effective_bg).length;
+  $('#stat').textContent = `共 ${total} · 自定义 ${over} · 未配 ${none}`;
+  let totalImgs = 0; for(const g in DATA.images) totalImgs += DATA.images[g].length;
+  $('#libSub').textContent = `${totalImgs} 张`;
+}
+
+function nodeIsOverridden(n){ return n.override_bg || n.override_speaker || n.override_text != null || n.override_next != null || n.override_portrait; }
+const TERM_NEXTS = ['game_end', 'game_over'];
+function isTerminal(n){ return TERM_NEXTS.includes(n.effective_next); }
+
+function renderNodes(){
+  const q = $('#q').value.trim().toLowerCase();
+  const f = $('#filter').value;
+  const list = $('#nodeList'); list.innerHTML = '';
+  let visible = 0;
+  DATA.nodes.forEach(n=>{
+    const text = n.effective_text || '';
+    if(q && !(n.id.toLowerCase().includes(q) || text.toLowerCase().includes(q))) return;
+    if(f === 'over' && !nodeIsOverridden(n)) return;
+    if(f === 'def' && (nodeIsOverridden(n) || !n.default_bg)) return;
+    if(f === 'none' && n.effective_bg) return;
+    if(f === 'lock' && !n.bg_locked) return;
+    if(f === 'custom' && !n.is_custom) return;
+    if(f === 'term' && !isTerminal(n)) return;
+    visible++;
+    const div = document.createElement('div');
+    div.className = 'node' + (cur === n.id ? ' active' : '');
+    let dotCls = 'dot';
+    if(n.is_custom) dotCls += ' custom';
+    else if(n.bg_locked) dotCls += ' lock';
+    else if(nodeIsOverridden(n)) dotCls += ' over';
+    else if(n.effective_bg) dotCls += ' has';
+    const tip = n.is_custom?'新增节点':(n.bg_locked?'背景锁定':(nodeIsOverridden(n)?'已自定义':(n.effective_bg?'使用默认':'未配图')));
+    const badges = (n.is_custom?'<span class="badge-mini custom">新增</span>':'') + (isTerminal(n)?`<span class="badge-mini term">${n.effective_next==='game_end'?'结局':'失败'}</span>`:'');
+    div.innerHTML = `
+      <div class="${dotCls}" title="${tip}"></div>
+      <div class="left">
+        <div class="id">${escapeHtml(n.id)}${badges}</div>
+        <div class="pv">${escapeHtml(n.preview)}</div>
+      </div>`;
+    div.onclick = ()=>selectNode(n.id);
+    list.appendChild(div);
+  });
+  if(!visible) list.innerHTML = '<div style="padding:20px;color:var(--mute);text-align:center">无匹配</div>';
+}
+
+function findNode(id){ return DATA.nodes.find(n=>n.id===id); }
+
+function selectNode(id){
+  cur = id;
+  renderNodes();
+  const n = findNode(id);
+  if(!n) return;
+  $('#meta').innerHTML = `
+    <div class="row"><span class="lbl">节点 ID</span><span class="nid">${escapeHtml(n.id)}</span>
+      ${n.is_custom ? '<span class="badge" style="color:#9bb0e0;border-color:#7a8fc9">新增</span>' : ''}
+      ${n.bg_locked ? '<span class="badge lock">背景锁定（含交互谜题）</span>' : ''}
+      ${n.puzzle ? '<span class="badge">puzzle: '+escapeHtml(n.puzzle)+'</span>' : ''}
+      ${n.has_choices ? '<span class="badge">含选项</span>' : ''}
+      ${isTerminal(n) ? `<span class="badge" style="color:#d68a3c;border-color:#d68a3c">${n.effective_next==='game_end'?'结局':'失败结局'}</span>` : ''}
+    </div>
+    <div class="row"><span class="lbl">下一节点</span><span class="nid">${escapeHtml(n.effective_next||'(无)')}</span>
+      ${n.is_custom ? '<button class="btn small danger" id="btnDelete" style="margin-left:8px;font-size:11px;padding:2px 8px">删除节点</button>' : ''}
+    </div>`;
+
+  const dirtySpeaker = n.override_speaker != null;
+  const dirtyText = n.override_text != null;
+  const dirtyBg = n.override_bg != null;
+
+  $('#editor').innerHTML = `
+    <div class="field ${dirtySpeaker?'dirty':''}" id="fSpeaker">
+      <div class="field-head">
+        <label>说话人 (speaker)</label>
+        ${dirtySpeaker?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>'}
+        <div class="actions">
+          <button class="btn small primary" id="saveSpeaker">保存</button>
+          <button class="btn small" id="resetSpeaker" ${dirtySpeaker?'':'disabled'}>重置</button>
+        </div>
+      </div>
+      <input type="text" id="inSpeaker" value="${escapeHtml(n.effective_speaker)}">
+      <div class="hint">默认: ${escapeHtml(n.default_speaker)||'(空)'}</div>
+    </div>
+
+    <div class="field ${dirtyText?'dirty':''}" id="fText">
+      <div class="field-head">
+        <label>对话文本 (text)</label>
+        ${dirtyText?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>'}
+        <div class="actions">
+          <button class="btn small primary" id="saveText">保存</button>
+          <button class="btn small" id="resetText" ${dirtyText?'':'disabled'}>重置</button>
+        </div>
+      </div>
+      <textarea id="inText" rows="8">${escapeHtml(n.effective_text)}</textarea>
+      <div class="hint">支持换行；改动后点保存生效。</div>
+    </div>
+
+    <div class="field ${dirtyBg?'dirty':''} ${n.bg_locked?'locked':''}" id="fBg">
+      <div class="field-head">
+        <label>背景图 (background_image)</label>
+        ${n.bg_locked ? '<span class="badge lock">锁定</span>' : (dirtyBg?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>')}
+        <div class="actions">
+          <button class="btn small" id="resetBg" ${(dirtyBg && !n.bg_locked)?'':'disabled'}>重置</button>
+        </div>
+      </div>
+      <div class="bg-preview" id="bgPreview"></div>
+      ${n.bg_locked?'<div class="lockmsg">该节点参与交互式墓门解密，背景图不可修改。</div>':'<div class="hint">选中右栏“→背景”后点击图片即保存。</div>'}
+      <div class="hint" style="margin-top:6px">默认: ${escapeHtml(n.default_bg||'(无)')}</div>
+    </div>
+
+    <div class="field ${(n.override_portrait!=null)?'dirty':''}" id="fPortrait">
+      <div class="field-head">
+        <label>人物立绘 (portrait)</label>
+        ${(n.override_portrait!=null)?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>'}
+        <div class="actions">
+          <button class="btn small" id="resetPortrait" ${(n.override_portrait!=null)?'':'disabled'}>清空/重置</button>
+        </div>
+      </div>
+      <div class="bg-preview" id="portraitPreview"></div>
+      <div class="hint">选中右栏“→立绘”后点击图片即保存。可为空。</div>
+      <div class="hint" style="margin-top:6px">默认: ${escapeHtml(n.default_portrait||'(无)')}</div>
+    </div>
+
+    <div class="field ${(n.override_next!=null)?'dirty':''}" id="fNext">
+      <div class="field-head">
+        <label>下一节点 (next) — 控制剧情走向</label>
+        ${(n.override_next!=null)?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>'}
+        <div class="actions">
+          <button class="btn small primary" id="saveNext">保存</button>
+          <button class="btn small" id="resetNext" ${(n.override_next!=null)?'':'disabled'}>重置</button>
+        </div>
+      </div>
+      <input type="text" id="inNext" list="nodeIdList" value="${escapeHtml(n.effective_next||'')}" placeholder="输入节点 id 或选择...">
+      <div class="hint" style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">
+        快捷：
+        <button class="btn small" data-set-next="" style="font-size:11px;padding:2px 6px">(留空)</button>
+        <button class="btn small" data-set-next="game_end" style="font-size:11px;padding:2px 6px;border-color:#7bb37b;color:#7bb37b">→ 结局 game_end</button>
+        <button class="btn small" data-set-next="game_over" style="font-size:11px;padding:2px 6px;border-color:#d68a3c;color:#d68a3c">→ 失败 game_over</button>
+      </div>
+      <div class="hint" style="margin-top:6px">默认: ${escapeHtml(n.default_next||'(无)')}${n.has_choices?' · <span style="color:var(--warn)">该节点含选项，next 仅在无选项时生效</span>':''}</div>
+    </div>`;
+
+  renderBgPreview(n.effective_bg);
+  renderPortraitPreview(n.effective_portrait);
+
+  $('#saveSpeaker').onclick = ()=>save('speaker', $('#inSpeaker').value);
+  $('#resetSpeaker').onclick = ()=>save('speaker', '');
+  $('#saveText').onclick = ()=>save('text', $('#inText').value);
+  $('#resetText').onclick = ()=>save('text', '');
+  if(!n.bg_locked) $('#resetBg').onclick = ()=>save('bg', '');
+  $('#resetPortrait').onclick = ()=>save('portrait', '');
+  $('#saveNext').onclick = ()=>save('next', $('#inNext').value.trim());
+  $('#resetNext').onclick = ()=>save('next', '');
+  document.querySelectorAll('[data-set-next]').forEach(b=>b.onclick = ()=>save('next', b.dataset.setNext));
+  if(n.is_custom){
+    const btnDel = $('#btnDelete');
+    if(btnDel) btnDel.onclick = ()=>deleteNode(n.id);
+  }
+
+  document.querySelectorAll('.thumb').forEach(el=>{
+    el.classList.toggle('cur', el.dataset.path === n.effective_bg);
+  });
+  $('#actMsg').textContent = '';
+}
+
+function renderBgPreview(path){
+  const box = $('#bgPreview');
+  if(!path){ box.innerHTML = '<div class="empty">未配图</div>'; return; }
+  box.innerHTML = `<img src="/${path}" alt=""><div class="imgpath">${escapeHtml(path)}</div>`;
+}
+
+function renderPortraitPreview(path){
+  const box = $('#portraitPreview');
+  if(!box) return;
+  if(!path){ box.innerHTML = '<div class="empty">无立绘</div>'; return; }
+  box.innerHTML = `<img src="/${path}" alt=""><div class="imgpath">${escapeHtml(path)}</div>`;
+}
+
+function renderImages(){
+  const q = $('#qImg').value.trim().toLowerCase();
+  const root = $('#libList'); root.innerHTML = '';
+  Object.keys(DATA.images).forEach(group=>{
+    const items = DATA.images[group].filter(p => !q || p.toLowerCase().includes(q));
+    if(!items.length) return;
+    const det = document.createElement('details');
+    det.open = !!q;
+    det.innerHTML = `<summary>${escapeHtml(group)} <span style="color:var(--mute)">(${items.length})</span></summary>`;
+    const grid = document.createElement('div'); grid.className = 'thumbs';
+    items.forEach(p=>{
+      const name = p.split('/').pop();
+      const t = document.createElement('div');
+      t.className = 'thumb';
+      t.dataset.path = p;
+      t.innerHTML = `<img src="/${p}" loading="lazy"><div class="name">${escapeHtml(name)}</div>`;
+      t.onclick = ()=>chooseImage(p);
+      grid.appendChild(t);
+    });
+    det.appendChild(grid);
+    root.appendChild(det);
+  });
+}
+
+async function chooseImage(path){
+  if(!cur){ toast('请先选择左栏节点'); return; }
+  const n = findNode(cur);
+  const target = $('#libTarget').value;
+  if(target === 'bg' && n.bg_locked){ toast('此节点背景已锁定'); return; }
+  await save(target, path);
+}
+
+async function save(field, value){
+  if(!cur) return;
+  const r = await fetch('/api/admin/bg/save', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({node_id: cur, field, value})
+  });
+  const j = await r.json();
+  if(j.status !== 'ok'){ toast(j.msg||'保存失败'); return; }
+  const n = findNode(cur);
+  n.override_speaker = j.override_speaker;
+  n.override_text = j.override_text;
+  n.override_bg = j.override_bg;
+  n.override_portrait = j.override_portrait;
+  n.override_next = j.override_next;
+  n.effective_speaker = j.effective_speaker;
+  n.effective_text = j.effective_text;
+  n.effective_bg = j.effective_bg;
+  n.effective_portrait = j.effective_portrait;
+  n.effective_next = j.effective_next;
+  n.preview = (j.effective_text||'').replace(/\n/g,' ').slice(0,80);
+  selectNode(cur);
+  renderStats();
+  toast(value === '' ? '已重置' : '已保存');
+}
+
+$('#q').addEventListener('input', renderNodes);
+$('#filter').addEventListener('change', renderNodes);
+$('#qImg').addEventListener('input', renderImages);
+$('#btnExport').onclick = async ()=>{
+  const r = await fetch('/api/admin/bg/export'); const j = await r.json();
+  const blob = new Blob([JSON.stringify(j, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'content_overrides.json';
+  document.body.appendChild(a); a.click(); a.remove();
+};
+
+// === 新建节点 ===
+function openNewModal(){
+  $('#newId').value = ''; $('#newSpeaker').value = '';
+  $('#newText').value = ''; $('#newNext').value = '';
+  $('#newErr').textContent = '';
+  $('#newModal').classList.add('show');
+  setTimeout(()=>$('#newId').focus(), 50);
+}
+function closeNewModal(){ $('#newModal').classList.remove('show'); }
+$('#btnNew').onclick = openNewModal;
+$('#newCancel').onclick = closeNewModal;
+$('#newModal').addEventListener('click', e=>{ if(e.target.id==='newModal') closeNewModal(); });
+$('#newOk').onclick = async ()=>{
+  const id = $('#newId').value.trim();
+  const err = $('#newErr');
+  err.textContent = '';
+  if(!id){ err.textContent = '请输入节点 ID'; return; }
+  if(!/^[a-zA-Z0-9_]+$/.test(id)){ err.textContent = 'ID 只能包含字母、数字、下划线'; return; }
+  if(DATA.nodes.some(n=>n.id===id)){ err.textContent = '该 ID 已存在'; return; }
+  if(['game_end','game_over'].includes(id)){ err.textContent = '不能使用保留 ID'; return; }
+  const payload = {
+    node_id: id,
+    speaker: $('#newSpeaker').value,
+    text: $('#newText').value,
+    next: $('#newNext').value.trim(),
+  };
+  const r = await fetch('/api/admin/bg/create', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  const j = await r.json();
+  if(j.status !== 'ok'){ err.textContent = j.msg || '创建失败'; return; }
+  closeNewModal();
+  toast('已创建节点');
+  await loadData();
+  selectNode(id);
+};
+
+// === 删除节点 ===
+async function deleteNode(id){
+  if(!confirm(`确定删除节点 "${id}" ？此操作不可恢复。`)) return;
+  const r = await fetch('/api/admin/bg/delete', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({node_id: id})
+  });
+  const j = await r.json();
+  if(j.status !== 'ok'){
+    let msg = j.msg || '删除失败';
+    if(j.referenced_by && j.referenced_by.length) msg += ' 被引用于: ' + j.referenced_by.join(', ');
+    alert(msg);
+    return;
+  }
+  toast('已删除');
+  cur = null;
+  $('#meta').innerHTML = '<span class="lbl">未选择节点</span>';
+  $('#editor').innerHTML = '<div style="color:var(--mute);text-align:center;padding:30px;">点击左栏节点开始编辑</div>';
+  await loadData();
+}
+
+// Ctrl/Cmd+S 快捷保存当前文本字段
+document.addEventListener('keydown', e=>{
+  if((e.ctrlKey||e.metaKey) && e.key === 's'){
+    e.preventDefault();
+    if(!cur) return;
+    const ae = document.activeElement;
+    if(ae && ae.id === 'inText') save('text', ae.value);
+    else if(ae && ae.id === 'inSpeaker') save('speaker', ae.value);
+    else save('text', $('#inText').value);
+  }
+});
+
+loadData();
+</script>
+</body>
+</html>

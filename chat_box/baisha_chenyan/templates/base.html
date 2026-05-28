@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{% block title %}白沙尘烟·考古剧情游戏{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", "SimHei", "PingFang SC", "Noto Serif SC", "KaiTi", serif;
+            background: linear-gradient(135deg, #d4c5a9 0%, #c4b896 50%, #b8a87a 100%);
+            min-height: 100vh;
+            color: #2c2418;
+        }
+        
+        /* 复古纸张纹理 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path d="M20 20 L180 20 M20 40 L180 40 M20 60 L180 60 M20 80 L180 80 M20 100 L180 100 M20 120 L180 120 M20 140 L180 140 M20 160 L180 160 M20 180 L180 180 M40 20 L40 180 M60 20 L60 180 M80 20 L80 180 M100 20 L100 180 M120 20 L120 180 M140 20 L140 180 M160 20 L160 180" stroke="%23654a2e" stroke-width="0.5" fill="none"/></svg>');
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 毛笔笔触标题 */
+        .game-title {
+            text-align: center;
+            font-size: 42px;
+            font-weight: normal;
+            color: #5c3d1a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            font-family: "STKaiti", "KaiTi", serif;
+        }
+        
+        /* 宣纸风格卡片 */
+        .paper-card {
+            background: rgba(250, 245, 235, 0.92);
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            overflow: hidden;
+            border: 1px solid #d4c5a9;
+        }
+        
+        nav {
+            background: rgba(60, 45, 30, 0.85);
+            padding: 12px 25px;
+            border-radius: 40px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+        
+        nav a {
+            color: #e8dcc8;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+            transition: all 0.3s;
+            font-family: "STKaiti", "KaiTi", serif;
+        }
+        
+        nav a:hover {
+            color: #d4a543;
+            text-shadow: 0 0 8px rgba(212, 165, 67, 0.5);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #8b6914, #6b4e14);
+            color: #f5e6d3;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-family: "STKaiti", "KaiTi", serif;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #a07a1a, #7a5a1a);
+            transform: scale(1.02);
+            box-shadow: 0 3px 12px rgba(107, 78, 20, 0.4);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes typewriter {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .cursor-blink {
+            animation: blink 1s infinite;
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: #5c3d1a;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* 卷轴装饰 */
+        .scroll-decoration {
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #c4a562, #8b6914, #c4a562, transparent);
+            margin: 10px 0;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #e8dcc8;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #8b6914;
+            border-radius: 4px;
+        }
+        
+        .archaeology-icon {
+            font-size: 24px;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <div class="game-title">
+            <span class="archaeology-icon">🏺</span> 白沙尘烟 <span class="archaeology-icon">📜</span>
+        </div>
+        <div class="scroll-decoration"></div>
+        <nav>
+            <a href="/">🏠 首页</a>
+            <a href="/game">🎭 进入白沙</a>
+        </nav>
+        {% block content %}{% endblock %}
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
