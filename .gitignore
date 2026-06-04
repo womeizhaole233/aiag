@@ -1,7 +1,37 @@
 .DS_Store
-**/.DS_Store
 Thumbs.db
+
+# Editor and local workspace files
+.idea/
+.vscode/
+.trae/
+.tmp/
+
+# Logs and local runtime output
+*.log
+dev-server.out.log
+dev-server.err.log
+
+# Verification screenshots and temporary visual QA output
+verification-*.png
+
+# Local reference folders kept outside GitHub
+M1/
+线索交付文档/
+
+# Old local front scene images kept outside GitHub
+assets/front-east-shoes.png
+assets/front-east.png
+assets/front-west-bottle.png
+assets/front-west-ewer.png
+assets/front-west-table.png
+assets/front-west.png
+
+# Archives generated for delivery; keep source folders/docs instead.
+*.zip
+
+# Accidental shell/editor leftovers
+PWEEOF
+*.tmp
+*.bak
 *.swp
-node_modules/
-__pycache__/
-*.pyc
