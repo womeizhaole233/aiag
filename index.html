@@ -3,25 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>未启之墓：墓门</title>
+    <title>白沙宋墓 M1</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="scene" aria-label="第一号墓墓门">
-      <img class="scene-image" src="assets/door.png" alt="第一号墓墓门" />
-      <svg id="hotspotLayer" class="hotspot-layer" viewBox="0 0 4693 3520" preserveAspectRatio="xMidYMid meet" aria-label="可点击线索区域"></svg>
+      <div class="scene-toolbar" aria-label="界面导航">
+        <div class="scene-toolbar-group">
+          <button id="conclusionToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="conclusionPanel">
+            结论
+          </button>
+          <button id="journalToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="journalPanel">
+            记录
+          </button>
+          <button id="workbenchToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="workbenchLayer">
+            工作台
+          </button>
+        </div>
+      </div>
 
-      <button id="journalToggle" class="journal-toggle" type="button" aria-expanded="false" aria-controls="journalPanel">
-        记录
-      </button>
+      <div class="scene-stage">
+        <div class="scene-underlay" aria-hidden="true"></div>
+        <img class="scene-image" src="assets/door.png" alt="第一号墓墓门" />
+        <svg id="hotspotLayer" class="hotspot-layer" viewBox="0 0 4693 3520" preserveAspectRatio="xMidYMid meet" aria-label="可点击线索区域"></svg>
+      </div>
 
       <aside id="journalPanel" class="journal-panel hidden" aria-label="信息收集栏">
         <header>
-          <p class="eyebrow">信息收集</p>
+          <p class="eyebrow">分析记录夹</p>
           <button id="journalClose" class="plain-button" type="button">关闭</button>
         </header>
         <div id="journalList" class="journal-list"></div>
       </aside>
+
+      <aside id="conclusionPanel" class="conclusion-panel hidden" aria-label="结论卡与线索墙">
+        <header>
+          <p class="eyebrow">结论卡与线索墙</p>
+          <button id="conclusionClose" class="plain-button" type="button">关闭</button>
+        </header>
+        <div class="conclusion-layout">
+          <section class="conclusion-column" aria-label="结论卡列表">
+            <p class="eyebrow">结论卡</p>
+            <div id="conclusionList" class="conclusion-list"></div>
+          </section>
+          <section class="conclusion-column" aria-label="线索墙详情">
+            <p class="eyebrow">线索墙</p>
+            <div id="conclusionDetail" class="conclusion-detail"></div>
+          </section>
+        </div>
+      </aside>
+
     </main>
 
     <div id="messageLayer" class="message-layer hidden" role="dialog" aria-modal="true" aria-labelledby="messageTitle">
@@ -32,6 +63,38 @@
         <button id="messageClose" class="primary-button" type="button">收录</button>
       </article>
     </div>
+
+    <div id="dialogueLayer" class="dialogue-layer hidden" role="dialog" aria-modal="true" aria-labelledby="dialogueTitle">
+      <article class="dialogue-box">
+        <p id="dialogueKicker" class="eyebrow">章节提示</p>
+        <p id="dialogueSpeaker" class="dialogue-speaker"></p>
+        <h1 id="dialogueTitle"></h1>
+        <p id="dialogueBody"></p>
+        <button id="dialogueClose" class="primary-button" type="button">继续</button>
+      </article>
+    </div>
+
+    <div id="workbenchLayer" class="workbench-layer hidden" role="dialog" aria-label="推理工作台">
+      <article class="workbench-box">
+        <header class="workbench-header">
+          <p class="eyebrow">推理工作台</p>
+          <nav id="workbenchTabs" class="workbench-tabs" role="tablist" aria-label="推理工作台标签">
+            <button class="workbench-tab is-active" type="button" role="tab" aria-selected="true" data-workbench-tab="clues">
+              线索卡
+            </button>
+            <button class="workbench-tab" type="button" role="tab" aria-selected="false" data-workbench-tab="graph">
+              关系图
+            </button>
+          </nav>
+          <button id="workbenchClose" class="plain-button" type="button">关闭</button>
+        </header>
+        <div id="workbenchContent" class="workbench-content"></div>
+      </article>
+    </div>
+      <div class="sr-only" aria-live="polite">
+        <span id="sceneHeading">当前场景</span>
+        <span id="sceneSubheading">当前位置</span>
+      </div>
 
     <script src="data/scenes.js?v=source-text-20260520-clean"></script>
     <script src="game.js?v=source-text-20260520-clean"></script>
