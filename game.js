@@ -2041,7 +2041,7 @@ function renderConclusions() {
 let graphLinkFrom = null;
 
 function getWorkbenchChapterSceneIds() {
-  const order = ["tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber", "final_report"];
+  const order = ["environment", "tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber", "final_report"];
   return order.filter((sceneId) => SCENES[sceneId]);
 }
 

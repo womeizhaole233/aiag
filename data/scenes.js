@@ -1,6 +1,6 @@
 (function () {
 const SAVE_KEY = "m1-analysis-rebuild-state-v1";
-const START_SCENE_ID = "tomb_gate";
+const START_SCENE_ID = "environment";
 const POSITION_MAP = {
   image: {
     src: "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
@@ -18,6 +18,11 @@ const POSITION_MAP = {
     mapAction: "open"
   },
   markers: {
+    environment: {
+      label: "墓外",
+      x: 0.29,
+      y: 0.86
+    },
     tomb_gate: {
       label: "墓门",
       x: 0.31,
@@ -45,13 +50,23 @@ const POSITION_MAP = {
     }
   },
   viewLabels: {
+    environment: "墓外 / 白沙宋墓位置",
+    environment_map: "墓外 / 白沙宋墓地形图",
+    environment_sequence: "墓外 / M1空间序列",
+    environment_outer_gate: "墓外 / 第一号墓外围",
     tomb_gate: "墓门 / 面向墓门",
+    tomb_gate_main: "墓门 / 面向墓门",
+    tomb_gate_outer: "墓门 / 外围位置",
+    tomb_gate_lintel_back: "墓门 / 门额背面彩画",
+    tomb_gate_brick_structure: "墓门 / 封门砖组织",
     corridor: "甬道 / 面向前室方向",
+    corridor_roof_pattern_closeup: "甬道 / 顶部叠胜彩画近景",
     corridor_overview: "甬道 / 总交互视角",
     corridor_roof_view: "甬道 / 抬头看顶部",
     corridor_east_wall: "甬道 / 面向东壁",
     corridor_west_wall: "甬道 / 面向西壁",
     passage_overview: "过道 / 轴线总览",
+    passage_rear_entry_closeup: "过道 / 后室入口近景",
     passage_main: "过道 / 面向东壁",
     passage_inscription_closeup: "过道 / 纪年题记近景",
     passage_lattice_closeup: "过道 / 破子棂窗近景",
@@ -69,10 +84,12 @@ const POSITION_MAP = {
     front_south_west_niche_closeup: "前室 / 南壁西部壁函近景",
     front_south_column_closeup: "前室 / 南壁倚柱彩画近景",
     front_west_bottle_closeup: "前室 / 西壁高瓶近景",
+    front_west_entry_closeup: "前室 / 西壁入口关系",
     front_west_table_closeup: "前室 / 西壁砖砌桌近景",
     front_east_shoes_closeup: "前室 / 东壁尖鞋近景",
     front_west_ewer_closeup: "前室 / 西壁注子近景",
     rear_overview: "后室 / 入口总览",
+    rear_plan_section: "后室 / 平剖面结构图",
     rear_north: "后室 / 面向北壁",
     rear_woman_closeup: "后室 / 妇人启门近景",
     rear_land_deed_closeup: "后室 / 砖床地券近景",
@@ -98,96 +115,458 @@ const POSITION_MAP = {
 };
 
 const SCENES = {
+  environment: {
+    id: "environment",
+    title: "墓外环境",
+    startViewId: "environment_map",
+    views: {
+      environment_map: {
+        id: "environment_map",
+        title: "白沙宋墓地形图",
+        image: {
+          src: "assets/M1/01环境地图/白沙宋墓地形图.png",
+          alt: "白沙宋墓地形图",
+          width: 2304,
+          height: 1728
+        },
+        hotspots: [
+          {
+            id: "baisha_location",
+            label: "白沙位置",
+            shape: "rect",
+            rect: [0.12, 0.18, 0.54, 0.62],
+            title: "白沙宋墓位置",
+            body: "地形图先把墓葬放回白沙区域。\n墓址不是孤立的室内谜题，而是嵌在地貌、村落和墓群关系中的考古对象。",
+            record: "白沙宋墓的位置需要先从区域地形中确认，墓葬空间与外部地貌、村落关系有关。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓外环境线索精修版_v1.0.md",
+            sourceClueId: "ENV-E-02"
+          },
+          {
+            id: "m1_sequence_map",
+            label: "M1空间序列",
+            navLabel: "查看平剖面",
+            shape: "rect",
+            rect: [0.58, 0.18, 0.95, 0.72],
+            title: "M1空间序列",
+            body: "进入墓门之前，先把墓外、墓门、甬道、前室、过道、后室的顺序建立起来。",
+            record: "M1的观察顺序应从墓外环境开始，沿墓门、甬道、前室、过道进入后室。",
+            sourceFile: "docs/handoff/线索交付文档/05_剧情体验交付/M1场景线索体验节奏表_v1.0.md",
+            sourceClueId: "ENV-P0-01",
+            viewTransition: {
+              targetViewId: "environment_sequence",
+              title: "查看M1空间序列",
+              body: "平剖面图可以先建立后续章节的位置关系。",
+              closeLabel: "查看"
+            }
+          },
+          {
+            id: "approach_tomb_gate",
+            label: "前往墓门",
+            navLabel: "前往墓门",
+            shape: "rect",
+            rect: [0.34, 0.72, 0.72, 0.98],
+            title: "前往第一号墓",
+            body: "确认白沙位置和M1空间顺序后，可以进入第一号墓墓门区域。",
+            record: "墓外环境观察完成后，调查路径转向第一号墓墓门。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            transition: {
+              targetSceneId: "tomb_gate",
+              targetViewId: "tomb_gate_main",
+              unlocked: true,
+              title: "前往墓门",
+              body: "你离开地形图视角，转到第一号墓墓门前。",
+              closeLabel: "前往"
+            }
+          }
+        ]
+      },
+      environment_sequence: {
+        id: "environment_sequence",
+        title: "第一号墓平剖面",
+        image: {
+          src: "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
+          alt: "第一号墓平剖面图",
+          width: 2560,
+          height: 1440
+        },
+        hotspots: [
+          {
+            id: "six_part_sequence",
+            label: "六段空间",
+            shape: "rect",
+            rect: [0.18, 0.2, 0.82, 0.76],
+            title: "六段空间顺序",
+            body: "平剖面图把第一号墓的空间压缩成一条可读的轴线。\n后续所有墙面、题记、器物和葬具线索，都要回到这个轴线里定位。",
+            record: "第一号墓可按墓外、墓门、甬道、前室、过道、后室的顺序建立空间轴线。",
+            sourceFile: "docs/handoff/线索交付文档/05_剧情体验交付/M1场景线索体验节奏表_v1.0.md",
+            sourceClueId: "ENV-P0-01"
+          },
+          {
+            id: "view_outer_gate",
+            label: "墓门外围",
+            navLabel: "查看外围",
+            shape: "rect",
+            rect: [0.04, 0.7, 0.28, 0.98],
+            title: "墓门外围",
+            body: "从平剖面返回到墓门外部，可以观察进入墓门前的空间关系。",
+            record: "墓门外围图可补足从墓外环境进入墓门前的空间关系。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+            sourceClueId: "GATE-E-01",
+            viewTransition: {
+              targetViewId: "environment_outer_gate",
+              title: "查看墓门外围",
+              body: "视角转到第一号墓外围。",
+              closeLabel: "查看"
+            }
+          },
+          {
+            id: "return_environment_map",
+            label: "返回地形图",
+            navLabel: "返回地形图",
+            shape: "rect",
+            rect: [0, 0.84, 0.24, 1],
+            title: "返回地形图",
+            body: "回到白沙宋墓地形图，重新确认墓址外部关系。",
+            record: "返回白沙宋墓地形图。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "environment_map",
+              title: "返回地形图",
+              body: "视角回到白沙宋墓地形图。",
+              closeLabel: "返回"
+            }
+          }
+        ]
+      },
+      environment_outer_gate: {
+        id: "environment_outer_gate",
+        title: "第一号墓外围",
+        image: {
+          src: "assets/M1/02墓道与墓门/第一号墓外围.png",
+          alt: "第一号墓外围",
+          width: 4693,
+          height: 3520
+        },
+        hotspots: [
+          {
+            id: "outer_gate_relation",
+            label: "墓门外围关系",
+            shape: "rect",
+            rect: [0.16, 0.12, 0.84, 0.78],
+            title: "第一号墓外围",
+            body: "外围照片让墓门不再只是单独的正面图。\n玩家可以先看到入口与周围空间的关系，再进入墓门细节。",
+            record: "第一号墓外围图补充了墓门与外部空间的关系。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+            sourceClueId: "GATE-E-01"
+          },
+          {
+            id: "enter_tomb_gate_from_outer",
+            label: "进入墓门",
+            navLabel: "进入墓门",
+            shape: "rect",
+            rect: [0.34, 0.68, 0.68, 0.98],
+            title: "进入墓门",
+            body: "从外围进入第一号墓墓门主视角。",
+            record: "从外围进入第一号墓墓门。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            transition: {
+              targetSceneId: "tomb_gate",
+              targetViewId: "tomb_gate_main",
+              unlocked: true,
+              title: "进入墓门",
+              body: "墓门正面进入视野，门额、封门砖和门洞都可以细看。",
+              closeLabel: "进入"
+            }
+          },
+          {
+            id: "return_sequence_from_outer",
+            label: "返回平剖面",
+            navLabel: "返回平剖面",
+            shape: "rect",
+            rect: [0, 0.82, 0.24, 1],
+            title: "返回平剖面",
+            body: "回到空间序列图，重新确认墓门在整体轴线中的位置。",
+            record: "返回M1空间序列图。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "environment_sequence",
+              title: "返回平剖面",
+              body: "视角回到第一号墓平剖面。",
+              closeLabel: "返回"
+            }
+          }
+        ]
+      }
+    }
+  },
   tomb_gate: {
     id: "tomb_gate",
     title: "第一号墓墓门",
-    image: {
-      src: "assets/M1/02墓道与墓门/第一号墓墓门(彭华士摄).png",
-      alt: "第一号墓墓门",
-      width: 4693,
-      height: 3520
-    },
-    hotspots: [
-      {
-        id: "lintel",
-        label: "墓门门额",
-        shape: "rect",
-        rect: [0.37, 0.14, 0.63, 0.31],
-        title: "墓门门额",
-        body: "墓门门额正面题有墓主信息。\n门额背面可见一幅完整的卷草纹彩画。\n正面为题字，背面为彩画，质地与图像均不相同。",
-        record: "墓门门额正面题有墓主信息，背面可见完整卷草纹彩画。",
-        sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
-        sourceClueId: "L07"
+    startViewId: "tomb_gate_main",
+    views: {
+      tomb_gate_main: {
+        id: "tomb_gate_main",
+        title: "第一号墓墓门",
+        image: {
+          src: "assets/M1/02墓道与墓门/第一号墓墓门(彭华士摄).png",
+          alt: "第一号墓墓门",
+          width: 4693,
+          height: 3520
+        },
+        hotspots: [
+          {
+            id: "return_environment",
+            label: "返回墓外",
+            navLabel: "返回墓外",
+            shape: "rect",
+            rect: [0.02, 0.78, 0.24, 0.98],
+            title: "返回墓外环境",
+            body: "返回墓外环境，可以重新查看白沙位置和M1空间序列。",
+            record: "返回墓外环境复查。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            transition: {
+              targetSceneId: "environment",
+              targetViewId: "environment_outer_gate",
+              unlocked: true,
+              title: "返回墓外",
+              body: "视角退回第一号墓外围。",
+              closeLabel: "返回"
+            }
+          },
+          {
+            id: "lintel",
+            label: "墓门门额",
+            shape: "rect",
+            rect: [0.37, 0.14, 0.63, 0.31],
+            title: "墓门门额",
+            body: "墓门门额正面题有墓主信息。\n门额背面可见一幅完整的卷草纹彩画。\n正面为题字，背面为彩画，质地与图像均不相同。",
+            record: "墓门门额正面题有墓主信息，背面可见完整卷草纹彩画。",
+            sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
+            sourceClueId: "L07",
+            viewTransition: {
+              targetViewId: "tomb_gate_lintel_back",
+              title: "查看门额背面彩画",
+              body: "门额背面彩画适合用单独图像查看。",
+              closeLabel: "查看"
+            }
+          },
+          {
+            id: "lintel_back",
+            label: "门额上沿阴影",
+            shape: "rect",
+            rect: [0.39, 0.07, 0.61, 0.17],
+            title: "门额背面彩画",
+            body: "墓门门额背面可见完整卷草纹彩画。\n卷草以墨线勾勒，青绿填色，纹样从中心向两侧延伸，总长约一尺八寸。\n背面朱红底色与正面白灰层质地不同，卷草纹下边缘有一道水平裁切线。",
+            record: "门额背面有完整卷草纹彩画，总长约一尺八寸；背面朱红底色与正面白灰层质地不同，下缘见水平裁切线。",
+            sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
+            sourceClueId: "L07",
+            viewTransition: {
+              targetViewId: "tomb_gate_lintel_back",
+              title: "查看门额背面彩画",
+              body: "切换到门额背面彩画近景。",
+              closeLabel: "查看"
+            }
+          },
+          {
+            id: "brick_seam",
+            label: "封门砖缝",
+            shape: "rect",
+            rect: [0.28, 0.39, 0.43, 0.76],
+            title: "封门砖缝",
+            body: "墓门外层封门砖的灰缝中嵌着几粒石英砂，在手电下闪着细小的光点。\n石英砂粒径约半分，与本地夯土中常见的石英砂一致。\n石英砂与石灰浆的胶结状态与周围灰缝一致。",
+            record: "封门砖灰缝中可见石英砂光点，粒径约半分；其与石灰浆胶结状态和周围灰缝一致。",
+            sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
+            sourceClueId: "H01",
+            viewTransition: {
+              targetViewId: "tomb_gate_brick_structure",
+              title: "查看封门砖组织",
+              body: "封门砖组织图可以帮助复核砖缝和封堵方式。",
+              closeLabel: "查看"
+            }
+          },
+          {
+            id: "door_opening",
+            label: "门洞深处",
+            navLabel: "进入甬道",
+            shape: "rect",
+            rect: [0.44, 0.36, 0.56, 0.8],
+            title: "门洞深处",
+            body: "墓门后部与甬道东壁相接。\n门洞内侧光线较暗，通道向墓室深处收窄。\n门额、门框与甬道侧壁在此处衔接。",
+            record: "墓门后部与甬道相接，门额、门框与甬道侧壁在此处衔接。",
+            sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
+            sourceClueId: "S02-TRANSITION",
+            transition: {
+              targetSceneId: "corridor",
+              targetViewId: "corridor_overview",
+              title: "进入甬道",
+              body: "墓门的几处信息已经记录。\n门洞之后，甬道顶部压低。\n光线沿砖缝向内收窄，前方可以继续观察。",
+              closeLabel: "进入",
+              lockedBody: "门洞深处光线较暗。\n入口信息尚未整理完整。",
+              missingRecords: [
+                { id: "tomb_gate:lintel_back", label: "门额背面彩画" },
+                { sceneId: "tomb_gate", minCount: 3, label: "墓门区域至少三条观察记录" }
+              ]
+            }
+          },
+          {
+            id: "left_wall",
+            label: "左侧墙面",
+            shape: "rect",
+            rect: [0.05, 0.28, 0.25, 0.72],
+            title: "墓道墙面",
+            body: "手电光扫过墓道壁面时，某些砖缝渗出的水珠在手电玻璃罩上凝成一层细雾。\n越靠近墓门，雾越浓。\n水汽无固定来源，不同砖缝渗出量不一致。",
+            record: "墓道砖缝渗出的水珠可在手电玻璃罩上凝成细雾；越靠近墓门，雾越浓。",
+            sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
+            sourceClueId: "E01"
+          },
+          {
+            id: "threshold",
+            label: "门前地面",
+            shape: "rect",
+            rect: [0.32, 0.79, 0.68, 0.96],
+            title: "门前地面",
+            body: "门前地面位于墓道与墓门之间。\n地面色泽较暗，尘土沿门洞前缘沉积。\n封门砖下缘与地面交界处仍可辨认。",
+            record: "门前地面位于墓道与墓门之间，封门砖下缘与地面交界处可辨认。",
+            sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
+            sourceClueId: "ENV-S02",
+            viewTransition: {
+              targetViewId: "tomb_gate_outer",
+              title: "查看墓门外围",
+              body: "门前地面和外围环境需要放在一起理解。",
+              closeLabel: "查看"
+            }
+          }
+        ]
       },
-      {
-        id: "lintel_back",
-        label: "门额上沿阴影",
-        shape: "rect",
-        rect: [0.39, 0.07, 0.61, 0.17],
-        title: "门额背面彩画",
-        body: "墓门门额背面可见完整卷草纹彩画。\n卷草以墨线勾勒，青绿填色，纹样从中心向两侧延伸，总长约一尺八寸。\n背面朱红底色与正面白灰层质地不同，卷草纹下边缘有一道水平裁切线。",
-        record: "门额背面有完整卷草纹彩画，总长约一尺八寸；背面朱红底色与正面白灰层质地不同，下缘见水平裁切线。",
-        sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
-        sourceClueId: "L07"
+      tomb_gate_outer: {
+        id: "tomb_gate_outer",
+        title: "第一号墓外围",
+        image: {
+          src: "assets/M1/02墓道与墓门/第一号墓外围.png",
+          alt: "第一号墓外围",
+          width: 4693,
+          height: 3520
+        },
+        hotspots: [
+          {
+            id: "gate_outer_context",
+            label: "外围与门前关系",
+            shape: "rect",
+            rect: [0.12, 0.12, 0.88, 0.78],
+            title: "外围与门前关系",
+            body: "外围图补足墓门正面照片看不到的进入关系。\n它更适合作为墓外环境与墓门主视图之间的过渡。",
+            record: "第一号墓外围图显示墓外环境与墓门入口之间的过渡关系。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+            sourceClueId: "GATE-E-01"
+          },
+          {
+            id: "return_tomb_gate_from_outer",
+            label: "返回墓门",
+            navLabel: "返回墓门",
+            shape: "rect",
+            rect: [0, 0.82, 1, 1],
+            title: "返回墓门",
+            body: "返回墓门主视图继续观察门额、封门砖和门洞。",
+            record: "返回墓门主视图。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "tomb_gate_main",
+              title: "返回墓门",
+              body: "视角回到墓门正面。",
+              closeLabel: "返回"
+            }
+          }
+        ]
       },
-      {
-        id: "brick_seam",
-        label: "封门砖缝",
-        shape: "rect",
-        rect: [0.28, 0.39, 0.43, 0.76],
-        title: "封门砖缝",
-        body: "墓门外层封门砖的灰缝中嵌着几粒石英砂，在手电下闪着细小的光点。\n石英砂粒径约半分，与本地夯土中常见的石英砂一致。\n石英砂与石灰浆的胶结状态与周围灰缝一致。",
-        record: "封门砖灰缝中可见石英砂光点，粒径约半分；其与石灰浆胶结状态和周围灰缝一致。",
-        sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
-        sourceClueId: "H01"
+      tomb_gate_lintel_back: {
+        id: "tomb_gate_lintel_back",
+        title: "墓门门额背面彩画",
+        image: {
+          src: "assets/M1/02墓道与墓门/插图三九 第一号墓墓门门额背面彩画.png",
+          alt: "第一号墓墓门门额背面彩画",
+          width: 6197,
+          height: 2656
+        },
+        hotspots: [
+          {
+            id: "lintel_back_painting_detail",
+            label: "卷草纹彩画",
+            shape: "rect",
+            rect: [0.08, 0.24, 0.92, 0.74],
+            title: "门额背面卷草纹",
+            body: "背面彩画把墓门线索从正面题字扩展到背面装饰。\n这里可以作为后续美工重绘或局部放大 UI 的重点。",
+            record: "门额背面卷草纹彩画可作为墓门结构与装饰关系的重点图像线索。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+            sourceClueId: "GATE-P0-02"
+          },
+          {
+            id: "return_tomb_gate_from_lintel_back",
+            label: "返回墓门",
+            navLabel: "返回墓门",
+            shape: "rect",
+            rect: [0, 0.82, 1, 1],
+            title: "返回墓门",
+            body: "返回墓门主视图。",
+            record: "返回墓门主视图。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "tomb_gate_main",
+              title: "返回墓门",
+              body: "视角回到墓门正面。",
+              closeLabel: "返回"
+            }
+          }
+        ]
       },
-      {
-        id: "door_opening",
-        label: "门洞深处",
-        navLabel: "进入甬道",
-        shape: "rect",
-        rect: [0.44, 0.36, 0.56, 0.8],
-        title: "门洞深处",
-        body: "墓门后部与甬道东壁相接。\n门洞内侧光线较暗，通道向墓室深处收窄。\n门额、门框与甬道侧壁在此处衔接。",
-        record: "墓门后部与甬道相接，门额、门框与甬道侧壁在此处衔接。",
-        sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
-        sourceClueId: "S02-TRANSITION",
-        transition: {
-          targetSceneId: "corridor",
-          targetViewId: "corridor_overview",
-          title: "进入甬道",
-          body: "墓门的几处信息已经记录。\n门洞之后，甬道顶部压低。\n光线沿砖缝向内收窄，前方可以继续观察。",
-          closeLabel: "进入",
-          lockedBody: "门洞深处光线较暗。\n入口信息尚未整理完整。",
-          missingRecords: [
-            { id: "tomb_gate:lintel_back", label: "门额背面彩画" },
-            { sceneId: "tomb_gate", minCount: 3, label: "墓门区域至少三条观察记录" }
-          ]
-        }
-      },
-      {
-        id: "left_wall",
-        label: "左侧墙面",
-        shape: "rect",
-        rect: [0.05, 0.28, 0.25, 0.72],
-        title: "墓道墙面",
-        body: "手电光扫过墓道壁面时，某些砖缝渗出的水珠在手电玻璃罩上凝成一层细雾。\n越靠近墓门，雾越浓。\n水汽无固定来源，不同砖缝渗出量不一致。",
-        record: "墓道砖缝渗出的水珠可在手电玻璃罩上凝成细雾；越靠近墓门，雾越浓。",
-        sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
-        sourceClueId: "E01"
-      },
-      {
-        id: "threshold",
-        label: "门前地面",
-        shape: "rect",
-        rect: [0.32, 0.79, 0.68, 0.96],
-        title: "门前地面",
-        body: "门前地面位于墓道与墓门之间。\n地面色泽较暗，尘土沿门洞前缘沉积。\n封门砖下缘与地面交界处仍可辨认。",
-        record: "门前地面位于墓道与墓门之间，封门砖下缘与地面交界处可辨认。",
-        sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
-        sourceClueId: "ENV-S02"
+      tomb_gate_brick_structure: {
+        id: "tomb_gate_brick_structure",
+        title: "墓门外层封门砖组织",
+        image: {
+          src: "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
+          alt: "第一号墓墓门外层封门砖的组织",
+          width: 4096,
+          height: 4096
+        },
+        hotspots: [
+          {
+            id: "brick_structure_detail",
+            label: "封门砖组织",
+            shape: "rect",
+            rect: [0.12, 0.12, 0.88, 0.82],
+            title: "外层封门砖组织",
+            body: "这张图更适合承载封门砖的组织方式，而不是让玩家只在墓门主图上猜砖缝。",
+            record: "外层封门砖组织图可用于复核封门砖排列、灰缝和封堵方式。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+            sourceClueId: "GATE-P0-03"
+          },
+          {
+            id: "return_tomb_gate_from_brick_structure",
+            label: "返回墓门",
+            navLabel: "返回墓门",
+            shape: "rect",
+            rect: [0, 0.82, 1, 1],
+            title: "返回墓门",
+            body: "返回墓门主视图。",
+            record: "返回墓门主视图。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "tomb_gate_main",
+              title: "返回墓门",
+              body: "视角回到墓门正面。",
+              closeLabel: "返回"
+            }
+          }
+        ]
       }
-    ]
+    }
   },
   corridor: {
     id: "corridor",
@@ -365,7 +744,13 @@ const SCENES = {
         body: "偏移处砖缝有一道刀刮痕，长约三寸。\n刀刮痕将原有菱形边界刮除后重绘。\n刮痕下方白灰层颜色较周围略黄，叠胜纹南端为六瓣花芯，北端变为四瓣。",
         record: "叠胜彩画偏移处有约三寸刀刮痕，原有菱形边界被刮除后重绘；刮痕下方白灰层略黄。",
         sourceFile: "M1/03甬道/03甬道-线索映射-v1.0.md",
-        sourceClueId: "L06"
+        sourceClueId: "L06",
+        viewTransition: {
+          targetViewId: "corridor_roof_pattern_closeup",
+          title: "查看叠胜彩画近景",
+          body: "叠胜彩画可以用独立图片复看纹样和偏移关系。",
+          closeLabel: "查看"
+        }
       },
       {
         id: "roof_arch_line",
@@ -456,6 +841,47 @@ const SCENES = {
           ]
         }
       }
+        ]
+      },
+      corridor_roof_pattern_closeup: {
+        id: "corridor_roof_pattern_closeup",
+        title: "甬道顶叠胜彩画近景",
+        image: {
+          src: "assets/M1/03甬道/第一号墓甬道顶叠胜彩画.png",
+          alt: "第一号墓甬道顶叠胜彩画",
+          width: 1783,
+          height: 1856
+        },
+        hotspots: [
+          {
+            id: "roof_pattern_detail",
+            label: "叠胜纹样细部",
+            shape: "rect",
+            rect: [0.16, 0.14, 0.84, 0.78],
+            title: "叠胜纹样细部",
+            body: "这张近景图把甬道顶部叠胜彩画从整体顶面中拆出来。\n后续美工可以在这里强化纹样、偏移点和局部复查 UI。",
+            record: "甬道顶叠胜彩画近景可用于复查纹样、偏移点和顶部彩画层次。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
+            sourceClueId: "COR-P0-01"
+          },
+          {
+            id: "return_corridor_roof_from_pattern",
+            label: "返回顶部",
+            navLabel: "返回顶部",
+            shape: "rect",
+            rect: [0, 0.84, 1, 1],
+            title: "返回甬道顶部",
+            body: "返回甬道顶部主视图。",
+            record: "返回甬道顶部主视图。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "corridor_roof_view",
+              title: "返回顶部",
+              body: "视角回到甬道顶部整体。",
+              closeLabel: "返回"
+            }
+          }
         ]
       },
       corridor_east_wall: {
@@ -672,12 +1098,53 @@ const SCENES = {
             record: "后室入口位置已经确认。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "passage_rear_entry_closeup",
+              title: "查看后室入口",
+              body: "过道尽头的后室入口被单独打开。",
+              closeLabel: "查看"
+            }
+          }
+        ]
+      },
+      passage_rear_entry_closeup: {
+        id: "passage_rear_entry_closeup",
+        title: "过道北壁下部后室入口",
+        image: {
+          src: "assets/M1/09_过道/第一号墓过道北壁下部一一后室入口.png",
+          alt: "第一号墓过道北壁下部一一后室入口",
+          width: 1700,
+          height: 2466
+        },
+        hotspots: [
+          {
+            id: "rear_entry_relation",
+            label: "后室入口方向",
+            shape: "rect",
+            rect: [0.18, 0.14, 0.82, 0.78],
+            title: "后室入口方向",
+            body: "后室入口图把过道的收束关系落到真实图像上。\n这里适合承接从前室、过道进入后室的章节转换。",
+            record: "过道北壁下部后室入口图确认了从过道进入后室的方向与空间收束。",
+            sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+            sourceClueId: "HS-E-01"
+          },
+          {
+            id: "enter_rear_from_entry",
+            label: "进入后室",
+            navLabel: "进入后室",
+            shape: "rect",
+            rect: [0.26, 0.52, 0.74, 0.98],
+            title: "进入后室",
+            body: "题记在壁画下部留下深墨。\n破子棂窗向两侧展开，顶部宝盖向中心压低。\n过道尽头的入口已经可以进入。",
+            record: "从过道北壁下部后室入口进入后室。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
             transition: {
               targetSceneId: "rear_chamber",
               targetViewId: "rear_overview",
               completesSceneId: "passage",
-              title: "后室入口",
-              body: "题记在壁画下部留下深墨。\n破子棂窗向两侧展开，顶部宝盖向中心压低。\n过道尽头的入口已经可以进入。",
+              title: "进入后室",
+              body: "过道入口之后，后室入口总览展开。\n这里开始进入M1空间序列的收束段。",
               closeLabel: "进入",
               lockedBody: "过道的信息还没有整理完整。",
               missingRecords: [
@@ -685,6 +1152,24 @@ const SCENES = {
                 { id: "passage:lattice_window", label: "破子棂窗" },
                 { id: "passage:ceiling_canopy", label: "顶部宝盖" }
               ]
+            }
+          },
+          {
+            id: "return_passage_from_rear_entry",
+            label: "返回过道",
+            navLabel: "返回过道",
+            shape: "rect",
+            rect: [0, 0.84, 1, 1],
+            title: "返回过道",
+            body: "返回过道轴线总览。",
+            record: "返回过道轴线总览。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "passage_overview",
+              title: "返回过道",
+              body: "视角回到过道轴线总览。",
+              closeLabel: "返回"
             }
           }
         ]
@@ -1047,6 +1532,24 @@ const SCENES = {
             }
           },
           {
+            id: "rear_overview_plan_section",
+            label: "后室平剖面",
+            navLabel: "查看平剖面",
+            shape: "rect",
+            rect: [0.34, 0.10, 0.66, 0.30],
+            title: "后室平剖面",
+            body: "后室平剖面图可以先把北壁、南壁、侧壁、顶部和葬具遗存放回同一个空间框架。",
+            record: "后室平剖面图用于对照北壁、南壁、侧壁、顶部和葬具遗存的位置关系。",
+            sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+            sourceClueId: "HS-E-02",
+            viewTransition: {
+              targetViewId: "rear_plan_section",
+              title: "查看后室平剖面",
+              body: "后室平剖面结构图被单独打开。",
+              closeLabel: "查看"
+            }
+          },
+          {
             id: "rear_overview_turn_south",
             label: "转向南壁",
             navLabel: "转向南壁",
@@ -1178,6 +1681,47 @@ const SCENES = {
               missingRecords: [
                 { sceneId: "rear_chamber", completed: true, label: "后室：完成汇总后室" }
               ]
+            }
+          }
+        ]
+      },
+      rear_plan_section: {
+        id: "rear_plan_section",
+        title: "第一号墓后室平剖面",
+        image: {
+          src: "assets/M1/00_墓葬全景与结构图/第一号墓后室平、剖面.png",
+          alt: "第一号墓后室平、剖面",
+          width: 2304,
+          height: 1728
+        },
+        hotspots: [
+          {
+            id: "rear_plan_space_relation",
+            label: "后室空间关系",
+            shape: "rect",
+            rect: [0.12, 0.14, 0.88, 0.78],
+            title: "后室空间关系",
+            body: "平剖面把后室从单面壁画扩展为多壁面空间。\n北壁假门、南壁入口背面、侧壁器物与顶部铺作都可以在这里重新定位。",
+            record: "后室平剖面图显示北壁、南壁、侧壁、顶部与葬具遗存的空间关系。",
+            sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+            sourceClueId: "HS-E-02"
+          },
+          {
+            id: "return_rear_overview_from_plan",
+            label: "返回后室总览",
+            navLabel: "返回总览",
+            shape: "rect",
+            rect: [0, 0.84, 1, 1],
+            title: "返回后室入口总览",
+            body: "返回后室入口总览。",
+            record: "返回后室入口总览。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "rear_overview",
+              title: "返回后室总览",
+              body: "视角回到后室入口总览。",
+              closeLabel: "返回"
             }
           }
         ]
@@ -2513,6 +3057,24 @@ const SCENES = {
             }
           },
           {
+            id: "front_west_entry_relation",
+            label: "前室入口关系",
+            navLabel: "查看入口",
+            shape: "rect",
+            rect: [0.18, 0.58, 0.40, 0.92],
+            title: "前室入口关系",
+            body: "西壁中间下部的入口图可以补足前室内部与通道之间的关系。\n它适合作为前室空间定位的辅助图，而不是单独解释为器物线索。",
+            record: "前室西壁中间下部入口图补充了前室内部与通道之间的空间关系。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+            sourceClueId: "FRONT-E-01",
+            viewTransition: {
+              targetViewId: "front_west_entry_closeup",
+              title: "查看前室入口关系",
+              body: "前室入口关系图被单独打开。",
+              closeLabel: "查看"
+            }
+          },
+          {
             id: "turn_south_from_west",
             label: "转身观察南壁",
             navLabel: "转向南壁",
@@ -2582,6 +3144,47 @@ const SCENES = {
               title: "转向东壁",
               body: "前室另一侧的人物图像进入视线。",
               closeLabel: "转身"
+            }
+          }
+        ]
+      },
+      front_west_entry_closeup: {
+        id: "front_west_entry_closeup",
+        title: "前室西壁入口关系",
+        image: {
+          src: "assets/M1/05_前室_西壁/第一号墓西壁中间下部一一前室入口.png",
+          alt: "第一号墓西壁中间下部一一前室入口",
+          width: 1622,
+          height: 2092
+        },
+        hotspots: [
+          {
+            id: "front_entry_relation_detail",
+            label: "入口与西壁关系",
+            shape: "rect",
+            rect: [0.18, 0.12, 0.82, 0.78],
+            title: "入口与西壁关系",
+            body: "这张图把前室入口放回西壁下部，能帮助玩家确认前室不是孤立房间，而是连接甬道、过道的中段空间。",
+            record: "前室入口关系图显示前室与甬道、过道之间的中段空间关系。",
+            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+            sourceClueId: "FRONT-E-01"
+          },
+          {
+            id: "return_front_west_from_entry",
+            label: "返回西壁",
+            navLabel: "返回西壁",
+            shape: "rect",
+            rect: [0, 0.84, 1, 1],
+            title: "返回前室西壁",
+            body: "返回前室西壁主视图。",
+            record: "返回前室西壁主视图。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "front_west",
+              title: "返回西壁",
+              body: "视角回到前室西壁。",
+              closeLabel: "返回"
             }
           }
         ]
