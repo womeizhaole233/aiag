@@ -4208,6 +4208,876 @@ const SCENES = {
   }
 };
 
+const addSceneView = (sceneId, viewId, view) => {
+  const scene = SCENES[sceneId];
+  if (!scene?.views) return;
+  scene.views[viewId] = view;
+};
+
+const addSceneHotspot = (sceneId, viewId, hotspot) => {
+  const view = SCENES[sceneId]?.views?.[viewId];
+  if (!view) return;
+  view.hotspots = [...(view.hotspots || []), hotspot];
+};
+
+Object.assign(POSITION_MAP.viewLabels, {
+  environment_baisha_context: "墓外 / 白沙附近图",
+  tomb_gate_structure_diagram: "墓门 / 结构复原图",
+  tomb_gate_back_corridor: "墓门 / 后部与甬道关系",
+  corridor_wine_bottle_closeup: "甬道 / 西壁酒瓶近景",
+  front_east_lotus_crown_closeup: "前室 / 女乐莲花冠近景",
+  front_east_panpipe_closeup: "前室 / 女乐排箫近景",
+  front_south_mace_closeup: "前室 / 南壁骨朵近景",
+  rear_false_door_diagram: "后室 / 北壁假门结构图",
+  rear_north_lower_closeup: "后室 / 北壁下部近景",
+  rear_southeast: "后室 / 东南壁",
+  rear_southeast_detail: "后室 / 东南壁细部",
+  rear_land_deed_cover_closeup: "后室 / 地券并盖",
+  rear_porcelain_bowl_closeup: "后室 / 白瓷碗",
+  rear_bones_position_closeup: "后室 / 人骨葬具位置"
+});
+
+addSceneHotspot("environment", "environment_map", {
+  id: "baisha_context_view",
+  label: "白沙附近图",
+  navLabel: "查看附近图",
+  shape: "rect",
+  rect: [0.04, 0.58, 0.34, 0.90],
+  title: "白沙附近图",
+  body: "白沙附近图可以把墓群位置继续放大到周边地貌中。\n它适合补充墓外环境，不进入墓室内部证据链。",
+  record: "白沙附近图补充了墓群与周边地貌的关系，作为墓外环境观察。",
+  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓外环境线索精修版_v1.0.md",
+  sourceClueId: "ENV-E-02",
+  viewTransition: {
+    targetViewId: "environment_baisha_context",
+    title: "查看白沙附近图",
+    body: "白沙附近图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneView("environment", "environment_baisha_context", {
+  id: "environment_baisha_context",
+  title: "白沙附近图",
+  image: {
+    src: "assets/M1/01环境地图/白沙附近图.png",
+    alt: "白沙附近图",
+    width: 2304,
+    height: 1728
+  },
+  hotspots: [
+    {
+      id: "baisha_area_relation",
+      label: "附近地貌关系",
+      shape: "rect",
+      rect: [0.12, 0.14, 0.88, 0.78],
+      title: "附近地貌关系",
+      body: "这张图用于补足墓外环境的尺度。\n后续美工可在这里标注村落、墓群范围和进入第一号墓的方向。",
+      record: "白沙附近图可用于标注村落、墓群范围和进入第一号墓的方向。",
+      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓外环境线索精修版_v1.0.md",
+      sourceClueId: "ENV-E-02"
+    },
+    {
+      id: "return_environment_map_from_baisha_context",
+      label: "返回地形图",
+      navLabel: "返回地形图",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回地形图",
+      body: "返回白沙宋墓地形图。",
+      record: "返回白沙宋墓地形图。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "environment_map",
+        title: "返回地形图",
+        body: "视角回到白沙宋墓地形图。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneHotspot("tomb_gate", "tomb_gate_main", {
+  id: "gate_structure_diagram_link",
+  label: "墓门结构图",
+  navLabel: "结构图",
+  shape: "rect",
+  rect: [0.62, 0.12, 0.94, 0.42],
+  title: "墓门结构复原图",
+  body: "墓门复原图能帮助玩家理解门额、门框、封门砖和门洞的组成关系。",
+  record: "墓门结构复原图用于对照门额、门框、封门砖和门洞的组成关系。",
+  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+  sourceClueId: "GATE-P1-01",
+  viewTransition: {
+    targetViewId: "tomb_gate_structure_diagram",
+    title: "查看墓门结构图",
+    body: "墓门结构复原图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneHotspot("tomb_gate", "tomb_gate_main", {
+  id: "gate_back_corridor_link",
+  label: "门后与甬道",
+  navLabel: "门后关系",
+  shape: "rect",
+  rect: [0.62, 0.44, 0.94, 0.78],
+  title: "墓门后部与甬道关系",
+  body: "这张图把墓门后部和甬道东壁放在同一张图里，适合做墓门到甬道的空间过渡。",
+  record: "墓门后部与甬道东壁图补充了墓门到甬道的空间过渡。",
+  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+  sourceClueId: "GATE-P1-02",
+  viewTransition: {
+    targetViewId: "tomb_gate_back_corridor",
+    title: "查看门后与甬道",
+    body: "墓门后部与甬道关系图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneView("tomb_gate", "tomb_gate_structure_diagram", {
+  id: "tomb_gate_structure_diagram",
+  title: "墓门复原及各部分名称图",
+  image: {
+    src: "assets/M1/02墓道与墓门/插图四 第一号墓墓门复原及墓门各部分名称图.png",
+    alt: "第一号墓墓门复原及墓门各部分名称图",
+    width: 4693,
+    height: 3520
+  },
+  hotspots: [
+    {
+      id: "gate_parts_relation",
+      label: "墓门各部分",
+      shape: "rect",
+      rect: [0.12, 0.12, 0.88, 0.78],
+      title: "墓门各部分",
+      body: "结构复原图适合做美工标注层：门额、门框、封门砖和门洞可以分别成为可视化标签。",
+      record: "墓门复原图可作为门额、门框、封门砖和门洞的结构标注底图。",
+      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+      sourceClueId: "GATE-P1-01"
+    },
+    {
+      id: "return_tomb_gate_from_structure_diagram",
+      label: "返回墓门",
+      navLabel: "返回墓门",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回墓门",
+      body: "返回墓门主视图。",
+      record: "返回墓门主视图。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "tomb_gate_main",
+        title: "返回墓门",
+        body: "视角回到墓门主图。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("tomb_gate", "tomb_gate_back_corridor", {
+  id: "tomb_gate_back_corridor",
+  title: "墓门后部与甬道东壁",
+  image: {
+    src: "assets/M1/02墓道与墓门/Ⅱ 第一号墓墓门后部、甬道东壁.png",
+    alt: "第一号墓墓门后部、甬道东壁",
+    width: 3520,
+    height: 4693
+  },
+  hotspots: [
+    {
+      id: "gate_back_corridor_relation",
+      label: "门后通道关系",
+      shape: "rect",
+      rect: [0.16, 0.12, 0.84, 0.82],
+      title: "门后通道关系",
+      body: "门后与甬道东壁同图出现，可以让墓门章节和甬道章节的过渡更连续。",
+      record: "门后与甬道东壁同图出现，补充墓门到甬道的连续空间关系。",
+      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
+      sourceClueId: "GATE-P1-02"
+    },
+    {
+      id: "return_tomb_gate_from_back_corridor",
+      label: "返回墓门",
+      navLabel: "返回墓门",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回墓门",
+      body: "返回墓门主视图。",
+      record: "返回墓门主视图。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "tomb_gate_main",
+        title: "返回墓门",
+        body: "视角回到墓门主图。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneHotspot("corridor", "corridor_west_wall", {
+  id: "west_wall_wine_bottle",
+  label: "酒瓶细节",
+  navLabel: "酒瓶",
+  shape: "rect",
+  rect: [0.18, 0.54, 0.52, 0.90],
+  title: "甬道西壁酒瓶",
+  body: "甬道西壁酒瓶适合作为礼仪与宴饮物象的补充细节，不能单独解释为异常。",
+  record: "甬道西壁酒瓶可作为礼仪与宴饮物象的补充细节。",
+  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
+  sourceClueId: "COR-P1-02",
+  viewTransition: {
+    targetViewId: "corridor_wine_bottle_closeup",
+    title: "查看酒瓶细节",
+    body: "甬道西壁酒瓶细节被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneView("corridor", "corridor_wine_bottle_closeup", {
+  id: "corridor_wine_bottle_closeup",
+  title: "甬道西壁酒瓶近景",
+  image: {
+    src: "assets/M1/17_其他细节与特写/第一号墓甬道西壁壁画中的酒瓶.png",
+    alt: "第一号墓甬道西壁壁画中的酒瓶",
+    width: 452,
+    height: 820
+  },
+  hotspots: [
+    {
+      id: "wine_bottle_detail",
+      label: "酒瓶器形",
+      shape: "rect",
+      rect: [0.18, 0.12, 0.82, 0.84],
+      title: "酒瓶器形",
+      body: "这张图尺寸较窄，适合做局部放大或放大镜 UI，不建议直接作为大背景。",
+      record: "甬道酒瓶图适合作为局部放大线索，不宜作为整屏背景。",
+      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
+      sourceClueId: "COR-P1-02"
+    },
+    {
+      id: "return_corridor_west_from_wine_bottle",
+      label: "返回西壁",
+      navLabel: "返回西壁",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回甬道西壁",
+      body: "返回甬道西壁。",
+      record: "返回甬道西壁。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "corridor_west_wall",
+        title: "返回西壁",
+        body: "视角回到甬道西壁。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneHotspot("front_chamber", "front_east", {
+  id: "lotus_crown_detail",
+  label: "莲花冠",
+  navLabel: "莲花冠",
+  shape: "rect",
+  rect: [0.12, 0.12, 0.38, 0.42],
+  title: "女乐莲花冠",
+  body: "莲花冠是前室东壁女乐图像的服饰细节，可与排箫、尖鞋一起归入人物礼仪线索。",
+  record: "女乐莲花冠可与排箫、尖鞋一起归入前室人物礼仪线索。",
+  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+  sourceClueId: "FRONT-P1-01",
+  viewTransition: {
+    targetViewId: "front_east_lotus_crown_closeup",
+    title: "查看莲花冠",
+    body: "女乐莲花冠近景被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneHotspot("front_chamber", "front_east", {
+  id: "panpipe_detail",
+  label: "排箫",
+  navLabel: "排箫",
+  shape: "rect",
+  rect: [0.34, 0.20, 0.62, 0.58],
+  title: "女乐排箫",
+  body: "排箫是前室东壁女乐图像的音乐物象，可与服饰和仪仗细节并读。",
+  record: "女乐排箫是前室东壁音乐物象，可与服饰和仪仗细节并读。",
+  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+  sourceClueId: "FRONT-P1-01",
+  viewTransition: {
+    targetViewId: "front_east_panpipe_closeup",
+    title: "查看排箫",
+    body: "女乐排箫近景被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneHotspot("front_chamber", "front_south", {
+  id: "mace_detail",
+  label: "骨朵",
+  navLabel: "骨朵",
+  shape: "rect",
+  rect: [0.42, 0.16, 0.62, 0.78],
+  title: "前室南壁骨朵",
+  body: "骨朵图像可作为前室南壁仪仗细节，用来补充前室的礼仪序列。",
+  record: "前室南壁骨朵可作为仪仗细节，补充前室礼仪序列。",
+  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+  sourceClueId: "FRONT-P1-02",
+  viewTransition: {
+    targetViewId: "front_south_mace_closeup",
+    title: "查看骨朵",
+    body: "前室南壁骨朵近景被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneView("front_chamber", "front_east_lotus_crown_closeup", {
+  id: "front_east_lotus_crown_closeup",
+  title: "女乐莲花冠近景",
+  image: {
+    src: "assets/M1/17_其他细节与特写/第一号墓前室东壁壁画中女乐所戴的莲花冠.png",
+    alt: "第一号墓前室东壁壁画中女乐所戴的莲花冠",
+    width: 1940,
+    height: 1563
+  },
+  hotspots: [
+    {
+      id: "lotus_crown_shape",
+      label: "莲花冠形制",
+      shape: "rect",
+      rect: [0.14, 0.14, 0.86, 0.80],
+      title: "莲花冠形制",
+      body: "莲花冠适合做人物服饰细节的局部放大，可与东壁女乐总图对应。",
+      record: "莲花冠近景可与东壁女乐总图对应，补充人物服饰细节。",
+      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+      sourceClueId: "FRONT-P1-01"
+    },
+    {
+      id: "return_front_east_from_lotus_crown",
+      label: "返回东壁",
+      navLabel: "返回东壁",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回前室东壁",
+      body: "返回前室东壁。",
+      record: "返回前室东壁。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "front_east",
+        title: "返回东壁",
+        body: "视角回到前室东壁。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("front_chamber", "front_east_panpipe_closeup", {
+  id: "front_east_panpipe_closeup",
+  title: "女乐排箫近景",
+  image: {
+    src: "assets/M1/17_其他细节与特写/第一号墓前室东壁壁画中女乐所执的排箫.png",
+    alt: "第一号墓前室东壁壁画中女乐所执的排箫",
+    width: 616,
+    height: 724
+  },
+  hotspots: [
+    {
+      id: "panpipe_shape",
+      label: "排箫形制",
+      shape: "rect",
+      rect: [0.12, 0.12, 0.88, 0.82],
+      title: "排箫形制",
+      body: "排箫图尺寸偏小，建议后续作为局部放大图使用，避免强行铺满画面。",
+      record: "排箫近景尺寸偏小，适合作为局部放大图使用。",
+      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+      sourceClueId: "FRONT-P1-01"
+    },
+    {
+      id: "return_front_east_from_panpipe",
+      label: "返回东壁",
+      navLabel: "返回东壁",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回前室东壁",
+      body: "返回前室东壁。",
+      record: "返回前室东壁。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "front_east",
+        title: "返回东壁",
+        body: "视角回到前室东壁。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("front_chamber", "front_south_mace_closeup", {
+  id: "front_south_mace_closeup",
+  title: "前室南壁骨朵近景",
+  image: {
+    src: "assets/M1/17_其他细节与特写/第一号墓前室南壁壁画中的骨朵.png",
+    alt: "第一号墓前室南壁壁画中的骨朵",
+    width: 228,
+    height: 1075
+  },
+  hotspots: [
+    {
+      id: "mace_shape",
+      label: "骨朵形制",
+      shape: "rect",
+      rect: [0.12, 0.08, 0.88, 0.86],
+      title: "骨朵形制",
+      body: "骨朵图非常窄，后续更适合做竖向局部放大或嵌入式信息图。",
+      record: "骨朵近景适合做竖向局部放大或嵌入式信息图。",
+      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
+      sourceClueId: "FRONT-P1-02"
+    },
+    {
+      id: "return_front_south_from_mace",
+      label: "返回南壁",
+      navLabel: "返回南壁",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回前室南壁",
+      body: "返回前室南壁。",
+      record: "返回前室南壁。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "front_south",
+        title: "返回南壁",
+        body: "视角回到前室南壁。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneHotspot("rear_chamber", "rear_overview", {
+  id: "rear_overview_turn_southeast",
+  label: "转向东南壁",
+  navLabel: "东南壁",
+  shape: "rect",
+  rect: [0.70, 0.68, 0.96, 0.86],
+  title: "转向东南壁",
+  body: "后室东南壁补足了后室多壁面关系，避免只围绕北壁和西北壁观察。",
+  record: "后室东南壁补充了后室多壁面关系。",
+  sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+  sourceClueId: "HS-E-02",
+  viewTransition: {
+    targetViewId: "rear_southeast",
+    title: "转向东南壁",
+    body: "后室东南壁进入视线。",
+    closeLabel: "转向"
+  }
+});
+
+addSceneHotspot("rear_chamber", "rear_north", {
+  id: "false_door_diagram_link",
+  label: "假门结构图",
+  navLabel: "假门结构",
+  shape: "rect",
+  rect: [0.24, 0.16, 0.76, 0.50],
+  title: "北壁假门结构图",
+  body: "假门结构图能把妇人启门从图像题材进一步放回北壁结构。",
+  record: "北壁假门结构图用于把妇人启门放回假门结构中复查。",
+  sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+  sourceClueId: "HS-P0-04",
+  viewTransition: {
+    targetViewId: "rear_false_door_diagram",
+    title: "查看假门结构图",
+    body: "后室北壁假门结构图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneHotspot("rear_chamber", "rear_north", {
+  id: "rear_north_lower_link",
+  label: "北壁下部",
+  navLabel: "北壁下部",
+  shape: "rect",
+  rect: [0.16, 0.58, 0.84, 0.92],
+  title: "后室北壁下部",
+  body: "北壁下部可辅助对照假门、砖床与出土遗存的位置。",
+  record: "后室北壁下部可辅助对照假门、砖床与出土遗存的位置。",
+  sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+  sourceClueId: "HS-E-01",
+  viewTransition: {
+    targetViewId: "rear_north_lower_closeup",
+    title: "查看北壁下部",
+    body: "后室北壁下部图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneHotspot("rear_chamber", "rear_land_deed_closeup", {
+  id: "land_deed_cover_link",
+  label: "地券并盖",
+  navLabel: "地券并盖",
+  shape: "rect",
+  rect: [0.62, 0.12, 0.92, 0.50],
+  title: "地券并盖",
+  body: "地券并盖图可以补足地券从文字近景到出土实物的关系。",
+  record: "地券并盖图补充了地券文字近景与出土实物之间的关系。",
+  sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+  sourceClueId: "HS-P0-03",
+  viewTransition: {
+    targetViewId: "rear_land_deed_cover_closeup",
+    title: "查看地券并盖",
+    body: "地券并盖图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneHotspot("rear_chamber", "rear_distribution_closeup", {
+  id: "bones_position_link",
+  label: "人骨位置",
+  navLabel: "人骨位置",
+  shape: "rect",
+  rect: [0.10, 0.50, 0.50, 0.92],
+  title: "人骨在葬具中的位置",
+  body: "人骨位置图可以把散点遗存重新放回葬具范围里，不单靠近景判断。",
+  record: "人骨在葬具中的位置图把遗存重新放回葬具范围中。",
+  sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+  sourceClueId: "HS-P0-02",
+  viewTransition: {
+    targetViewId: "rear_bones_position_closeup",
+    title: "查看人骨位置",
+    body: "人骨在葬具中的位置图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneHotspot("rear_chamber", "rear_distribution_closeup", {
+  id: "porcelain_bowl_link",
+  label: "白瓷碗",
+  navLabel: "白瓷碗",
+  shape: "rect",
+  rect: [0.54, 0.50, 0.92, 0.92],
+  title: "砖床下白瓷碗",
+  body: "白瓷碗是后室出土器物的补充细节，适合与地券、人骨位置一起构成葬具证据链。",
+  record: "砖床下白瓷碗可与地券、人骨位置一起构成后室葬具证据链。",
+  sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+  sourceClueId: "HS-H-02",
+  viewTransition: {
+    targetViewId: "rear_porcelain_bowl_closeup",
+    title: "查看白瓷碗",
+    body: "砖床下白瓷碗图被单独打开。",
+    closeLabel: "查看"
+  }
+});
+
+addSceneView("rear_chamber", "rear_false_door_diagram", {
+  id: "rear_false_door_diagram",
+  title: "后室北壁假门结构图",
+  image: {
+    src: "assets/M1/10_后室_北壁/插图一三 第一号墓后室北壁假门.png",
+    alt: "第一号墓后室北壁假门",
+    width: 2233,
+    height: 1877
+  },
+  hotspots: [
+    {
+      id: "false_door_structure",
+      label: "假门结构",
+      shape: "rect",
+      rect: [0.12, 0.12, 0.88, 0.80],
+      title: "假门结构",
+      body: "假门结构图是后室北壁证据链的骨架，可与妇人启门近景和北壁主图互相校验。",
+      record: "假门结构图可与妇人启门近景和北壁主图互相校验。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+      sourceClueId: "HS-P0-04"
+    },
+    {
+      id: "return_rear_north_from_false_door_diagram",
+      label: "返回北壁",
+      navLabel: "返回北壁",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回后室北壁",
+      body: "返回后室北壁。",
+      record: "返回后室北壁。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "rear_north",
+        title: "返回北壁",
+        body: "视角回到后室北壁。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("rear_chamber", "rear_north_lower_closeup", {
+  id: "rear_north_lower_closeup",
+  title: "后室北壁下部",
+  image: {
+    src: "assets/M1/10_后室_北壁/第一号墓后室北壁下部.png",
+    alt: "第一号墓后室北壁下部",
+    width: 1900,
+    height: 1853
+  },
+  hotspots: [
+    {
+      id: "rear_north_lower_relation",
+      label: "北壁下部关系",
+      shape: "rect",
+      rect: [0.12, 0.14, 0.88, 0.82],
+      title: "北壁下部关系",
+      body: "北壁下部有助于把假门、砖床和出土物位置联系起来。",
+      record: "北壁下部图有助于把假门、砖床和出土物位置联系起来。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+      sourceClueId: "HS-E-01"
+    },
+    {
+      id: "return_rear_north_from_lower",
+      label: "返回北壁",
+      navLabel: "返回北壁",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回后室北壁",
+      body: "返回后室北壁。",
+      record: "返回后室北壁。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "rear_north",
+        title: "返回北壁",
+        body: "视角回到后室北壁。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("rear_chamber", "rear_southeast", {
+  id: "rear_southeast",
+  title: "后室东南壁",
+  image: {
+    src: "assets/M1/12_后室_东壁与东南壁/第一号墓后室东南壁壁画.png",
+    alt: "第一号墓后室东南壁壁画",
+    width: 2057,
+    height: 1525
+  },
+  hotspots: [
+    {
+      id: "rear_southeast_wall_relation",
+      label: "东南壁画面",
+      shape: "rect",
+      rect: [0.12, 0.14, 0.88, 0.82],
+      title: "东南壁画面",
+      body: "东南壁补足后室侧壁关系。\n后室不能只由北壁、南壁或单一器物来代表。",
+      record: "后室东南壁补足侧壁关系，避免用单一壁面代表整个后室。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-E-02",
+      viewTransition: {
+        targetViewId: "rear_southeast_detail",
+        title: "查看东南壁细部",
+        body: "后室东南壁细部被单独打开。",
+        closeLabel: "查看"
+      }
+    },
+    {
+      id: "return_rear_overview_from_southeast",
+      label: "返回总览",
+      navLabel: "返回总览",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回后室入口总览",
+      body: "返回后室入口总览。",
+      record: "返回后室入口总览。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "rear_overview",
+        title: "返回总览",
+        body: "视角回到后室入口总览。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("rear_chamber", "rear_southeast_detail", {
+  id: "rear_southeast_detail",
+  title: "后室东南壁细部",
+  image: {
+    src: "assets/M1/12_后室_东壁与东南壁/第一号墓后室东南壁壁画细部.png",
+    alt: "第一号墓后室东南壁壁画细部",
+    width: 2230,
+    height: 1492
+  },
+  hotspots: [
+    {
+      id: "rear_southeast_detail_line",
+      label: "东南壁细部",
+      shape: "rect",
+      rect: [0.12, 0.14, 0.88, 0.82],
+      title: "东南壁细部",
+      body: "东南壁细部适合后续做局部复查，不宜脱离整面东南壁单独解释。",
+      record: "东南壁细部应与整面东南壁和后室多壁面关系一起复查。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-E-02"
+    },
+    {
+      id: "return_rear_southeast_from_detail",
+      label: "返回东南壁",
+      navLabel: "返回东南壁",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回东南壁",
+      body: "返回后室东南壁。",
+      record: "返回后室东南壁。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "rear_southeast",
+        title: "返回东南壁",
+        body: "视角回到后室东南壁。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("rear_chamber", "rear_land_deed_cover_closeup", {
+  id: "rear_land_deed_cover_closeup",
+  title: "地券并盖",
+  image: {
+    src: "assets/M1/16_出土器物与人骨/插图四七 第一号墓所出的地券并盖.png",
+    alt: "第一号墓所出的地券并盖",
+    width: 1934,
+    height: 1742
+  },
+  hotspots: [
+    {
+      id: "land_deed_cover_detail",
+      label: "地券与盖",
+      shape: "rect",
+      rect: [0.12, 0.12, 0.88, 0.82],
+      title: "地券与盖",
+      body: "地券并盖图把文字线索从单张券文扩展到出土实物关系。",
+      record: "地券并盖图把地券文字线索扩展到出土实物关系。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P0-03"
+    },
+    {
+      id: "return_rear_deed_from_cover",
+      label: "返回地券",
+      navLabel: "返回地券",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回地券近景",
+      body: "返回地券近景。",
+      record: "返回地券近景。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "rear_land_deed_closeup",
+        title: "返回地券",
+        body: "视角回到地券近景。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("rear_chamber", "rear_porcelain_bowl_closeup", {
+  id: "rear_porcelain_bowl_closeup",
+  title: "后室砖床下白瓷碗",
+  image: {
+    src: "assets/M1/16_出土器物与人骨/插图四八 第一号墓后室砖床下所出白瓷碗.png",
+    alt: "第一号墓后室砖床下所出白瓷碗",
+    width: 1789,
+    height: 1336
+  },
+  hotspots: [
+    {
+      id: "porcelain_bowl_detail",
+      label: "白瓷碗",
+      shape: "rect",
+      rect: [0.12, 0.12, 0.88, 0.82],
+      title: "白瓷碗",
+      body: "白瓷碗是后室出土器物的补充证据，适合与地券、人骨位置一起看。",
+      record: "后室砖床下白瓷碗应与地券、人骨位置一起复查。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-H-02"
+    },
+    {
+      id: "return_rear_distribution_from_bowl",
+      label: "返回分布图",
+      navLabel: "返回分布图",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回出土物分布图",
+      body: "返回出土物分布图。",
+      record: "返回出土物分布图。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "rear_distribution_closeup",
+        title: "返回分布图",
+        body: "视角回到出土物分布图。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
+addSceneView("rear_chamber", "rear_bones_position_closeup", {
+  id: "rear_bones_position_closeup",
+  title: "人骨在葬具中的位置",
+  image: {
+    src: "assets/M1/16_出土器物与人骨/第一号墓人骨在葬具中的位置.png",
+    alt: "第一号墓人骨在葬具中的位置",
+    width: 1036,
+    height: 989
+  },
+  hotspots: [
+    {
+      id: "bones_position_detail",
+      label: "葬具内人骨位置",
+      shape: "rect",
+      rect: [0.12, 0.12, 0.88, 0.82],
+      title: "葬具内人骨位置",
+      body: "这张图用于把人骨放回葬具范围，防止只根据局部近景判断扰动或异常。",
+      record: "人骨在葬具中的位置图用于防止只根据局部近景判断扰动或异常。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P0-02"
+    },
+    {
+      id: "return_rear_distribution_from_bones_position",
+      label: "返回分布图",
+      navLabel: "返回分布图",
+      shape: "rect",
+      rect: [0, 0.84, 1, 1],
+      title: "返回出土物分布图",
+      body: "返回出土物分布图。",
+      record: "返回出土物分布图。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      viewTransition: {
+        targetViewId: "rear_distribution_closeup",
+        title: "返回分布图",
+        body: "视角回到出土物分布图。",
+        closeLabel: "返回"
+      }
+    }
+  ]
+});
+
 const CONCLUSION_DATA = {
   cards: [
     {
