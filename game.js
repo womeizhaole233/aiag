@@ -98,7 +98,7 @@ const INSCRIPTION_REWARD = {
   id: "passage:inscription_reading_record",
   sceneId: "passage",
   title: "题记辨读记录",
-  text: "过道东壁下部题记辨读为“元符二年”；墨色较深，与周围壁画色层分明。",
+  text: "过道东壁下部题记可辨“元符二年赵大翁布”。它提供 1099 年时间锚点和“赵大翁”称谓，但身份判断仍需后续材料复查。",
   clueIds: ["PASS-P0-01", "PASS-F-01", "PASS-H-02"]
 };
 const RELIC_PUZZLE_ID = "mg_rear_relic_position";
@@ -164,13 +164,13 @@ const RELIC_ITEMS = [
   { id: "tallBottle", label: "高瓶瓶座", page: "frontWest", x: 0.3, y: 0.39, tolerance: 0.11, kind: "bottle", hint: "前室西壁左上侧，寻找细颈高瓶和下方瓶座", clueIds: ["FRONT-P0-02", "FRONT-H-02"], core: false },
   { id: "inscription", label: "纪年题记", page: "passageEast", x: 0.56, y: 0.74, tolerance: 0.15, kind: "text", hint: "过道东壁下部，找成行墨书文字", clueIds: ["PASS-P0-01", "PASS-P1-01"], core: false },
   { id: "tassel", label: "壁画流苏", page: "passageEast", x: 0.73, y: 0.42, tolerance: 0.15, kind: "tassel", hint: "过道东壁，找悬垂的装饰线穗", clueIds: ["PASS-H-01", "PASS-P1-02"], core: false },
-  { id: "womanStatue", label: "妇女雕像", page: "rearNorth", x: 0.62, y: 0.5, tolerance: 0.15, kind: "statue", hint: "后室北壁假门外侧，找立姿人物", clueIds: ["HS-P0-05", "HS-H-03"], core: false },
+  { id: "womanStatue", label: "妇人启门", page: "rearNorth", x: 0.62, y: 0.5, tolerance: 0.15, kind: "statue", hint: "后室北壁假门外侧，找侧身扶门的人物。它是图像空间悬念，不是可进入的实体入口", clueIds: ["HS-P0-05", "HS-H-03"], core: true },
   { id: "lampDish", label: "灯菜", page: "rearNorthEast", x: 0.5, y: 0.5, tolerance: 0.18, kind: "dish", hint: "后室东北壁，找器皿状的小型灯菜", clueIds: ["HS-P1-03"], core: false },
-  { id: "landDeed", label: "地券", page: "landDeed", x: 0.51, y: 0.55, tolerance: 0.18, kind: "deed", hint: "地券近景，留意朱书砖面的矩形边缘", clueIds: ["HS-P0-04"], core: true },
-  { id: "bones", label: "人骨", page: "bonesNails", x: 0.33, y: 0.46, tolerance: 0.18, kind: "bones", hint: "人骨铁钉图，找多条浅色骨骼交叠的位置", clueIds: ["HS-P0-02"], core: true },
-  { id: "nails", label: "铁钉", page: "bonesNails", x: 0.68, y: 0.46, tolerance: 0.16, kind: "nails", hint: "人骨铁钉图，找骨骼周围细小成组的深色点", clueIds: ["HS-P0-03", "HS-H-02"], core: true }
+  { id: "landDeed", label: "地券与券盖", page: "landDeed", x: 0.51, y: 0.55, tolerance: 0.18, kind: "deed", hint: "地券近景，留意朱书券文、券盖和砖质文书边缘", clueIds: ["HS-P0-04"], core: true },
+  { id: "bones", label: "二具人骨", page: "bonesNails", x: 0.33, y: 0.46, tolerance: 0.18, kind: "bones", hint: "人骨铁钉图，找砖床偏北的二具人骨位置", clueIds: ["HS-P0-02"], core: true },
+  { id: "nails", label: "十九枚铁钉", page: "bonesNails", x: 0.68, y: 0.46, tolerance: 0.16, kind: "nails", hint: "人骨铁钉图，找骨骼周围成组铁钉和葬具范围", clueIds: ["HS-P0-03", "HS-H-02"], core: true }
 ];
-const RELIC_CORE_CLUE_IDS = ["HS-P0-01", "HS-P0-02", "HS-P0-03", "HS-P0-04", "HS-P1-05", "HS-H-01", "HS-H-02"];
+const RELIC_CORE_CLUE_IDS = ["HS-E-01", "HS-E-02", "HS-P0-01", "HS-P0-02", "HS-P0-03", "HS-P0-04", "HS-P0-05", "HS-P1-05", "HS-H-01", "HS-H-02", "HS-H-03"];
 const RELIC_ORDER = RELIC_ITEMS.map((item) => item.id);
 const RELIC_LABELS = Object.fromEntries(RELIC_ITEMS.map((item) => [item.id, item.label]));
 const RELIC_POINTS = Object.fromEntries(RELIC_ITEMS.map((item) => [item.id, item]));
@@ -183,7 +183,7 @@ const RELIC_REWARD = {
   id: "rear_chamber:relic_position_record",
   sceneId: "rear_chamber",
   title: "M1遗物定位记录",
-  text: "已在展开图册中定位前室、过道、后室等多处关键遗存，并记录其所在图纸。",
+  text: "已在展开图册中定位后室位置、多壁面、砖床、人骨、铁钉、地券与假门图像。后室记录进入“遗存、文书、图像、误读降级”复查。",
   clueIds: RELIC_CORE_CLUE_IDS
 };
 const PIPE_PUZZLE_ID = "tomb_gate_pipe_trace";
