@@ -97,7 +97,7 @@ const POSITION_MAP = {
     rear_distribution_closeup: "后室 / 出土物分布图",
     rear_south: "后室 / 面向南壁",
     rear_south_high_table_closeup: "后室 / 南壁高几近景",
-    rear_southwest: "后室 / 面向西南壁",
+    rear_southwest: "后室 / 西南壁陈设组合图",
     rear_southwest_mirror_closeup: "后室 / 西南壁镜台近景",
     rear_southwest_basin_stand_closeup: "后室 / 西南壁曲足盆架近景",
     rear_southwest_stool_closeup: "后室 / 西南壁杌近景",
@@ -1825,22 +1825,22 @@ const SCENES = {
       },
       rear_southwest: {
         id: "rear_southwest",
-        title: "第一号墓后室西南壁",
+        title: "后室西南壁陈设组合图",
         image: {
-          src: "assets/M1/13_后室_西壁与西南壁/第一号墓后室西南壁壁画中的镜台.png",
-          alt: "第一号墓后室西南壁壁画中的镜台",
-          width: 665,
-          height: 1074
+          src: "assets/M1/13_后室_西壁与西南壁/后室西南壁陈设组合图.png",
+          alt: "后室西南壁陈设组合图",
+          width: 1920,
+          height: 1080
         },
         hotspots: [
           {
             id: "rear_southwest_mirror_stand",
             label: "镜台",
             shape: "rect",
-            rect: [0.12, 0.16, 0.88, 0.76],
+            rect: [0.05, 0.18, 0.29, 0.88],
             title: "后室西南壁镜台",
-            body: "后室西南壁壁画中可见镜台。\n镜台位于家具组合一侧，台面与支足轮廓清楚。\n同组图像还包括曲足盆架与杌。",
-            record: "后室西南壁见镜台，与曲足盆架、杌同属一组家具图像。",
+            body: "组合图中左侧为镜台。\n它不再单独代表整面西南壁，而是作为西南壁家具陈设组的一件器物进入对照。",
+            record: "组合图中左侧为镜台，与曲足盆架、杌同属后室西南壁家具陈设组。",
             sourceFile: "M1/13_后室_西壁与西南壁/13_后室_西壁与西南壁-热点坐标映射-v1.2.md",
             sourceClueId: "L15-HS-L15-03",
             closeupTransition: {
@@ -1854,10 +1854,10 @@ const SCENES = {
             id: "rear_southwest_basin_stand",
             label: "曲足盆架",
             shape: "rect",
-            rect: [0.04, 0.7, 0.48, 0.96],
+            rect: [0.34, 0.24, 0.59, 0.88],
             title: "曲足盆架",
-            body: "曲足盆架位于后室西南壁家具图像中。\n盆架足部弯曲，支承结构清楚。\n它与镜台相邻，构成梳洗陈设的一部分。",
-            record: "后室西南壁见曲足盆架，足部弯曲，与镜台相邻。",
+            body: "组合图中部为曲足盆架。\n它与镜台、杌共同构成西南壁陈设关系，适合从组合图再进入近景复查。",
+            record: "组合图中部为曲足盆架，与镜台、杌共同构成西南壁陈设关系。",
             sourceFile: "M1/13_后室_西壁与西南壁/13_后室_西壁与西南壁-热点坐标映射-v1.2.md",
             sourceClueId: "L15-HS-L15-02",
             closeupTransition: {
@@ -1871,10 +1871,10 @@ const SCENES = {
             id: "rear_southwest_stool",
             label: "杌",
             shape: "rect",
-            rect: [0.52, 0.7, 0.96, 0.96],
+            rect: [0.63, 0.22, 0.89, 0.88],
             title: "杌",
-            body: "后室西南壁壁画中可见杌。\n器身低矮，足部短直，尺度低于同组家具。\n它与镜台、盆架共同出现在同一组陈设中。",
-            record: "后室西南壁见杌，器身低矮，与镜台、盆架同组出现。",
+            body: "组合图右侧为杌。\n它的低矮尺度需要与镜台、曲足盆架并读，不能单独代表后室西南壁。",
+            record: "组合图右侧为杌，应与镜台、曲足盆架并读。",
             sourceFile: "M1/13_后室_西壁与西南壁/13_后室_西壁与西南壁-热点坐标映射-v1.2.md",
             sourceClueId: "L15-HS-L15-01",
             closeupTransition: {
@@ -4224,10 +4224,7 @@ Object.assign(POSITION_MAP.viewLabels, {
   environment_baisha_context: "墓外 / 白沙附近图",
   tomb_gate_structure_diagram: "墓门 / 结构复原图",
   tomb_gate_back_corridor: "墓门 / 后部与甬道关系",
-  corridor_wine_bottle_closeup: "甬道 / 西壁酒瓶近景",
   front_east_lotus_crown_closeup: "前室 / 女乐莲花冠近景",
-  front_east_panpipe_closeup: "前室 / 女乐排箫近景",
-  front_south_mace_closeup: "前室 / 南壁骨朵近景",
   rear_false_door_diagram: "后室 / 北壁假门结构图",
   rear_north_lower_closeup: "后室 / 北壁下部近景",
   rear_southeast: "后室 / 东南壁",
@@ -4431,54 +4428,11 @@ addSceneHotspot("corridor", "corridor_west_wall", {
   record: "甬道西壁酒瓶可作为礼仪与宴饮物象的补充细节。",
   sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
   sourceClueId: "COR-P1-02",
-  viewTransition: {
-    targetViewId: "corridor_wine_bottle_closeup",
-    title: "查看酒瓶细节",
-    body: "甬道西壁酒瓶细节被单独打开。",
-    closeLabel: "查看"
-  }
-});
-
-addSceneView("corridor", "corridor_wine_bottle_closeup", {
-  id: "corridor_wine_bottle_closeup",
-  title: "甬道西壁酒瓶近景",
-  image: {
+  detailImage: {
     src: "assets/M1/17_其他细节与特写/第一号墓甬道西壁壁画中的酒瓶.png",
     alt: "第一号墓甬道西壁壁画中的酒瓶",
-    width: 452,
-    height: 820
-  },
-  hotspots: [
-    {
-      id: "wine_bottle_detail",
-      label: "酒瓶器形",
-      shape: "rect",
-      rect: [0.18, 0.12, 0.82, 0.84],
-      title: "酒瓶器形",
-      body: "这张图尺寸较窄，适合做局部放大或放大镜 UI，不建议直接作为大背景。",
-      record: "甬道酒瓶图适合作为局部放大线索，不宜作为整屏背景。",
-      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
-      sourceClueId: "COR-P1-02"
-    },
-    {
-      id: "return_corridor_west_from_wine_bottle",
-      label: "返回西壁",
-      navLabel: "返回西壁",
-      shape: "rect",
-      rect: [0, 0.84, 1, 1],
-      title: "返回甬道西壁",
-      body: "返回甬道西壁。",
-      record: "返回甬道西壁。",
-      sourceFile: "game-navigation",
-      sourceClueId: "NAV",
-      viewTransition: {
-        targetViewId: "corridor_west_wall",
-        title: "返回西壁",
-        body: "视角回到甬道西壁。",
-        closeLabel: "返回"
-      }
-    }
-  ]
+    caption: "局部放大图：酒瓶尺寸较小，作为甬道西壁的补充细节显示，不再作为整屏背景。"
+  }
 });
 
 addSceneHotspot("front_chamber", "front_east", {
@@ -4511,11 +4465,10 @@ addSceneHotspot("front_chamber", "front_east", {
   record: "女乐排箫是前室东壁音乐物象，可与服饰和仪仗细节并读。",
   sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
   sourceClueId: "FRONT-P1-01",
-  viewTransition: {
-    targetViewId: "front_east_panpipe_closeup",
-    title: "查看排箫",
-    body: "女乐排箫近景被单独打开。",
-    closeLabel: "查看"
+  detailImage: {
+    src: "assets/M1/17_其他细节与特写/第一号墓前室东壁壁画中女乐所执的排箫.png",
+    alt: "第一号墓前室东壁壁画中女乐所执的排箫",
+    caption: "局部放大图：排箫作为女乐音乐物象显示，后续可做描线增强或组合到女乐细节组。"
   }
 });
 
@@ -4530,11 +4483,10 @@ addSceneHotspot("front_chamber", "front_south", {
   record: "前室南壁骨朵可作为仪仗细节，补充前室礼仪序列。",
   sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
   sourceClueId: "FRONT-P1-02",
-  viewTransition: {
-    targetViewId: "front_south_mace_closeup",
-    title: "查看骨朵",
-    body: "前室南壁骨朵近景被单独打开。",
-    closeLabel: "查看"
+  detailImage: {
+    src: "assets/M1/17_其他细节与特写/第一号墓前室南壁壁画中的骨朵.png",
+    alt: "第一号墓前室南壁壁画中的骨朵",
+    caption: "局部放大图：骨朵为极窄竖图，作为仪仗细节浮窗显示，不再作为整屏背景。"
   }
 });
 
@@ -4574,90 +4526,6 @@ addSceneView("front_chamber", "front_east_lotus_crown_closeup", {
         targetViewId: "front_east",
         title: "返回东壁",
         body: "视角回到前室东壁。",
-        closeLabel: "返回"
-      }
-    }
-  ]
-});
-
-addSceneView("front_chamber", "front_east_panpipe_closeup", {
-  id: "front_east_panpipe_closeup",
-  title: "女乐排箫近景",
-  image: {
-    src: "assets/M1/17_其他细节与特写/第一号墓前室东壁壁画中女乐所执的排箫.png",
-    alt: "第一号墓前室东壁壁画中女乐所执的排箫",
-    width: 616,
-    height: 724
-  },
-  hotspots: [
-    {
-      id: "panpipe_shape",
-      label: "排箫形制",
-      shape: "rect",
-      rect: [0.12, 0.12, 0.88, 0.82],
-      title: "排箫形制",
-      body: "排箫图尺寸偏小，建议后续作为局部放大图使用，避免强行铺满画面。",
-      record: "排箫近景尺寸偏小，适合作为局部放大图使用。",
-      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
-      sourceClueId: "FRONT-P1-01"
-    },
-    {
-      id: "return_front_east_from_panpipe",
-      label: "返回东壁",
-      navLabel: "返回东壁",
-      shape: "rect",
-      rect: [0, 0.84, 1, 1],
-      title: "返回前室东壁",
-      body: "返回前室东壁。",
-      record: "返回前室东壁。",
-      sourceFile: "game-navigation",
-      sourceClueId: "NAV",
-      viewTransition: {
-        targetViewId: "front_east",
-        title: "返回东壁",
-        body: "视角回到前室东壁。",
-        closeLabel: "返回"
-      }
-    }
-  ]
-});
-
-addSceneView("front_chamber", "front_south_mace_closeup", {
-  id: "front_south_mace_closeup",
-  title: "前室南壁骨朵近景",
-  image: {
-    src: "assets/M1/17_其他细节与特写/第一号墓前室南壁壁画中的骨朵.png",
-    alt: "第一号墓前室南壁壁画中的骨朵",
-    width: 228,
-    height: 1075
-  },
-  hotspots: [
-    {
-      id: "mace_shape",
-      label: "骨朵形制",
-      shape: "rect",
-      rect: [0.12, 0.08, 0.88, 0.86],
-      title: "骨朵形制",
-      body: "骨朵图非常窄，后续更适合做竖向局部放大或嵌入式信息图。",
-      record: "骨朵近景适合做竖向局部放大或嵌入式信息图。",
-      sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
-      sourceClueId: "FRONT-P1-02"
-    },
-    {
-      id: "return_front_south_from_mace",
-      label: "返回南壁",
-      navLabel: "返回南壁",
-      shape: "rect",
-      rect: [0, 0.84, 1, 1],
-      title: "返回前室南壁",
-      body: "返回前室南壁。",
-      record: "返回前室南壁。",
-      sourceFile: "game-navigation",
-      sourceClueId: "NAV",
-      viewTransition: {
-        targetViewId: "front_south",
-        title: "返回南壁",
-        body: "视角回到前室南壁。",
         closeLabel: "返回"
       }
     }

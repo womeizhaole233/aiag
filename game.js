@@ -741,6 +741,26 @@ function getCompletionHint(hotspot, addedRecord) {
   return `\n\n${completionHint.text}`;
 }
 
+function renderMessageBody(bodyText, detailImage) {
+  const text = String(bodyText || "");
+  if (!detailImage?.src) {
+    messageBody.classList.remove("has-detail-image");
+    messageBody.textContent = text;
+    return;
+  }
+
+  const alt = detailImage.alt || detailImage.caption || "局部放大图";
+  const caption = detailImage.caption ? `<figcaption class="message-detail-caption">${escapeHtml(detailImage.caption)}</figcaption>` : "";
+  messageBody.classList.add("has-detail-image");
+  messageBody.innerHTML = `
+    <p class="message-text">${escapeHtml(text)}</p>
+    <figure class="message-detail-figure">
+      <img src="${escapeHtml(detailImage.src)}" alt="${escapeHtml(alt)}" loading="lazy" />
+      ${caption}
+    </figure>
+  `;
+}
+
 function openMessage(hotspot) {
   if (hotspot.mapAction === "open") {
     openPositionMap();
@@ -776,7 +796,10 @@ function openMessage(hotspot) {
   renderConclusions();
   messageKicker.textContent = "现场观察";
   messageTitle.textContent = activeTransition ? activeTransition.title : hotspot.title;
-  messageBody.textContent = `${activeTransition ? activeTransition.body : lockedBody || hotspot.body}${getCompletionHint(hotspot, addedRecord)}`;
+  renderMessageBody(
+    `${activeTransition ? activeTransition.body : lockedBody || hotspot.body}${getCompletionHint(hotspot, addedRecord)}`,
+    activeTransition ? null : hotspot.detailImage
+  );
   messageClose.textContent = activeTransition?.closeLabel || "收录";
   state.pendingNavigation = navigation;
   messageLayer.classList.remove("hidden");
@@ -785,6 +808,7 @@ function openMessage(hotspot) {
 function closeMessage() {
   messageLayer.classList.add("hidden");
   messageClose.textContent = "收录";
+  messageBody.classList.remove("has-detail-image");
   if (state.pendingNavigation) {
     navigateTo(state.pendingNavigation);
     state.pendingNavigation = null;
