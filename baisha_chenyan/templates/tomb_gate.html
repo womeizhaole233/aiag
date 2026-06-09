@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第一号墓墓门 · 白沙尘烟</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #050505;
+    color: #f4ead6;
+    font-family: "STKaiti", "KaiTi", "Microsoft YaHei", serif;
+    height: 100vh; overflow: hidden;
+}
+.scene {
+    position: relative;
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+}
+.scene-image {
+    max-width: 100%; max-height: 100%;
+    object-fit: contain;
+    user-select: none; -webkit-user-drag: none;
+}
+.hotspot-layer {
+    position: absolute; inset: 0;
+    pointer-events: none;
+}
+.hotspot-svg {
+    position: absolute;
+    /* 通过 JS 与 image 实际渲染尺寸对齐 */
+}
+.hotspot {
+    fill: rgba(201, 157, 87, 0.06);
+    stroke: rgba(244, 234, 214, 0.55);
+    stroke-width: 3;
+    stroke-dasharray: 10 6;
+    cursor: pointer;
+    transition: fill 0.2s, stroke 0.2s, stroke-width 0.2s;
+    pointer-events: auto;
+    animation: hotspotPulse 2.4s ease-in-out infinite;
+}
+.hotspot:hover, .hotspot:focus {
+    fill: rgba(201, 157, 87, 0.28);
+    stroke: #ffe9a8;
+    stroke-width: 5;
+    outline: none;
+    animation: none;
+}
+.hotspot.recorded {
+    fill: rgba(143, 199, 170, 0.18);
+    stroke: rgba(143, 199, 170, 0.7);
+    stroke-dasharray: none;
+    animation: none;
+}
+.hotspot.required:not(.recorded) {
+    stroke: rgba(255, 200, 120, 0.95);
+    stroke-width: 4;
+}
+@keyframes hotspotPulse {
+    0%, 100% { stroke-opacity: 0.55; }
+    50%      { stroke-opacity: 0.95; }
+}
+.hotspot-label {
+    fill: #fff8e0;
+    font-size: 56px;
+    font-family: "STKaiti", "KaiTi", serif;
+    paint-order: stroke;
+    stroke: #000;
+    stroke-width: 6;
+    pointer-events: none;
+    opacity: 0.9;
+}
+.hotspot-check {
+    fill: #8fc7aa;
+    font-size: 90px;
+    font-weight: bold;
+    paint-order: stroke;
+    stroke: #000;
+    stroke-width: 8;
+    pointer-events: none;
+}
+
+/* 顶部状态栏 */
+.topbar {
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+    z-index: 5;
+}
+.title { font-size: 18px; letter-spacing: 4px; color: #c99d57; }
+.counter { font-size: 14px; color: #f4ead6; }
+.btn {
+    background: rgba(0,0,0,0.55);
+    border: 1px solid #c99d57;
+    color: #f4ead6;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+.btn:hover { background: #c99d57; color: #1a1a0a; }
+.btn.disabled { opacity: 0.4; cursor: not-allowed; }
+.btn.disabled:hover { background: rgba(0,0,0,0.55); color: #f4ead6; }
+
+/* 记录面板 */
+.journal {
+    position: absolute;
+    top: 60px; right: 20px;
+    width: 320px;
+    max-height: 70vh;
+    background: rgba(8, 8, 8, 0.92);
+    border: 1px solid rgba(201, 157, 87, 0.4);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 6;
+    overflow-y: auto;
+    display: none;
+}
+.journal.visible { display: block; }
+.journal h3 { color: #c99d57; font-size: 15px; margin-bottom: 10px; letter-spacing: 2px; }
+.journal-item {
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(201, 157, 87, 0.2);
+    color: #f4ead6;
+}
+.journal-item .label { color: #c99d57; font-size: 12px; margin-bottom: 3px; }
+.journal-empty { color: #888; font-size: 12px; font-style: italic; }
+
+/* 弹窗 */
+.modal-mask {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 50;
+}
+.modal-mask.visible { display: flex; }
+.modal {
+    max-width: 540px; width: 90vw;
+    background: #0d0d0d;
+    border: 1px solid rgba(201, 157, 87, 0.55);
+    border-radius: 10px;
+    padding: 24px 28px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+}
+.modal .kicker { color: #c99d57; font-size: 12px; letter-spacing: 4px; }
+.modal h2 { margin: 6px 0 14px 0; font-size: 22px; color: #f4ead6; letter-spacing: 2px; }
+.modal p { font-size: 15px; line-height: 1.85; color: #e3d8b6; white-space: pre-wrap; }
+.modal .actions {
+    margin-top: 18px;
+    display: flex; justify-content: flex-end; gap: 12px;
+}
+.modal .actions .btn { padding: 8px 22px; font-size: 14px; }
+
+.hint-bar {
+    position: absolute; bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    color: rgba(244,234,214,0.55);
+    font-size: 12px;
+    letter-spacing: 2px;
+    z-index: 4;
+    text-align: center;
+}
+
+/* 调试面板 */
+.debug-panel {
+    position: absolute;
+    left: 20px; bottom: 60px;
+    background: rgba(0,0,0,0.85);
+    border: 1px solid #c99d57;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #f4ead6;
+    font-family: ui-monospace, monospace;
+    line-height: 1.6;
+    z-index: 7;
+    max-width: 360px;
+}
+.debug-panel .row { display: flex; justify-content: space-between; gap: 12px; }
+.debug-panel .ok { color: #8fc7aa; }
+.debug-panel .bad { color: #ff8a6b; }
+.debug-panel h4 { color: #c99d57; font-size: 12px; letter-spacing: 2px; margin-bottom: 6px; }
+.debug-panel ul { list-style: none; padding-left: 0; margin-top: 4px; }
+.debug-panel li { font-size: 11px; padding: 1px 0; }
+</style>
+</head>
+<body>
+<div class="scene">
+    <img src="{{ url_for('serve_assets', filename='door.png') }}" alt="墓门" class="scene-image" id="sceneImage">
+    <svg class="hotspot-svg" id="hotspotSvg" viewBox="0 0 4693 3520" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+<div class="topbar">
+    <div class="title">第一号墓墓门</div>
+    <div style="display:flex; gap:12px; align-items:center;">
+        <div class="counter" id="counter">已记录 0 / 6</div>
+        <button class="btn" id="toggleJournal">📓 记录</button>
+        <button class="btn" id="backBtn" onclick="window.location.href='/game?resume=1'">← 返回</button>
+    </div>
+</div>
+
+<div class="journal" id="journal">
+    <h3>田野笔记</h3>
+    <div id="journalList"><div class="journal-empty">尚未记录任何观察。</div></div>
+</div>
+
+<div class="modal-mask" id="modalMask">
+    <div class="modal">
+        <div class="kicker" id="modalKicker">现场观察</div>
+        <h2 id="modalTitle"></h2>
+        <p id="modalBody"></p>
+        <div class="actions">
+            <button class="btn" id="modalClose">收录</button>
+        </div>
+    </div>
+</div>
+
+<div class="hint-bar">金色虚线框 = 可点击观察 ・ 橘色高亮框 = 必收项 ・ 绿色✓ = 已收录 ・ 点「门洞深处」进入甬道</div>
+
+<div class="debug-panel" id="debugPanel">
+    <h4>🔍 DEBUG 状态</h4>
+    <div class="row"><span>必收 lintel_back:</span><span id="dbgRequired">-</span></div>
+    <div class="row"><span>记录数:</span><span id="dbgCount">0 / 3</span></div>
+    <div class="row"><span>canExit():</span><span id="dbgCanExit">false</span></div>
+    <ul id="dbgList"></ul>
+</div>
+
+<script>
+const HOTSPOTS = {{ hotspots | tojson }};
+const records = {}; // id -> {title, record}
+let activeHotspot = null;
+let isExitUnlocked = false;
+
+const img = document.getElementById('sceneImage');
+const svg = document.getElementById('hotspotSvg');
+
+function layoutSVG() {
+    // 让 SVG 和 image 实际渲染区域对齐
+    const rect = img.getBoundingClientRect();
+    const sceneRect = img.parentElement.getBoundingClientRect();
+    svg.style.left = (rect.left - sceneRect.left) + 'px';
+    svg.style.top = (rect.top - sceneRect.top) + 'px';
+    svg.style.width = rect.width + 'px';
+    svg.style.height = rect.height + 'px';
+}
+
+function renderHotspots() {
+    svg.innerHTML = HOTSPOTS.map(h => {
+        const [x1, y1, x2, y2] = h.rect;
+        const x = x1 * 4693, y = y1 * 3520;
+        const w = (x2 - x1) * 4693, ht = (y2 - y1) * 3520;
+        const cx = x + w / 2;
+        const labelY = y + ht / 2 + 20;
+        const reqClass = h.required ? ' required' : '';
+        const labelText = h.is_exit ? '↓ 门洞深处' : h.title;
+        return `<g data-id="${h.id}">
+            <rect class="hotspot${reqClass}" data-id="${h.id}"
+                 x="${x}" y="${y}" width="${w}" height="${ht}"
+                 tabindex="0" role="button" aria-label="${h.title}"></rect>
+            <text class="hotspot-label" x="${cx}" y="${labelY}" text-anchor="middle">${labelText}</text>
+            <text class="hotspot-check" data-check="${h.id}" x="${x + w - 20}" y="${y + 90}" text-anchor="end" style="display:none">✓</text>
+        </g>`;
+    }).join('');
+    svg.querySelectorAll('.hotspot').forEach(el => {
+        el.addEventListener('click', () => openHotspot(el.dataset.id));
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault(); openHotspot(el.dataset.id);
+            }
+        });
+    });
+    refreshRecordedStyle();
+}
+
+function openHotspot(id) {
+    const h = HOTSPOTS.find(x => x.id === id);
+    if (!h) return;
+    activeHotspot = h;
+
+    const mask = document.getElementById('modalMask');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+    const kicker = document.getElementById('modalKicker');
+    const closeBtn = document.getElementById('modalClose');
+
+    if (h.is_exit) {
+        if (canExit()) {
+            kicker.textContent = '进入甬道';
+            title.textContent = h.exit_title;
+            body.textContent = h.exit_body;
+            closeBtn.textContent = '进入 →';
+            isExitUnlocked = true;
+        } else {
+            kicker.textContent = '门洞深处 · 未解锁';
+            title.textContent = h.title;
+            const haveReq = !!records['lintel_back'];
+            const cnt = Object.keys(records).length;
+            const reasons = [];
+            if (!haveReq) reasons.push('✗ 必收项「门额背面彩画」未记录');
+            if (cnt < 3) reasons.push(`✗ 记录不足 3 条 (当前 ${cnt})`);
+            if (haveReq && cnt >= 3) reasons.push('✓ 条件已满足，如果仍看到未解锁请报 BUG');
+            body.textContent = (h.locked_body || '') + '\n\n[调试]\n' + reasons.join('\n');
+            closeBtn.textContent = '继续观察';
+            isExitUnlocked = false;
+        }
+    } else {
+        kicker.textContent = '现场观察';
+        title.textContent = h.title;
+        body.textContent = h.body;
+        closeBtn.textContent = records[h.id] ? '已收录' : '收录';
+        isExitUnlocked = false;
+    }
+    mask.classList.add('visible');
+    closeBtn.focus();
+}
+
+function closeModal() {
+    document.getElementById('modalMask').classList.remove('visible');
+    if (!activeHotspot) return;
+
+    if (activeHotspot.is_exit) {
+        if (isExitUnlocked) {
+            completePuzzle();
+            return;
+        }
+    } else if (activeHotspot.record && !records[activeHotspot.id]) {
+        records[activeHotspot.id] = {
+            title: activeHotspot.title,
+            record: activeHotspot.record
+        };
+        refreshJournal();
+        refreshCounter();
+        refreshRecordedStyle();
+    }
+    activeHotspot = null;
+}
+
+function refreshRecordedStyle() {
+    svg.querySelectorAll('.hotspot').forEach(el => {
+        if (records[el.dataset.id]) el.classList.add('recorded');
+    });
+    svg.querySelectorAll('[data-check]').forEach(el => {
+        el.style.display = records[el.dataset.check] ? '' : 'none';
+    });
+}
+
+function refreshCounter() {
+    const total = HOTSPOTS.filter(h => !h.is_exit).length;
+    const have = Object.keys(records).length;
+    document.getElementById('counter').textContent = `已记录 ${have} / ${total}`;
+    refreshDebug();
+}
+
+function refreshDebug() {
+    const have = Object.keys(records).length;
+    const hasReq = !!records['lintel_back'];
+    const ok = canExit();
+    const dbgReq = document.getElementById('dbgRequired');
+    const dbgCount = document.getElementById('dbgCount');
+    const dbgCanExit = document.getElementById('dbgCanExit');
+    const dbgList = document.getElementById('dbgList');
+    if (!dbgReq) return;
+    dbgReq.textContent = hasReq ? '✓ 已收录' : '✗ 未收录';
+    dbgReq.className = hasReq ? 'ok' : 'bad';
+    dbgCount.textContent = `${have} / 3 ${have >= 3 ? '✓' : '✗'}`;
+    dbgCount.className = have >= 3 ? 'ok' : 'bad';
+    dbgCanExit.textContent = ok ? 'true (可进入)' : 'false (未解锁)';
+    dbgCanExit.className = ok ? 'ok' : 'bad';
+    dbgList.innerHTML = HOTSPOTS.filter(h => !h.is_exit).map(h => {
+        const got = !!records[h.id];
+        return `<li class="${got ? 'ok' : 'bad'}">${got ? '✓' : '·'} ${h.id} (${h.title})${h.required ? ' [必收]' : ''}</li>`;
+    }).join('');
+}
+
+function refreshJournal() {
+    const list = document.getElementById('journalList');
+    const ids = Object.keys(records);
+    if (ids.length === 0) {
+        list.innerHTML = '<div class="journal-empty">尚未记录任何观察。</div>';
+        return;
+    }
+    list.innerHTML = ids.map(id => `
+        <div class="journal-item">
+            <div class="label">${records[id].title}</div>
+            <div>${records[id].record}</div>
+        </div>
+    `).join('');
+}
+
+function canExit() {
+    return records['lintel_back'] && Object.keys(records).length >= 3;
+}
+
+async function completePuzzle() {
+    await fetch('/api/puzzle/complete', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({puzzle: 'tomb_gate'})
+    });
+    window.location.href = '/game?resume=1';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalMask').addEventListener('click', (e) => {
+    if (e.target.id === 'modalMask') closeModal();
+});
+document.getElementById('toggleJournal').addEventListener('click', () => {
+    document.getElementById('journal').classList.toggle('visible');
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (document.getElementById('modalMask').classList.contains('visible')) {
+            closeModal();
+        }
+    }
+});
+
+img.addEventListener('load', () => { layoutSVG(); renderHotspots(); refreshDebug(); });
+window.addEventListener('resize', layoutSVG);
+if (img.complete) { layoutSVG(); renderHotspots(); refreshDebug(); }
+</script>
+</body>
+</html>
