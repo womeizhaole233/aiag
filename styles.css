@@ -612,6 +612,40 @@ button {
   font-style: normal;
 }
 
+.inscription-name-glyph {
+  position: absolute;
+  z-index: 5;
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(201, 157, 87, 0.62);
+  border-radius: 50%;
+  color: rgba(244, 234, 214, 0.94);
+  background:
+    radial-gradient(circle at 35% 30%, rgba(201, 157, 87, 0.38), transparent 48%),
+    rgba(34, 24, 13, 0.62);
+  box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.03), 0 0 18px rgba(201, 157, 87, 0.24);
+  cursor: pointer;
+  font-family: "STSong", "SimSun", serif;
+  font-size: 22px;
+  translate: -50% -50%;
+  transition: border-color 160ms ease, background 160ms ease, scale 160ms ease, opacity 160ms ease;
+}
+
+.inscription-name-active .inscription-name-glyph {
+  display: grid;
+  opacity: 0.42;
+}
+
+.inscription-name-active .inscription-name-glyph:hover,
+.inscription-name-glyph.found {
+  border-color: rgba(111, 197, 122, 0.88);
+  background: rgba(58, 118, 68, 0.5);
+  opacity: 1;
+  scale: 1.08;
+}
+
 .fragment-yuan i {
   left: 12px;
   top: 16px;
@@ -752,6 +786,22 @@ button {
   color: var(--gold);
 }
 
+.inscription-name-active .inscription-clue-strip,
+.inscription-name-active .inscription-fragments,
+.inscription-name-active .inscription-options,
+.inscription-name-active .inscription-actions,
+.inscription-report-active .inscription-clue-strip,
+.inscription-report-active .inscription-fragments,
+.inscription-report-active .inscription-options,
+.inscription-report-active .inscription-actions {
+  display: none;
+}
+
+.inscription-name-active .inscription-image-frame,
+.inscription-report-active .inscription-image-frame {
+  min-height: 240px;
+}
+
 .inscription-sequence {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -847,6 +897,120 @@ button {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.inscription-transcript {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.inscription-transcript span {
+  min-height: 34px;
+  border: 1px solid rgba(134, 204, 196, 0.28);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: rgba(244, 234, 214, 0.88);
+  background: rgba(134, 204, 196, 0.08);
+  font-size: 13px;
+}
+
+.inscription-name-hunt,
+.inscription-report-review {
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(201, 157, 87, 0.28);
+  border-radius: 8px;
+  padding: 12px;
+  background:
+    linear-gradient(135deg, rgba(201, 157, 87, 0.08), transparent 52%),
+    rgba(0, 0, 0, 0.16);
+}
+
+.inscription-name-hunt.hidden,
+.inscription-report-review.hidden {
+  display: none;
+}
+
+.inscription-name-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.inscription-name-head strong {
+  color: var(--gold);
+  font-size: 15px;
+}
+
+.inscription-name-head span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.inscription-name-slots,
+.inscription-corrections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.inscription-name-slots span,
+.inscription-corrections span {
+  display: grid;
+  min-height: 44px;
+  place-items: center;
+  border: 1px dashed rgba(244, 234, 214, 0.24);
+  border-radius: 8px;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.18);
+  font-size: 13px;
+}
+
+.inscription-name-slots span.found,
+.inscription-corrections span.marked {
+  border-style: solid;
+  border-color: rgba(111, 197, 122, 0.68);
+  color: #d9ffd8;
+  background: rgba(58, 118, 68, 0.22);
+}
+
+.inscription-name-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.inscription-draft {
+  margin: 0;
+  border: 1px solid rgba(244, 234, 214, 0.18);
+  border-radius: 8px;
+  padding: 12px;
+  color: rgba(244, 234, 214, 0.84);
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.inscription-error-line {
+  display: inline;
+  border: 0;
+  border-bottom: 1px dashed rgba(210, 86, 70, 0.72);
+  padding: 0 2px;
+  color: rgba(255, 218, 210, 0.96);
+  background: rgba(137, 45, 37, 0.18);
+  cursor: pointer;
+  font: inherit;
+}
+
+.inscription-error-line:hover:not(:disabled),
+.inscription-error-line.marked {
+  color: #ffd0ca;
+  background: rgba(137, 45, 37, 0.42);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
 }
 
 .relic-puzzle-box {
@@ -2251,6 +2415,12 @@ button {
   .inscription-option {
     min-height: 58px;
     font-size: 26px;
+  }
+
+  .inscription-transcript,
+  .inscription-name-slots,
+  .inscription-corrections {
+    grid-template-columns: 1fr;
   }
 
   .relic-puzzle-box {

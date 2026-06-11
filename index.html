@@ -107,7 +107,7 @@
         </header>
         <h1 id="inscriptionPuzzleTitle">辨读过道纪年题记</h1>
         <p class="puzzle-copy">
-          拖看题记区域寻找残字拓片，根据残笔特征判断候选字，再把四个字排成可读纪年。
+          第一步：根据残字拓片读出纪年。第二步：继续在题记里找出“赵大翁”。第三步：帮考古实习生改掉报告里的过度推断。
         </p>
         <div class="inscription-layout">
           <div class="inscription-image-frame">
@@ -117,6 +117,9 @@
             <button class="inscription-glyph fragment-two" data-char="二" data-fragment="C" type="button" style="left:45%;top:45%" aria-label="残字 C"><i></i><b></b><em>C</em></button>
             <button class="inscription-glyph fragment-fu" data-char="符" data-fragment="B" type="button" style="left:57%;top:49%" aria-label="残字 B"><i></i><b></b><em>B</em></button>
             <button class="inscription-glyph fragment-yuan" data-char="元" data-fragment="A" type="button" style="left:69%;top:46%" aria-label="残字 A"><i></i><b></b><em>A</em></button>
+            <button class="inscription-name-glyph name-zhao" data-name-char="赵" type="button" style="left:73%;top:44%" aria-label="称谓字 赵">赵</button>
+            <button class="inscription-name-glyph name-da" data-name-char="大" type="button" style="left:78%;top:49%" aria-label="称谓字 大">大</button>
+            <button class="inscription-name-glyph name-weng" data-name-char="翁" type="button" style="left:84%;top:54%" aria-label="称谓字 翁">翁</button>
           </div>
           <div class="inscription-controls">
             <div class="inscription-clue-strip">
@@ -156,6 +159,42 @@
               <button class="inscription-option" data-char="崇" type="button">崇</button>
               <button class="inscription-option" data-char="宁" type="button">宁</button>
             </div>
+            <section id="inscriptionNameHunt" class="inscription-name-hunt hidden" aria-label="赵大翁称谓查找">
+              <div class="inscription-name-head">
+                <strong>第二步：找出称谓“赵大翁”</strong>
+                <span>年号提供时间，称谓只作为身份追问入口</span>
+              </div>
+              <div class="inscription-transcript">
+                <span>已读出：元符二年</span>
+                <span>继续找：赵 大 翁</span>
+              </div>
+              <div id="inscriptionNameSlots" class="inscription-name-slots" aria-label="称谓查找进度">
+                <span data-name-slot="赵">赵</span>
+                <span data-name-slot="大">大</span>
+                <span data-name-slot="翁">翁</span>
+              </div>
+              <p class="inscription-name-note">
+                找齐后记录为“赵大翁”称谓线索；它会引出身份疑问，但不能直接确定墓主身份。
+              </p>
+            </section>
+            <section id="inscriptionReportReview" class="inscription-report-review hidden" aria-label="考古实习生报告改错">
+              <div class="inscription-name-head">
+                <strong>第三步：帮考古实习生改错报告</strong>
+                <span>点出初稿里过度推断的句子</span>
+              </div>
+              <p class="inscription-draft">
+                过道题记写有“元符二年赵大翁布”，因此可以确认 1099 年这个时间锚点。
+                <button class="inscription-error-line" data-error="owner" type="button">赵大翁就是墓主。</button>
+                <button class="inscription-error-line" data-error="whole" type="button">这条题记已经解释了整座墓的身份问题。</button>
+              </p>
+              <div id="inscriptionCorrections" class="inscription-corrections" aria-label="已改正的问题">
+                <span data-error-slot="owner">墓主身份：待复查</span>
+                <span data-error-slot="whole">整墓结论：不能单证推出</span>
+              </div>
+              <p class="inscription-name-note">
+                正确记录应保留“1099 年时间锚点”和“赵大翁称谓”，但把身份判断留给后续材料。
+              </p>
+            </section>
             <div class="inscription-actions">
               <button id="inscriptionClear" class="plain-button" type="button">清空</button>
               <button id="inscriptionSubmit" class="primary-button" type="button">确认辨读</button>
@@ -233,6 +272,6 @@
     </div>
 
     <script src="data/scenes.js?v=source-text-20260520-clean"></script>
-    <script src="game.js?v=inscription-stroke-fragment-20260602"></script>
+    <script src="game.js?v=inscription-report-edit-20260611"></script>
   </body>
 </html>

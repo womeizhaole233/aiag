@@ -43,6 +43,12 @@ const inscriptionSequenceSlots = [...document.querySelectorAll("#inscriptionSequ
 const inscriptionOptions = [...document.querySelectorAll(".inscription-option")];
 const inscriptionClear = document.querySelector("#inscriptionClear");
 const inscriptionSubmit = document.querySelector("#inscriptionSubmit");
+const inscriptionNameHunt = document.querySelector("#inscriptionNameHunt");
+const inscriptionNameGlyphs = [...document.querySelectorAll(".inscription-name-glyph")];
+const inscriptionNameSlots = [...document.querySelectorAll("#inscriptionNameSlots span")];
+const inscriptionReportReview = document.querySelector("#inscriptionReportReview");
+const inscriptionErrorLines = [...document.querySelectorAll(".inscription-error-line")];
+const inscriptionCorrectionSlots = [...document.querySelectorAll("#inscriptionCorrections span")];
 const relicPuzzleLayer = document.querySelector("#relicPuzzleLayer");
 const relicPuzzleClose = document.querySelector("#relicPuzzleClose");
 const relicPuzzleFeedback = document.querySelector("#relicPuzzleFeedback");
@@ -69,6 +75,10 @@ let patternStates = [];
 let inscriptionSequence = [];
 let inscriptionMarks = [];
 let inscriptionRevealedChars = [];
+let inscriptionNameHuntActive = false;
+let inscriptionFoundNameChars = [];
+let inscriptionReportReviewActive = false;
+let inscriptionMarkedErrors = [];
 let currentRelicTarget = null;
 let currentRelicPage = "atlas";
 let completedRelicTargets = [];
@@ -94,6 +104,8 @@ const INSCRIPTION_FRAGMENT_HINTS = {
   C: "只见两道平行短横，周围没有竖画或撇捺。",
   D: "上部有短撇和横画，下方竖画贯穿，末端被色层遮住。"
 };
+const INSCRIPTION_NAME_CHARS = ["赵", "大", "翁"];
+const INSCRIPTION_REPORT_ERRORS = ["owner", "whole"];
 const INSCRIPTION_REWARD = {
   id: "passage:inscription_reading_record",
   sceneId: "passage",
@@ -749,6 +761,10 @@ function openInscriptionPuzzle() {
   inscriptionSequence = [];
   inscriptionMarks = [];
   inscriptionRevealedChars = [];
+  inscriptionNameHuntActive = false;
+  inscriptionFoundNameChars = [];
+  inscriptionReportReviewActive = false;
+  inscriptionMarkedErrors = [];
   renderInscriptionPuzzle();
   inscriptionPuzzleFeedback.textContent = "提示：图中发光处是残字拓片，不一定能直接读出完整字。先辨笔画，再排读序。";
   inscriptionPuzzleFeedback.className = "puzzle-feedback";
@@ -760,6 +776,8 @@ function closeInscriptionPuzzle() {
 }
 
 function renderInscriptionPuzzle() {
+  inscriptionPuzzleLayer.classList.toggle("inscription-name-active", inscriptionNameHuntActive);
+  inscriptionPuzzleLayer.classList.toggle("inscription-report-active", inscriptionReportReviewActive);
   inscriptionSequenceSlots.forEach((slot, index) => {
     slot.textContent = inscriptionSequence[index] || "";
     slot.classList.remove("correct", "misplaced", "wrong");
@@ -770,17 +788,41 @@ function renderInscriptionPuzzle() {
     button.classList.toggle("active", selectedCount > 0);
     button.classList.remove("revealed");
     button.classList.remove("error");
-    button.disabled = selectedCount > 0 || inscriptionSequence.length >= INSCRIPTION_ANSWER.length;
+    button.disabled = inscriptionNameHuntActive || inscriptionReportReviewActive || selectedCount > 0 || inscriptionSequence.length >= INSCRIPTION_ANSWER.length;
   });
   inscriptionGlyphs.forEach((button) => {
     button.classList.toggle("revealed", inscriptionRevealedChars.includes(button.dataset.char));
+    button.disabled = inscriptionNameHuntActive || inscriptionReportReviewActive;
   });
   inscriptionFragmentCards.forEach((card) => {
     const revealed = inscriptionRevealedChars.includes(card.dataset.fragment);
     card.classList.toggle("revealed", revealed);
     card.querySelector("span").textContent = revealed ? INSCRIPTION_FRAGMENT_HINTS[card.dataset.fragment] : "未显影";
   });
-  inscriptionSubmit.disabled = inscriptionSequence.length < INSCRIPTION_ANSWER.length;
+  inscriptionClear.disabled = inscriptionNameHuntActive || inscriptionReportReviewActive;
+  inscriptionSubmit.disabled = inscriptionNameHuntActive || inscriptionReportReviewActive || inscriptionSequence.length < INSCRIPTION_ANSWER.length;
+  inscriptionSubmit.textContent = "确认辨读";
+  if (inscriptionNameHunt) inscriptionNameHunt.classList.toggle("hidden", !inscriptionNameHuntActive);
+  if (inscriptionReportReview) inscriptionReportReview.classList.toggle("hidden", !inscriptionReportReviewActive);
+  inscriptionNameGlyphs.forEach((button) => {
+    const char = button.dataset.nameChar;
+    const found = inscriptionFoundNameChars.includes(char);
+    button.classList.toggle("found", found);
+    button.disabled = !inscriptionNameHuntActive || found;
+  });
+  inscriptionNameSlots.forEach((slot) => {
+    const char = slot.dataset.nameSlot;
+    slot.classList.toggle("found", inscriptionFoundNameChars.includes(char));
+  });
+  inscriptionErrorLines.forEach((button) => {
+    const error = button.dataset.error;
+    button.classList.toggle("marked", inscriptionMarkedErrors.includes(error));
+    button.disabled = !inscriptionReportReviewActive || inscriptionMarkedErrors.includes(error);
+  });
+  inscriptionCorrectionSlots.forEach((slot) => {
+    const error = slot.dataset.errorSlot;
+    slot.classList.toggle("marked", inscriptionMarkedErrors.includes(error));
+  });
 }
 
 function handleInscriptionChoice(button) {
@@ -823,6 +865,7 @@ function clearInscriptionPuzzle() {
 }
 
 function removeInscriptionSlot(slot) {
+  if (inscriptionNameHuntActive || inscriptionReportReviewActive) return;
   const index = Number(slot.dataset.slot);
   if (!inscriptionSequence[index]) return;
   inscriptionSequence.splice(index, 1);
@@ -852,13 +895,59 @@ function evaluateInscriptionSequence() {
     return;
   }
 
+  inscriptionNameHuntActive = true;
+  inscriptionFoundNameChars = [];
+  inscriptionPuzzleFeedback.textContent = "纪年辨读正确。继续在题记图中找出“赵、大、翁”三个称谓字。";
+  inscriptionPuzzleFeedback.className = "puzzle-feedback success";
+  renderInscriptionPuzzle();
+  requestAnimationFrame(() => {
+    inscriptionNameHunt?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
+
+function revealInscriptionNameGlyph(button) {
+  if (!inscriptionNameHuntActive) return;
+  const char = button.dataset.nameChar;
+  if (inscriptionFoundNameChars.includes(char)) return;
+  inscriptionFoundNameChars.push(char);
+  inscriptionPuzzleFeedback.textContent = `找到称谓字“${char}”。继续找齐“赵大翁”。`;
+  inscriptionPuzzleFeedback.className = "puzzle-feedback";
+  renderInscriptionPuzzle();
+  if (INSCRIPTION_NAME_CHARS.every((item) => inscriptionFoundNameChars.includes(item))) openInscriptionReportReview();
+}
+
+function openInscriptionReportReview() {
+  inscriptionNameHuntActive = false;
+  inscriptionReportReviewActive = true;
+  inscriptionMarkedErrors = [];
+  inscriptionPuzzleFeedback.textContent = "已找到“赵大翁”。现在帮实习生改报告：点出初稿里过度推断的句子。";
+  inscriptionPuzzleFeedback.className = "puzzle-feedback success";
+  renderInscriptionPuzzle();
+  requestAnimationFrame(() => {
+    inscriptionReportReview?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
+
+function markInscriptionReportError(button) {
+  if (!inscriptionReportReviewActive) return;
+  const error = button.dataset.error;
+  if (inscriptionMarkedErrors.includes(error)) return;
+  inscriptionMarkedErrors.push(error);
+  inscriptionPuzzleFeedback.textContent = "改得对：这句话超出了题记本身能证明的范围。";
+  inscriptionPuzzleFeedback.className = "puzzle-feedback success";
+  renderInscriptionPuzzle();
+  if (INSCRIPTION_REPORT_ERRORS.every((item) => inscriptionMarkedErrors.includes(item))) completeInscriptionPuzzle();
+}
+
+function completeInscriptionPuzzle() {
   completePuzzle(INSCRIPTION_PUZZLE_ID);
   addRewardRecord(INSCRIPTION_REWARD);
   save();
   renderJournal();
-  inscriptionPuzzleFeedback.textContent = "题记辨读完成。“元符二年”已经作为过道文字证据收录。";
+  inscriptionPuzzleFeedback.textContent = "题记辨读完成：已读出“元符二年”，找到“赵大翁”称谓，并改正了过度推断的报告句子。";
   inscriptionPuzzleFeedback.className = "puzzle-feedback success";
-  setTimeout(closeInscriptionPuzzle, 850);
+  renderInscriptionPuzzle();
+  setTimeout(closeInscriptionPuzzle, 1050);
 }
 
 function openRelicPuzzle() {
@@ -1757,6 +1846,12 @@ inscriptionOptions.forEach((button) => {
 });
 inscriptionClear.addEventListener("click", clearInscriptionPuzzle);
 inscriptionSubmit.addEventListener("click", evaluateInscriptionSequence);
+inscriptionNameGlyphs.forEach((button) => {
+  button.addEventListener("click", () => revealInscriptionNameGlyph(button));
+});
+inscriptionErrorLines.forEach((button) => {
+  button.addEventListener("click", () => markInscriptionReportError(button));
+});
 relicPuzzleClose.addEventListener("click", closeRelicPuzzle);
 relicPuzzleLayer.addEventListener("click", (event) => {
   if (event.target === relicPuzzleLayer) closeRelicPuzzle();
