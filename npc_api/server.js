@@ -1,4 +1,10 @@
+// 加载.env文件中的环境变量
 require('dotenv').config();
+
+// 读取API密钥
+const API_KEY = process.env.DASHSCOPE_API_KEY;
+console.log("当前API密钥状态：", API_KEY ? "已读取" : "读取失败"); // 用于调试
+
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
