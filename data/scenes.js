@@ -1650,11 +1650,11 @@ const SCENES = {
               title: "后室完成确认",
               body: "后室北壁假门、地券、砖床遗存和出土物分布已经完成对照。\n南壁高几、西南壁镜台与曲足盆架、西北壁剪刀熨斗和颜料层位共同构成日常器物线。\n顶部铺作补足了后室空间结构。\n后室证据已经收束，终章汇总可以开启。你仍可返回各墙面和近景复看细节。",
               closeLabel: "记下",
-              lockedBody: "后室观察尚未收束。请回到对应墙面或近景复看线索，并在记录夹中完成复查、降级与汇总。",
+              lockedBody: "后室观察尚未收束。请回到对应墙面或近景复看线索，并在记录夹中按小面板顺序完成复查、降级与汇总。",
               missingRecords: [
                 { id: "analysis:rear_chamber:review_false_door_structure", label: "北壁：复看假门、妇人启门与门缝" },
                 { id: "analysis:rear_chamber:review_document_layer", label: "地券近景：复看朱书、行列与位置" },
-                { id: "analysis:rear_chamber:review_burial_distribution", label: "葬具证据链：串联砖床、人骨、铁钉与地券" },
+                { id: "analysis:rear_chamber:review_burial_distribution", label: "葬具证据链：按记录夹小面板依次补齐砖床、人骨、铁钉与地券" },
                 { excludedId: "rear_chamber:woman_hand", label: "妇人启门近景：在记录夹中降级手部断口" },
                 { excludedId: "rear_chamber:nail_count", label: "人骨近景：在记录夹中降级铁钉数量差异" },
                 { id: "analysis:rear_chamber:combo", label: "记录夹：完成后室汇总" }
@@ -5980,7 +5980,7 @@ const ANALYSIS_DATA = {
         {
           id: "review_burial_distribution",
           buttonLabel: "串联葬具证据链",
-          description: "把砖床边界、人骨范围、铁钉角点和地券文书放进同一条复查链，确认哪些信息是空间定位，哪些信息是文书层。",
+          description: "先框定砖床边界，再叠合人骨与铁钉，最后回到地券文书。按这个顺序复查，可以确认哪些信息是空间定位，哪些信息是文书层。",
           sourceRecordIds: [
             "rear_chamber:north_lower_bed_boundary",
             "rear_chamber:north_lower_bed_axis",
@@ -5989,6 +5989,29 @@ const ANALYSIS_DATA = {
             "rear_chamber:nail_count",
             "rear_chamber:distribution_map",
             "rear_chamber:land_deed_body_text_panel"
+          ],
+          progressLabel: "后室葬具证据链点击顺序",
+          guideSteps: [
+            {
+              label: "1 北壁下部",
+              detail: "后室入口总览 → 北壁 → 北壁下部；点砖床边界和假门-砖床轴线。",
+              recordIds: ["rear_chamber:north_lower_bed_boundary", "rear_chamber:north_lower_bed_axis"]
+            },
+            {
+              label: "2 人骨铁钉",
+              detail: "回到北壁；点人骨与铁钉，再在人骨近景点铁钉数量。",
+              recordIds: ["rear_chamber:bones_nails", "rear_chamber:nail_count"]
+            },
+            {
+              label: "3 分布与人骨位置",
+              detail: "回到北壁；点出土物分布图，再进入人骨位置，确认葬具范围。",
+              recordIds: ["rear_chamber:distribution_map", "rear_chamber:bones_position_burial_range"]
+            },
+            {
+              label: "4 地券并盖",
+              detail: "回到北壁；点地券 → 地券并盖 → 地券本体，把文书层接入链条。",
+              recordIds: ["rear_chamber:land_deed_body_text_panel"]
+            }
           ],
           chainItems: [
             { label: "砖床", role: "空间基准", detail: "北壁下部边界限定遗存范围" },

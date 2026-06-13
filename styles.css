@@ -152,6 +152,16 @@ button {
   background: var(--primary-strong);
 }
 
+.primary-button:disabled,
+.secondary-button:disabled {
+  border-color: var(--border);
+  background: rgba(148, 163, 184, 0.18);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.72;
+  transform: none;
+}
+
 .plain-button {
   min-height: 32px;
   padding: 0 8px;
@@ -550,6 +560,68 @@ button {
   font-size: 16px;
 }
 
+.review-progress-panel {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.review-progress-step {
+  display: grid;
+  grid-template-columns: minmax(82px, 0.8fr) auto minmax(0, 2fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: rgba(244, 247, 252, 0.08);
+}
+
+.review-progress-step strong {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.review-progress-step em {
+  justify-self: start;
+  min-width: 48px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.16);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-style: normal;
+  text-align: center;
+}
+
+.review-progress-step span {
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.review-progress-step.is-complete {
+  border-left-color: var(--success);
+}
+
+.review-progress-step.is-complete em {
+  background: rgba(109, 211, 160, 0.16);
+  color: var(--success);
+}
+
+.review-progress-step.is-partial {
+  border-left-color: var(--warning);
+}
+
+.review-progress-step.is-partial em {
+  background: rgba(247, 193, 92, 0.16);
+  color: var(--warning);
+}
+
 .status-chip,
 .relation-requirement,
 .workbench-chip,
@@ -717,6 +789,15 @@ button {
   .primary-button,
   .secondary-button {
     width: 100%;
+  }
+
+  .review-progress-step {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .review-progress-step em {
+    justify-self: start;
   }
 
   .scene-toolbar .chrome-button {

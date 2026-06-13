@@ -554,10 +554,13 @@ function isRecordExcluded(recordId) {
 
 function getReviewStepState(step) {
   const created = hasRecord(step.resultRecord.id);
-  const missingSourceIds = (step.sourceRecordIds || []).filter((recordId) => !hasRecord(recordId));
+  const sourceRecordIds = step.sourceRecordIds || [];
+  const collectedSourceIds = sourceRecordIds.filter((recordId) => hasRecord(recordId));
+  const missingSourceIds = sourceRecordIds.filter((recordId) => !hasRecord(recordId));
   return {
     created,
     available: !created && !missingSourceIds.length,
+    collectedSourceIds,
     missingSourceIds
   };
 }
@@ -2916,12 +2919,34 @@ function getTrackRecords(trackId) {
   return state.records.filter((record) => record.track === trackId).slice().reverse();
 }
 
+function shouldShowReviewProgress(sceneId, step, stateInfo) {
+  if (stateInfo.created || stateInfo.available || !step.guideSteps?.length) return false;
+  return (
+    hasVisitedScene(sceneId) ||
+    stateInfo.collectedSourceIds.length > 0 ||
+    stateInfo.missingSourceIds.some((recordId) => getRecord(recordId)?.sceneId === sceneId)
+  );
+}
+
 function getAvailableReviewActions() {
   return getAllAnalysisWorkflows().flatMap(({ sceneId, workflow }) =>
     (workflow.reviewSteps || [])
       .map((step) => ({ sceneId, workflow, step, stateInfo: getReviewStepState(step) }))
-      .filter((item) => item.stateInfo.available)
+      .filter((item) => item.stateInfo.available || shouldShowReviewProgress(item.sceneId, item.step, item.stateInfo))
   );
+}
+
+function getReviewProgressSteps(step) {
+  return (step.guideSteps || []).map((guide) => {
+    const recordIds = guide.recordIds || [];
+    const collectedCount = recordIds.filter((recordId) => hasRecord(recordId)).length;
+    return {
+      ...guide,
+      collectedCount,
+      totalCount: recordIds.length,
+      complete: recordIds.length > 0 && collectedCount === recordIds.length
+    };
+  });
 }
 
 function getAvailableCombinationActions() {
@@ -2930,7 +2955,19 @@ function getAvailableCombinationActions() {
     .filter((item) => item.stateInfo.available);
 }
 
-function buildJournalActionCard({ eyebrow, title, body, note, buttonLabel, actionName, actionValue, chainItems = [] }) {
+function buildJournalActionCard({
+  eyebrow,
+  title,
+  body,
+  note,
+  buttonLabel,
+  actionName,
+  actionValue,
+  chainItems = [],
+  progressLabel,
+  progressSteps = [],
+  disabled = false
+}) {
   const article = document.createElement("article");
   article.className = "journal-action-card";
   const chainHtml = chainItems.length
@@ -2951,14 +2988,37 @@ function buildJournalActionCard({ eyebrow, title, body, note, buttonLabel, actio
       </div>
     `
     : "";
+  const progressHtml = progressSteps.length
+    ? `
+      <div class="review-progress-panel" aria-label="${escapeHtml(progressLabel || "复查点击顺序")}">
+        ${progressSteps
+          .map((item) => {
+            const status = item.complete ? "已完成" : item.collectedCount ? `${item.collectedCount}/${item.totalCount}` : "待点击";
+            const stateClass = item.complete ? "is-complete" : item.collectedCount ? "is-partial" : "is-missing";
+            return `
+              <span class="review-progress-step ${stateClass}">
+                <strong>${escapeHtml(item.label)}</strong>
+                <em>${escapeHtml(status)}</em>
+                <span>${escapeHtml(item.detail || "")}</span>
+              </span>
+            `;
+          })
+          .join("")}
+      </div>
+    `
+    : "";
+  const actionButton = disabled
+    ? `<button class="primary-button" type="button" disabled>${escapeHtml(buttonLabel)}</button>`
+    : `<button class="primary-button" type="button" data-${actionName}="${escapeHtml(actionValue)}">${escapeHtml(buttonLabel)}</button>`;
   article.innerHTML = `
     <p class="eyebrow">${escapeHtml(eyebrow)}</p>
     <h2>${escapeHtml(title)}</h2>
     <p>${escapeHtml(body)}</p>
     ${chainHtml}
+    ${progressHtml}
     ${note ? `<p class="journal-note">${escapeHtml(note)}</p>` : ""}
     <div class="journal-card-actions">
-      <button class="primary-button" type="button" data-${actionName}="${escapeHtml(actionValue)}">${escapeHtml(buttonLabel)}</button>
+      ${actionButton}
     </div>
   `;
   return article;
@@ -2979,16 +3039,24 @@ function renderJournal() {
 
     if (track.id === "review") {
       getAvailableReviewActions().forEach((item) => {
+        const missingLabels = item.stateInfo.missingSourceIds.map((recordId) => getRecordLabel(recordId));
+        const progressSteps = getReviewProgressSteps(item.step);
+        const isAvailable = item.stateInfo.available;
         sectionActions.push(
           buildJournalActionCard({
             eyebrow: `${item.workflow.chapter} / 工具复查`,
             title: item.step.resultRecord.title,
             body: item.step.description,
-            note: `需要先取得：${item.step.sourceRecordIds.map((recordId) => getRecordLabel(recordId)).join("、")}`,
-            buttonLabel: item.step.buttonLabel,
+            note: isAvailable
+              ? `证据已收齐：${item.step.sourceRecordIds.map((recordId) => getRecordLabel(recordId)).join("、")}`
+              : `按下方顺序继续点击；还缺：${missingLabels.join("、")}`,
+            buttonLabel: isAvailable ? item.step.buttonLabel : `还缺 ${missingLabels.length} 项证据`,
             actionName: "run-review-step",
             actionValue: item.step.id,
-            chainItems: item.step.chainItems || []
+            chainItems: item.step.chainItems || [],
+            progressLabel: item.step.progressLabel,
+            progressSteps,
+            disabled: !isAvailable
           })
         );
       });
@@ -3012,7 +3080,7 @@ function renderJournal() {
     header.className = "journal-section-header";
     header.innerHTML = `
       <h2 class="journal-section-title">${escapeHtml(track.label)}</h2>
-      <span class="journal-count">${records.length}${sectionActions.length ? ` + ${sectionActions.length} 条可处理动作` : ""}</span>
+      <span class="journal-count">${records.length}${sectionActions.length ? ` + ${sectionActions.length} 条提示/动作` : ""}</span>
     `;
     section.appendChild(header);
 
