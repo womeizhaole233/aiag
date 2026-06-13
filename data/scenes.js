@@ -4815,6 +4815,17 @@ addSceneView("rear_chamber", "rear_north_lower_closeup", {
       sourceClueId: "HS-P0-01"
     },
     {
+      id: "north_lower_bed_axis",
+      label: "假门-砖床轴线",
+      shape: "rect",
+      rect: [0.34, 0.70, 0.66, 0.96],
+      title: "假门下沿与砖床轴线",
+      body: "假门下沿与砖床边界在同一条垂直关系上被看见。\n这一热点用于把图像层的假门和遗存层的砖床分开记录，再在复查时重新叠合。",
+      record: "假门下沿与砖床边界形成可复查的轴线关系，应先分层记录再叠合判断。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+      sourceClueId: "HS-P0-01"
+    },
+    {
       id: "return_rear_north_from_lower",
       label: "返回北壁",
       navLabel: "返回北壁",
@@ -5136,6 +5147,28 @@ addSceneView("rear_chamber", "rear_porcelain_bowl_closeup", {
       record: "白瓷碗出土背景提醒该器物需回到砖床、人骨、铁钉和地券的空间关系中复查。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P1-05"
+    },
+    {
+      id: "porcelain_bowl_no_text_signal",
+      label: "无文字信号",
+      shape: "rect",
+      rect: [0.12, 0.20, 0.70, 0.72],
+      title: "白瓷碗表面无明确文字信号",
+      body: "这张近景中可见器物残片和口沿弧线，但没有可读文字、刻款或明确标识。\n因此白瓷碗应先归入随葬器物和保存状态，不单独承担身份暗号或特殊信号。",
+      record: "白瓷碗近景未见明确文字、刻款或标识，应先归入随葬器物和保存状态。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-H-01"
+    },
+    {
+      id: "porcelain_bowl_context_relation",
+      label: "位置复查",
+      shape: "rect",
+      rect: [0.54, 0.54, 0.94, 0.92],
+      title: "白瓷碗与砖床遗存关系",
+      body: "白瓷碗的位置需要回到出土物分布图中复查。\n它可以补充后室器物层，但不能替代砖床、人骨、铁钉和地券构成的葬具主链。",
+      record: "白瓷碗位置需回到出土物分布图复查，可补充器物层但不能替代葬具主链。",
+      sourceFile: "docs/handoff/线索交付文档/01_核心交付/M1线索总表_PRD适配版_v1.0.md",
+      sourceClueId: "HS-H-01"
     },
     {
       id: "return_rear_distribution_from_bowl",
@@ -5950,6 +5983,7 @@ const ANALYSIS_DATA = {
           description: "把砖床边界、人骨范围、铁钉角点和地券文书放进同一条复查链，确认哪些信息是空间定位，哪些信息是文书层。",
           sourceRecordIds: [
             "rear_chamber:north_lower_bed_boundary",
+            "rear_chamber:north_lower_bed_axis",
             "rear_chamber:bones_nails",
             "rear_chamber:bones_position_burial_range",
             "rear_chamber:nail_count",
@@ -5957,10 +5991,10 @@ const ANALYSIS_DATA = {
             "rear_chamber:land_deed_body_text_panel"
           ],
           chainItems: [
-            { label: "砖床", detail: "北壁下部边界" },
-            { label: "人骨", detail: "葬具范围内分布" },
-            { label: "铁钉", detail: "角点痕迹需降级" },
-            { label: "地券", detail: "文书层补充定位" }
+            { label: "砖床", role: "空间基准", detail: "北壁下部边界限定遗存范围" },
+            { label: "人骨", role: "遗存主体", detail: "放回葬具范围内判断分布" },
+            { label: "铁钉", role: "葬具痕迹", detail: "角点数字降级为范围线索" },
+            { label: "地券", role: "文书层", detail: "补充位置与制度语境" }
           ],
           resultRecord: {
             id: "analysis:rear_chamber:review_burial_distribution",

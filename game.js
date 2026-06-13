@@ -2942,6 +2942,7 @@ function buildJournalActionCard({ eyebrow, title, body, note, buttonLabel, actio
               ${index ? '<span class="evidence-chain-arrow" aria-hidden="true">→</span>' : ""}
               <span class="evidence-chain-node">
                 <strong>${escapeHtml(item.label)}</strong>
+                ${item.role ? `<em>${escapeHtml(item.role)}</em>` : ""}
                 <span>${escapeHtml(item.detail)}</span>
               </span>
             `
