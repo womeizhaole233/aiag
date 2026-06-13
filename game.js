@@ -1807,13 +1807,31 @@ function getAvailableCombinationActions() {
     .filter((item) => item.stateInfo.available);
 }
 
-function buildJournalActionCard({ eyebrow, title, body, note, buttonLabel, actionName, actionValue }) {
+function buildJournalActionCard({ eyebrow, title, body, note, buttonLabel, actionName, actionValue, chainItems = [] }) {
   const article = document.createElement("article");
   article.className = "journal-action-card";
+  const chainHtml = chainItems.length
+    ? `
+      <div class="evidence-chain-panel" aria-label="证据链小面板">
+        ${chainItems
+          .map(
+            (item, index) => `
+              ${index ? '<span class="evidence-chain-arrow" aria-hidden="true">→</span>' : ""}
+              <span class="evidence-chain-node">
+                <strong>${escapeHtml(item.label)}</strong>
+                <span>${escapeHtml(item.detail)}</span>
+              </span>
+            `
+          )
+          .join("")}
+      </div>
+    `
+    : "";
   article.innerHTML = `
     <p class="eyebrow">${escapeHtml(eyebrow)}</p>
     <h2>${escapeHtml(title)}</h2>
     <p>${escapeHtml(body)}</p>
+    ${chainHtml}
     ${note ? `<p class="journal-note">${escapeHtml(note)}</p>` : ""}
     <div class="journal-card-actions">
       <button class="primary-button" type="button" data-${actionName}="${escapeHtml(actionValue)}">${escapeHtml(buttonLabel)}</button>
@@ -1845,7 +1863,8 @@ function renderJournal() {
             note: `需要先取得：${item.step.sourceRecordIds.map((recordId) => getRecordLabel(recordId)).join("、")}`,
             buttonLabel: item.step.buttonLabel,
             actionName: "run-review-step",
-            actionValue: item.step.id
+            actionValue: item.step.id,
+            chainItems: item.step.chainItems || []
           })
         );
       });

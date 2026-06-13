@@ -509,6 +509,40 @@ button {
   margin-bottom: 8px;
 }
 
+.evidence-chain-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.evidence-chain-node {
+  display: inline-grid;
+  gap: 2px;
+  min-width: 104px;
+  padding: 8px 10px;
+  border-left: 2px solid rgba(191, 219, 254, 0.7);
+  background: rgba(244, 247, 252, 0.08);
+}
+
+.evidence-chain-node strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.evidence-chain-node span {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.evidence-chain-arrow {
+  align-self: center;
+  color: var(--text-faint);
+  font-size: 16px;
+}
+
 .status-chip,
 .relation-requirement,
 .workbench-chip,

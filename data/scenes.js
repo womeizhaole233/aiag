@@ -1654,7 +1654,7 @@ const SCENES = {
               missingRecords: [
                 { id: "analysis:rear_chamber:review_false_door_structure", label: "北壁：复看假门、妇人启门与门缝" },
                 { id: "analysis:rear_chamber:review_document_layer", label: "地券近景：复看朱书、行列与位置" },
-                { id: "analysis:rear_chamber:review_burial_distribution", label: "分布图近景：复看砖床、人骨与铁钉" },
+                { id: "analysis:rear_chamber:review_burial_distribution", label: "葬具证据链：串联砖床、人骨、铁钉与地券" },
                 { excludedId: "rear_chamber:woman_hand", label: "妇人启门近景：在记录夹中降级手部断口" },
                 { excludedId: "rear_chamber:nail_count", label: "人骨近景：在记录夹中降级铁钉数量差异" },
                 { id: "analysis:rear_chamber:combo", label: "记录夹：完成后室汇总" }
@@ -4749,22 +4749,77 @@ addSceneView("rear_chamber", "rear_north_lower_closeup", {
   },
   hotspots: [
     {
-      id: "rear_north_lower_relation",
-      label: "北壁下部关系",
+      id: "north_lower_lintel_blocks",
+      label: "门额下部",
       shape: "rect",
-      rect: [0.12, 0.14, 0.88, 0.82],
-      title: "北壁下部关系",
-      body: "北壁下部有助于把假门、砖床和出土物位置联系起来。",
-      record: "北壁下部图有助于把假门、砖床和出土物位置联系起来。",
+      rect: [0.28, 0.18, 0.70, 0.33],
+      title: "假门门额下部",
+      body: "门额下部保留砖框、花饰和门洞上沿。\n这一处可以把北壁假门图像和下方砖床空间联系起来看。",
+      record: "北壁下部门额保留砖框、花饰和门洞上沿，可连接假门图像与砖床空间。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
-      sourceClueId: "HS-E-01"
+      sourceClueId: "HS-P0-05"
+    },
+    {
+      id: "north_lower_open_door_leaf",
+      label: "开启门扇",
+      shape: "rect",
+      rect: [0.28, 0.31, 0.45, 0.76],
+      title: "开启门扇下部",
+      body: "开启的门扇在下部近景中更清楚。\n它应和妇人启门、假门结构图一起复查，确认这是图像化的空间延续。",
+      record: "开启门扇下部应与妇人启门和假门结构图一起复查。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P0-05"
+    },
+    {
+      id: "north_lower_woman_position",
+      label: "妇人位置",
+      shape: "rect",
+      rect: [0.42, 0.34, 0.54, 0.77],
+      title: "门缝中的妇人位置",
+      body: "妇人位于两扇门之间，位置被压在门缝和门框中。\n这能说明妇人启门与假门是一组图像，而不是孤立人物。",
+      record: "妇人位于两扇门之间，说明妇人启门与假门是一组图像。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P0-05"
+    },
+    {
+      id: "north_lower_closed_leaf",
+      label: "右侧门扇",
+      shape: "rect",
+      rect: [0.49, 0.31, 0.70, 0.78],
+      title: "右侧闭合门扇",
+      body: "右侧门扇更像壁面上的图像构件。\n它和开启门扇共同制造门后空间的想象，但不能推出真实通道。",
+      record: "右侧闭合门扇与开启门扇共同制造空间想象，不能推出真实通道。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-H-03"
+    },
+    {
+      id: "north_lower_threshold",
+      label: "门槛下沿",
+      shape: "rect",
+      rect: [0.23, 0.72, 0.74, 0.86],
+      title: "门槛与下沿",
+      body: "门槛下沿把假门图像收束到北壁下部。\n它是从假门图像过渡到砖床/下部空间的关键边界。",
+      record: "门槛下沿是从假门图像过渡到砖床下部空间的关键边界。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
+      sourceClueId: "HS-P0-01"
+    },
+    {
+      id: "north_lower_bed_boundary",
+      label: "砖床边界",
+      shape: "rect",
+      rect: [0.20, 0.84, 0.82, 0.98],
+      title: "砖床与下部边界",
+      body: "画面下方的砖面边界提示北壁下部与砖床区域相接。\n后续人骨、铁钉和地券都需要回到这个边界关系中复查。",
+      record: "北壁下方砖面边界提示砖床区域，人骨、铁钉和地券需回到这一边界关系中复查。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P0-01"
     },
     {
       id: "return_rear_north_from_lower",
       label: "返回北壁",
       navLabel: "返回北壁",
       shape: "rect",
-      rect: [0, 0.84, 1, 1],
+      rect: [0.82, 0.86, 0.99, 0.99],
       title: "返回后室北壁",
       body: "返回后室北壁。",
       record: "返回后室北壁。",
@@ -5039,22 +5094,55 @@ addSceneView("rear_chamber", "rear_porcelain_bowl_closeup", {
   },
   hotspots: [
     {
-      id: "porcelain_bowl_detail",
-      label: "白瓷碗",
+      id: "porcelain_bowl_main_body",
+      label: "碗体残片",
       shape: "rect",
-      rect: [0.12, 0.12, 0.88, 0.82],
-      title: "白瓷碗",
-      body: "白瓷碗是后室出土器物的补充证据，适合与地券、人骨位置一起看。",
-      record: "后室砖床下白瓷碗应与地券、人骨位置一起复查。",
+      rect: [0.14, 0.24, 0.47, 0.62],
+      title: "白瓷碗碗体残片",
+      body: "白瓷碗主体残片显示器物已经破碎。\n它可以作为后室出土器物层的一部分，不应单独承担异常判断。",
+      record: "白瓷碗主体残片显示器物已破碎，应作为后室出土器物层的一部分。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
-      sourceClueId: "HS-H-02"
+      sourceClueId: "HS-P1-05"
+    },
+    {
+      id: "porcelain_bowl_rim_shards",
+      label: "口沿残片",
+      shape: "rect",
+      rect: [0.35, 0.13, 0.66, 0.40],
+      title: "口沿与上部残片",
+      body: "上方残片保留了口沿弧线。\n这有助于确认它是器物残片，而不是文字、符号或特殊标记。",
+      record: "上方残片保留口沿弧线，可确认其为器物残片。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P1-05"
+    },
+    {
+      id: "porcelain_bowl_lower_shards",
+      label: "下部残片",
+      shape: "rect",
+      rect: [0.20, 0.58, 0.62, 0.90],
+      title: "下部散落残片",
+      body: "下部残片与主体碗体分离，说明出土状态并不完整。\n这类破碎状态更适合归入随葬器物保存状况，而不是单独推成事件线索。",
+      record: "下部散落残片说明白瓷碗出土状态不完整，应归入随葬器物保存状况。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P1-05"
+    },
+    {
+      id: "porcelain_bowl_excavation_context",
+      label: "出土背景",
+      shape: "rect",
+      rect: [0.56, 0.25, 0.98, 0.84],
+      title: "出土背景与残留痕迹",
+      body: "右侧背景保留出土记录和壁面残留的感觉。\n它提醒玩家：白瓷碗需要回到砖床、人骨、铁钉和地券的空间关系里，而不是单独解释。",
+      record: "白瓷碗出土背景提醒该器物需回到砖床、人骨、铁钉和地券的空间关系中复查。",
+      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
+      sourceClueId: "HS-P1-05"
     },
     {
       id: "return_rear_distribution_from_bowl",
       label: "返回分布图",
       navLabel: "返回分布图",
       shape: "rect",
-      rect: [0, 0.84, 1, 1],
+      rect: [0.80, 0.86, 0.99, 0.99],
       title: "返回出土物分布图",
       body: "返回出土物分布图。",
       record: "返回出土物分布图。",
@@ -5354,9 +5442,9 @@ const CONCLUSION_DATA = {
         },
         {
           id: "analysis:rear_chamber:review_burial_distribution",
-          label: "遗存分布复查",
-          metText: "遗存分布复查已完成，可把人骨、铁钉和砖床边界压进同一平面判断。",
-          missingText: "还缺遗存分布复查。需要把人骨、铁钉和分布图一起复看。 "
+          label: "葬具证据链复查",
+          metText: "葬具证据链复查已完成，可把砖床、人骨、铁钉和地券压进同一组判断。",
+          missingText: "还缺葬具证据链复查。需要把砖床边界、人骨范围、铁钉角点和地券文书一起复看。 "
         },
         {
           excludedId: "rear_chamber:woman_hand",
@@ -5699,7 +5787,7 @@ const ANALYSIS_DATA = {
           id: "review_roof_alignment",
           buttonLabel: "用手电和标尺复查顶部错位",
           description: "把顶部整体、叠胜彩画和起拱边线放进同一组，确认错位是否真成立。",
-          sourceRecordIds: ["corridor:corridor_roof", "corridor:overlapping_pattern", "corridor:arch_line"],
+          sourceRecordIds: ["corridor:corridor_roof", "corridor:overlapping_pattern", "corridor:roof_arch_line"],
           resultRecord: {
             id: "analysis:corridor:review_roof_alignment",
             sceneId: "corridor",
@@ -5858,14 +5946,27 @@ const ANALYSIS_DATA = {
         },
         {
           id: "review_burial_distribution",
-          buttonLabel: "用分布图复查砖床遗存",
-          description: "把人骨方向、铁钉位置和分布图整体对照，确认后室遗存是否能落到同一平面关系中。",
-          sourceRecordIds: ["rear_chamber:bones_nails", "rear_chamber:bones_direction", "rear_chamber:find_distribution", "rear_chamber:distribution_map"],
+          buttonLabel: "串联葬具证据链",
+          description: "把砖床边界、人骨范围、铁钉角点和地券文书放进同一条复查链，确认哪些信息是空间定位，哪些信息是文书层。",
+          sourceRecordIds: [
+            "rear_chamber:north_lower_bed_boundary",
+            "rear_chamber:bones_nails",
+            "rear_chamber:bones_position_burial_range",
+            "rear_chamber:nail_count",
+            "rear_chamber:distribution_map",
+            "rear_chamber:land_deed_body_text_panel"
+          ],
+          chainItems: [
+            { label: "砖床", detail: "北壁下部边界" },
+            { label: "人骨", detail: "葬具范围内分布" },
+            { label: "铁钉", detail: "角点痕迹需降级" },
+            { label: "地券", detail: "文书层补充定位" }
+          ],
           resultRecord: {
             id: "analysis:rear_chamber:review_burial_distribution",
             sceneId: "rear_chamber",
-            title: "遗存分布复查",
-            text: "分布图复查显示，人骨方向差与铁钉分布都必须放回砖床平面关系中理解；真正稳定的主证不是某个角点数字，而是遗存整体与砖床边界的对应方式。",
+            title: "葬具证据链复查",
+            text: "小面板复查显示，砖床边界先限定后室遗存的空间范围，人骨和铁钉需要在这个范围内叠合判断，地券则作为文书层补充定位；真正稳定的主证不是某个角点数字，而是遗存、痕迹和文书共同回到砖床关系中。",
             track: "review",
             recordType: "review"
           }
@@ -5889,7 +5990,7 @@ const ANALYSIS_DATA = {
       ],
       combination: {
         buttonLabel: "形成后室章节组合判断",
-        description: "把假门图像、地券文书和砖床遗存三条复查链合并，生成后室第一版判断。",
+        description: "把假门图像、地券文书和葬具证据链三条复查结果合并，生成后室第一版判断。",
         requiresReviewRecordIds: [
           "analysis:rear_chamber:review_false_door_structure",
           "analysis:rear_chamber:review_document_layer",
@@ -5900,7 +6001,7 @@ const ANALYSIS_DATA = {
           id: "analysis:rear_chamber:combo",
           sceneId: "rear_chamber",
           title: "后室组合判断",
-          text: "假门图像、地券文书与砖床遗存分布共同说明，后室第一版的核心证据来自图像、文书和遗存的互相印证；手部断口和角点钉数这类单点异常不能替代这条主链。",
+          text: "假门图像、地券文书与葬具证据链共同说明，后室第一版的核心证据来自图像、文书和遗存的互相印证；手部断口和角点钉数这类单点异常不能替代这条主链。",
           track: "review",
           recordType: "combination"
         }
