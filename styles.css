@@ -8,6 +8,7 @@
   --line: rgba(244, 234, 214, 0.2);
   --panel: rgba(14, 13, 12, 0.88);
   --shadow: 0 22px 70px rgba(0, 0, 0, 0.46);
+  --pattern-complete-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23161d1a'/%3E%3Cpath d='M150 12 288 150 150 288 12 150Z' fill='%23395f51' fill-opacity='.46' stroke='%23d4a85d' stroke-width='10' stroke-linejoin='round'/%3E%3Cpath d='M150 54 246 150 150 246 54 150Z' fill='none' stroke='%2386ccc4' stroke-width='7' stroke-linejoin='round'/%3E%3Cpath d='M150 12V288M12 150H288' fill='none' stroke='%23f4ead6' stroke-opacity='.18' stroke-width='4'/%3E%3Cpath d='M74 74 226 226M226 74 74 226' fill='none' stroke='%23f4ead6' stroke-opacity='.14' stroke-width='5'/%3E%3Ccircle cx='150' cy='150' r='18' fill='%23c99d57' fill-opacity='.45' stroke='%23f4ead6' stroke-opacity='.38' stroke-width='4'/%3E%3C/svg%3E");
 }
 
 * {
@@ -254,7 +255,7 @@ button {
 .plain-button:focus-visible,
 .journal-toggle:focus-visible,
 .rune-option:focus-visible,
-.pattern-tile:focus-visible,
+.pattern-piece:focus-visible,
 .pipe-tile:focus-visible {
   outline: 2px solid rgba(244, 234, 214, 0.72);
   outline-offset: 3px;
@@ -382,81 +383,140 @@ button {
   color: var(--danger);
 }
 
+.pattern-puzzle-box {
+  width: min(760px, 100%);
+}
+
 .pattern-board {
   position: relative;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-  padding: 18px 0;
+  gap: 0;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  margin: 12px auto 0;
+  padding: 12px;
+  border: 1px solid rgba(201, 157, 87, 0.34);
+  border-radius: 8px;
+  background:
+    var(--pattern-complete-image),
+    radial-gradient(circle at 50% 50%, rgba(134, 204, 196, 0.1), transparent 42%),
+    rgba(8, 8, 7, 0.46);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: calc(100% - 24px) calc(100% - 24px), auto, auto;
+  background-position: center, center, center;
 }
 
 .pattern-board::before {
   content: "";
   position: absolute;
-  left: 10px;
-  right: 10px;
-  top: 50%;
-  height: 1px;
-  background: rgba(244, 234, 214, 0.28);
+  inset: 12px;
+  border: 1px solid rgba(244, 234, 214, 0.16);
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.pattern-tile {
+.pattern-board::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  opacity: 0.18;
+  background:
+    linear-gradient(90deg, transparent calc(33.333% - 1px), rgba(244, 234, 214, 0.38) 33.333%, transparent calc(33.333% + 1px)),
+    linear-gradient(90deg, transparent calc(66.666% - 1px), rgba(244, 234, 214, 0.38) 66.666%, transparent calc(66.666% + 1px)),
+    linear-gradient(0deg, transparent calc(33.333% - 1px), rgba(244, 234, 214, 0.38) 33.333%, transparent calc(33.333% + 1px)),
+    linear-gradient(0deg, transparent calc(66.666% - 1px), rgba(244, 234, 214, 0.38) 66.666%, transparent calc(66.666% + 1px));
+  background-size: 33.333% 33.333%;
+  z-index: 2;
+}
+
+.pattern-board.completed::after {
+  opacity: 0;
+}
+
+.pattern-piece {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 126px;
-  border: 1px solid rgba(201, 157, 87, 0.36);
-  border-radius: 8px;
-  background:
-    repeating-linear-gradient(45deg, rgba(201, 157, 87, 0.08) 0 8px, transparent 8px 16px),
-    rgba(255, 255, 255, 0.045);
+  min-width: 0;
+  min-height: 0;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  background: rgba(16, 15, 13, 0.54);
   cursor: pointer;
   overflow: hidden;
+  transition: box-shadow 160ms ease, transform 160ms ease;
 }
 
-.pattern-tile:hover {
-  border-color: rgba(244, 234, 214, 0.72);
+.pattern-piece:hover {
+  z-index: 3;
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 2px rgba(244, 234, 214, 0.5);
 }
 
-.pattern-tile.solved {
-  border-color: rgba(158, 208, 177, 0.88);
-  background: rgba(81, 119, 95, 0.18);
+.pattern-piece.solved {
+  background: rgba(81, 119, 95, 0.08);
 }
 
-.pattern-tile.error {
+.pattern-piece.error {
   border-color: rgba(210, 86, 70, 0.9);
 }
 
-.diamond {
-  width: 54px;
-  height: 54px;
-  border: 2px solid var(--gold);
-  background: rgba(71, 130, 108, 0.38);
-  transform: rotate(45deg);
-  transition: translate 180ms ease, border-color 180ms ease, background 180ms ease;
+.pattern-fragment {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  translate: var(--pattern-x, 0) var(--pattern-y, 0);
+  background-color: rgba(22, 29, 26, 0.92);
+  background-image:
+    var(--pattern-complete-image);
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  background-position: var(--piece-bg-x, 0%) var(--piece-bg-y, 0%);
+  transition: translate 190ms ease, filter 190ms ease;
 }
 
-.shift-left .diamond {
-  translate: -22px 0;
-}
-
-.shift-center .diamond {
-  translate: 0 0;
-  border-color: #9ed0b1;
-  background: rgba(87, 151, 122, 0.48);
-}
-
-.shift-right .diamond {
-  translate: 22px 0;
-}
-
-.pattern-tile em {
+.pattern-fragment::before {
+  content: "";
   position: absolute;
-  bottom: 10px;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(244, 234, 214, 0.08);
+}
+
+.pattern-piece.solved .pattern-fragment {
+  filter: drop-shadow(0 0 10px rgba(134, 204, 196, 0.34));
+}
+
+.pattern-board.completed .pattern-piece {
+  pointer-events: none;
+  background: transparent;
+}
+
+.pattern-board.completed .pattern-fragment {
+  opacity: 0;
+}
+
+.pattern-board.completed .pattern-fragment::before,
+.pattern-board.completed .pattern-piece em {
+  opacity: 0;
+}
+
+.pattern-piece em {
+  position: absolute;
+  right: 6px;
+  bottom: 5px;
+  z-index: 2;
   color: var(--muted);
   font-style: normal;
-  font-size: 13px;
+  font-size: 12px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.86);
 }
 
 .inscription-puzzle-box {
@@ -1994,6 +2054,32 @@ button {
   margin-bottom: 0;
 }
 
+.pipe-instructions {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(134, 204, 196, 0.32);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(134, 204, 196, 0.12), rgba(201, 157, 87, 0.08)),
+    rgba(8, 8, 7, 0.42);
+}
+
+.pipe-instructions strong {
+  color: var(--aqua);
+  font-size: 14px;
+}
+
+.pipe-instructions ol {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 20px;
+  color: #e8dcc7;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
 .pipe-game {
   display: grid;
   place-items: center;
@@ -2396,7 +2482,21 @@ button {
   }
 
   .pattern-board {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    padding: 10px;
+  }
+
+  .pattern-board::before {
+    inset: 10px;
+  }
+
+  .pattern-board::after {
+    inset: 16px;
+  }
+
+  .pattern-piece {
+    min-height: 82px;
   }
 
   .inscription-puzzle-box {

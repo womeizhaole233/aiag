@@ -72,30 +72,54 @@
     </div>
 
     <div id="patternPuzzleLayer" class="puzzle-layer hidden" role="dialog" aria-modal="true" aria-labelledby="patternPuzzleTitle">
-      <article class="puzzle-box">
+      <article class="puzzle-box pattern-puzzle-box">
         <header class="puzzle-header">
           <p class="eyebrow">甬道校准</p>
           <button id="patternPuzzleClose" class="plain-button" type="button">稍后</button>
         </header>
         <h1 id="patternPuzzleTitle">校准叠胜彩画</h1>
         <p class="puzzle-copy">
-          东侧第三个菱形单元与西侧错开约两寸。点击三枚纹样块，复原它们在中线上的对接关系。
+          东西两侧叠胜纹样被拆成九块残片。点击每一块在候选位置间移动；当九块都显示“归位”时，边缘会严丝合缝地合成一张完整菱形图纹。
         </p>
         <div class="pattern-board" aria-label="叠胜纹样校准板">
-          <button class="pattern-tile shift-left" data-index="0" type="button">
-            <span class="diamond"></span>
-            <em>偏左</em>
+          <button class="pattern-piece" data-index="0" type="button" aria-label="叠胜纹残片一">
+            <span class="pattern-fragment fragment-nw" aria-hidden="true"></span>
+            <em></em>
           </button>
-          <button class="pattern-tile shift-right" data-index="1" type="button">
-            <span class="diamond"></span>
-            <em>偏右</em>
+          <button class="pattern-piece" data-index="1" type="button" aria-label="叠胜纹残片二">
+            <span class="pattern-fragment fragment-n" aria-hidden="true"></span>
+            <em></em>
           </button>
-          <button class="pattern-tile shift-left" data-index="2" type="button">
-            <span class="diamond"></span>
-            <em>偏左</em>
+          <button class="pattern-piece" data-index="2" type="button" aria-label="叠胜纹残片三">
+            <span class="pattern-fragment fragment-ne" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="3" type="button" aria-label="叠胜纹残片四">
+            <span class="pattern-fragment fragment-w" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="4" type="button" aria-label="叠胜纹残片五">
+            <span class="pattern-fragment fragment-center" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="5" type="button" aria-label="叠胜纹残片六">
+            <span class="pattern-fragment fragment-e" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="6" type="button" aria-label="叠胜纹残片七">
+            <span class="pattern-fragment fragment-sw" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="7" type="button" aria-label="叠胜纹残片八">
+            <span class="pattern-fragment fragment-s" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="8" type="button" aria-label="叠胜纹残片九">
+            <span class="pattern-fragment fragment-se" aria-hidden="true"></span>
+            <em></em>
           </button>
         </div>
-        <p id="patternPuzzleFeedback" class="puzzle-feedback">提示：让菱形尖角回到中线，刮痕才会显露出重绘痕迹。</p>
+        <p id="patternPuzzleFeedback" class="puzzle-feedback">提示：每块残片都会在几个候选位置间移动。让所有残片回到中线，完整菱形才会闭合。</p>
       </article>
     </div>
 
@@ -243,6 +267,14 @@
         <p class="puzzle-copy">
           点击砖缝方块旋转，让左侧的水汽痕迹沿暗线通向右上的残片位置。
         </p>
+        <section class="pipe-instructions" aria-label="砖缝导流玩法说明">
+          <strong>玩法说明</strong>
+          <ol>
+            <li>点击未锁定的砖缝方块，每点一次旋转 90 度。</li>
+            <li>从左侧水汽起点开始，亮起的砖缝表示已经连通。</li>
+            <li>把亮线接到右侧残片终点，即可通关并收录线索。</li>
+          </ol>
+        </section>
         <div class="pipe-game">
           <div id="pipeBoard" class="pipe-board" aria-label="砖缝导流棋盘"></div>
         </div>
