@@ -2974,7 +2974,55 @@ function getReviewProgressSteps(step) {
 function getAvailableCombinationActions() {
   return getAllAnalysisWorkflows()
     .map(({ sceneId, workflow }) => ({ sceneId, workflow, stateInfo: getCombinationState(sceneId) }))
-    .filter((item) => item.stateInfo.available);
+    .filter((item) => item.stateInfo.available || shouldShowCombinationProgress(item.sceneId, item.stateInfo));
+}
+
+function shouldShowCombinationProgress(sceneId, stateInfo) {
+  if (!stateInfo.combination || stateInfo.created) return false;
+  return (
+    hasVisitedScene(sceneId) ||
+    stateInfo.available ||
+    (stateInfo.combination.requiresReviewRecordIds || []).some((recordId) => hasRecord(recordId)) ||
+    (stateInfo.combination.requiresExcludedRecordIds || []).some((recordId) => getRecord(recordId))
+  );
+}
+
+function getAnalysisRecordLabel(recordId) {
+  for (const { workflow } of getAllAnalysisWorkflows()) {
+    const reviewStep = (workflow.reviewSteps || []).find((step) => step.resultRecord.id === recordId);
+    if (reviewStep) return reviewStep.resultRecord.title;
+    if (workflow.combination?.resultRecord?.id === recordId) return workflow.combination.resultRecord.title;
+  }
+  return getRecordLabel(recordId);
+}
+
+function getCombinationProgressSteps(combination) {
+  if (combination.requirementSteps?.length) {
+    return combination.requirementSteps.map((requirement) => {
+      const complete = requirement.excludedId ? isRecordExcluded(requirement.excludedId) : hasRecord(requirement.id);
+      return {
+        label: requirement.label,
+        detail: complete ? requirement.metText || requirement.detail : requirement.missingText || requirement.detail,
+        mobileDetail: requirement.mobileDetail,
+        complete,
+        statusLabel: complete ? "已完成" : requirement.excludedId ? "待降级" : "待复查"
+      };
+    });
+  }
+
+  const reviewSteps = (combination.requiresReviewRecordIds || []).map((recordId) => ({
+    label: getAnalysisRecordLabel(recordId),
+    detail: "完成这条工具复查后，才能进入章节组合判断。",
+    complete: hasRecord(recordId),
+    statusLabel: hasRecord(recordId) ? "已完成" : "待复查"
+  }));
+  const excludedSteps = (combination.requiresExcludedRecordIds || []).map((recordId) => ({
+    label: getRecordLabel(recordId),
+    detail: "将这条单点异常降级或排除后，才能进入章节组合判断。",
+    complete: isRecordExcluded(recordId),
+    statusLabel: isRecordExcluded(recordId) ? "已完成" : "待降级"
+  }));
+  return [...reviewSteps, ...excludedSteps];
 }
 
 function buildJournalActionCard({
@@ -3015,8 +3063,9 @@ function buildJournalActionCard({
       <div class="review-progress-panel" aria-label="${escapeHtml(progressLabel || "复查点击顺序")}">
         ${progressSteps
           .map((item) => {
-            const status = item.complete ? "已完成" : item.collectedCount ? `${item.collectedCount}/${item.totalCount}` : "待点击";
-            const stateClass = item.complete ? "is-complete" : item.collectedCount ? "is-partial" : "is-missing";
+            const status =
+              item.statusLabel || (item.complete ? "已完成" : item.collectedCount ? `${item.collectedCount}/${item.totalCount}` : "待点击");
+            const stateClass = item.complete ? "is-complete" : item.statusLabel || item.collectedCount ? "is-partial" : "is-missing";
             return `
               <span class="review-progress-step ${stateClass}">
                 <strong>${escapeHtml(item.label)}</strong>
@@ -3095,15 +3144,25 @@ function renderJournal() {
       });
 
       getAvailableCombinationActions().forEach((item) => {
+        const progressSteps = getCombinationProgressSteps(item.stateInfo.combination);
+        const missingReviewCount = item.stateInfo.missingReviewIds.length;
+        const missingExcludedCount = item.stateInfo.missingExcludedIds.length;
+        const missingCount = missingReviewCount + missingExcludedCount;
+        const isAvailable = item.stateInfo.available;
         sectionActions.push(
           buildJournalActionCard({
             eyebrow: `${item.workflow.chapter} / 章节组合`,
             title: item.stateInfo.combination.resultRecord.title,
             body: item.stateInfo.combination.description,
-            note: "该组合将直接推动章节完成，并生成对应结论卡。",
-            buttonLabel: item.stateInfo.combination.buttonLabel,
+            note: isAvailable
+              ? `复查和降级都已完成，可以生成${item.workflow.chapter}组合判断。`
+              : `还缺 ${missingCount} 项：${missingReviewCount} 条复查、${missingExcludedCount} 条降级。按下方清单补齐后再生成组合判断。`,
+            buttonLabel: isAvailable ? item.stateInfo.combination.buttonLabel : `还缺 ${missingCount} 项条件`,
             actionName: "create-scene-combo",
-            actionValue: item.sceneId
+            actionValue: item.sceneId,
+            progressLabel: item.stateInfo.combination.progressLabel,
+            progressSteps,
+            disabled: !isAvailable
           })
         );
       });

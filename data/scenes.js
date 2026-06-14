@@ -6058,12 +6058,45 @@ const ANALYSIS_DATA = {
       combination: {
         buttonLabel: "形成后室章节组合判断",
         description: "把假门图像、地券文书和葬具证据链三条复查结果合并，生成后室第一版判断。",
+        progressLabel: "后室组合判断生成条件",
         requiresReviewRecordIds: [
           "analysis:rear_chamber:review_false_door_structure",
           "analysis:rear_chamber:review_document_layer",
           "analysis:rear_chamber:review_burial_distribution"
         ],
         requiresExcludedRecordIds: ["rear_chamber:woman_hand", "rear_chamber:nail_count"],
+        requirementSteps: [
+          {
+            id: "analysis:rear_chamber:review_false_door_structure",
+            label: "1 假门图像复查",
+            missingText: "先完成北壁整体、妇人启门和门缝槽口的复查。",
+            metText: "假门图像复查已完成。"
+          },
+          {
+            id: "analysis:rear_chamber:review_document_layer",
+            label: "2 地券文书复查",
+            missingText: "先完成地券整体、券文和行列关系的复查。",
+            metText: "地券文书复查已完成。"
+          },
+          {
+            id: "analysis:rear_chamber:review_burial_distribution",
+            label: "3 葬具证据链复查",
+            missingText: "先完成砖床、人骨、铁钉和地券之间的证据链复查。",
+            metText: "葬具证据链复查已完成。"
+          },
+          {
+            excludedId: "rear_chamber:woman_hand",
+            label: "4 降级手部断口",
+            missingText: "在待验证中把妇人手部断口降级为局部残损。",
+            metText: "妇人手部断口已降级。"
+          },
+          {
+            excludedId: "rear_chamber:nail_count",
+            label: "5 降级铁钉数量",
+            missingText: "在待验证中把铁钉数量异常降级为角点细节。",
+            metText: "铁钉数量异常已降级。"
+          }
+        ],
         resultRecord: {
           id: "analysis:rear_chamber:combo",
           sceneId: "rear_chamber",
