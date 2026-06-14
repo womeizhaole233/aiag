@@ -2999,7 +2999,12 @@ function buildJournalActionCard({
               <span class="review-progress-step ${stateClass}">
                 <strong>${escapeHtml(item.label)}</strong>
                 <em>${escapeHtml(status)}</em>
-                <span>${escapeHtml(item.detail || "")}</span>
+                <span class="review-progress-detail${item.mobileDetail ? " is-desktop" : ""}">${escapeHtml(item.detail || "")}</span>
+                ${
+                  item.mobileDetail
+                    ? `<span class="review-progress-detail is-mobile">${escapeHtml(item.mobileDetail)}</span>`
+                    : ""
+                }
               </span>
             `;
           })

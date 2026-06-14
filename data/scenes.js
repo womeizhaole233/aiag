@@ -5995,21 +5995,25 @@ const ANALYSIS_DATA = {
             {
               label: "1 北壁下部",
               detail: "后室入口总览 → 北壁 → 北壁下部；点砖床边界和假门-砖床轴线。",
+              mobileDetail: "北壁 → 北壁下部；点砖床边界、轴线。",
               recordIds: ["rear_chamber:north_lower_bed_boundary", "rear_chamber:north_lower_bed_axis"]
             },
             {
               label: "2 人骨铁钉",
               detail: "回到北壁；点人骨与铁钉，再在人骨近景点铁钉数量。",
+              mobileDetail: "北壁 → 人骨与铁钉；点铁钉数量。",
               recordIds: ["rear_chamber:bones_nails", "rear_chamber:nail_count"]
             },
             {
               label: "3 分布与人骨位置",
               detail: "回到北壁；点出土物分布图，再进入人骨位置，确认葬具范围。",
+              mobileDetail: "北壁 → 分布图 → 人骨位置。",
               recordIds: ["rear_chamber:distribution_map", "rear_chamber:bones_position_burial_range"]
             },
             {
               label: "4 地券并盖",
               detail: "回到北壁；点地券 → 地券并盖 → 地券本体，把文书层接入链条。",
+              mobileDetail: "北壁 → 地券 → 地券并盖 → 地券本体。",
               recordIds: ["rear_chamber:land_deed_body_text_panel"]
             }
           ],

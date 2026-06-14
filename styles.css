@@ -7,6 +7,7 @@
   --border-strong: rgba(255, 255, 255, 0.24);
   --text: #edf2f7;
   --text-muted: rgba(226, 232, 240, 0.82);
+  --text-faint: rgba(226, 232, 240, 0.58);
   --primary: #78a8ff;
   --primary-strong: #5b92ff;
   --success: #6dd3a0;
@@ -358,7 +359,7 @@ button {
   top: 72px;
   right: 16px;
   width: min(420px, calc(100vw - 32px));
-  max-height: calc(100vh - 88px);
+  max-height: calc(100dvh - 88px);
 }
 
 .conclusion-panel {
@@ -571,6 +572,7 @@ button {
   grid-template-columns: minmax(82px, 0.8fr) auto minmax(0, 2fr);
   align-items: center;
   gap: 10px;
+  min-width: 0;
   min-height: 42px;
   padding: 9px 10px;
   border: 1px solid var(--border);
@@ -597,11 +599,16 @@ button {
   text-align: center;
 }
 
-.review-progress-step span {
+.review-progress-detail {
   min-width: 0;
   color: var(--text-muted);
   font-size: 12px;
   line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.review-progress-detail.is-mobile {
+  display: none;
 }
 
 .review-progress-step.is-complete {
@@ -740,7 +747,9 @@ button {
     right: 12px;
     bottom: 12px;
     width: auto;
-    max-height: 48vh;
+    max-height: min(72dvh, calc(100dvh - 96px));
+    padding: 14px;
+    border-radius: 18px;
   }
 
   .conclusion-panel {
@@ -773,6 +782,16 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .journal-card,
+  .journal-action-card {
+    padding: 14px;
+  }
+
+  .journal-card h2,
+  .journal-action-card h2 {
+    font-size: 18px;
+  }
+
   .scene-toolbar {
     left: 8px;
     right: 8px;
@@ -794,10 +813,20 @@ button {
   .review-progress-step {
     grid-template-columns: 1fr;
     align-items: start;
+    gap: 5px;
+    padding: 8px 9px;
   }
 
   .review-progress-step em {
     justify-self: start;
+  }
+
+  .review-progress-detail.is-desktop {
+    display: none;
+  }
+
+  .review-progress-detail.is-mobile {
+    display: block;
   }
 
   .scene-toolbar .chrome-button {
@@ -2974,8 +3003,9 @@ button {
 
   .journal-panel {
     right: 12px;
-    bottom: 62px;
+    bottom: 12px;
     width: calc(100vw - 24px);
+    max-height: min(74dvh, calc(100dvh - 92px));
   }
 
   .message-box {
