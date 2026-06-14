@@ -6036,17 +6036,23 @@ const ANALYSIS_DATA = {
       pendingResolutions: [
         {
           recordId: "rear_chamber:woman_hand",
+          priority: 10,
           buttonLabel: "将妇人手部新断口降级为局部残损",
           description: "单一手指断口只能说明局部残损或后期破坏，不能直接改写假门图像主链。",
           requiresReviewRecordIds: ["analysis:rear_chamber:review_false_door_structure"],
+          blockedText: "先完成假门图像复查，再处理这条手部断口。它要回到北壁假门、妇人启门和门缝槽口的整体关系里判断。",
+          readyText: "假门图像复查已完成。现在可以把手部断口降级为局部残损，避免它单独替代北壁假门结构判断。",
           resolutionText: "妇人手部新断口已被降级为局部残损；它可以提示后期破坏，但不能脱离假门整体结构单独推导后室主结论。"
         },
         {
           recordId: "rear_chamber:nail_count",
+          priority: 20,
           buttonLabel: "将铁钉数量异常降级为角点细节",
-          description: "角点钉数差异缺少整体平面支持，不能替代砖床遗存主链。",
+          description: "铁钉数量差异必须先放回砖床、人骨位置和地券文书的同一条证据链中复查；它不能抢在整体分布关系之前作结论。",
           requiresReviewRecordIds: ["analysis:rear_chamber:review_burial_distribution"],
-          resolutionText: "铁钉数量异常已被降级为角点细节；在缺少整体分布关系支撑时，它不能单独证明后室存在额外葬仪异常。"
+          blockedText: "先完成葬具证据链复查，再处理铁钉数量。原因是东北角、西南角的钉数差只能说明角点细节，必须和砖床边界、人骨范围、地券文书一起判断。",
+          readyText: "葬具证据链已完成。现在可以把铁钉数量异常降级为角点细节：它参与说明葬具痕迹，但不能单独推出额外葬仪异常。",
+          resolutionText: "铁钉数量异常已被降级为角点细节；它需要依附于砖床边界、人骨范围和地券文书的整体关系，不能单独证明后室存在额外葬仪异常。"
         }
       ],
       combination: {

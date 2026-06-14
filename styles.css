@@ -510,6 +510,22 @@ button {
   font-size: 12px;
 }
 
+.journal-note.is-ready,
+.journal-note.is-blocked {
+  padding: 8px 10px;
+  border-left: 3px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: rgba(244, 247, 252, 0.08);
+}
+
+.journal-note.is-ready {
+  border-left-color: var(--success);
+}
+
+.journal-note.is-blocked {
+  border-left-color: var(--warning);
+}
+
 .journal-card-meta,
 .conclusion-meta,
 .relation-meta,

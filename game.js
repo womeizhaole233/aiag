@@ -2916,7 +2916,29 @@ function getJournalRecordTypeLabel(record) {
 }
 
 function getTrackRecords(trackId) {
-  return state.records.filter((record) => record.track === trackId).slice().reverse();
+  const records = state.records.filter((record) => record.track === trackId);
+  if (trackId !== "pending") return records.slice().reverse();
+
+  return records
+    .map((record, index) => {
+      const match = findPendingResolution(record.id);
+      const resolutionState = match ? getPendingResolutionState(match.resolution) : null;
+      return {
+        record,
+        index,
+        available: Boolean(resolutionState?.available),
+        missingCount: resolutionState?.missingReviewIds.length ?? 99,
+        priority: match?.resolution.priority ?? 1000
+      };
+    })
+    .sort(
+      (a, b) =>
+        Number(b.available) - Number(a.available) ||
+        a.priority - b.priority ||
+        a.missingCount - b.missingCount ||
+        b.index - a.index
+    )
+    .map((item) => item.record);
 }
 
 function shouldShowReviewProgress(sceneId, step, stateInfo) {
@@ -3029,6 +3051,12 @@ function buildJournalActionCard({
   return article;
 }
 
+function buildJournalNote(note) {
+  const noteInfo = typeof note === "string" ? { text: note } : note;
+  const className = `journal-note${noteInfo.tone ? ` is-${noteInfo.tone}` : ""}`;
+  return `<p class="${className}">${escapeHtml(noteInfo.text)}</p>`;
+}
+
 function renderJournal() {
   journalPanel.classList.toggle("hidden", !state.journalOpen);
   journalToggle.setAttribute("aria-expanded", String(state.journalOpen));
@@ -3106,6 +3134,7 @@ function renderJournal() {
       const item = document.createElement("article");
       item.className = "journal-card";
       const actionButtons = [];
+      const metaChips = [];
       const notes = [];
 
       if (record.track === "pending") {
@@ -3113,11 +3142,18 @@ function renderJournal() {
         if (resolutionMatch) {
           const resolutionState = getPendingResolutionState(resolutionMatch.resolution);
           if (resolutionState.available) {
+            metaChips.push('<span class="status-chip is-generated">可处理</span>');
+            notes.push({ text: resolutionMatch.resolution.readyText || resolutionMatch.resolution.description, tone: "ready" });
             actionButtons.push(
               `<button class="primary-button" type="button" data-resolve-pending="${escapeHtml(record.id)}">${escapeHtml(resolutionMatch.resolution.buttonLabel)}</button>`
             );
           } else if (resolutionState.missingReviewIds.length) {
-            notes.push(`还需先完成：${resolutionState.missingReviewIds.map((recordId) => getRecordLabel(recordId)).join("、")}`);
+            const missingLabels = resolutionState.missingReviewIds.map((recordId) => getRecordLabel(recordId)).join("、");
+            metaChips.push('<span class="status-chip is-partial">待复查</span>');
+            notes.push({
+              text: resolutionMatch.resolution.blockedText || `还需先完成：${missingLabels}`,
+              tone: "blocked"
+            });
           }
         }
       }
@@ -3130,10 +3166,11 @@ function renderJournal() {
         <div class="journal-card-meta">
           <span class="status-chip is-${record.track === "excluded" ? "met" : record.track === "pending" ? "partial" : "generated"}">${escapeHtml(getJournalRecordTypeLabel(record))}</span>
           <span class="status-chip is-locked">${escapeHtml(getSceneLabel(record.sceneId))}</span>
+          ${metaChips.join("")}
         </div>
         <h2>${escapeHtml(record.title)}</h2>
         <p>${escapeHtml(record.text)}</p>
-        ${notes.map((note) => `<p class="journal-note">${escapeHtml(note)}</p>`).join("")}
+        ${notes.map((note) => buildJournalNote(note)).join("")}
         ${actionButtons.length ? `<div class="journal-card-actions">${actionButtons.join("")}</div>` : ""}
       `;
       section.appendChild(item);
