@@ -2949,18 +2949,18 @@ const SCENES = {
           },
           {
             id: "overview_turn_north",
-            label: "转向北壁",
-            navLabel: "转向北壁",
+            label: "北壁与过道方向",
+            navLabel: "北壁/过道方向",
             shape: "rect",
             rect: [0.34, 0.38, 0.66, 0.66],
-            title: "转向北壁",
-            body: "前室北壁位于空间深处。\n过道方向在北壁之后。",
+            title: "北壁与过道方向",
+            body: "前室总览图里不直接显露过道口。\n过道方向在北壁之后；先转向北壁，完成前室复查和汇总后，再从北壁进入过道。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_north_west",
-              title: "转向北壁",
-              body: "前室北壁西部进入视线。",
+              title: "转向北壁与过道方向",
+              body: "前室北壁西部进入视线。\n这里是前室通向过道的方向；完成前室汇总后，可从北壁下方进入过道。",
               closeLabel: "转向"
             }
           },
@@ -3504,30 +3504,30 @@ const SCENES = {
           },
           {
             id: "front_chamber_exit_west",
-            label: "前室出口",
+            label: "过道入口",
             navLabel: "进入过道",
             shape: "rect",
             rect: [0.34, 0.76, 0.66, 0.98],
-            title: "前室出口",
-            body: "北壁一侧的画面更密，通向内侧的方向重新进入视线。\n前室四壁与顶部的信息已经整理完成。\n过道入口的位置已经确认。",
-            record: "前室出口位置已经确认。",
+            title: "前室通向过道",
+            body: "这是前室通向过道的方向，位于北壁下方。\n前室四壁与顶部的信息需要先在记录夹里收束。\n完成前室复查、降级和汇总后，才能继续进入过道。",
+            record: "前室北壁下方确认了通向过道的方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             transition: {
               targetSceneId: "passage",
               targetViewId: "passage_overview",
               completesSceneId: "front_chamber",
-              title: "前室出口",
-              body: "前室四壁与顶部已经形成对应。\n器物、人物、壁函和铺作不再只是分散图像。\n北壁一侧的画面更密，过道入口重新进入视线。",
+              title: "进入过道",
+              body: "前室四壁与顶部已经形成对应。\n器物、人物、壁函和铺作不再只是分散图像。\n你从北壁方向进入过道轴线，前室之后的狭窄通道重新进入视线。",
               closeLabel: "进入",
-              lockedBody: "前室观察尚未收束。请回到对应墙面复看线索，并在记录夹中完成复查、降级与汇总。",
+              lockedBody: "过道入口还不能通过。请先回到前室各壁面收集线索，并在记录夹中完成三条复查、两条降级和前室汇总。",
               missingRecords: [
                 { id: "analysis:front_chamber:review_artifact_tension", label: "西壁：复看注子、高瓶与砖砌桌" },
                 { id: "analysis:front_chamber:review_ritual_sequence", label: "东壁/北壁：复看女乐与两段画面" },
                 { id: "analysis:front_chamber:review_partition_structure", label: "南壁/顶部：复看壁函、倚柱与铺作" },
                 { excludedId: "front_chamber:pointed_shoes", label: "东壁尖鞋：在记录夹中降级为服饰细节" },
                 { excludedId: "front_chamber:east_wall_surface", label: "东壁温差：在记录夹中降级为体感异常" },
-                { id: "analysis:front_chamber:combo", label: "记录夹：完成前室汇总" }
+                { id: "analysis:front_chamber:combo", label: "记录夹：形成前室组合判断，然后回北壁进入过道" }
               ]
             }
           },
@@ -3646,30 +3646,30 @@ const SCENES = {
           },
           {
             id: "front_chamber_exit_east",
-            label: "前室出口",
+            label: "过道入口",
             navLabel: "进入过道",
             shape: "rect",
             rect: [0.34, 0.76, 0.66, 0.98],
-            title: "前室出口",
-            body: "北壁一侧的画面更密，通向内侧的方向重新进入视线。\n前室四壁与顶部的信息已经整理完成。\n过道入口的位置已经确认。",
-            record: "前室出口位置已经确认。",
+            title: "前室通向过道",
+            body: "这是前室通向过道的方向，位于北壁下方。\n前室四壁与顶部的信息需要先在记录夹里收束。\n完成前室复查、降级和汇总后，才能继续进入过道。",
+            record: "前室北壁下方确认了通向过道的方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             transition: {
               targetSceneId: "passage",
               targetViewId: "passage_overview",
               completesSceneId: "front_chamber",
-              title: "前室出口",
-              body: "前室四壁与顶部已经形成对应。\n器物、人物、壁函和铺作不再只是分散图像。\n北壁一侧的画面更密，过道入口重新进入视线。",
+              title: "进入过道",
+              body: "前室四壁与顶部已经形成对应。\n器物、人物、壁函和铺作不再只是分散图像。\n你从北壁方向进入过道轴线，前室之后的狭窄通道重新进入视线。",
               closeLabel: "进入",
-              lockedBody: "前室观察尚未收束。请回到对应墙面复看线索，并在记录夹中完成复查、降级与汇总。",
+              lockedBody: "过道入口还不能通过。请先回到前室各壁面收集线索，并在记录夹中完成三条复查、两条降级和前室汇总。",
               missingRecords: [
                 { id: "analysis:front_chamber:review_artifact_tension", label: "西壁：复看注子、高瓶与砖砌桌" },
                 { id: "analysis:front_chamber:review_ritual_sequence", label: "东壁/北壁：复看女乐与两段画面" },
                 { id: "analysis:front_chamber:review_partition_structure", label: "南壁/顶部：复看壁函、倚柱与铺作" },
                 { excludedId: "front_chamber:pointed_shoes", label: "东壁尖鞋：在记录夹中降级为服饰细节" },
                 { excludedId: "front_chamber:east_wall_surface", label: "东壁温差：在记录夹中降级为体感异常" },
-                { id: "analysis:front_chamber:combo", label: "记录夹：完成前室汇总" }
+                { id: "analysis:front_chamber:combo", label: "记录夹：形成前室组合判断，然后回北壁进入过道" }
               ]
             }
           },
