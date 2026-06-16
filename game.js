@@ -2816,12 +2816,15 @@ function makeHotspot(hotspot) {
   if (shouldRenderNavLabel(hotspot)) {
     const label = makeNavLabel(hotspot, image);
     group.appendChild(label);
+    if (hotspot.navLabelAlwaysVisible) {
+      showNavLabel(label);
+    }
     [hitArea, element].forEach((target) => {
       target.addEventListener("mouseenter", () => showNavLabel(label));
-      target.addEventListener("mouseleave", () => hideNavLabel(label));
+      target.addEventListener("mouseleave", () => hideNavLabel(label, hotspot));
     });
     element.addEventListener("focus", () => showNavLabel(label));
-    element.addEventListener("blur", () => hideNavLabel(label));
+    element.addEventListener("blur", () => hideNavLabel(label, hotspot));
   }
   return group;
 }
@@ -2855,21 +2858,26 @@ function makeNavLabel(hotspot, image) {
   label.setAttribute("fill", "#f4ead6");
   label.setAttribute("stroke", "#000");
   label.setAttribute("stroke-opacity", "0.72");
-  label.setAttribute("stroke-width", "7");
+  label.setAttribute("stroke-width", hotspot.navLabelEmphasis ? "10" : "7");
   label.setAttribute("paint-order", "stroke");
-  label.setAttribute("opacity", "0");
-  label.setAttribute("font-size", Math.max(34, Math.min(86, image.width * 0.025)));
+  label.setAttribute("opacity", hotspot.navLabelAlwaysVisible ? getNavLabelVisibleOpacity(hotspot) : "0");
+  label.setAttribute("font-size", Math.max(34, Math.min(92, image.width * (hotspot.navLabelEmphasis ? 0.029 : 0.025))));
+  label.setAttribute("font-weight", hotspot.navLabelEmphasis ? "700" : "600");
   label.setAttribute("font-family", "Microsoft YaHei, Noto Sans SC, sans-serif");
   label.setAttribute("pointer-events", "none");
   return label;
 }
 
-function showNavLabel(label) {
-  label.setAttribute("opacity", "0.68");
+function getNavLabelVisibleOpacity(hotspot) {
+  return hotspot.navLabelEmphasis ? "0.9" : "0.72";
 }
 
-function hideNavLabel(label) {
-  label.setAttribute("opacity", "0");
+function showNavLabel(label) {
+  label.setAttribute("opacity", "0.92");
+}
+
+function hideNavLabel(label, hotspot) {
+  label.setAttribute("opacity", hotspot?.navLabelAlwaysVisible ? getNavLabelVisibleOpacity(hotspot) : "0");
 }
 
 function getHotspotCenter(hotspot, image) {

@@ -2951,6 +2951,8 @@ const SCENES = {
             id: "overview_turn_north",
             label: "北壁与过道方向",
             navLabel: "北壁/过道方向",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
             shape: "rect",
             rect: [0.34, 0.38, 0.66, 0.66],
             title: "北壁与过道方向",
@@ -2997,6 +2999,8 @@ const SCENES = {
             id: "return_corridor",
             label: "返回入口总览",
             navLabel: "返回入口总览",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
             shape: "rect",
             rect: [0.02, 0.72, 0.22, 0.96],
             title: "返回入口总览",
@@ -3205,6 +3209,25 @@ const SCENES = {
         },
         hotspots: [
           {
+            id: "return_overview_from_east",
+            label: "返回入口总览",
+            navLabel: "返回入口总览",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
+            shape: "rect",
+            rect: [0.72, 0.84, 0.98, 0.98],
+            title: "返回入口总览",
+            body: "回到前室入口总览。\n可以从总览重新选择东、西、南、北壁，也可以确认北壁之后的过道方向。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "front_overview",
+              title: "返回入口总览",
+              body: "前室入口总览重新进入视线。\n北壁方向会继续标出通向过道的下一步。",
+              closeLabel: "返回"
+            }
+          },
+          {
             id: "female_musicians",
             label: "女乐图像",
             shape: "rect",
@@ -3327,6 +3350,25 @@ const SCENES = {
           height: 2191
         },
         hotspots: [
+          {
+            id: "return_overview_from_south",
+            label: "返回入口总览",
+            navLabel: "返回入口总览",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
+            shape: "rect",
+            rect: [0.34, 0.84, 0.66, 0.99],
+            title: "返回入口总览",
+            body: "回到前室入口总览。\n完成南壁观察后，建议回总览再选择北壁/过道方向。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "front_overview",
+              title: "返回入口总览",
+              body: "前室入口总览重新进入视线。\n从这里可以继续转向北壁，再进入过道。",
+              closeLabel: "返回"
+            }
+          },
           {
             id: "south_wall_overview",
             label: "南壁整体",
@@ -3506,8 +3548,10 @@ const SCENES = {
             id: "front_chamber_exit_west",
             label: "过道入口",
             navLabel: "进入过道",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
             shape: "rect",
-            rect: [0.34, 0.76, 0.66, 0.98],
+            rect: [0.38, 0.58, 0.62, 0.98],
             title: "前室通向过道",
             body: "这是前室通向过道的方向，位于北壁下方。\n前室四壁与顶部的信息需要先在记录夹里收束。\n完成前室复查、降级和汇总后，才能继续进入过道。",
             record: "前室北壁下方确认了通向过道的方向。",
@@ -3547,6 +3591,25 @@ const SCENES = {
               title: "抬头看顶部",
               body: "前室顶部的补间铺作进入视线。",
               closeLabel: "抬头"
+            }
+          },
+          {
+            id: "return_overview_from_north_west",
+            label: "返回入口总览",
+            navLabel: "返回入口总览",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
+            shape: "rect",
+            rect: [0.02, 0.02, 0.32, 0.16],
+            title: "返回入口总览",
+            body: "回到前室入口总览。\n如果过道入口暂未解锁，先回总览整理其它壁面线索。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "front_overview",
+              title: "返回入口总览",
+              body: "前室入口总览重新进入视线。\n北壁仍是进入过道的方向。",
+              closeLabel: "返回"
             }
           },
           {
@@ -3648,8 +3711,10 @@ const SCENES = {
             id: "front_chamber_exit_east",
             label: "过道入口",
             navLabel: "进入过道",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
             shape: "rect",
-            rect: [0.34, 0.76, 0.66, 0.98],
+            rect: [0.38, 0.58, 0.62, 0.98],
             title: "前室通向过道",
             body: "这是前室通向过道的方向，位于北壁下方。\n前室四壁与顶部的信息需要先在记录夹里收束。\n完成前室复查、降级和汇总后，才能继续进入过道。",
             record: "前室北壁下方确认了通向过道的方向。",
@@ -3689,6 +3754,25 @@ const SCENES = {
               title: "抬头看顶部",
               body: "前室顶部的补间铺作进入视线。",
               closeLabel: "抬头"
+            }
+          },
+          {
+            id: "return_overview_from_north_east",
+            label: "返回入口总览",
+            navLabel: "返回入口总览",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
+            shape: "rect",
+            rect: [0.02, 0.02, 0.32, 0.16],
+            title: "返回入口总览",
+            body: "回到前室入口总览。\n如果过道入口暂未解锁，先回总览整理其它壁面线索。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "front_overview",
+              title: "返回入口总览",
+              body: "前室入口总览重新进入视线。\n北壁仍是进入过道的方向。",
+              closeLabel: "返回"
             }
           },
           {
@@ -3783,6 +3867,25 @@ const SCENES = {
               title: "靠近观察西北角",
               body: "西北角转角构件被放大。\n构件宽度和出跳位置可以继续查看。",
               closeLabel: "靠近"
+            }
+          },
+          {
+            id: "return_overview_from_ceiling",
+            label: "返回入口总览",
+            navLabel: "返回入口总览",
+            navLabelAlwaysVisible: true,
+            navLabelEmphasis: true,
+            shape: "rect",
+            rect: [0.02, 0.02, 0.18, 0.16],
+            title: "返回入口总览",
+            body: "回到前室入口总览。\n顶部观察完成后，可以从总览继续选择北壁/过道方向。",
+            sourceFile: "game-navigation",
+            sourceClueId: "NAV",
+            viewTransition: {
+              targetViewId: "front_overview",
+              title: "返回入口总览",
+              body: "前室入口总览重新进入视线。\n从这里可以继续回到北壁并寻找过道入口。",
+              closeLabel: "返回"
             }
           },
           {
