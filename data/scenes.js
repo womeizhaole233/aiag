@@ -2871,8 +2871,8 @@ const SCENES = {
         id: "front_overview",
         title: "第一号墓前室入口总览",
         image: {
-          src: "assets/M1/17_补充总览图/P0-2_前室入口总览图.png",
-          alt: "第一号墓前室入口总览图",
+          src: "assets/M1/17_补充总览图/P0-2B_前室北壁过道方向总览图.png",
+          alt: "第一号墓前室北壁过道方向总览图",
           width: 1672,
           height: 941
         },
