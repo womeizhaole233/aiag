@@ -3004,13 +3004,13 @@ const SCENES = {
             shape: "rect",
             rect: [0.02, 0.72, 0.22, 0.96],
             title: "返回入口总览",
-            body: "前室入口总览仍在身后。\n已经记录的器物线索不会消失。",
+            body: "回到前室入口总览。\n从总览可以重新选择各壁面和顶部；北壁中下部的暗缝仍指向过道方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。",
+              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
               closeLabel: "返回"
             }
           },
@@ -3217,13 +3217,13 @@ const SCENES = {
             shape: "rect",
             rect: [0.72, 0.84, 0.98, 0.98],
             title: "返回入口总览",
-            body: "回到前室入口总览。\n可以从总览重新选择东、西、南、北壁，也可以确认北壁之后的过道方向。",
+            body: "回到前室入口总览。\n从总览可以重新选择各壁面和顶部；北壁中下部的暗缝仍指向过道方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。\n北壁方向会继续标出通向过道的下一步。",
+              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
               closeLabel: "返回"
             }
           },
@@ -3322,20 +3322,20 @@ const SCENES = {
           },
           {
             id: "return_west",
-            label: "返回西壁",
-            navLabel: "返回西壁",
+            label: "转向西壁",
+            navLabel: "转向西壁",
             shape: "rect",
             rect: [0.02, 0.18, 0.18, 0.86],
-            title: "返回西壁",
+            title: "转向西壁",
             body: "东壁人物已经记录。\n器物线索仍需回到西壁对照。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
-              title: "返回西壁",
-              body: "西壁器物重新进入视线。",
-              closeLabel: "返回"
+              title: "转向西壁",
+              body: "西壁器物重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           }
         ]
@@ -3359,13 +3359,13 @@ const SCENES = {
             shape: "rect",
             rect: [0.34, 0.84, 0.66, 0.99],
             title: "返回入口总览",
-            body: "回到前室入口总览。\n完成南壁观察后，建议回总览再选择北壁/过道方向。",
+            body: "回到前室入口总览。\n从总览可以重新选择各壁面和顶部；北壁中下部的暗缝仍指向过道方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。\n从这里可以继续转向北壁，再进入过道。",
+              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
               closeLabel: "返回"
             }
           },
@@ -3469,38 +3469,38 @@ const SCENES = {
           },
           {
             id: "return_west_from_south",
-            label: "返回西壁",
-            navLabel: "返回西壁",
+            label: "转向西壁",
+            navLabel: "转向西壁",
             shape: "rect",
             rect: [0, 0.18, 0.18, 0.88],
-            title: "返回西壁",
-            body: "西壁的器物与家具重新进入视线。",
+            title: "转向西壁",
+            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
-              title: "返回西壁",
-              body: "西壁的器物与家具重新进入视线。",
-              closeLabel: "返回"
+              title: "转向西壁",
+              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_east_from_south",
-            label: "返回东壁",
-            navLabel: "返回东壁",
+            label: "转向东壁",
+            navLabel: "转向东壁",
             shape: "rect",
             rect: [0.82, 0.18, 1, 0.88],
-            title: "返回东壁",
-            body: "东壁的人物图像重新进入视线。",
+            title: "转向东壁",
+            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
-              title: "返回东壁",
-              body: "东壁的人物图像重新进入视线。",
-              closeLabel: "返回"
+              title: "转向东壁",
+              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           }
         ]
@@ -3614,56 +3614,56 @@ const SCENES = {
           },
           {
             id: "return_west_from_north_west",
-            label: "返回西壁",
-            navLabel: "返回西壁",
+            label: "转向西壁",
+            navLabel: "转向西壁",
             shape: "rect",
             rect: [0, 0.18, 0.18, 0.88],
-            title: "返回西壁",
-            body: "西壁的器物与家具重新进入视线。",
+            title: "转向西壁",
+            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
-              title: "返回西壁",
-              body: "西壁的器物与家具重新进入视线。",
-              closeLabel: "返回"
+              title: "转向西壁",
+              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_east_from_north_west",
-            label: "返回东壁",
-            navLabel: "返回东壁",
+            label: "转向东壁",
+            navLabel: "转向东壁",
             shape: "rect",
             rect: [0.18, 0.86, 0.48, 1],
-            title: "返回东壁",
-            body: "东壁的人物图像重新进入视线。",
+            title: "转向东壁",
+            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
-              title: "返回东壁",
-              body: "东壁的人物图像重新进入视线。",
-              closeLabel: "返回"
+              title: "转向东壁",
+              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_south_from_north_west",
-            label: "返回南壁",
-            navLabel: "返回南壁",
+            label: "转向南壁",
+            navLabel: "转向南壁",
             shape: "rect",
             rect: [0.52, 0.86, 0.82, 1],
-            title: "返回南壁",
-            body: "南壁的壁函与倚柱重新进入视线。",
+            title: "转向南壁",
+            body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室南壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_south",
-              title: "返回南壁",
-              body: "南壁的壁函与倚柱重新进入视线。",
-              closeLabel: "返回"
+              title: "转向南壁",
+              body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           }
         ]
@@ -3777,56 +3777,56 @@ const SCENES = {
           },
           {
             id: "return_west_from_north_east",
-            label: "返回西壁",
-            navLabel: "返回西壁",
+            label: "转向西壁",
+            navLabel: "转向西壁",
             shape: "rect",
             rect: [0, 0.86, 0.28, 1],
-            title: "返回西壁",
-            body: "西壁的器物与家具重新进入视线。",
+            title: "转向西壁",
+            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
-              title: "返回西壁",
-              body: "西壁的器物与家具重新进入视线。",
-              closeLabel: "返回"
+              title: "转向西壁",
+              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_east_from_north_east",
-            label: "返回东壁",
-            navLabel: "返回东壁",
+            label: "转向东壁",
+            navLabel: "转向东壁",
             shape: "rect",
             rect: [0.34, 0.86, 0.64, 1],
-            title: "返回东壁",
-            body: "东壁的人物图像重新进入视线。",
+            title: "转向东壁",
+            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
-              title: "返回东壁",
-              body: "东壁的人物图像重新进入视线。",
-              closeLabel: "返回"
+              title: "转向东壁",
+              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_south_from_north_east",
-            label: "返回南壁",
-            navLabel: "返回南壁",
+            label: "转向南壁",
+            navLabel: "转向南壁",
             shape: "rect",
             rect: [0.7, 0.86, 1, 1],
-            title: "返回南壁",
-            body: "南壁的壁函与倚柱重新进入视线。",
+            title: "转向南壁",
+            body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室南壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_south",
-              title: "返回南壁",
-              body: "南壁的壁函与倚柱重新进入视线。",
-              closeLabel: "返回"
+              title: "转向南壁",
+              body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           }
         ]
@@ -3878,86 +3878,86 @@ const SCENES = {
             shape: "rect",
             rect: [0.02, 0.02, 0.18, 0.16],
             title: "返回入口总览",
-            body: "回到前室入口总览。\n顶部观察完成后，可以从总览继续选择北壁/过道方向。",
+            body: "回到前室入口总览。\n从总览可以重新选择各壁面和顶部；北壁中下部的暗缝仍指向过道方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。\n从这里可以继续回到北壁并寻找过道入口。",
+              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
               closeLabel: "返回"
             }
           },
           {
             id: "return_west_from_ceiling",
-            label: "返回西壁",
-            navLabel: "返回西壁",
+            label: "转向西壁",
+            navLabel: "转向西壁",
             shape: "rect",
             rect: [0, 0.78, 0.25, 1],
-            title: "返回西壁",
-            body: "西壁的器物与家具重新进入视线。",
+            title: "转向西壁",
+            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
-              title: "返回西壁",
-              body: "西壁的器物与家具重新进入视线。",
-              closeLabel: "返回"
+              title: "转向西壁",
+              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_east_from_ceiling",
-            label: "返回东壁",
-            navLabel: "返回东壁",
+            label: "转向东壁",
+            navLabel: "转向东壁",
             shape: "rect",
             rect: [0.25, 0.78, 0.5, 1],
-            title: "返回东壁",
-            body: "东壁的人物图像重新进入视线。",
+            title: "转向东壁",
+            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
-              title: "返回东壁",
-              body: "东壁的人物图像重新进入视线。",
-              closeLabel: "返回"
+              title: "转向东壁",
+              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_south_from_ceiling",
-            label: "返回南壁",
-            navLabel: "返回南壁",
+            label: "转向南壁",
+            navLabel: "转向南壁",
             shape: "rect",
             rect: [0.5, 0.78, 0.75, 1],
-            title: "返回南壁",
-            body: "南壁的壁函与倚柱重新进入视线。",
+            title: "转向南壁",
+            body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
             record: "返回前室南壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_south",
-              title: "返回南壁",
-              body: "南壁的壁函与倚柱重新进入视线。",
-              closeLabel: "返回"
+              title: "转向南壁",
+              body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              closeLabel: "转向"
             }
           },
           {
             id: "return_north_from_ceiling",
-            label: "返回北壁",
-            navLabel: "返回北壁",
+            label: "转向北壁",
+            navLabel: "转向北壁",
             shape: "rect",
             rect: [0.75, 0.78, 1, 1],
-            title: "返回北壁",
-            body: "北壁西部壁画重新进入视线。",
+            title: "转向北壁",
+            body: "北壁西部壁画重新进入视线。\n北壁下方仍是通向过道的方向。",
             record: "返回前室北壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_north_west",
-              title: "返回北壁",
-              body: "北壁西部壁画重新进入视线。",
-              closeLabel: "返回"
+              title: "转向北壁",
+              body: "北壁西部壁画重新进入视线。\n北壁下方仍是通向过道的方向。",
+              closeLabel: "转向"
             }
           }
         ]
