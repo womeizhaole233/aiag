@@ -2962,7 +2962,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "front_north_west",
               title: "转向北壁与过道方向",
-              body: "前室北壁西部进入视线。\n注意北壁中下部的竖向暗缝：这里是前室通向过道的方向。完成前室汇总后，点击下方“进入过道”。",
+              body: "前室北壁西部进入视线。\n注意北壁中下部的竖向暗缝：这里是前室通向过道的方向。看全前室主要信息后，点击下方“进入过道”。",
               closeLabel: "转向"
             }
           },
@@ -3564,14 +3564,20 @@ const SCENES = {
               title: "进入过道轴线",
               body: "前室四壁与顶部已经形成对应。\n你从北壁下方的暗缝方向进入过道。关闭弹窗后，狭长的过道轴线会重新进入视线。",
               closeLabel: "进入",
-              lockedBody: "过道入口还不能通过。请先点“返回入口总览”，回到前室总览后补齐各壁面线索，并在记录夹中完成三条复查、两条降级和前室汇总。",
+              lockedBody: "过道入口还不能通过。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
               missingRecords: [
-                { id: "analysis:front_chamber:review_artifact_tension", label: "西壁：复看注子、高瓶与砖砌桌" },
-                { id: "analysis:front_chamber:review_ritual_sequence", label: "东壁/北壁：复看女乐与两段画面" },
-                { id: "analysis:front_chamber:review_partition_structure", label: "南壁/顶部：复看壁函、倚柱与铺作" },
-                { excludedId: "front_chamber:pointed_shoes", label: "东壁尖鞋：在记录夹中降级为服饰细节" },
-                { excludedId: "front_chamber:east_wall_surface", label: "东壁温差：在记录夹中降级为体感异常" },
-                { id: "analysis:front_chamber:combo", label: "记录夹：形成前室组合判断，再回北壁下方点击“进入过道”" }
+                { id: "front_chamber:ewer", label: "西壁：砖砌注子" },
+                { id: "front_chamber:high_bottle", label: "西壁：高瓶与瓶座" },
+                { id: "front_chamber:brick_table", label: "西壁：砖砌桌侧面" },
+                { id: "front_chamber:female_musicians", label: "东壁：女乐图像" },
+                { id: "front_chamber:south_wall_overview", label: "南壁：整体与入口分区" },
+                { id: "front_chamber:east_wall_niche", label: "南壁：东部壁函" },
+                { id: "front_chamber:west_wall_niche", label: "南壁：西部壁函" },
+                { id: "front_chamber:painted_column", label: "南壁：倚柱彩画" },
+                { id: "front_chamber:north_west_mural", label: "北壁：西部画面" },
+                { id: "front_chamber:north_east_mural", label: "北壁：东部画面" },
+                { id: "front_chamber:bracket_set", label: "顶部：补间铺作" },
+                { id: "front_chamber:northwest_corner", label: "顶部：西北角构件" }
               ]
             }
           },
@@ -3727,14 +3733,20 @@ const SCENES = {
               title: "进入过道轴线",
               body: "前室四壁与顶部已经形成对应。\n你从北壁下方的暗缝方向进入过道。关闭弹窗后，狭长的过道轴线会重新进入视线。",
               closeLabel: "进入",
-              lockedBody: "过道入口还不能通过。请先点“返回入口总览”，回到前室总览后补齐各壁面线索，并在记录夹中完成三条复查、两条降级和前室汇总。",
+              lockedBody: "过道入口还不能通过。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
               missingRecords: [
-                { id: "analysis:front_chamber:review_artifact_tension", label: "西壁：复看注子、高瓶与砖砌桌" },
-                { id: "analysis:front_chamber:review_ritual_sequence", label: "东壁/北壁：复看女乐与两段画面" },
-                { id: "analysis:front_chamber:review_partition_structure", label: "南壁/顶部：复看壁函、倚柱与铺作" },
-                { excludedId: "front_chamber:pointed_shoes", label: "东壁尖鞋：在记录夹中降级为服饰细节" },
-                { excludedId: "front_chamber:east_wall_surface", label: "东壁温差：在记录夹中降级为体感异常" },
-                { id: "analysis:front_chamber:combo", label: "记录夹：形成前室组合判断，再回北壁下方点击“进入过道”" }
+                { id: "front_chamber:ewer", label: "西壁：砖砌注子" },
+                { id: "front_chamber:high_bottle", label: "西壁：高瓶与瓶座" },
+                { id: "front_chamber:brick_table", label: "西壁：砖砌桌侧面" },
+                { id: "front_chamber:female_musicians", label: "东壁：女乐图像" },
+                { id: "front_chamber:south_wall_overview", label: "南壁：整体与入口分区" },
+                { id: "front_chamber:east_wall_niche", label: "南壁：东部壁函" },
+                { id: "front_chamber:west_wall_niche", label: "南壁：西部壁函" },
+                { id: "front_chamber:painted_column", label: "南壁：倚柱彩画" },
+                { id: "front_chamber:north_west_mural", label: "北壁：西部画面" },
+                { id: "front_chamber:north_east_mural", label: "北壁：东部画面" },
+                { id: "front_chamber:bracket_set", label: "顶部：补间铺作" },
+                { id: "front_chamber:northwest_corner", label: "顶部：西北角构件" }
               ]
             }
           },
