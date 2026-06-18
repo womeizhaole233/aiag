@@ -72,7 +72,8 @@ const runeOptions = [...document.querySelectorAll(".rune-option")];
 const patternPuzzleLayer = document.querySelector("#patternPuzzleLayer");
 const patternPuzzleClose = document.querySelector("#patternPuzzleClose");
 const patternPuzzleFeedback = document.querySelector("#patternPuzzleFeedback");
-const patternTiles = [...document.querySelectorAll(".pattern-tile")];
+const patternBoard = document.querySelector(".pattern-board");
+const patternTiles = [...document.querySelectorAll(".pattern-piece")];
 const inscriptionPuzzleLayer = document.querySelector("#inscriptionPuzzleLayer");
 const inscriptionPuzzleClose = document.querySelector("#inscriptionPuzzleClose");
 const inscriptionPuzzleFeedback = document.querySelector("#inscriptionPuzzleFeedback");
@@ -129,16 +130,19 @@ let relicLensPosition = { x: 0.5, y: 0.5, active: false };
 let pipeTiles = [];
 let currentPipeLevelId = "tombGateTrace";
 let pipeSolved = false;
+let pipeStandaloneMode = false;
 
 const RUNE_PUZZLE_ID = "tomb_gate_rune_verify";
 const RUNE_ANSWER = ["额", "砂", "雾", "门"];
 const PATTERN_PUZZLE_ID = "corridor_pattern_align";
-const PATTERN_STATES = ["left", "center", "right"];
-const PATTERN_LABELS = {
-  left: "偏左",
-  center: "居中",
-  right: "偏右"
-};
+const PATTERN_MOVES = [
+  { id: "left", label: "左移", x: "-18%", y: "0%" },
+  { id: "up", label: "上移", x: "0%", y: "-18%" },
+  { id: "right", label: "右移", x: "18%", y: "0%" },
+  { id: "down", label: "下移", x: "0%", y: "18%" },
+  { id: "center", label: "归位", x: "0%", y: "0%" }
+];
+const PATTERN_START_STATES = [0, 2, 3, 1, 0, 3, 2, 1, 0];
 const INSCRIPTION_PUZZLE_ID = "mg_inscription_reading";
 const INSCRIPTION_ANSWER = ["元", "符", "二", "年"];
 const INSCRIPTION_FRAGMENT_HINTS = {
@@ -242,6 +246,7 @@ const RELIC_REWARD = {
 };
 const PIPE_PUZZLE_ID = "tomb_gate_pipe_trace";
 const PIPE_DEMO_MODE = false;
+const PIPE_MAIN_FLOW_ENABLED = true;
 const PIPE_DIRECTIONS = ["top", "right", "bottom", "left"];
 const PIPE_OPPOSITE = {
   top: "bottom",
@@ -1107,7 +1112,7 @@ function openMessage(hotspot) {
 
 
 function shouldOpenPipePuzzle(hotspot, transition, navigation) {
-  if (PIPE_DEMO_MODE) return false;
+  if (PIPE_DEMO_MODE || !PIPE_MAIN_FLOW_ENABLED) return false;
   return (
     hotspot.id === "door_opening" &&
     transition?.targetSceneId === "corridor" &&
@@ -1192,9 +1197,9 @@ function handleRuneChoice(button) {
 }
 
 function openPatternPuzzle() {
-  patternStates = ["left", "right", "left"];
+  patternStates = [...PATTERN_START_STATES];
   renderPatternPuzzle();
-  patternPuzzleFeedback.textContent = "提示：让菱形尖角回到中线，刮痕才会显露出重绘痕迹。";
+  patternPuzzleFeedback.textContent = "提示：每块残片都会在几个候选位置间移动。让所有残片回到中线，完整菱形才会闭合。";
   patternPuzzleFeedback.className = "puzzle-feedback";
   patternPuzzleLayer.classList.remove("hidden");
 }
@@ -1204,32 +1209,39 @@ function closePatternPuzzle() {
 }
 
 function renderPatternPuzzle() {
+  const solvedCount = patternStates.filter((stateIndex) => PATTERN_MOVES[stateIndex]?.id === "center").length;
+  patternBoard?.classList.toggle("completed", solvedCount === patternStates.length);
   patternTiles.forEach((tile, index) => {
-    const stateName = patternStates[index] || "left";
-    tile.classList.remove("shift-left", "shift-center", "shift-right", "solved", "error");
-    tile.classList.add(`shift-${stateName}`);
-    tile.querySelector("em").textContent = PATTERN_LABELS[stateName];
+    const move = PATTERN_MOVES[patternStates[index]] || PATTERN_MOVES[0];
+    const fragment = tile.querySelector(".pattern-fragment");
+    tile.classList.toggle("solved", move.id === "center");
+    tile.classList.remove("error");
+    if (fragment) {
+      fragment.style.setProperty("--piece-bg-x", `${(index % 3) * 50}%`);
+      fragment.style.setProperty("--piece-bg-y", `${Math.floor(index / 3) * 50}%`);
+      fragment.style.setProperty("--pattern-x", move.x);
+      fragment.style.setProperty("--pattern-y", move.y);
+    }
+    tile.querySelector("em").textContent = move.label;
   });
 }
 
 function handlePatternChoice(tile) {
   const index = Number(tile.dataset.index);
-  const current = patternStates[index] || "left";
-  const next = PATTERN_STATES[(PATTERN_STATES.indexOf(current) + 1) % PATTERN_STATES.length];
-  patternStates[index] = next;
+  patternStates[index] = ((patternStates[index] || 0) + 1) % PATTERN_MOVES.length;
   renderPatternPuzzle();
 
-  if (!patternStates.every((stateName) => stateName === "center")) {
-    patternPuzzleFeedback.textContent = "纹样仍有错位。继续把每个菱形尖角校准到中线。";
+  const solvedCount = patternStates.filter((stateIndex) => PATTERN_MOVES[stateIndex]?.id === "center").length;
+  if (solvedCount < patternStates.length) {
+    patternPuzzleFeedback.textContent = `已有 ${solvedCount}/${patternStates.length} 块残片归位。继续移动残片，让外圈和内圈菱形线条闭合。`;
     patternPuzzleFeedback.className = "puzzle-feedback";
     return;
   }
 
-  patternTiles.forEach((item) => item.classList.add("solved"));
   completePuzzle(PATTERN_PUZZLE_ID);
   completeScene("corridor");
   save();
-  patternPuzzleFeedback.textContent = "叠胜纹校准完成。偏移不是施工误差，而是刮除后重绘留下的二次修改痕迹。前室路径已经解锁。";
+  patternPuzzleFeedback.textContent = "叠胜纹拼合完成。九块残片重新闭合成完整菱形，刮除后重绘的修改痕迹显露出来。前室路径已经解锁。";
   patternPuzzleFeedback.className = "puzzle-feedback success";
 }
 
@@ -1695,8 +1707,9 @@ function getCurrentPipeLevel() {
   return PIPE_LEVELS[currentPipeLevelId] || PIPE_LEVELS.tombGateTrace;
 }
 
-function openPipePuzzle(levelId = currentPipeLevelId) {
+function openPipePuzzle(levelId = currentPipeLevelId, options = {}) {
   currentPipeLevelId = PIPE_LEVELS[levelId] ? levelId : "tombGateTrace";
+  pipeStandaloneMode = Boolean(options.standalone);
   pipeSolved = false;
   pipeTiles = clonePipeTiles();
   pipeSuccessLayer.classList.add("hidden");
@@ -1853,17 +1866,19 @@ function finishPipePuzzle() {
   if (hasCompletedPuzzle(puzzleId) && !PIPE_DEMO_MODE) return;
   pipeSolved = true;
   completePuzzle(puzzleId);
-  completePuzzle(RUNE_PUZZLE_ID);
-  completeScene("tomb_gate");
+  if (PIPE_MAIN_FLOW_ENABLED && !pipeStandaloneMode) {
+    completePuzzle(RUNE_PUZZLE_ID);
+    completeScene("tomb_gate");
+  }
   addRewardRecord(level.reward);
   save();
   renderJournal();
-  pipePuzzleFeedback.textContent = PIPE_DEMO_MODE
+  pipePuzzleFeedback.textContent = PIPE_DEMO_MODE || pipeStandaloneMode || !PIPE_MAIN_FLOW_ENABLED
     ? "暗线已经连通。残片被收录，小游戏玩法展示完成。"
     : "暗线已经连通。残片被收录，甬道入口可以继续前进。";
   pipePuzzleFeedback.className = "puzzle-feedback success";
   showPipeSuccess(level);
-  if (PIPE_DEMO_MODE) return;
+  if (PIPE_DEMO_MODE || pipeStandaloneMode || !PIPE_MAIN_FLOW_ENABLED) return;
   setTimeout(() => {
     closePipePuzzle();
     navigateTo({ sceneId: "corridor" });
@@ -4155,12 +4170,16 @@ queueOpeningDialogues();
 queueSceneEntryDialogue(state.currentSceneId);
 flushDialogueQueue();
 const startupMiniGame = new URLSearchParams(window.location.search).get("miniGame");
-if (startupMiniGame === INSCRIPTION_PUZZLE_ID) {
+if (startupMiniGame === PATTERN_PUZZLE_ID) {
+  openPatternPuzzle();
+} else if (startupMiniGame === INSCRIPTION_PUZZLE_ID) {
   openInscriptionPuzzle();
 } else if (startupMiniGame === RELIC_PUZZLE_ID) {
   openRelicPuzzle();
 } else if (startupMiniGame && PIPE_LEVELS[startupMiniGame]) {
-  openPipePuzzle(startupMiniGame);
+  openPipePuzzle(startupMiniGame, { standalone: true });
+} else if (PIPE_DEMO_MODE) {
+  openPipePuzzle();
 }
 
 window.M1_PIPE_LEVELS = PIPE_LEVELS;
