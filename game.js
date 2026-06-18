@@ -514,7 +514,8 @@ function getRecordLabel(recordId) {
 }
 
 function isRedHerringHotspot(hotspot) {
-  return /^H/.test(hotspot?.sourceClueId || "");
+  const clueId = String(hotspot?.sourceClueId || "").trim().toUpperCase();
+  return clueId === "H" || /^H\d/.test(clueId) || /(^|-)H(-|$|\d)/.test(clueId);
 }
 
 function getDefaultRecordTrack(hotspot, sceneId) {
@@ -618,12 +619,23 @@ function enrichRecord(record) {
   const normalizedId = record.sceneId ? record.id : `${START_SCENE_ID}:${record.id}`;
   const candidate = { ...record, id: normalizedId, sceneId };
   const hotspot = getHotspotByRecord(candidate);
+  const recordType = candidate.recordType || (hotspot ? "observation" : "manual");
   const shouldPromoteToPending =
-    candidate.recordType === "observation" &&
+    recordType === "observation" &&
     candidate.track === "observation" &&
     hotspot &&
     getAnalysisWorkflow(sceneId) &&
     isRedHerringHotspot(hotspot);
+  const shouldDemoteFromPending =
+    recordType === "observation" &&
+    candidate.track === "pending" &&
+    hotspot &&
+    !isRedHerringHotspot(hotspot);
+  const track = shouldPromoteToPending
+    ? "pending"
+    : shouldDemoteFromPending
+      ? "observation"
+      : candidate.track || getDefaultRecordTrack(hotspot, sceneId);
 
   return {
     ...candidate,
@@ -631,8 +643,8 @@ function enrichRecord(record) {
     text: candidate.text || candidate.record || hotspot?.record || "",
     clueId: candidate.clueId || hotspot?.sourceClueId || "",
     sourceFile: candidate.sourceFile || hotspot?.sourceFile || "",
-    track: shouldPromoteToPending ? "pending" : candidate.track || getDefaultRecordTrack(hotspot, sceneId),
-    recordType: candidate.recordType || (hotspot ? "observation" : "manual"),
+    track,
+    recordType,
     resolutionText: candidate.resolutionText || ""
   };
 }
@@ -2367,6 +2379,7 @@ function setJournal(open) {
 }
 
 function setWorkbenchOpen(open, tab = state.workbench.ui.tab) {
+  const wasOpen = state.workbenchOpen;
   state.workbenchOpen = open;
   if (open) {
     state.journalOpen = false;
@@ -2374,6 +2387,9 @@ function setWorkbenchOpen(open, tab = state.workbench.ui.tab) {
   }
   if (open && typeof tab === "string") {
     state.workbench.ui.tab = ["clues", "graph"].includes(tab) ? tab : "clues";
+  }
+  if (open && !wasOpen) {
+    state.workbench.ui.chapterSceneId = getWorkbenchSceneIdForCurrentScene();
   }
   if (open && !SCENES[state.workbench.ui.chapterSceneId]) {
     state.workbench.ui.chapterSceneId = START_SCENE_ID;
@@ -3288,7 +3304,7 @@ function renderConclusions() {
     conclusionDetail.innerHTML = `
       <p class="empty-note">结论卡会在当前章节的线索收集、复查与推导完成后自动生成。</p>
       <div class="clue-card-actions">
-        <button class="secondary-button" type="button" data-open-workbench="clues">打开推理工作台</button>
+        <button class="secondary-button" type="button" data-open-workbench="clues">打开章节整理台</button>
       </div>
     `;
     return;
@@ -3380,7 +3396,7 @@ function renderConclusions() {
     ${evidenceHtml}
     ${relationsHtml}
     <div class="clue-card-actions">
-      <button class="secondary-button" type="button" data-open-workbench="clues">打开推理工作台</button>
+      <button class="secondary-button" type="button" data-open-workbench="clues">打开章节整理台</button>
     </div>
   `;
 }
@@ -3418,6 +3434,122 @@ function getRecordExcerpt(text) {
   if (!raw) return "";
   const normalized = raw.replaceAll("\n", " ").replace(/\s+/g, " ");
   return normalized.length > 90 ? `${normalized.slice(0, 90)}…` : normalized;
+}
+
+function uniqueRecordIds(recordIds = []) {
+  return [...new Set(recordIds.filter(Boolean))];
+}
+
+function getWorkbenchSceneIdForCurrentScene() {
+  const chapterSceneIds = getWorkbenchChapterSceneIds();
+  if (chapterSceneIds.includes(state.currentSceneId)) return state.currentSceneId;
+  return state.workbench.ui.chapterSceneId || START_SCENE_ID;
+}
+
+function getWorkbenchTargetRecordIds(sceneId) {
+  const workflow = getAnalysisWorkflow(sceneId);
+  if (!workflow) {
+    return uniqueRecordIds(
+      state.records
+        .filter((record) => record.sceneId === sceneId && record.recordType === "observation")
+        .map((record) => record.id)
+    );
+  }
+
+  return uniqueRecordIds([
+    ...(workflow.reviewSteps || []).flatMap((step) => step.sourceRecordIds || []),
+    ...(workflow.pendingResolutions || []).map((resolution) => resolution.recordId),
+    ...(workflow.combination?.requiresExcludedRecordIds || [])
+  ]);
+}
+
+function getWorkbenchChapterRecords(sceneId) {
+  return state.records.filter((record) => record.sceneId === sceneId);
+}
+
+function getWorkbenchSupplementalRecords(sceneId, targetRecordIds) {
+  const targetSet = new Set(targetRecordIds);
+  return getWorkbenchChapterRecords(sceneId)
+    .filter((record) => record.recordType === "observation" && record.track === "observation" && !targetSet.has(record.id))
+    .slice()
+    .reverse();
+}
+
+function getWorkbenchPendingItems(sceneId) {
+  const workflow = getAnalysisWorkflow(sceneId);
+  const configured = (workflow?.pendingResolutions || []).map((resolution) => ({
+    resolution,
+    record: getRecord(resolution.recordId),
+    stateInfo: getPendingResolutionState(resolution)
+  }));
+  const configuredIds = new Set(configured.map((item) => item.resolution.recordId));
+  const extra = state.records
+    .filter((record) => record.sceneId === sceneId && record.track === "pending" && !configuredIds.has(record.id))
+    .map((record) => ({ resolution: null, record, stateInfo: null }));
+  return [...configured, ...extra].filter((item) => item.record || item.resolution);
+}
+
+function getWorkbenchReviewItems(sceneId) {
+  const workflow = getAnalysisWorkflow(sceneId);
+  return (workflow?.reviewSteps || []).map((step) => ({ step, stateInfo: getReviewStepState(step) }));
+}
+
+function getWorkbenchNextStep(sceneId, targetRecordIds, reviewItems, pendingItems, combinationState) {
+  const missingTargets = targetRecordIds.filter((recordId) => !hasRecord(recordId));
+  if (missingTargets.length) {
+    return {
+      title: "先补齐本章观察",
+      body: `还缺 ${missingTargets.length} 条整理所需观察：${missingTargets.slice(0, 4).map(getRecordLabel).join("、")}${missingTargets.length > 4 ? "等" : ""}。`
+    };
+  }
+
+  const nextReview = reviewItems.find((item) => !item.stateInfo.created);
+  if (nextReview) {
+    return nextReview.stateInfo.available
+      ? { title: "可以开始复查", body: `证据已收齐，可以执行“${nextReview.step.buttonLabel}”。` }
+      : {
+          title: "继续补齐复查证据",
+          body: `“${nextReview.step.resultRecord.title}”还缺 ${nextReview.stateInfo.missingSourceIds.length} 条观察。`
+        };
+  }
+
+  const nextPending = pendingItems.find((item) => item.record?.track === "pending");
+  if (nextPending?.resolution) {
+    return nextPending.stateInfo?.available
+      ? { title: "处理待验证观察", body: `可以将“${nextPending.record.title}”降级或归档。` }
+      : { title: "待验证还不能处理", body: nextPending.resolution.blockedText || "先完成相关复查，再处理待验证观察。" };
+  }
+
+  if (combinationState.combination && !combinationState.created) {
+    const missingCount = combinationState.missingReviewIds.length + combinationState.missingExcludedIds.length;
+    return combinationState.available
+      ? { title: "生成章节判断", body: `复查和待验证处理已经完成，可以形成${getSceneLabel(sceneId)}章节判断。` }
+      : { title: "章节判断尚未完成", body: `还缺 ${missingCount} 项条件：先完成复查和待验证处理。` };
+  }
+
+  return {
+    title: "本章整理已完成",
+    body: "章节判断已经形成，可以查看结论卡，或继续整理其他章节。"
+  };
+}
+
+function buildWorkbenchProgressRows(steps = []) {
+  if (!steps.length) return "";
+  return `
+    <div class="workbench-progress-list">
+      ${steps
+        .map(
+          (step) => `
+            <div class="workbench-progress-row${step.complete ? " is-complete" : ""}">
+              <strong>${escapeHtml(step.label)}</strong>
+              <span>${escapeHtml(step.statusLabel || (step.complete ? "已完成" : "待处理"))}</span>
+              <p>${escapeHtml(step.detail || step.mobileDetail || "")}</p>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
 }
 
 function getGraphDisplayLabel(nodeId) {
@@ -3459,12 +3591,10 @@ function clampWorkbenchPosition(position = state.workbench.ui.panelPosition || g
 
 function syncWorkbenchPosition(persist = false) {
   if (!workbenchLayer || !state.workbenchOpen) return;
-  const next = clampWorkbenchPosition(state.workbench.ui.panelPosition || getWorkbenchFallbackPosition());
-  state.workbench.ui.panelPosition = next;
-  workbenchLayer.style.left = `${next.x}px`;
-  workbenchLayer.style.top = `${next.y}px`;
-  workbenchLayer.style.right = "auto";
-  workbenchLayer.style.bottom = "auto";
+  workbenchLayer.style.left = "";
+  workbenchLayer.style.top = "";
+  workbenchLayer.style.right = "";
+  workbenchLayer.style.bottom = "";
   if (persist) save();
 }
 
@@ -3505,52 +3635,214 @@ function renderWorkbenchClues() {
     )
     .join("");
 
-  const tracks = ["observation", "review", "pending", "excluded"];
-  const trackBlocks = tracks
-    .map((trackId) => {
-      const list = state.records
-        .filter((record) => record.sceneId === selectedChapter && record.track === trackId)
-        .map((record) => {
-          const source = record.sourceFile ? `<details><summary class="journal-note">来源</summary><p class="journal-note">${escapeHtml(record.sourceFile)}</p></details>` : "";
-          const actions = `
-            <div class="clue-card-actions">
-              <button class="secondary-button" type="button" data-workbench-open-graph="${escapeHtml(record.id)}">加入关系图</button>
-            </div>
-          `;
-          return `
-            <article class="clue-card">
-              <div class="journal-card-meta">
-                <span class="status-chip">${escapeHtml(getTrackLabel(record.track))}</span>
-                <span class="status-chip">${escapeHtml(getRecordKindLabel(record))}</span>
-              </div>
-              <h3>${escapeHtml(record.title)}</h3>
-              <p>${escapeHtml(getRecordExcerpt(record.text))}</p>
-              ${source}
-              ${actions}
-            </article>
-          `;
-        })
-        .join("");
+  const workflow = getAnalysisWorkflow(selectedChapter);
+  const targetRecordIds = getWorkbenchTargetRecordIds(selectedChapter);
+  const targetSet = new Set(targetRecordIds);
+  const reviewItems = getWorkbenchReviewItems(selectedChapter);
+  const pendingItems = getWorkbenchPendingItems(selectedChapter);
+  const combinationState = getCombinationState(selectedChapter);
+  const supplementalRecords = getWorkbenchSupplementalRecords(selectedChapter, targetRecordIds);
+  const nextStep = getWorkbenchNextStep(selectedChapter, targetRecordIds, reviewItems, pendingItems, combinationState);
+  const collectedTargetCount = targetRecordIds.filter((recordId) => hasRecord(recordId)).length;
+  const completedReviewCount = reviewItems.filter((item) => item.stateInfo.created).length;
+  const openPendingCount = pendingItems.filter((item) => item.record?.track === "pending").length;
+  const resolvedPendingCount = pendingItems.filter((item) => item.record?.track === "excluded").length;
+  const comboLabel = combinationState.created ? "已生成" : combinationState.available ? "可生成" : workflow?.combination ? "待整理" : "未设置";
 
+  const targetCards = targetRecordIds
+    .map((recordId) => {
+      const record = getRecord(recordId);
+      const title = record?.title || getRecordLabel(recordId);
+      const statusLabel = record
+        ? record.track === "pending"
+          ? "待验证"
+          : record.track === "excluded"
+            ? "已降级"
+            : "已收录"
+        : "尚未收录";
+      const statusClass = record ? (record.track === "pending" ? "partial" : "met") : "missing";
+      const actions =
+        record && record.track !== "excluded"
+          ? `<div class="clue-card-actions"><button class="secondary-button" type="button" data-workbench-open-graph="${escapeHtml(record.id)}">加入关系图</button></div>`
+          : "";
       return `
-        <section>
-          <h2 class="workbench-section-title">${escapeHtml(getTrackLabel(trackId))}</h2>
-          ${list || '<p class="empty-note">暂无。</p>'}
-        </section>
+        <article class="clue-card">
+          <div class="journal-card-meta">
+            <span class="status-chip is-${statusClass}">${escapeHtml(statusLabel)}</span>
+            <span class="status-chip">${escapeHtml(getSceneLabel(selectedChapter))}</span>
+          </div>
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(record ? getRecordExcerpt(record.text) : "尚未收录。回到场景中继续观察相关图像。")}</p>
+          ${actions}
+        </article>
       `;
     })
     .join("");
+
+  const pendingCards = pendingItems
+    .map((item) => {
+      const record = item.record;
+      const resolution = item.resolution;
+      const title = record?.title || (resolution ? getRecordLabel(resolution.recordId) : "待验证观察");
+      const isResolved = record?.track === "excluded";
+      const isReady = Boolean(item.stateInfo?.available);
+      const statusLabel = !record ? "尚未收录" : isResolved ? "已降级" : isReady ? "可处理" : "待复查";
+      const statusClass = !record ? "missing" : isResolved ? "met" : isReady ? "generated" : "partial";
+      const note = isResolved
+        ? record.resolutionText
+        : record
+          ? resolution?.readyText || resolution?.blockedText || resolution?.description || "这条观察需要结合复查结果处理。"
+          : "尚未在场景中收录。";
+      const action =
+        isReady && record && resolution
+          ? `<div class="clue-card-actions"><button class="primary-button" type="button" data-resolve-pending="${escapeHtml(record.id)}">${escapeHtml(resolution.buttonLabel)}</button></div>`
+          : "";
+      return `
+        <article class="clue-card">
+          <div class="journal-card-meta">
+            <span class="status-chip is-${statusClass}">${escapeHtml(statusLabel)}</span>
+          </div>
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(record ? getRecordExcerpt(record.text) : note)}</p>
+          ${note && record ? `<p class="journal-note">${escapeHtml(note)}</p>` : ""}
+          ${action}
+        </article>
+      `;
+    })
+    .join("");
+
+  const reviewCards = reviewItems
+    .map(({ step, stateInfo }) => {
+      const statusLabel = stateInfo.created ? "已完成" : stateInfo.available ? "可复查" : "待收集";
+      const statusClass = stateInfo.created ? "met" : stateInfo.available ? "generated" : "partial";
+      const missingLabels = stateInfo.missingSourceIds.slice(0, 4).map(getRecordLabel);
+      const fallbackSteps = (step.sourceRecordIds || []).map((recordId) => ({
+        label: getRecordLabel(recordId),
+        detail: hasRecord(recordId) ? "已收录。" : "尚未收录。",
+        complete: hasRecord(recordId),
+        statusLabel: hasRecord(recordId) ? "已完成" : "待观察"
+      }));
+      const progressRows = getReviewProgressSteps(step);
+      const progressHtml = buildWorkbenchProgressRows(progressRows.length ? progressRows : fallbackSteps);
+      const action = stateInfo.created
+        ? ""
+        : `<div class="clue-card-actions"><button class="${stateInfo.available ? "primary-button" : "secondary-button"}" type="button" data-run-review-step="${escapeHtml(step.id)}" ${stateInfo.available ? "" : "disabled"}>${escapeHtml(stateInfo.available ? step.buttonLabel : `还缺 ${stateInfo.missingSourceIds.length} 条观察`)}</button></div>`;
+      return `
+        <article class="clue-card">
+          <div class="journal-card-meta">
+            <span class="status-chip is-${statusClass}">${escapeHtml(statusLabel)}</span>
+          </div>
+          <h3>${escapeHtml(step.resultRecord.title)}</h3>
+          <p>${escapeHtml(stateInfo.available || stateInfo.created ? step.description : `还缺：${missingLabels.join("、")}`)}</p>
+          ${progressHtml}
+          ${action}
+        </article>
+      `;
+    })
+    .join("");
+
+  const combinationHtml = combinationState.combination
+    ? `
+      <article class="clue-card">
+        <div class="journal-card-meta">
+          <span class="status-chip is-${combinationState.created ? "met" : combinationState.available ? "generated" : "partial"}">${escapeHtml(comboLabel)}</span>
+        </div>
+        <h3>${escapeHtml(combinationState.combination.resultRecord.title)}</h3>
+        <p>${escapeHtml(combinationState.combination.description)}</p>
+        ${buildWorkbenchProgressRows(getCombinationProgressSteps(combinationState.combination))}
+        ${
+          combinationState.created
+            ? ""
+            : `<div class="clue-card-actions"><button class="${combinationState.available ? "primary-button" : "secondary-button"}" type="button" data-create-scene-combo="${escapeHtml(selectedChapter)}" ${combinationState.available ? "" : "disabled"}>${escapeHtml(combinationState.available ? combinationState.combination.buttonLabel : `还缺 ${combinationState.missingReviewIds.length + combinationState.missingExcludedIds.length} 项条件`)}</button></div>`
+        }
+      </article>
+    `
+    : '<p class="empty-note">本章暂未设置章节判断。</p>';
+
+  const supplementalHtml = supplementalRecords.length
+    ? `
+      <details class="workbench-supplemental">
+        <summary>补充观察 ${supplementalRecords.length}</summary>
+        <div class="workbench-record-grid">
+          ${supplementalRecords
+            .map(
+              (record) => `
+                <article class="clue-card">
+                  <div class="journal-card-meta">
+                    <span class="status-chip">补充观察</span>
+                  </div>
+                  <h3>${escapeHtml(record.title)}</h3>
+                  <p>${escapeHtml(getRecordExcerpt(record.text))}</p>
+                  <div class="clue-card-actions">
+                    <button class="secondary-button" type="button" data-workbench-open-graph="${escapeHtml(record.id)}">加入关系图</button>
+                  </div>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </details>
+    `
+    : '<p class="empty-note">暂无额外补充观察。</p>';
 
   workbenchContent.innerHTML = `
     <div class="workbench-layout">
       <aside class="workbench-sidebar">
         <h2 class="workbench-section-title">章节</h2>
         <div class="workbench-chip-list">${chapterButtons}</div>
-        <p class="journal-note">只展示已访问或已有记录的章节。</p>
+        <p class="journal-note">默认回到当前所在章节；已访问章节可在这里切换。</p>
+        <div class="workbench-next-step">
+          <span>下一步</span>
+          <strong>${escapeHtml(nextStep.title)}</strong>
+          <p>${escapeHtml(nextStep.body)}</p>
+        </div>
       </aside>
       <section class="workbench-main">
-        <h2 class="workbench-section-title">${escapeHtml(getWorkbenchChapterLabel(selectedChapter))}线索卡</h2>
-        ${trackBlocks}
+        <h2 class="workbench-section-title">${escapeHtml(getWorkbenchChapterLabel(selectedChapter))}章节整理</h2>
+        <div class="workbench-overview-grid">
+          <div class="workbench-status-card">
+            <span>整理所需观察</span>
+            <strong>${collectedTargetCount}/${targetRecordIds.length || collectedTargetCount}</strong>
+          </div>
+          <div class="workbench-status-card">
+            <span>复查</span>
+            <strong>${completedReviewCount}/${reviewItems.length}</strong>
+          </div>
+          <div class="workbench-status-card">
+            <span>待验证</span>
+            <strong>${resolvedPendingCount}/${pendingItems.length}</strong>
+            ${openPendingCount ? `<em>${openPendingCount} 条待处理</em>` : ""}
+          </div>
+          <div class="workbench-status-card">
+            <span>章节判断</span>
+            <strong>${escapeHtml(comboLabel)}</strong>
+          </div>
+        </div>
+
+        <section>
+          <h2 class="workbench-section-title">整理所需观察</h2>
+          <div class="workbench-record-grid">${targetCards || '<p class="empty-note">本章尚无整理所需观察。</p>'}</div>
+        </section>
+
+        <section>
+          <h2 class="workbench-section-title">待验证</h2>
+          <div class="workbench-record-grid">${pendingCards || '<p class="empty-note">当前没有待验证观察。</p>'}</div>
+        </section>
+
+        <section>
+          <h2 class="workbench-section-title">复查</h2>
+          <div class="workbench-record-grid">${reviewCards || '<p class="empty-note">本章暂未设置复查动作。</p>'}</div>
+        </section>
+
+        <section>
+          <h2 class="workbench-section-title">章节判断</h2>
+          ${combinationHtml}
+        </section>
+
+        <section>
+          <h2 class="workbench-section-title">已收录的补充观察</h2>
+          ${supplementalHtml}
+        </section>
       </section>
     </div>
   `;
@@ -3728,7 +4020,7 @@ function renderWorkbenchGraph() {
           .join("")}
       </div>
     `
-    : '<p class="empty-note">暂无玩家联线。先从“线索卡”里点“加入关系图”，再在图上点节点进行联线。</p>';
+    : '<p class="empty-note">暂无玩家联线。先从“章节整理”里点“加入关系图”，再在图上点节点进行联线。</p>';
 
   const relationButtons = getConclusionRelations()
     .map(
@@ -3739,7 +4031,7 @@ function renderWorkbenchGraph() {
 
   const emptyGraphHint = nodes.length
     ? ""
-    : '<p class="empty-note">本章关系图尚为空。请先到“线索卡”中选择记录并点击“加入关系图”。</p>';
+    : '<p class="empty-note">本章关系图尚为空。请先到“章节整理”中选择记录并点击“加入关系图”。</p>';
 
   workbenchContent.innerHTML = `
     <div class="workbench-layout">
@@ -3812,6 +4104,27 @@ workbenchTabs.addEventListener("click", (event) => {
   setWorkbenchOpen(true, tabTarget.getAttribute("data-workbench-tab") || "clues");
 });
 workbenchContent.addEventListener("click", (event) => {
+  const reviewTarget = event.target.closest("[data-run-review-step]");
+  if (reviewTarget) {
+    runReviewStep(reviewTarget.getAttribute("data-run-review-step"));
+    renderWorkbench();
+    return;
+  }
+
+  const resolveTarget = event.target.closest("[data-resolve-pending]");
+  if (resolveTarget) {
+    resolvePendingRecord(resolveTarget.getAttribute("data-resolve-pending"));
+    renderWorkbench();
+    return;
+  }
+
+  const comboTarget = event.target.closest("[data-create-scene-combo]");
+  if (comboTarget) {
+    createSceneCombination(comboTarget.getAttribute("data-create-scene-combo"));
+    renderWorkbench();
+    return;
+  }
+
   const chapterTarget = event.target.closest("[data-workbench-chapter]");
   if (chapterTarget) {
     state.workbench.ui.chapterSceneId = chapterTarget.getAttribute("data-workbench-chapter");
