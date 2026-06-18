@@ -104,8 +104,7 @@ button {
 .clue-card-actions,
 .journal-card-actions,
 .report-actions,
-.workbench-chip-list,
-.graph-legend {
+.workbench-chip-list {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -661,8 +660,8 @@ button {
   padding: 4px 10px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: #fff;
-  color: var(--text-muted);
+  background: rgba(15, 23, 42, 0.48);
+  color: var(--text);
   font-size: 12px;
 }
 
@@ -686,8 +685,9 @@ button {
 
 .status-chip.is-locked,
 .status-chip.is-missing {
-  background: #f3f4f6;
-  color: #6b7280;
+  border-color: rgba(148, 163, 184, 0.32);
+  background: rgba(148, 163, 184, 0.16);
+  color: var(--text-muted);
 }
 
 .conclusion-card {
@@ -920,37 +920,6 @@ button {
   cursor: pointer;
   color: var(--text);
   font-weight: 700;
-}
-
-.graph-canvas {
-  width: 100%;
-  min-height: 540px;
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: rgba(8, 12, 20, 0.46);
-}
-
-.graph-legend {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.graph-legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.graph-swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.18);
-}
-
-.graph-swatch.is-user {
-  background: rgba(47, 111, 237, 0.78);
 }
 
 .sr-only {

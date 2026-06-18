@@ -17,11 +17,6 @@ const state = {
       tab: "clues",
       chapterSceneId: START_SCENE_ID,
       panelPosition: null
-    },
-    graph: {
-      hypotheses: [],
-      userLinks: [],
-      workspaces: {}
     }
   },
   selectedConclusionId: null,
@@ -68,7 +63,6 @@ const workbenchLayer = document.querySelector("#workbenchLayer");
 const workbenchBox = document.querySelector(".workbench-box");
 const workbenchHeader = document.querySelector(".workbench-header");
 const workbenchClose = document.querySelector("#workbenchClose");
-const workbenchTabs = document.querySelector("#workbenchTabs");
 const workbenchContent = document.querySelector("#workbenchContent");
 const runePuzzleLayer = document.querySelector("#runePuzzleLayer");
 const runePuzzleClose = document.querySelector("#runePuzzleClose");
@@ -159,7 +153,7 @@ const INSCRIPTION_REWARD = {
   id: "passage:inscription_reading_record",
   sceneId: "passage",
   title: "题记辨读记录",
-  text: "过道东壁下部题记可辨“元符二年赵大翁布”。它提供 1099 年时间锚点和“赵大翁”称谓，但身份判断仍需后续材料复查。",
+  text: "过道东壁下部题记可辨“元符二年赵大翁布”。它提供 1099 年时间锚点和“赵大翁”称谓，但身份判断仍需结合其他材料复查。",
   clueIds: ["PASS-P0-01", "PASS-F-01", "PASS-H-02"]
 };
 const RELIC_PUZZLE_ID = "mg_rear_relic_position";
@@ -277,9 +271,9 @@ const PIPE_LEVELS = {
       id: "tomb_gate:pipe_trace_reward",
       sceneId: "tomb_gate",
       title: "地券线索",
-      text: "临时线索：砖缝暗线被导通后，一张地券影像被照亮。正式线索图片可在后续替换。",
+      text: "砖缝暗线被导通后，一张地券影像被照亮。",
       image: "assets/M1/16_出土器物与人骨/地券.png",
-      successText: "暗线连通后，地券影像被照亮。正式奖励线索可以在这里替换。"
+      successText: "暗线连通后，地券影像被照亮。"
     },
     tiles: [
       [
@@ -955,19 +949,13 @@ function normalizeWorkbench(workbench) {
       tab: "clues",
       chapterSceneId: START_SCENE_ID,
       panelPosition: null
-    },
-    graph: {
-      hypotheses: [],
-      userLinks: [],
-      workspaces: {}
     }
   };
 
   if (!workbench || typeof workbench !== "object" || Array.isArray(workbench)) return normalized;
 
   const ui = workbench.ui && typeof workbench.ui === "object" && !Array.isArray(workbench.ui) ? workbench.ui : {};
-  const tab = typeof ui.tab === "string" ? ui.tab : normalized.ui.tab;
-  normalized.ui.tab = ["clues", "graph"].includes(tab) ? tab : "clues";
+  normalized.ui.tab = "clues";
   normalized.ui.chapterSceneId = SCENES[ui.chapterSceneId] ? ui.chapterSceneId : START_SCENE_ID;
   normalized.ui.panelPosition =
     ui.panelPosition &&
@@ -976,29 +964,6 @@ function normalizeWorkbench(workbench) {
     Number.isFinite(ui.panelPosition.y)
       ? { x: ui.panelPosition.x, y: ui.panelPosition.y }
       : null;
-
-  const graph = workbench.graph && typeof workbench.graph === "object" && !Array.isArray(workbench.graph) ? workbench.graph : {};
-  normalized.graph.hypotheses = Array.isArray(graph.hypotheses)
-    ? graph.hypotheses
-        .filter((item) => item && typeof item === "object" && !Array.isArray(item))
-        .map((item) => ({
-          id: typeof item.id === "string" ? item.id : `hyp_${Math.random().toString(16).slice(2)}`,
-          title: typeof item.title === "string" ? item.title : ""
-        }))
-        .filter((item) => item.title.trim())
-    : [];
-  normalized.graph.userLinks = Array.isArray(graph.userLinks)
-    ? graph.userLinks
-        .filter((item) => item && typeof item === "object" && !Array.isArray(item))
-        .map((item) => ({
-          from: typeof item.from === "string" ? item.from : "",
-          to: typeof item.to === "string" ? item.to : ""
-        }))
-        .filter((item) => item.from && item.to && item.from !== item.to)
-    : [];
-
-  normalized.graph.workspaces =
-    graph.workspaces && typeof graph.workspaces === "object" && !Array.isArray(graph.workspaces) ? graph.workspaces : {};
 
   return normalized;
 }
@@ -1866,7 +1831,7 @@ function addRewardRecord(reward) {
 }
 
 function makeRelicItemRecord(item) {
-  const scope = item.core ? "正式线索" : "扩展收集";
+  const scope = item.core ? "核心线索" : "补充收集";
   return {
     id: `relic:${item.id}`,
     sceneId: item.page.startsWith("rear") || item.page === "landDeed" || item.page === "bonesNails" ? "rear_chamber" : item.page,
@@ -2502,7 +2467,7 @@ function setWorkbenchOpen(open, tab = state.workbench.ui.tab) {
     state.conclusionOpen = false;
   }
   if (open && typeof tab === "string") {
-    state.workbench.ui.tab = ["clues", "graph"].includes(tab) ? tab : "clues";
+    state.workbench.ui.tab = "clues";
   }
   if (open && !wasOpen) {
     state.workbench.ui.chapterSceneId = getWorkbenchSceneIdForCurrentScene();
@@ -3527,8 +3492,6 @@ function renderConclusions() {
   `;
 }
 
-let graphLinkFrom = null;
-
 function getWorkbenchChapterSceneIds() {
   const order = ["environment", "tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber", "final_report"];
   return order.filter((sceneId) => SCENES[sceneId]);
@@ -3678,11 +3641,6 @@ function buildWorkbenchProgressRows(steps = []) {
   `;
 }
 
-function getGraphDisplayLabel(nodeId) {
-  const node = getGraphNodeInfo(nodeId);
-  return node?.label || nodeId;
-}
-
 function getWorkbenchFallbackPosition() {
   if (!workbenchLayer) return { x: 24, y: 88 };
   const viewportWidth = Math.max(320, window.innerWidth || document.documentElement.clientWidth || 0);
@@ -3729,18 +3687,8 @@ function renderWorkbench() {
   workbenchToggle?.setAttribute("aria-expanded", String(state.workbenchOpen));
   if (!state.workbenchOpen) return;
 
-  workbenchTabs.querySelectorAll("[data-workbench-tab]").forEach((button) => {
-    const tab = button.getAttribute("data-workbench-tab");
-    const active = tab === state.workbench.ui.tab;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-selected", String(active));
-  });
-
-  if (state.workbench.ui.tab === "graph") {
-    renderWorkbenchGraph();
-  } else {
-    renderWorkbenchClues();
-  }
+  state.workbench.ui.tab = "clues";
+  renderWorkbenchClues();
   syncWorkbenchPosition();
 }
 
@@ -3787,10 +3735,6 @@ function renderWorkbenchClues() {
             : "已收录"
         : "尚未收录";
       const statusClass = record ? (record.track === "pending" ? "partial" : "met") : "missing";
-      const actions =
-        record && record.track !== "excluded"
-          ? `<div class="clue-card-actions"><button class="secondary-button" type="button" data-workbench-open-graph="${escapeHtml(record.id)}">加入关系图</button></div>`
-          : "";
       return `
         <article class="clue-card">
           <div class="journal-card-meta">
@@ -3799,7 +3743,6 @@ function renderWorkbenchClues() {
           </div>
           <h3>${escapeHtml(title)}</h3>
           <p>${escapeHtml(record ? getRecordExcerpt(record.text) : "尚未收录。回到场景中继续观察相关图像。")}</p>
-          ${actions}
         </article>
       `;
     })
@@ -3899,9 +3842,6 @@ function renderWorkbenchClues() {
                   </div>
                   <h3>${escapeHtml(record.title)}</h3>
                   <p>${escapeHtml(getRecordExcerpt(record.text))}</p>
-                  <div class="clue-card-actions">
-                    <button class="secondary-button" type="button" data-workbench-open-graph="${escapeHtml(record.id)}">加入关系图</button>
-                  </div>
                 </article>
               `
             )
@@ -3974,226 +3914,6 @@ function renderWorkbenchClues() {
   `;
 }
 
-let graphSuppressClick = false;
-let graphDrag = null;
-let graphRuntime = null;
-
-function getGraphWorkspace(sceneId) {
-  if (!state.workbench.graph.workspaces || typeof state.workbench.graph.workspaces !== "object") {
-    state.workbench.graph.workspaces = {};
-  }
-  if (!state.workbench.graph.workspaces[sceneId]) {
-    state.workbench.graph.workspaces[sceneId] = { nodeIds: [], positions: {} };
-  }
-  const workspace = state.workbench.graph.workspaces[sceneId];
-  if (!Array.isArray(workspace.nodeIds)) workspace.nodeIds = [];
-  if (!workspace.positions || typeof workspace.positions !== "object" || Array.isArray(workspace.positions)) workspace.positions = {};
-  return workspace;
-}
-
-function ensureWorkspaceNode(sceneId, nodeId) {
-  const workspace = getGraphWorkspace(sceneId);
-  if (!workspace.nodeIds.includes(nodeId)) {
-    workspace.nodeIds.push(nodeId);
-  }
-  return workspace;
-}
-
-function getGraphNodeInfo(nodeId) {
-  if (nodeId.startsWith("clue:")) {
-    const recordId = nodeId.slice("clue:".length);
-    const record = getRecord(recordId);
-    if (!record) return null;
-    return { id: nodeId, type: "clue", label: record.title || recordId, recordId };
-  }
-
-  if (nodeId.startsWith("rel:")) {
-    const relationId = nodeId.slice("rel:".length);
-    const relation = getConclusionRelation(relationId);
-    if (!relation) return null;
-    return { id: nodeId, type: "relation", label: relation.title, relationId };
-  }
-
-  if (nodeId.startsWith("hyp:")) {
-    const hypothesisId = nodeId.slice("hyp:".length);
-    const hypothesis = state.workbench.graph.hypotheses.find((item) => item.id === hypothesisId);
-    if (!hypothesis) return null;
-    return { id: nodeId, type: "hypothesis", label: hypothesis.title, hypothesisId };
-  }
-
-  return null;
-}
-
-function buildGraphNodesAndLinks(sceneId) {
-  const workspace = getGraphWorkspace(sceneId);
-  const nodeIds = workspace.nodeIds;
-  const nodes = nodeIds.map(getGraphNodeInfo).filter(Boolean);
-  const idSet = new Set(nodes.map((n) => n.id));
-  const links = state.workbench.graph.userLinks
-    .filter((link) => idSet.has(link.from) && idSet.has(link.to))
-    .map((link) => ({ type: "user", from: link.from, to: link.to, label: "" }));
-
-  return { nodes, links, workspace };
-}
-
-function layoutGraph(nodes, workspace) {
-  const spacing = 62;
-  const columns = {
-    clue: 90,
-    hypothesis: 360,
-    relation: 640
-  };
-  const counters = { clue: 0, hypothesis: 0, relation: 0 };
-
-  let maxY = 0;
-  nodes.forEach((node) => {
-    const saved = workspace.positions?.[node.id];
-    if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
-      node.x = saved.x;
-      node.y = saved.y;
-      maxY = Math.max(maxY, node.y);
-      return;
-    }
-    const x = columns[node.type] || columns.clue;
-    const y = 60 + counters[node.type] * spacing;
-    counters[node.type] += 1;
-    node.x = x;
-    node.y = y;
-    maxY = Math.max(maxY, y);
-  });
-
-  const width = 860;
-  const height = Math.max(520, maxY + 120);
-  return { width, height };
-}
-
-function renderWorkbenchGraph() {
-  const chapterSceneId = state.workbench.ui.chapterSceneId;
-  const chapters = getWorkbenchChapterSceneIds().filter(
-    (sceneId) => state.visitedSceneIds.includes(sceneId) || state.records.some((record) => record.sceneId === sceneId)
-  );
-  const activeChapters = chapters.length ? chapters : [chapterSceneId];
-  const selectedChapter = activeChapters.includes(chapterSceneId) ? chapterSceneId : activeChapters[0];
-  state.workbench.ui.chapterSceneId = selectedChapter;
-  save();
-
-  const chapterButtons = activeChapters
-    .map(
-      (sceneId) =>
-        `<button class="workbench-chip${sceneId === selectedChapter ? " is-active" : ""}" type="button" data-workbench-chapter="${escapeHtml(sceneId)}">${escapeHtml(getWorkbenchChapterLabel(sceneId))}</button>`
-    )
-    .join("");
-
-  const { nodes, links, workspace } = buildGraphNodesAndLinks(selectedChapter);
-  const { width, height } = layoutGraph(nodes, workspace);
-
-  const nodeById = new Map(nodes.map((n) => [n.id, n]));
-  const edgePaths = links
-    .map((link, idx) => {
-      const from = nodeById.get(link.from);
-      const to = nodeById.get(link.to);
-      if (!from || !to) return "";
-      const c1x = from.x + 80;
-      const c2x = to.x - 80;
-      const path = `M ${from.x} ${from.y} C ${c1x} ${from.y}, ${c2x} ${to.y}, ${to.x} ${to.y}`;
-      const stroke = "rgba(201, 157, 87, 0.85)";
-      const widthPx = 2.6;
-      return `<path data-graph-link="${idx}" d="${path}" fill="none" stroke="${stroke}" stroke-width="${widthPx}" />`;
-    })
-    .join("");
-
-  const nodeGroups = nodes
-    .map((node) => {
-      const fill =
-        node.type === "relation"
-          ? "rgba(143, 199, 170, 0.12)"
-          : node.type === "hypothesis"
-            ? "rgba(201, 157, 87, 0.12)"
-            : "rgba(255, 255, 255, 0.08)";
-      const stroke =
-        graphLinkFrom === node.id
-          ? "rgba(201, 157, 87, 0.95)"
-          : node.type === "relation"
-            ? "rgba(143, 199, 170, 0.38)"
-            : "rgba(255, 255, 255, 0.18)";
-      const label = escapeHtml(node.label);
-      return `
-        <g data-graph-node="${escapeHtml(node.id)}" style="cursor:pointer">
-          <rect x="${node.x - 110}" y="${node.y - 18}" width="220" height="36" rx="10" fill="${fill}" stroke="${stroke}" />
-          <text x="${node.x}" y="${node.y + 5}" text-anchor="middle" fill="#e8dcc7" font-size="12" font-family="Microsoft YaHei, Noto Sans SC, sans-serif">${label}</text>
-        </g>
-      `;
-    })
-    .join("");
-
-  const userLinksHtml = links.length
-    ? `
-      <div class="evidence-list">
-        ${links
-          .map(
-            (link) => `
-              <article class="evidence-item">
-                <div class="evidence-meta">
-                  <span class="status-chip">联线</span>
-                </div>
-                <p><strong>${escapeHtml(getGraphDisplayLabel(link.from))}</strong> → ${escapeHtml(getGraphDisplayLabel(link.to))}</p>
-                <div class="clue-card-actions">
-                  <button class="secondary-button" type="button" data-workbench-delete-link="${escapeHtml(`${link.from}|${link.to}`)}">删除</button>
-                </div>
-              </article>
-            `
-          )
-          .join("")}
-      </div>
-    `
-    : '<p class="empty-note">暂无玩家联线。先从“章节整理”里点“加入关系图”，再在图上点节点进行联线。</p>';
-
-  const relationButtons = getConclusionRelations()
-    .map(
-      (relation) =>
-        `<button class="workbench-chip" type="button" data-workbench-add-relation="${escapeHtml(relation.id)}">${escapeHtml(relation.title)}</button>`
-    )
-    .join("");
-
-  const emptyGraphHint = nodes.length
-    ? ""
-    : '<p class="empty-note">本章关系图尚为空。请先到“章节整理”中选择记录并点击“加入关系图”。</p>';
-
-  workbenchContent.innerHTML = `
-    <div class="workbench-layout">
-      <aside class="workbench-sidebar">
-        <h2 class="workbench-section-title">章节</h2>
-        <div class="workbench-chip-list">${chapterButtons}</div>
-        <h2 class="workbench-section-title">操作</h2>
-        <div class="clue-card-actions">
-          <button class="secondary-button" type="button" data-workbench-add-hypothesis="1">新建假说</button>
-          <button class="secondary-button" type="button" data-workbench-cancel-link="1">取消联线</button>
-        </div>
-        <h2 class="workbench-section-title">推理链节点</h2>
-        <div class="workbench-chip-list">${relationButtons}</div>
-        <div class="graph-legend">
-          <span class="graph-legend-item"><span class="graph-swatch is-user"></span>玩家联线</span>
-        </div>
-      </aside>
-      <section class="workbench-main">
-        <h2 class="workbench-section-title">${escapeHtml(getWorkbenchChapterLabel(selectedChapter))}关系图</h2>
-        ${emptyGraphHint}
-        <div class="graph-canvas">
-          <svg id="workbenchGraph" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMinYMin meet" aria-label="推理关系图">
-            ${edgePaths}
-            ${nodeGroups}
-          </svg>
-        </div>
-        <h2 class="workbench-section-title">玩家联线</h2>
-        ${userLinksHtml}
-      </section>
-    </div>
-  `;
-
-  const svg = workbenchContent.querySelector("#workbenchGraph");
-  graphRuntime = svg ? { sceneId: selectedChapter, svg } : null;
-}
-
 journalToggle.addEventListener("click", () => setJournal(!state.journalOpen));
 journalClose.addEventListener("click", () => setJournal(false));
 journalList.addEventListener("click", (event) => {
@@ -4237,11 +3957,6 @@ workbenchClose.addEventListener("click", () => setWorkbenchOpen(false));
 workbenchLayer.addEventListener("click", (event) => {
   if (event.target === workbenchLayer) setWorkbenchOpen(false);
 });
-workbenchTabs.addEventListener("click", (event) => {
-  const tabTarget = event.target.closest("[data-workbench-tab]");
-  if (!tabTarget) return;
-  setWorkbenchOpen(true, tabTarget.getAttribute("data-workbench-tab") || "clues");
-});
 workbenchContent.addEventListener("click", (event) => {
   const reviewTarget = event.target.closest("[data-run-review-step]");
   if (reviewTarget) {
@@ -4271,164 +3986,6 @@ workbenchContent.addEventListener("click", (event) => {
     renderWorkbench();
     return;
   }
-
-  const openGraphTarget = event.target.closest("[data-workbench-open-graph]");
-  if (openGraphTarget) {
-    const recordId = openGraphTarget.getAttribute("data-workbench-open-graph");
-    const record = state.records.find((item) => item.id === recordId);
-    if (!record?.sceneId) return;
-    state.workbench.ui.chapterSceneId = record.sceneId;
-    ensureWorkspaceNode(record.sceneId, `clue:${record.id}`);
-    graphLinkFrom = null;
-    save();
-    setWorkbenchOpen(true, "graph");
-    return;
-  }
-
-  const addHypTarget = event.target.closest("[data-workbench-add-hypothesis]");
-  if (addHypTarget) {
-    const title = window.prompt("输入假说标题（用于你自己的推理网络）");
-    if (!title) return;
-    const trimmed = title.trim();
-    if (!trimmed) return;
-    const hypothesisId = `hyp_${Date.now().toString(16)}`;
-    state.workbench.graph.hypotheses.push({ id: hypothesisId, title: trimmed });
-    ensureWorkspaceNode(state.workbench.ui.chapterSceneId, `hyp:${hypothesisId}`);
-    save();
-    renderWorkbench();
-    return;
-  }
-
-  const addRelationTarget = event.target.closest("[data-workbench-add-relation]");
-  if (addRelationTarget) {
-    const relationId = addRelationTarget.getAttribute("data-workbench-add-relation");
-    if (!relationId) return;
-    ensureWorkspaceNode(state.workbench.ui.chapterSceneId, `rel:${relationId}`);
-    save();
-    renderWorkbench();
-    return;
-  }
-
-  const cancelLinkTarget = event.target.closest("[data-workbench-cancel-link]");
-  if (cancelLinkTarget) {
-    graphLinkFrom = null;
-    renderWorkbench();
-    return;
-  }
-
-  const deleteLinkTarget = event.target.closest("[data-workbench-delete-link]");
-  if (deleteLinkTarget) {
-    const key = deleteLinkTarget.getAttribute("data-workbench-delete-link") || "";
-    const [from, to] = key.split("|");
-    if (!from || !to) return;
-    const idx = state.workbench.graph.userLinks.findIndex((item) => item.from === from && item.to === to);
-    if (idx >= 0) state.workbench.graph.userLinks.splice(idx, 1);
-    save();
-    renderWorkbench();
-    return;
-  }
-
-  const nodeTarget = event.target.closest("[data-graph-node]");
-  if (nodeTarget) {
-    if (graphSuppressClick) {
-      graphSuppressClick = false;
-      return;
-    }
-    const nodeId = nodeTarget.getAttribute("data-graph-node");
-    if (!nodeId) return;
-    if (!graphLinkFrom) {
-      graphLinkFrom = nodeId;
-      renderWorkbench();
-      return;
-    }
-    if (graphLinkFrom === nodeId) {
-      graphLinkFrom = null;
-      renderWorkbench();
-      return;
-    }
-    const exists = state.workbench.graph.userLinks.some((item) => item.from === graphLinkFrom && item.to === nodeId);
-    if (!exists) {
-      state.workbench.graph.userLinks.push({ from: graphLinkFrom, to: nodeId });
-      save();
-    }
-    graphLinkFrom = null;
-    renderWorkbench();
-  }
-});
-
-workbenchContent.addEventListener("pointerdown", (event) => {
-  const nodeTarget = event.target.closest("[data-graph-node]");
-  if (!nodeTarget) return;
-  if (!graphRuntime?.svg) return;
-  const nodeId = nodeTarget.getAttribute("data-graph-node");
-  if (!nodeId) return;
-  const svg = graphRuntime.svg;
-
-  const pt = svg.createSVGPoint();
-  pt.x = event.clientX;
-  pt.y = event.clientY;
-  const ctm = svg.getScreenCTM();
-  if (!ctm) return;
-  const start = pt.matrixTransform(ctm.inverse());
-  const workspace = getGraphWorkspace(graphRuntime.sceneId);
-  const saved = workspace.positions[nodeId];
-  const rect = nodeTarget.querySelector("rect");
-  const rectX = rect ? Number(rect.getAttribute("x")) : NaN;
-  const rectY = rect ? Number(rect.getAttribute("y")) : NaN;
-  const current = saved
-    ? saved
-    : Number.isFinite(rectX) && Number.isFinite(rectY)
-      ? { x: rectX + 110, y: rectY + 18 }
-      : { x: start.x, y: start.y };
-  graphDrag = {
-    nodeId,
-    startX: start.x,
-    startY: start.y,
-    originX: Number.isFinite(current.x) ? current.x : start.x,
-    originY: Number.isFinite(current.y) ? current.y : start.y,
-    moved: 0
-  };
-  graphSuppressClick = false;
-  nodeTarget.setPointerCapture(event.pointerId);
-});
-
-workbenchContent.addEventListener("pointermove", (event) => {
-  if (!graphDrag) return;
-  if (!graphRuntime?.svg) return;
-  const svg = graphRuntime.svg;
-  const pt = svg.createSVGPoint();
-  pt.x = event.clientX;
-  pt.y = event.clientY;
-  const ctm = svg.getScreenCTM();
-  if (!ctm) return;
-  const now = pt.matrixTransform(ctm.inverse());
-  const dx = now.x - graphDrag.startX;
-  const dy = now.y - graphDrag.startY;
-  const x = graphDrag.originX + dx;
-  const y = graphDrag.originY + dy;
-  graphDrag.moved = Math.max(graphDrag.moved, Math.abs(dx) + Math.abs(dy));
-  if (graphDrag.moved > 3) graphSuppressClick = true;
-  const workspace = getGraphWorkspace(graphRuntime.sceneId);
-  workspace.positions[graphDrag.nodeId] = { x, y };
-  const safeId = String(graphDrag.nodeId).replaceAll("\\", "\\\\").replaceAll('"', '\\"');
-  const nodeGroup = workbenchContent.querySelector(`[data-graph-node="${safeId}"]`);
-  if (!nodeGroup) return;
-  const rect = nodeGroup.querySelector("rect");
-  const text = nodeGroup.querySelector("text");
-  if (rect) {
-    rect.setAttribute("x", String(x - 110));
-    rect.setAttribute("y", String(y - 18));
-  }
-  if (text) {
-    text.setAttribute("x", String(x));
-    text.setAttribute("y", String(y + 5));
-  }
-});
-
-workbenchContent.addEventListener("pointerup", () => {
-  if (!graphDrag) return;
-  save();
-  graphDrag = null;
 });
 workbenchHeader?.addEventListener("pointerdown", (event) => {
   if (!state.workbenchOpen) return;

@@ -153,7 +153,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "environment_sequence",
               title: "查看M1空间序列",
-              body: "平剖面图可以先建立后续章节的位置关系。",
+              body: "平剖面图可以先建立各章节的位置关系。",
               closeLabel: "查看"
             }
           },
@@ -195,7 +195,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.18, 0.2, 0.82, 0.76],
             title: "六段空间顺序",
-            body: "平剖面图把第一号墓的空间压缩成一条可读的轴线。\n后续墙面、题记、器物和葬具线索，都可以沿这条轴线定位。",
+            body: "平剖面图把第一号墓的空间压缩成一条可读的轴线。\n墙面、题记、器物和葬具线索，都可以沿这条轴线定位。",
             record: "第一号墓可按墓外、墓门、甬道、前室、过道、后室的顺序建立空间轴线。",
             sourceFile: "docs/handoff/线索交付文档/05_剧情体验交付/M1场景线索体验节奏表_v1.0.md",
             sourceClueId: "ENV-P0-01"
@@ -498,7 +498,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.08, 0.24, 0.92, 0.74],
             title: "门额背面卷草纹",
-            body: "背面彩画把墓门线索从正面题字扩展到背面装饰。\n这里可以作为后续美工重绘或局部放大 UI 的重点。",
+            body: "背面彩画把墓门线索从正面题字扩展到背面装饰。\n卷草纹与门额背面位置共同提示，墓门需要正背面合读。",
             record: "门额背面卷草纹彩画可作为墓门结构与装饰关系的重点图像线索。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
             sourceClueId: "GATE-P0-02"
@@ -857,7 +857,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.16, 0.14, 0.84, 0.78],
             title: "叠胜纹样细部",
-            body: "这张近景图把甬道顶部叠胜彩画从整体顶面中拆出来。\n后续美工可以在这里强化纹样、偏移点和局部复查 UI。",
+            body: "甬道顶部叠胜彩画在近景中被单独观察。\n纹样偏移、边线差异和局部色差可以在近景中对照。",
             record: "甬道顶叠胜彩画近景可用于复查纹样、偏移点和顶部彩画层次。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
             sourceClueId: "COR-P0-01"
@@ -1546,13 +1546,13 @@ const SCENES = {
             shape: "rect",
             rect: [0.76, 0.60, 0.98, 0.78],
             title: "终章汇总",
-            body: "五个章节的阶段判断已经可以并读。\n墓门提供入口结构证据，甬道和过道连接空间与时间，前室展开礼仪秩序，后室收束图像、文书、遗存和日常器物。\n第一版研究判断已经形成：M1 的意义不来自单一异常，而来自空间、图像、文字和遗物之间的多层对应。\n终章结论卡已经在线索墙中生成，可回到记录与结论界面复看主线证据。",
+            body: "五个章节的阶段判断已经可以并读。\n墓门提供入口结构证据，甬道和过道连接空间与时间，前室展开礼仪秩序，后室收束图像、文书、遗存和日常器物。\n阶段性研究判断已经形成：M1 的意义不来自单一异常，而来自空间、图像、文字和遗物之间的多层对应。\n终章结论卡已经在线索墙中生成，可回到记录与结论界面复看主线证据。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             transition: {
               completeOnly: true,
               title: "终章汇总",
-              body: "五个章节的阶段判断已经可以并读。\n墓门提供入口结构证据，甬道和过道连接空间与时间，前室展开礼仪秩序，后室收束图像、文书、遗存和日常器物。\n第一版研究判断已经形成：M1 的意义不来自单一异常，而来自空间、图像、文字和遗物之间的多层对应。\n终章结论卡已经在线索墙中生成，可回到记录与结论界面复看主线证据。",
+              body: "五个章节的阶段判断已经可以并读。\n墓门提供入口结构证据，甬道和过道连接空间与时间，前室展开礼仪秩序，后室收束图像、文书、遗存和日常器物。\n阶段性研究判断已经形成：M1 的意义不来自单一异常，而来自空间、图像、文字和遗物之间的多层对应。\n终章结论卡已经在线索墙中生成，可回到记录与结论界面复看主线证据。",
               closeLabel: "知道了",
               lockedBody: "终章汇总尚未开放。请先完成五个章节的组合判断；后室还需要完成葬具证据链、降级记录和汇总。",
               missingRecords: [
@@ -2915,7 +2915,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "front_west_entry_closeup",
               title: "查看前室入口关系",
-              body: "前室入口关系图被单独打开。",
+              body: "前室入口关系近景进入视线。",
               closeLabel: "查看"
             }
           },
@@ -4214,7 +4214,7 @@ addSceneView("environment", "environment_baisha_context", {
       shape: "rect",
       rect: [0.12, 0.14, 0.88, 0.78],
       title: "附近地貌关系",
-      body: "这张图用于补足墓外环境的尺度。\n后续美工可在这里标注村落、墓群范围和进入第一号墓的方向。",
+      body: "这张图用于补足墓外环境的尺度。\n村落、墓群范围和进入第一号墓的方向可以在同一张图中观察。",
       record: "白沙附近图可用于标注村落、墓群范围和进入第一号墓的方向。",
       sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓外环境线索精修版_v1.0.md",
       sourceClueId: "ENV-E-02"
@@ -4273,7 +4273,7 @@ addSceneHotspot("tomb_gate", "tomb_gate_main", {
   viewTransition: {
     targetViewId: "tomb_gate_back_corridor",
     title: "查看门后与甬道",
-    body: "墓门后部与甬道关系图被单独打开。",
+    body: "墓门后部与甬道关系近景进入视线。",
     closeLabel: "查看"
   }
 });
@@ -4413,7 +4413,7 @@ addSceneHotspot("front_chamber", "front_east", {
   detailImage: {
     src: "assets/M1/17_其他细节与特写/第一号墓前室东壁壁画中女乐所执的排箫.png",
     alt: "第一号墓前室东壁壁画中女乐所执的排箫",
-    caption: "局部放大图：排箫作为女乐音乐物象显示，后续可做描线增强或组合到女乐细节组。"
+    caption: "排箫局部放大图：排箫作为女乐音乐物象显示，可与服饰和仪仗细节对照。"
   }
 });
 
@@ -5352,15 +5352,15 @@ const CONCLUSION_DATA = {
       sceneId: "rear_chamber",
       chapter: "后室",
       title: "后室结论卡",
-      summary: "后室第一版先把假门图像、地券文书和砖床遗存压进同一条证据链，确认图像与遗存如何互相解释。",
-      conclusion: "后室第一版的核心不是单条奇异细节，而是假门图像、地券和砖床遗存共同指向一组需要谨慎辨别的葬仪与身份证据。",
+      summary: "后室把假门图像、地券文书和砖床遗存压进同一条证据链，确认图像与遗存如何互相解释。",
+      conclusion: "后室核心不是单条奇异细节，而是假门图像、地券和砖床遗存共同指向一组需要谨慎辨别的葬仪与身份证据。",
       generationPrompt: {
         title: "新结论卡已生成：后室",
-        body: "后室第一版的图像、文书和遗存已经可以并读。现在可以在线索墙查看后室如何形成第一组核心判断。 "
+        body: "后室图像、文书和遗存已经可以并读。现在可以在线索墙查看后室如何形成核心判断。 "
       },
       completionSummary: {
         title: "后室阶段完成",
-        body: "后室第一版已经完成从假门到砖床遗存的收束。下一步可以进入终章，或继续补强后室第二版的日常器物线。 "
+        body: "后室已经完成从假门到砖床遗存的收束。下一步可以进入终章，或继续复看后室日常器物线。 "
       },
       requirements: [
         {
@@ -5396,7 +5396,7 @@ const CONCLUSION_DATA = {
         {
           id: "analysis:rear_chamber:combo",
           label: "后室组合判断",
-          metText: "后室第一版已经完成观察、复查、排除与组合，可进入主线结论。",
+          metText: "后室已经完成观察、复查、排除与组合，可进入主线结论。",
           missingText: "还缺后室组合判断。当前仍是分散观察，需先完成复查并排除误导线索。 "
         }
       ],
@@ -5414,7 +5414,7 @@ const CONCLUSION_DATA = {
       },
       completionSummary: {
         title: "终章已可汇总",
-        body: "现阶段的主干证据已经足以形成第一版研究判断。接下来应继续补强分析流程与证据复查，而不是盲目增加散点热区。 "
+        body: "主干证据已经足以形成阶段性研究判断。接下来应继续补强证据复查，而不是盲目增加散点热区。 "
       },
       unlockRequirements: [
         {
@@ -5543,7 +5543,7 @@ const CONCLUSION_DATA = {
     {
       id: "R09",
       title: "终章三栏报告",
-      summary: "终章把已完成的章节判断分成可判断、可推测和仍存疑三类，形成第一版总线索。",
+      summary: "终章把已完成的章节判断分成可判断、可推测和仍存疑三类，形成总线索。",
       requirements: [
         { relationId: "R01", label: "空间序列链" },
         { relationId: "R02", label: "墓门结构链" },
@@ -5557,7 +5557,7 @@ const CONCLUSION_DATA = {
   ],
   finalSynthesis: {
     title: "终章总线索",
-    summary: "章节结论卡会按空间顺序进入总线索。终章不新增奇异点，而是把已完成判断收束成第一版研究报告。",
+    summary: "章节结论卡会按空间顺序进入总线索。终章不新增奇异点，而是把已完成判断收束成阶段性研究报告。",
     chapterOrder: ["tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber"],
     lanes: [
       {
@@ -5679,12 +5679,12 @@ const NPC_DATA = {
       kicker: "章节完成",
       speaker: "考古领队",
       title: "后室判断",
-      body: "后室图像、遗存和日常器物已经开始互相解释，现阶段可以进入终章汇总。"
+      body: "后室图像、遗存和日常器物已经开始互相解释，可以进入终章汇总。"
     },
     final_report: {
       kicker: "终章汇总",
       speaker: "考古领队",
-      title: "第一版研究判断",
+      title: "阶段性研究判断",
       body: "把章节结论并在一起看，M1 的异常更像多次调整留下的叠层结果，而不是单一事件。"
     }
   }
@@ -5997,7 +5997,7 @@ const ANALYSIS_DATA = {
       ],
       combination: {
         buttonLabel: "形成后室章节组合判断",
-        description: "把假门图像、地券文书和葬具证据链三条复查结果合并，生成后室第一版判断。",
+        description: "把假门图像、地券文书和葬具证据链三条复查结果合并，生成后室阶段判断。",
         progressLabel: "后室组合判断生成条件",
         requiresReviewRecordIds: [
           "analysis:rear_chamber:review_false_door_structure",
@@ -6041,7 +6041,7 @@ const ANALYSIS_DATA = {
           id: "analysis:rear_chamber:combo",
           sceneId: "rear_chamber",
           title: "后室组合判断",
-          text: "假门图像、地券文书与葬具证据链共同说明，后室第一版的核心证据来自图像、文书和遗存的互相印证；手部断口和角点钉数归入辅助记录。",
+          text: "假门图像、地券文书与葬具证据链共同说明，后室核心证据来自图像、文书和遗存的互相印证；手部断口和角点钉数归入辅助记录。",
           track: "review",
           recordType: "combination"
         }
