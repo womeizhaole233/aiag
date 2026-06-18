@@ -2962,6 +2962,9 @@ function makeHotspot(hotspot) {
 
 function shouldRenderNavLabel(hotspot) {
   if (!getHotspotHoverLabel(hotspot)) return false;
+  if (hotspot.navLabelCompletedSceneIds?.length) {
+    return hotspot.navLabelCompletedSceneIds.every((sceneId) => hasCompletedScene(sceneId));
+  }
   if (hotspot.navLabelCompletedSceneId) {
     return hasCompletedScene(hotspot.navLabelCompletedSceneId);
   }
@@ -3415,17 +3418,25 @@ function renderConclusions() {
   updateSceneSafeArea();
 
   if (chapterOrder.length) {
-    const overview = document.createElement("article");
-    overview.className = "conclusion-wall-overview";
+    const finalStatus = getCardStatusById("final_report", statuses);
+    const overview = document.createElement("button");
+    overview.type = "button";
+    overview.className = `conclusion-wall-overview${selected?.card.id === "final_report" ? " is-active" : ""}`;
     overview.innerHTML = `
       <p class="eyebrow">终章总线索</p>
       <h2>${generatedChapterCount}/${chapterOrder.length}</h2>
-      <p>章节结论卡会按空间顺序汇入终章。完成前，可先查看还缺少哪一段。</p>
+      <p>${
+        finalStatus?.status === "generated"
+          ? "章节结论卡已经汇入终章，可查看总线索。"
+          : "章节结论卡会按空间顺序汇入终章。完成前，可先查看还缺少哪一段。"
+      }</p>
+      <span>${finalStatus?.status === "generated" ? "打开终章汇总" : getStatusLabel(finalStatus?.status || "locked")}</span>
     `;
+    overview.addEventListener("click", () => selectConclusionCard("final_report"));
     conclusionList.appendChild(overview);
   }
 
-  statuses.forEach((item) => {
+  statuses.filter((item) => item.card.id !== "final_report").forEach((item) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `conclusion-card is-${item.status}${selected?.card.id === item.card.id ? " is-active" : ""}`;

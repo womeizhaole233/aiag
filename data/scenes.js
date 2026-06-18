@@ -1542,7 +1542,7 @@ const SCENES = {
             id: "final_report_placeholder",
             label: "查看终章汇总",
             navLabel: "查看终章汇总",
-            navLabelCompletedSceneId: "rear_chamber",
+            navLabelCompletedSceneIds: ["tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber"],
             shape: "rect",
             rect: [0.76, 0.60, 0.98, 0.78],
             title: "终章汇总",
