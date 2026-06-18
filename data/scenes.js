@@ -71,7 +71,6 @@ const POSITION_MAP = {
     passage_inscription_closeup: "过道 / 纪年题记近景",
     passage_lattice_closeup: "过道 / 破子棂窗近景",
     passage_canopy_closeup: "过道 / 抬头看顶部宝盖",
-    passage_tassel_closeup: "过道 / 流苏近景",
     front_overview: "前室 / 入口总览",
     front_west: "前室 / 面向西壁",
     front_east: "前室 / 面向东壁",
@@ -1053,23 +1052,6 @@ const SCENES = {
             }
           },
           {
-            id: "tassel",
-            label: "流苏",
-            shape: "rect",
-            rect: [0.80, 0.22, 0.96, 0.70],
-            title: "流苏",
-            body: "过道壁画中可见流苏。\n流苏方向略有偏转，线条随悬挂位置下垂。\n局部线条仍可辨认。",
-            record: "过道壁画中可见流苏，方向略有偏转，局部线条仍可辨认。",
-            sourceFile: "M1/09_过道/09_过道-增强线索表-v1.1.md",
-            sourceClueId: "H03",
-            closeupTransition: {
-              targetViewId: "passage_tassel_closeup",
-              title: "靠近观察流苏",
-              body: "流苏细部被放大。\n偏转方向和悬挂线条可以继续查看。",
-              closeLabel: "靠近"
-            }
-          },
-          {
             id: "ceiling_canopy",
             label: "顶部宝盖",
             shape: "rect",
@@ -1214,23 +1196,6 @@ const SCENES = {
               targetViewId: "passage_lattice_closeup",
               title: "靠近观察破子棂窗",
               body: "破子棂窗图像被放大。\n斜向窗格和两壁关系可以继续查看。",
-              closeLabel: "靠近"
-            }
-          },
-          {
-            id: "tassel",
-            label: "流苏",
-            shape: "rect",
-            rect: [0.54, 0.2, 0.86, 0.52],
-            title: "流苏",
-            body: "过道壁画中可见流苏。\n流苏方向略有偏转，线条随悬挂位置下垂。\n局部线条仍可辨认。",
-            record: "过道壁画中可见流苏，方向略有偏转，局部线条仍可辨认。",
-            sourceFile: "M1/09_过道/09_过道-增强线索表-v1.1.md",
-            sourceClueId: "H03",
-            closeupTransition: {
-              targetViewId: "passage_tassel_closeup",
-              title: "靠近观察流苏",
-              body: "流苏细部被放大。\n偏转方向和悬挂线条可以继续查看。",
               closeLabel: "靠近"
             }
           },
@@ -1392,47 +1357,6 @@ const SCENES = {
             rect: [0, 0.84, 1, 1],
             title: "返回过道东壁",
             body: "顶部宝盖重新回到过道东壁上方。",
-            record: "返回过道东壁。",
-            sourceFile: "game-navigation",
-            sourceClueId: "NAV",
-            viewTransition: {
-              targetViewId: "passage_main",
-              title: "返回过道东壁",
-              body: "过道东壁重新进入视线。",
-              closeLabel: "返回"
-            }
-          }
-        ]
-      },
-      passage_tassel_closeup: {
-        id: "passage_tassel_closeup",
-        title: "流苏近景",
-        image: {
-          src: "assets/M1/09_过道/第一号墓过道两壁壁画中的流苏.png",
-          alt: "第一号墓过道两壁壁画中的流苏",
-          width: 908,
-          height: 589
-        },
-        hotspots: [
-          {
-            id: "tassel_direction",
-            label: "流苏方向",
-            shape: "rect",
-            rect: [0.28, 0.24, 0.72, 0.7],
-            title: "流苏方向",
-            body: "过道壁画中可见流苏。\n流苏方向略有偏转，线条随悬挂位置下垂。\n偏转与画面构图和悬挂角度相连。",
-            record: "过道壁画流苏方向略有偏转，线条随悬挂位置下垂。",
-            sourceFile: "M1/09_过道/09_过道-增强线索表-v1.1.md",
-            sourceClueId: "H03"
-          },
-          {
-            id: "return_passage_from_tassel",
-            label: "返回过道东壁",
-            navLabel: "返回东壁",
-            shape: "rect",
-            rect: [0, 0.84, 1, 1],
-            title: "返回过道东壁",
-            body: "流苏细节重新回到壁画整体之中。",
             record: "返回过道东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
@@ -2868,7 +2792,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.34, 0.38, 0.66, 0.66],
             title: "北壁与过道方向",
-            body: "北壁中下部的暗缝和地面轴线指向过道方向。\n先转向北壁观察；若入口暂未开放，就回入口总览补齐各壁面线索，再从北壁下方进入过道。",
+            body: "北壁中下部的暗缝和地面轴线指向过道方向。\n过道入口位于北壁下方，前室各壁面与顶部仍可从入口总览重新进入。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
@@ -2922,7 +2846,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
+              body: "前室入口总览重新进入视线。\n各壁面与顶部仍可从总览重新进入；北壁中下部暗缝指向过道方向。",
               closeLabel: "返回"
             }
           },
@@ -2984,8 +2908,8 @@ const SCENES = {
             shape: "rect",
             rect: [0.18, 0.58, 0.40, 0.92],
             title: "前室入口关系",
-            body: "西壁中间下部的入口图可以补足前室内部与通道之间的关系。\n它适合作为前室空间定位的辅助图，而不是单独解释为器物线索。",
-            record: "前室西壁中间下部入口图补充了前室内部与通道之间的空间关系。",
+            body: "西壁中间下部可见前室入口图。\n入口图位于西壁下部，与通道方向相接。",
+            record: "前室入口图位于西壁中间下部，与通道方向相接。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
             sourceClueId: "FRONT-E-01",
             viewTransition: {
@@ -3085,8 +3009,8 @@ const SCENES = {
             shape: "rect",
             rect: [0.18, 0.12, 0.82, 0.78],
             title: "入口与西壁关系",
-            body: "这张图把前室入口放回西壁下部，能帮助玩家确认前室不是孤立房间，而是连接甬道、过道的中段空间。",
-            record: "前室入口关系图显示前室与甬道、过道之间的中段空间关系。",
+            body: "前室入口位于西壁下部。\n前室处在甬道、过道之间的中段空间。",
+            record: "前室入口位于西壁下部，前室处在甬道、过道之间。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
             sourceClueId: "FRONT-E-01"
           },
@@ -3135,7 +3059,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
+              body: "前室入口总览重新进入视线。\n各壁面与顶部仍可从总览重新进入；北壁中下部暗缝指向过道方向。",
               closeLabel: "返回"
             }
           },
@@ -3246,7 +3170,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "front_west",
               title: "转向西壁",
-              body: "西壁器物重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "西壁器物重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           }
@@ -3277,7 +3201,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
+              body: "前室入口总览重新进入视线。\n各壁面与顶部仍可从总览重新进入；北壁中下部暗缝指向过道方向。",
               closeLabel: "返回"
             }
           },
@@ -3386,14 +3310,14 @@ const SCENES = {
             shape: "rect",
             rect: [0, 0.18, 0.18, 0.88],
             title: "转向西壁",
-            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
               title: "转向西壁",
-              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -3404,14 +3328,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.82, 0.18, 1, 0.88],
             title: "转向东壁",
-            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
               title: "转向东壁",
-              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           }
@@ -3465,7 +3389,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.38, 0.58, 0.62, 0.98],
             title: "北壁下方过道入口",
-            body: "这是前室北壁下方通向过道的方向。\n若入口暂未开放，请先点“返回入口总览”，继续补齐前室各壁面和顶部线索。",
+            body: "前室北壁下方通向过道方向。\n入口开放后可从此进入过道轴线。",
             record: "前室北壁下方确认了通向过道的方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
@@ -3474,9 +3398,9 @@ const SCENES = {
               targetViewId: "passage_overview",
               completesSceneId: "front_chamber",
               title: "进入过道轴线",
-              body: "前室四壁与顶部已经形成对应。\n你从北壁下方的暗缝方向进入过道。关闭弹窗后，狭长的过道轴线会重新进入视线。",
+              body: "前室四壁与顶部已经形成对应。\n北壁下方暗缝通向狭长过道轴线。",
               closeLabel: "进入",
-              lockedBody: "过道入口暂未开放。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
+              lockedBody: "过道入口暂未开放。前室各壁面与顶部的主要观察信息仍未齐全。",
               missingRecords: [
                 { id: "front_chamber:ewer", label: "西壁：砖砌注子" },
                 { id: "front_chamber:high_bottle", label: "西壁：高瓶与瓶座" },
@@ -3520,7 +3444,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.02, 0.02, 0.32, 0.16],
             title: "返回入口总览",
-            body: "回到前室入口总览。\n如果过道入口暂未解锁，先从总览补看各壁面和顶部；完成记录夹汇总后，再回北壁下方进入过道。",
+            body: "回到前室入口总览。\n各壁面与顶部仍可从总览重新进入；北壁中下部暗缝指向过道方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
@@ -3537,14 +3461,14 @@ const SCENES = {
             shape: "rect",
             rect: [0, 0.18, 0.18, 0.88],
             title: "转向西壁",
-            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
               title: "转向西壁",
-              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -3555,14 +3479,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.18, 0.86, 0.48, 1],
             title: "转向东壁",
-            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
               title: "转向东壁",
-              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -3573,14 +3497,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.52, 0.86, 0.82, 1],
             title: "转向南壁",
-            body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "南壁的壁函与倚柱重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室南壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_south",
               title: "转向南壁",
-              body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "南壁的壁函与倚柱重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           }
@@ -3634,7 +3558,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.38, 0.58, 0.62, 0.98],
             title: "北壁下方过道入口",
-            body: "这是前室北壁下方通向过道的方向。\n若入口暂未开放，请先点“返回入口总览”，继续补齐前室各壁面和顶部线索。",
+            body: "前室北壁下方通向过道方向。\n入口开放后可从此进入过道轴线。",
             record: "前室北壁下方确认了通向过道的方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
@@ -3643,9 +3567,9 @@ const SCENES = {
               targetViewId: "passage_overview",
               completesSceneId: "front_chamber",
               title: "进入过道轴线",
-              body: "前室四壁与顶部已经形成对应。\n你从北壁下方的暗缝方向进入过道。关闭弹窗后，狭长的过道轴线会重新进入视线。",
+              body: "前室四壁与顶部已经形成对应。\n北壁下方暗缝通向狭长过道轴线。",
               closeLabel: "进入",
-              lockedBody: "过道入口暂未开放。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
+              lockedBody: "过道入口暂未开放。前室各壁面与顶部的主要观察信息仍未齐全。",
               missingRecords: [
                 { id: "front_chamber:ewer", label: "西壁：砖砌注子" },
                 { id: "front_chamber:high_bottle", label: "西壁：高瓶与瓶座" },
@@ -3689,7 +3613,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.02, 0.02, 0.32, 0.16],
             title: "返回入口总览",
-            body: "回到前室入口总览。\n如果过道入口暂未解锁，先从总览补看各壁面和顶部；完成记录夹汇总后，再回北壁下方进入过道。",
+            body: "回到前室入口总览。\n各壁面与顶部仍可从总览重新进入；北壁中下部暗缝指向过道方向。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
@@ -3706,14 +3630,14 @@ const SCENES = {
             shape: "rect",
             rect: [0, 0.86, 0.28, 1],
             title: "转向西壁",
-            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
               title: "转向西壁",
-              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -3724,14 +3648,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.34, 0.86, 0.64, 1],
             title: "转向东壁",
-            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
               title: "转向东壁",
-              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -3742,14 +3666,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.7, 0.86, 1, 1],
             title: "转向南壁",
-            body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "南壁的壁函与倚柱重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室南壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_south",
               title: "转向南壁",
-              body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "南壁的壁函与倚柱重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           }
@@ -3797,7 +3721,7 @@ const SCENES = {
             viewTransition: {
               targetViewId: "front_overview",
               title: "返回入口总览",
-              body: "前室入口总览重新进入视线。\n从这里整理前室各面，再回北壁下方进入过道。",
+              body: "前室入口总览重新进入视线。\n各壁面与顶部仍可从总览重新进入；北壁中下部暗缝指向过道方向。",
               closeLabel: "返回"
             }
           },
@@ -3808,14 +3732,14 @@ const SCENES = {
             shape: "rect",
             rect: [0, 0.78, 0.25, 1],
             title: "转向西壁",
-            body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_west",
               title: "转向西壁",
-              body: "西壁的器物与家具重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "西壁的器物与家具重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -3826,14 +3750,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.25, 0.78, 0.5, 1],
             title: "转向东壁",
-            body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_east",
               title: "转向东壁",
-              body: "东壁的人物图像重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "东壁的人物图像重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -3844,14 +3768,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.5, 0.78, 0.75, 1],
             title: "转向南壁",
-            body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+            body: "南壁的壁函与倚柱重新进入视线。\n入口总览仍可从当前视图返回。",
             record: "返回前室南壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_south",
               title: "转向南壁",
-              body: "南壁的壁函与倚柱重新进入视线。\n需要回到空间锚点时，可点击“返回入口总览”。",
+              body: "南壁的壁函与倚柱重新进入视线。\n入口总览仍可从当前视图返回。",
               closeLabel: "转向"
             }
           },
@@ -5418,7 +5342,7 @@ const CONCLUSION_DATA = {
           id: "analysis:passage:combo",
           label: "过道组合判断",
           metText: "过道章节已经完成观察、复查和组合，可进入主线结论。",
-          missingText: "还缺过道组合判断。需先在记录夹里完成复查、排除和组合，结论卡才会生成。 "
+          missingText: "还缺过道组合判断。需先在记录夹里完成复查和组合，结论卡才会生成。 "
         }
       ],
       relations: ["R03", "R04"]
@@ -6116,25 +6040,15 @@ const ANALYSIS_DATA = {
           }
         }
       ],
-      pendingResolutions: [
-        {
-          recordId: "passage:tassel",
-          buttonLabel: "将流苏降级为装饰性细节",
-          description: "流苏方向变化目前记录为细部信息。",
-          requiresReviewRecordIds: ["analysis:passage:review_spatial_structure"],
-          resolutionText: "流苏已被降级为装饰性细节；在当前证据链里，它不足以单独推动过道的主线判断。"
-        }
-      ],
       combination: {
         buttonLabel: "形成过道章节组合判断",
         description: "把题记层次与空间结构两条复查链合并，生成过道阶段判断。",
         requiresReviewRecordIds: ["analysis:passage:review_inscription_layer", "analysis:passage:review_spatial_structure"],
-        requiresExcludedRecordIds: ["passage:tassel"],
         resultRecord: {
           id: "analysis:passage:combo",
           sceneId: "passage",
           title: "过道组合判断",
-          text: "题记层次与窗棂、宝盖的空间复查共同说明，过道是时间信息与空间转换交汇的节点，单点装饰细节归入辅助记录。",
+          text: "题记层次与窗棂、宝盖的空间复查共同说明，过道是时间信息与空间转换交汇的节点。",
           track: "review",
           recordType: "combination"
         }
