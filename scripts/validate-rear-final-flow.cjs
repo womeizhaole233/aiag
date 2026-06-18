@@ -160,7 +160,7 @@ const burialGuide = new Set((burial.guideSteps || []).flatMap((guide) => guide.r
 for (const id of burialSource) assert(hotspotIds.has(id), "burial-source-missing", "burial review source id has no hotspot", { id });
 for (const id of burialSource) assert(burialGuide.has(id), "burial-guide-missing-source", "burial guide does not cover source id", { id });
 for (const id of burialGuide) assert(burialSource.has(id), "burial-guide-extra-source", "burial guide references id outside sourceRecordIds", { id });
-assert((burial.sourceRecordIds || []).length === 7, "burial-source-count", "burial review should require 7 source records", {
+assert((burial.sourceRecordIds || []).length === 6, "burial-source-count", "burial review should require 6 source records", {
   count: burial.sourceRecordIds?.length
 });
 

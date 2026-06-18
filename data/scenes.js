@@ -78,8 +78,8 @@ const POSITION_MAP = {
     front_south: "前室 / 面向南壁",
     front_north_west: "前室 / 面向北壁西部",
     front_north_east: "前室 / 面向北壁东部",
-    front_ceiling: "前室 / 抬头看顶部",
-    front_ceiling_northwest_closeup: "前室 / 西北角近景",
+    front_ceiling: "前室 / 西北角顶部",
+    front_ceiling_northwest_closeup: "前室 / 补间铺作近景",
     front_south_east_niche_closeup: "前室 / 南壁东部壁函近景",
     front_south_west_niche_closeup: "前室 / 南壁西部壁函近景",
     front_south_column_closeup: "前室 / 南壁倚柱彩画近景",
@@ -89,7 +89,6 @@ const POSITION_MAP = {
     front_east_shoes_closeup: "前室 / 东壁尖鞋近景",
     front_west_ewer_closeup: "前室 / 西壁注子近景",
     rear_overview: "后室 / 入口总览",
-    rear_plan_section: "后室 / 平剖面结构图",
     rear_north: "后室 / 面向北壁",
     rear_woman_closeup: "后室 / 妇人启门近景",
     rear_land_deed_closeup: "后室 / 砖床地券近景",
@@ -1118,17 +1117,6 @@ const SCENES = {
         },
         hotspots: [
           {
-            id: "rear_entry_relation",
-            label: "后室入口方向",
-            shape: "rect",
-            rect: [0.18, 0.14, 0.82, 0.78],
-            title: "后室入口方向",
-            body: "后室入口图把过道的收束关系落到真实图像上。\n这里适合承接从前室、过道进入后室的章节转换。",
-            record: "过道北壁下部后室入口图确认了从过道进入后室的方向与空间收束。",
-            sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
-            sourceClueId: "HS-E-01"
-          },
-          {
             id: "enter_rear_from_entry",
             label: "进入后室",
             navLabel: "进入后室",
@@ -1144,7 +1132,7 @@ const SCENES = {
               targetViewId: "rear_overview",
               completesSceneId: "passage",
               title: "进入后室",
-              body: "过道入口之后，后室入口总览展开。\n这里开始进入M1空间序列的收束段。",
+              body: "过道入口之后，后室入口总览展开。\n后室北壁、南壁和侧壁可以继续查看。",
               closeLabel: "进入",
               lockedBody: "过道的信息还没有整理完整。",
               missingRecords: [
@@ -1156,18 +1144,18 @@ const SCENES = {
           },
           {
             id: "return_passage_from_rear_entry",
-            label: "返回过道",
-            navLabel: "返回过道",
+            label: "返回过道轴线",
+            navLabel: "返回轴线",
             shape: "rect",
             rect: [0, 0.84, 1, 1],
-            title: "返回过道",
+            title: "返回过道轴线",
             body: "返回过道轴线总览。",
             record: "返回过道轴线总览。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "passage_overview",
-              title: "返回过道",
+              title: "返回过道轴线",
               body: "视角回到过道轴线总览。",
               closeLabel: "返回"
             }
@@ -1265,35 +1253,18 @@ const SCENES = {
           },
           {
             id: "return_passage_overview_from_east",
-            label: "返回过道总览",
-            navLabel: "返回过道总览",
+            label: "返回过道轴线",
+            navLabel: "返回轴线",
             shape: "rect",
-            rect: [0, 0.82, 0.28, 1],
-            title: "返回过道总览",
-            body: "过道轴线重新进入视线。\n可以继续前往后室或返回前室。",
+            rect: [0, 0.82, 0.78, 1],
+            title: "返回过道轴线",
+            body: "过道轴线总览重新进入视线。\n可以继续前往后室或返回前室。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "passage_overview",
-              title: "返回过道总览",
-              body: "过道轴线重新进入视线。",
-              closeLabel: "返回"
-            }
-          },
-          {
-            id: "return_passage_axis_from_east",
-            label: "回到过道轴线",
-            navLabel: "回到轴线",
-            shape: "rect",
-            rect: [0.3, 0.82, 0.78, 1],
-            title: "回到过道轴线",
-            body: "过道总览会重新显示前后连接关系。",
-            sourceFile: "game-navigation",
-            sourceClueId: "NAV",
-            viewTransition: {
-              targetViewId: "passage_overview",
-              title: "回到过道轴线",
-              body: "过道轴线重新进入视线。",
+              title: "返回过道轴线",
+              body: "过道轴线总览重新进入视线。",
               closeLabel: "返回"
             }
           }
@@ -1333,18 +1304,18 @@ const SCENES = {
           },
           {
             id: "return_passage_from_inscription",
-            label: "返回过道",
-            navLabel: "返回过道",
+            label: "返回过道东壁",
+            navLabel: "返回东壁",
             shape: "rect",
             rect: [0, 0.84, 1, 1],
-            title: "返回过道",
+            title: "返回过道东壁",
             body: "题记位置重新回到整幅壁面之中。",
-            record: "返回过道。",
+            record: "返回过道东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "passage_main",
-              title: "返回过道",
+              title: "返回过道东壁",
               body: "过道东壁重新进入视线。",
               closeLabel: "返回"
             }
@@ -1374,18 +1345,18 @@ const SCENES = {
           },
           {
             id: "return_passage_from_lattice",
-            label: "返回过道",
-            navLabel: "返回过道",
+            label: "返回过道东壁",
+            navLabel: "返回东壁",
             shape: "rect",
             rect: [0, 0.84, 1, 1],
-            title: "返回过道",
+            title: "返回过道东壁",
             body: "破子棂窗重新回到过道两侧关系中。",
-            record: "返回过道。",
+            record: "返回过道东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "passage_main",
-              title: "返回过道",
+              title: "返回过道东壁",
               body: "过道东壁重新进入视线。",
               closeLabel: "返回"
             }
@@ -1415,18 +1386,18 @@ const SCENES = {
           },
           {
             id: "return_passage_from_canopy",
-            label: "返回过道",
-            navLabel: "返回过道",
+            label: "返回过道东壁",
+            navLabel: "返回东壁",
             shape: "rect",
             rect: [0, 0.84, 1, 1],
-            title: "返回过道",
+            title: "返回过道东壁",
             body: "顶部宝盖重新回到过道东壁上方。",
-            record: "返回过道。",
+            record: "返回过道东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "passage_main",
-              title: "返回过道",
+              title: "返回过道东壁",
               body: "过道东壁重新进入视线。",
               closeLabel: "返回"
             }
@@ -1456,18 +1427,18 @@ const SCENES = {
           },
           {
             id: "return_passage_from_tassel",
-            label: "返回过道",
-            navLabel: "返回过道",
+            label: "返回过道东壁",
+            navLabel: "返回东壁",
             shape: "rect",
             rect: [0, 0.84, 1, 1],
-            title: "返回过道",
+            title: "返回过道东壁",
             body: "流苏细节重新回到壁画整体之中。",
-            record: "返回过道。",
+            record: "返回过道东壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "passage_main",
-              title: "返回过道",
+              title: "返回过道东壁",
               body: "过道东壁重新进入视线。",
               closeLabel: "返回"
             }
@@ -1529,24 +1500,6 @@ const SCENES = {
               title: "进入后室北壁",
               body: "后室北壁进入视线。",
               closeLabel: "进入"
-            }
-          },
-          {
-            id: "rear_overview_plan_section",
-            label: "后室平剖面",
-            navLabel: "查看平剖面",
-            shape: "rect",
-            rect: [0.34, 0.10, 0.66, 0.30],
-            title: "后室平剖面",
-            body: "后室平剖面图可以先把北壁、南壁、侧壁、顶部和葬具遗存放回同一个空间框架。",
-            record: "后室平剖面图用于对照北壁、南壁、侧壁、顶部和葬具遗存的位置关系。",
-            sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
-            sourceClueId: "HS-E-02",
-            viewTransition: {
-              targetViewId: "rear_plan_section",
-              title: "查看后室平剖面",
-              body: "后室平剖面结构图被单独打开。",
-              closeLabel: "查看"
             }
           },
           {
@@ -1650,11 +1603,11 @@ const SCENES = {
               title: "后室完成确认",
               body: "后室北壁假门、地券、砖床遗存和出土物分布已经完成对照。\n南壁高几、西南壁镜台与曲足盆架、西北壁剪刀熨斗和颜料层位共同构成日常器物线。\n顶部铺作补足了后室空间结构。\n后室证据已经收束，终章汇总可以开启。你仍可返回各墙面和近景复看细节。",
               closeLabel: "记下",
-              lockedBody: "后室观察尚未收束。请回到对应墙面或近景复看线索，并在记录夹中按小面板顺序完成复查、降级与汇总。",
+              lockedBody: "后室观察尚未收束。请补齐北壁、地券、葬具证据链和后室汇总所需记录。",
               missingRecords: [
-                { id: "analysis:rear_chamber:review_false_door_structure", label: "北壁：复看假门、妇人启门与门缝" },
-                { id: "analysis:rear_chamber:review_document_layer", label: "地券近景：复看朱书、行列与位置" },
-                { id: "analysis:rear_chamber:review_burial_distribution", label: "葬具证据链：按记录夹小面板依次补齐砖床、人骨、铁钉与地券" },
+                { id: "analysis:rear_chamber:review_false_door_structure", label: "北壁：假门、妇人启门与门缝" },
+                { id: "analysis:rear_chamber:review_document_layer", label: "地券近景：朱书、行列与位置" },
+                { id: "analysis:rear_chamber:review_burial_distribution", label: "葬具证据链：砖床、人骨、铁钉与地券" },
                 { excludedId: "rear_chamber:woman_hand", label: "妇人启门近景：在记录夹中降级手部断口" },
                 { excludedId: "rear_chamber:nail_count", label: "人骨近景：在记录夹中降级铁钉数量差异" },
                 { id: "analysis:rear_chamber:combo", label: "记录夹：完成后室汇总" }
@@ -1677,7 +1630,7 @@ const SCENES = {
               title: "终章汇总",
               body: "五个章节的阶段判断已经可以并读。\n墓门提供入口结构证据，甬道和过道连接空间与时间，前室展开礼仪秩序，后室收束图像、文书、遗存和日常器物。\n第一版研究判断已经形成：M1 的意义不来自单一异常，而来自空间、图像、文字和遗物之间的多层对应。\n终章结论卡已经在线索墙中生成，可回到记录与结论界面复看主线证据。",
               closeLabel: "知道了",
-              lockedBody: "终章汇总还不能查看。请先完成五个章节的组合判断；后室需要在记录夹里完成复查、降级和“汇总后室”。",
+              lockedBody: "终章汇总尚未开放。请先完成五个章节的组合判断；后室还需要完成葬具证据链、降级记录和汇总。",
               missingRecords: [
                 { sceneId: "tomb_gate", completed: true, label: "墓门：完成章节判断" },
                 { sceneId: "corridor", completed: true, label: "甬道：完成章节判断" },
@@ -1686,47 +1639,6 @@ const SCENES = {
                 { id: "analysis:rear_chamber:combo", label: "后室：在记录夹中形成后室组合判断" },
                 { sceneId: "rear_chamber", completed: true, label: "后室：完成汇总后室" }
               ]
-            }
-          }
-        ]
-      },
-      rear_plan_section: {
-        id: "rear_plan_section",
-        title: "第一号墓后室平剖面",
-        image: {
-          src: "assets/M1/00_墓葬全景与结构图/第一号墓后室平、剖面.png",
-          alt: "第一号墓后室平、剖面",
-          width: 2304,
-          height: 1728
-        },
-        hotspots: [
-          {
-            id: "rear_plan_space_relation",
-            label: "后室空间关系",
-            shape: "rect",
-            rect: [0.12, 0.14, 0.88, 0.78],
-            title: "后室空间关系",
-            body: "平剖面把后室从单面壁画扩展为多壁面空间。\n北壁假门、南壁入口背面、侧壁器物与顶部铺作都可以在这里重新定位。",
-            record: "后室平剖面图显示北壁、南壁、侧壁、顶部与葬具遗存的空间关系。",
-            sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
-            sourceClueId: "HS-E-02"
-          },
-          {
-            id: "return_rear_overview_from_plan",
-            label: "返回后室总览",
-            navLabel: "返回总览",
-            shape: "rect",
-            rect: [0, 0.84, 1, 1],
-            title: "返回后室入口总览",
-            body: "返回后室入口总览。",
-            record: "返回后室入口总览。",
-            sourceFile: "game-navigation",
-            sourceClueId: "NAV",
-            viewTransition: {
-              targetViewId: "rear_overview",
-              title: "返回后室总览",
-              body: "视角回到后室入口总览。",
-              closeLabel: "返回"
             }
           }
         ]
@@ -1878,8 +1790,8 @@ const SCENES = {
             shape: "rect",
             rect: [0.63, 0.22, 0.89, 0.88],
             title: "杌",
-            body: "组合图右侧为杌。\n它的低矮尺度需要与镜台、曲足盆架并读，不能单独代表后室西南壁。",
-            record: "组合图右侧为杌，应与镜台、曲足盆架并读。",
+            body: "组合图右侧为杌。\n杌的尺度低于镜台和曲足盆架。",
+            record: "组合图右侧为杌，杌的尺度低于镜台和曲足盆架。",
             sourceFile: "M1/13_后室_西壁与西南壁/13_后室_西壁与西南壁-热点坐标映射-v1.2.md",
             sourceClueId: "L15-HS-L15-01",
             closeupTransition: {
@@ -3126,14 +3038,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.7, 0.02, 0.96, 0.16],
             title: "抬头看顶部",
-            body: "前室顶部的补间铺作进入视线。\n构件位于壁面与墓顶的过渡处。",
+            body: "前室西北角顶部图进入视线。\n转角构件、壁面上缘和墓顶交接线可以继续查看。",
             record: "前室顶部可继续观察。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_ceiling",
               title: "抬头看顶部",
-              body: "前室顶部的补间铺作进入视线。",
+              body: "前室西北角顶部图进入视线。",
               closeLabel: "抬头"
             }
           },
@@ -3309,14 +3221,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.72, 0.02, 0.96, 0.18],
             title: "抬头看顶部",
-            body: "前室顶部的补间铺作进入视线。\n构件位于壁面与墓顶的过渡处。",
+            body: "前室西北角顶部图进入视线。\n转角构件、壁面上缘和墓顶交接线可以继续查看。",
             record: "前室顶部可继续观察。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_ceiling",
               title: "抬头看顶部",
-              body: "前室顶部的补间铺作进入视线。",
+              body: "前室西北角顶部图进入视线。",
               closeLabel: "抬头"
             }
           },
@@ -3327,7 +3239,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.02, 0.18, 0.18, 0.86],
             title: "转向西壁",
-            body: "东壁人物已经记录。\n器物线索仍需回到西壁对照。",
+            body: "东壁人物已经记录。\n西壁器物线可以继续查看。",
             record: "返回前室西壁。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
@@ -3456,14 +3368,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.66, 0.02, 0.92, 0.16],
             title: "抬头看顶部",
-            body: "前室顶部的补间铺作进入视线。\n构件位于壁面与墓顶的过渡处。",
+            body: "前室西北角顶部图进入视线。\n转角构件、壁面上缘和墓顶交接线可以继续查看。",
             record: "前室顶部可继续观察。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_ceiling",
               title: "抬头看顶部",
-              body: "前室顶部的补间铺作进入视线。",
+              body: "前室西北角顶部图进入视线。",
               closeLabel: "抬头"
             }
           },
@@ -3564,7 +3476,7 @@ const SCENES = {
               title: "进入过道轴线",
               body: "前室四壁与顶部已经形成对应。\n你从北壁下方的暗缝方向进入过道。关闭弹窗后，狭长的过道轴线会重新进入视线。",
               closeLabel: "进入",
-              lockedBody: "过道入口还不能通过。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
+              lockedBody: "过道入口暂未开放。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
               missingRecords: [
                 { id: "front_chamber:ewer", label: "西壁：砖砌注子" },
                 { id: "front_chamber:high_bottle", label: "西壁：高瓶与瓶座" },
@@ -3576,8 +3488,8 @@ const SCENES = {
                 { id: "front_chamber:painted_column", label: "南壁：倚柱彩画" },
                 { id: "front_chamber:north_west_mural", label: "北壁：西部画面" },
                 { id: "front_chamber:north_east_mural", label: "北壁：东部画面" },
-                { id: "front_chamber:bracket_set", label: "顶部：补间铺作" },
-                { id: "front_chamber:northwest_corner", label: "顶部：西北角构件" }
+                { id: "front_chamber:northwest_corner", label: "顶部：西北角构件" },
+                { id: "front_chamber:bracket_set", label: "顶部：补间铺作近景" }
               ]
             }
           },
@@ -3588,14 +3500,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.36, 0.02, 0.64, 0.16],
             title: "抬头看顶部",
-            body: "前室顶部的补间铺作进入视线。\n构件位于壁面与墓顶的过渡处。",
+            body: "前室西北角顶部图进入视线。\n转角构件、壁面上缘和墓顶交接线可以继续查看。",
             record: "前室顶部可继续观察。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_ceiling",
               title: "抬头看顶部",
-              body: "前室顶部的补间铺作进入视线。",
+              body: "前室西北角顶部图进入视线。",
               closeLabel: "抬头"
             }
           },
@@ -3733,7 +3645,7 @@ const SCENES = {
               title: "进入过道轴线",
               body: "前室四壁与顶部已经形成对应。\n你从北壁下方的暗缝方向进入过道。关闭弹窗后，狭长的过道轴线会重新进入视线。",
               closeLabel: "进入",
-              lockedBody: "过道入口还不能通过。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
+              lockedBody: "过道入口暂未开放。请先点“返回入口总览”，补齐前室各壁面和顶部的主要观察信息。",
               missingRecords: [
                 { id: "front_chamber:ewer", label: "西壁：砖砌注子" },
                 { id: "front_chamber:high_bottle", label: "西壁：高瓶与瓶座" },
@@ -3745,8 +3657,8 @@ const SCENES = {
                 { id: "front_chamber:painted_column", label: "南壁：倚柱彩画" },
                 { id: "front_chamber:north_west_mural", label: "北壁：西部画面" },
                 { id: "front_chamber:north_east_mural", label: "北壁：东部画面" },
-                { id: "front_chamber:bracket_set", label: "顶部：补间铺作" },
-                { id: "front_chamber:northwest_corner", label: "顶部：西北角构件" }
+                { id: "front_chamber:northwest_corner", label: "顶部：西北角构件" },
+                { id: "front_chamber:bracket_set", label: "顶部：补间铺作近景" }
               ]
             }
           },
@@ -3757,14 +3669,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.36, 0.02, 0.64, 0.16],
             title: "抬头看顶部",
-            body: "前室顶部的补间铺作进入视线。\n构件位于壁面与墓顶的过渡处。",
+            body: "前室西北角顶部图进入视线。\n转角构件、壁面上缘和墓顶交接线可以继续查看。",
             record: "前室顶部可继续观察。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_ceiling",
               title: "抬头看顶部",
-              body: "前室顶部的补间铺作进入视线。",
+              body: "前室西北角顶部图进入视线。",
               closeLabel: "抬头"
             }
           },
@@ -3845,39 +3757,28 @@ const SCENES = {
       },
       front_ceiling: {
         id: "front_ceiling",
-        title: "第一号墓前室顶部",
+        title: "第一号墓前室西北角顶部",
         image: {
-          src: "assets/M1/08_前室_顶部隅角及其他/插图七 第一号墓前室补间铺作.png",
-          alt: "第一号墓前室补间铺作",
-          width: 2386,
-          height: 1495
+          src: "assets/M1/08_前室_顶部隅角及其他/第一号墓西北角.png",
+          alt: "第一号墓西北角",
+          width: 1920,
+          height: 1849
         },
         hotspots: [
-          {
-            id: "bracket_set",
-            label: "补间铺作",
-            shape: "rect",
-            rect: [0.2, 0.08, 0.8, 0.42],
-            title: "补间铺作",
-            body: "前室顶部补间铺作位于壁面与墓顶过渡处。\n构件层级清楚，斗口宽度较大。\n出跳部分向外伸出，与壁面上缘相接。",
-            record: "前室顶部补间铺作位于壁面与墓顶过渡处，构件层级清楚。",
-            sourceFile: "M1/08_前室_顶部隅角及其他/08_前室_顶部隅角及其他-增强线索表-v1.1.md",
-            sourceClueId: "L13"
-          },
           {
             id: "northwest_corner",
             label: "西北角构件",
             shape: "rect",
-            rect: [0.56, 0.2, 0.94, 0.82],
+            rect: [0.30, 0.08, 0.92, 0.86],
             title: "西北角构件",
-            body: "西北角转角构件较为紧凑。\n与补间铺作相比，斗口宽度较小。\n两处出跳距离接近，但构件宽度不同。",
-            record: "西北角转角构件较紧凑，斗口宽度小于补间铺作。",
+            body: "前室西北角可见转角构件、壁面上缘和墓顶交接线。\n构件位于两面壁画的转折处，彩画边线在角部相接。",
+            record: "前室西北角可见转角构件、壁面上缘和墓顶交接线。",
             sourceFile: "M1/08_前室_顶部隅角及其他/08_前室_顶部隅角及其他-增强线索表-v1.1.md",
             sourceClueId: "L13",
             closeupTransition: {
               targetViewId: "front_ceiling_northwest_closeup",
-              title: "靠近观察西北角",
-              body: "西北角转角构件被放大。\n构件宽度和出跳位置可以继续查看。",
+              title: "靠近观察补间铺作",
+              body: "补间铺作近景被打开。\n构件层级和壁面上缘可以继续查看。",
               closeLabel: "靠近"
             }
           },
@@ -3976,22 +3877,22 @@ const SCENES = {
       },
       front_ceiling_northwest_closeup: {
         id: "front_ceiling_northwest_closeup",
-        title: "西北角近景",
+        title: "前室补间铺作近景",
         image: {
-          src: "assets/M1/08_前室_顶部隅角及其他/第一号墓西北角.png",
-          alt: "第一号墓西北角",
-          width: 1920,
-          height: 1849
+          src: "assets/M1/08_前室_顶部隅角及其他/插图七 第一号墓前室补间铺作.png",
+          alt: "第一号墓前室补间铺作",
+          width: 2386,
+          height: 1495
         },
         hotspots: [
           {
-            id: "corner_bracket",
-            label: "转角构件",
+            id: "bracket_set",
+            label: "补间铺作",
             shape: "rect",
-            rect: [0.28, 0.2, 0.78, 0.78],
-            title: "转角构件",
-            body: "西北角转角构件较为紧凑。\n斗口宽度小于补间铺作。\n出跳距离与补间铺作近似相同。",
-            record: "西北角转角构件较紧凑，斗口宽度较小，出跳距离与补间铺作近似相同。",
+            rect: [0.24, 0.10, 0.78, 0.88],
+            title: "补间铺作",
+            body: "前室补间铺作位于壁面上缘。\n构件上下分层，彩绘色块仍可辨认。",
+            record: "前室补间铺作位于壁面上缘，构件上下分层，彩绘色块仍可辨认。",
             sourceFile: "M1/08_前室_顶部隅角及其他/08_前室_顶部隅角及其他-增强线索表-v1.1.md",
             sourceClueId: "L13"
           },
@@ -4002,14 +3903,14 @@ const SCENES = {
             shape: "rect",
             rect: [0, 0.84, 1, 1],
             title: "返回顶部",
-            body: "西北角构件细部已经记录。\n补间铺作重新进入视线。",
-            record: "完成西北角近景观察。",
+            body: "返回前室西北角顶部图。",
+            record: "返回前室西北角顶部图。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "front_ceiling",
               title: "返回顶部",
-              body: "补间铺作重新进入视线。",
+              body: "前室西北角顶部图重新进入视线。",
               closeLabel: "返回"
             }
           }
@@ -4544,7 +4445,7 @@ addSceneHotspot("corridor", "corridor_west_wall", {
   shape: "rect",
   rect: [0.18, 0.54, 0.52, 0.90],
   title: "甬道西壁酒瓶",
-  body: "甬道西壁酒瓶适合作为礼仪与宴饮物象的补充细节，不能单独解释为异常。",
+  body: "甬道西壁酒瓶属于礼仪与宴饮物象的补充细节。",
   record: "甬道西壁酒瓶可作为礼仪与宴饮物象的补充细节。",
   sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
   sourceClueId: "COR-P1-02",
@@ -4782,8 +4683,8 @@ addSceneView("rear_chamber", "rear_false_door_diagram", {
       shape: "rect",
       rect: [0.12, 0.06, 0.77, 0.18],
       title: "门额与砖砌门框",
-      body: "假门上方和两侧以砖砌边框限定出门的范围。\n这部分更像图像化、装饰化的门框线索，不能直接推出真实通道。",
-      record: "假门上方和两侧以砖砌边框限定门的范围，应作为图像化门框复查。",
+      body: "假门上方和两侧以砖砌边框限定门的范围。\n门额、边框和门扇构成同一组假门图像。",
+      record: "假门上方和两侧以砖砌边框限定门的范围，门额、边框和门扇构成同一组假门图像。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
       sourceClueId: "HS-H-03"
     },
@@ -4793,8 +4694,8 @@ addSceneView("rear_chamber", "rear_false_door_diagram", {
       shape: "rect",
       rect: [0.25, 0.26, 0.44, 0.86],
       title: "左侧门扇纹样",
-      body: "左侧门扇保留了完整的纹样和边框。\n它和北壁妇人启门图像互相印证：重点是门的母题，而不是可进入的真实门洞。",
-      record: "左侧门扇纹样完整，可与妇人启门图像共同确认假门母题。",
+      body: "左侧门扇保留纹样和边框。\n门扇与门额、砖框相接。",
+      record: "左侧门扇保留纹样和边框，门扇与门额、砖框相接。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-05"
     },
@@ -4804,8 +4705,8 @@ addSceneView("rear_chamber", "rear_false_door_diagram", {
       shape: "rect",
       rect: [0.44, 0.25, 0.62, 0.86],
       title: "门缝与暗部",
-      body: "门缝和暗部会制造空间延续的感觉。\n复查时应把它收束为图像中的空间暗示，不能解释成密室、机关或真实通道。",
-      record: "门缝暗部制造空间延续感，但应收束为图像暗示，不能推出真实通道。",
+      body: "门缝和暗部位于两扇门之间。\n暗部沿门缝向下延伸。",
+      record: "门缝和暗部位于两扇门之间，暗部沿门缝向下延伸。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-H-03"
     },
@@ -4815,15 +4716,15 @@ addSceneView("rear_chamber", "rear_false_door_diagram", {
       shape: "rect",
       rect: [0.61, 0.27, 0.72, 0.84],
       title: "开启状门扇",
-      body: "右侧门扇被画成打开的状态。\n这一姿态需要和妇人启门近景对读，说明后室北壁被塑造成有门后空间想象的图像。",
-      record: "右侧门扇呈开启状，应与妇人启门近景对读。",
+      body: "右侧门扇呈开启状。\n门扇内侧与妇人位置相邻。",
+      record: "右侧门扇呈开启状，门扇内侧与妇人位置相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-05",
       viewTransition: {
         targetViewId: "rear_woman_closeup",
-        title: "对照妇人启门",
-        body: "妇人启门近景被打开，用来对照门扇与手部关系。",
-        closeLabel: "对照"
+        title: "查看妇人启门",
+        body: "妇人启门近景被打开。",
+        closeLabel: "查看"
       }
     },
     {
@@ -4832,8 +4733,8 @@ addSceneView("rear_chamber", "rear_false_door_diagram", {
       shape: "rect",
       rect: [0.19, 0.82, 0.68, 0.94],
       title: "门槛与下沿",
-      body: "假门下沿把门的图像边界收束到北壁画面中。\n它有助于确认门是壁面构图的一部分，而不是从砖床下方继续打开的空间。",
-      record: "假门下沿把门的图像边界收束在北壁画面中。",
+      body: "假门下沿位于门扇底部。\n下沿线条与北壁下部砖面相邻。",
+      record: "假门下沿位于门扇底部，下沿线条与北壁下部砖面相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
       sourceClueId: "HS-H-03"
     },
@@ -4896,8 +4797,8 @@ addSceneView("rear_chamber", "rear_north_lower_closeup", {
       shape: "rect",
       rect: [0.42, 0.34, 0.54, 0.77],
       title: "门缝中的妇人位置",
-      body: "妇人位于两扇门之间，位置被压在门缝和门框中。\n这能说明妇人启门与假门是一组图像，而不是孤立人物。",
-      record: "妇人位于两扇门之间，说明妇人启门与假门是一组图像。",
+      body: "妇人位于两扇门之间。\n门缝和门框压住人物轮廓。",
+      record: "妇人位于两扇门之间，门缝和门框压住人物轮廓。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-05"
     },
@@ -4907,8 +4808,8 @@ addSceneView("rear_chamber", "rear_north_lower_closeup", {
       shape: "rect",
       rect: [0.49, 0.31, 0.70, 0.78],
       title: "右侧闭合门扇",
-      body: "右侧门扇更像壁面上的图像构件。\n它和开启门扇共同制造门后空间的想象，但不能推出真实通道。",
-      record: "右侧闭合门扇与开启门扇共同制造空间想象，不能推出真实通道。",
+      body: "右侧门扇保持闭合。\n门扇线条与壁面线条相接。",
+      record: "右侧门扇保持闭合，门扇线条与壁面线条相接。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-H-03"
     },
@@ -4918,31 +4819,21 @@ addSceneView("rear_chamber", "rear_north_lower_closeup", {
       shape: "rect",
       rect: [0.23, 0.72, 0.74, 0.86],
       title: "门槛与下沿",
-      body: "门槛下沿把假门图像收束到北壁下部。\n它是从假门图像过渡到砖床/下部空间的关键边界。",
-      record: "门槛下沿是从假门图像过渡到砖床下部空间的关键边界。",
+      body: "门槛下沿位于假门图像底部。\n下沿线条与北壁下部砖面相邻。",
+      record: "门槛下沿位于假门图像底部，下沿线条与北壁下部砖面相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
       sourceClueId: "HS-P0-01"
     },
     {
       id: "north_lower_bed_boundary",
       label: "砖床边界",
+      navLabel: "砖床边界",
       shape: "rect",
       rect: [0.20, 0.84, 0.82, 0.98],
       title: "砖床与下部边界",
-      body: "画面下方的砖面边界提示北壁下部与砖床区域相接。\n后续人骨、铁钉和地券都需要回到这个边界关系中复查。",
-      record: "北壁下方砖面边界提示砖床区域，人骨、铁钉和地券需回到这一边界关系中复查。",
+      body: "画面下方可见砖面边界。\n北壁下部与砖床区域在此相接。",
+      record: "画面下方可见砖面边界，北壁下部与砖床区域在此相接。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
-      sourceClueId: "HS-P0-01"
-    },
-    {
-      id: "north_lower_bed_axis",
-      label: "假门-砖床轴线",
-      shape: "rect",
-      rect: [0.34, 0.70, 0.66, 0.96],
-      title: "假门下沿与砖床轴线",
-      body: "假门下沿与砖床边界在同一条垂直关系上被看见。\n这一热点用于把图像层的假门和遗存层的砖床分开记录，再在复查时重新叠合。",
-      record: "假门下沿与砖床边界形成可复查的轴线关系，应先分层记录再叠合判断。",
-      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
       sourceClueId: "HS-P0-01"
     },
     {
@@ -4982,8 +4873,8 @@ addSceneView("rear_chamber", "rear_southeast", {
       shape: "rect",
       rect: [0.10, 0.35, 0.34, 0.88],
       title: "东南壁左侧人物组",
-      body: "东南壁左侧人物与中央场景相连，补足后室侧壁叙事。\n这一组不能脱离整面东南壁单独解释。",
-      record: "东南壁左侧人物组补足后室侧壁叙事，应与整面东南壁一起复查。",
+      body: "东南壁左侧人物与中央场景相连。\n人物衣纹和桌案区域相邻。",
+      record: "东南壁左侧人物与中央场景相连，人物衣纹和桌案区域相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02"
     },
@@ -4993,8 +4884,8 @@ addSceneView("rear_chamber", "rear_southeast", {
       shape: "rect",
       rect: [0.30, 0.42, 0.57, 0.72],
       title: "桌案与器物组",
-      body: "桌案与器物位于东南壁画面的核心区域。\n点击后进入细部图，用来核对人物、桌面和器物之间的关系。",
-      record: "东南壁桌案与器物组位于画面核心，应进入细部图复查。",
+      body: "桌案与器物位于东南壁画面中部。\n桌面和人物位置相邻。",
+      record: "东南壁桌案与器物组位于画面中部，桌面和人物位置相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02",
       viewTransition: {
@@ -5010,7 +4901,7 @@ addSceneView("rear_chamber", "rear_southeast", {
       shape: "rect",
       rect: [0.59, 0.30, 0.84, 0.86],
       title: "右侧承盘人物",
-      body: "右侧人物持盘，与中央桌案形成同一组图像关系。\n它适合用于说明东南壁是后室多壁面复查的一部分，而不是新的异常证据。",
+      body: "右侧人物持盘。\n人物朝向中央桌案区域。",
       record: "右侧承盘人物与中央桌案形成同一组图像关系。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02"
@@ -5021,8 +4912,8 @@ addSceneView("rear_chamber", "rear_southeast", {
       shape: "rect",
       rect: [0.82, 0.10, 0.98, 0.86],
       title: "右侧壁面边界",
-      body: "右侧边界保留了壁面分隔和装饰线。\n这个边界帮助玩家把东南壁放回后室多壁面结构中，而不是只看人物局部。",
-      record: "东南壁右侧边界帮助确认该图属于后室多壁面结构。",
+      body: "右侧边界保留壁面分隔和装饰线。\n边界线与人物区相邻。",
+      record: "东南壁右侧边界保留壁面分隔和装饰线，边界线与人物区相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02"
     },
@@ -5063,8 +4954,8 @@ addSceneView("rear_chamber", "rear_southeast_detail", {
       shape: "rect",
       rect: [0.02, 0.35, 0.22, 0.92],
       title: "左侧侍者",
-      body: "细部图左侧人物被放大后，能看清它与桌案的邻接关系。\n它仍属于东南壁整体图像，不单独生成新的主线判断。",
-      record: "东南壁细部左侧人物应与桌案和整体壁面一起复查。",
+      body: "细部图左侧人物位于桌案旁。\n人物衣纹和桌案边缘相邻。",
+      record: "东南壁细部左侧人物位于桌案旁，人物衣纹和桌案边缘相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02"
     },
@@ -5074,8 +4965,8 @@ addSceneView("rear_chamber", "rear_southeast_detail", {
       shape: "rect",
       rect: [0.20, 0.54, 0.55, 0.86],
       title: "桌面器物",
-      body: "桌面器物处在人物之间，是东南壁细部中最适合复查的对象区。\n它用于强化多壁面观察，不应被解释成单独的异常物证。",
-      record: "东南壁细部桌面器物用于强化多壁面观察。",
+      body: "桌面器物处在人物之间。\n器物轮廓位于桌案上方。",
+      record: "东南壁细部桌面器物处在人物之间，器物轮廓位于桌案上方。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02"
     },
@@ -5085,7 +4976,7 @@ addSceneView("rear_chamber", "rear_southeast_detail", {
       shape: "rect",
       rect: [0.55, 0.30, 0.72, 0.78],
       title: "中部人物",
-      body: "中部人物连接左侧桌案和右侧承盘人物。\n它使东南壁细部保持连续叙事，而不是断裂的单点图像。",
+      body: "中部人物位于左侧桌案和右侧承盘人物之间。\n人物轮廓与两侧图像相接。",
       record: "东南壁细部中部人物连接桌案和承盘人物，保持图像连续。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02"
@@ -5096,8 +4987,8 @@ addSceneView("rear_chamber", "rear_southeast_detail", {
       shape: "rect",
       rect: [0.70, 0.45, 0.98, 0.90],
       title: "右侧承盘与人物",
-      body: "右侧承盘与人物在细部图中更清楚。\n这组信息用于确认东南壁的宴饮/侍奉图像关系，仍归入后室多壁面复查。",
-      record: "右侧承盘与人物用于确认东南壁的图像关系，归入后室多壁面复查。",
+      body: "右侧承盘与人物在细部图中更清楚。\n承盘位于人物身前。",
+      record: "右侧承盘与人物在细部图中更清楚，承盘位于人物身前。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-E-02"
     },
@@ -5138,14 +5029,14 @@ addSceneView("rear_chamber", "rear_land_deed_cover_closeup", {
       shape: "rect",
       rect: [0.39, 0.24, 0.78, 0.70],
       title: "地券本体与朱书区",
-      body: "中央砖面是地券本体，朱书文字区仍是这组文书器物的核心。\n它需要与单张地券近景对读，避免只看形制而忽略文字线索。",
-      record: "地券并盖图中的中央砖面为地券本体，应与单张地券近景对读。",
+      body: "中央砖面为地券本体。\n朱书文字区位于砖面中部。",
+      record: "地券并盖图中的中央砖面为地券本体，朱书文字区位于砖面中部。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-04",
       viewTransition: {
         targetViewId: "rear_land_deed_closeup",
         title: "对照地券文字",
-        body: "地券近景被打开，用来复查朱书文字与砖面边界。",
+        body: "地券近景被打开。",
         closeLabel: "对照"
       }
     },
@@ -5155,8 +5046,8 @@ addSceneView("rear_chamber", "rear_land_deed_cover_closeup", {
       shape: "rect",
       rect: [0.39, 0.07, 0.76, 0.25],
       title: "上方券盖",
-      body: "上方券盖显示这不是孤立的一块文字砖，而是地券与盖组成的一套文书器物。\n这一点可帮助把地券从普通砖块中区分出来。",
-      record: "上方券盖显示地券与盖组成一套文书器物。",
+      body: "上方券盖位于地券本体上侧。\n券盖与地券本体组成一套文书器物。",
+      record: "上方券盖位于地券本体上侧，券盖与地券本体组成一套文书器物。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-04"
     },
@@ -5166,8 +5057,8 @@ addSceneView("rear_chamber", "rear_land_deed_cover_closeup", {
       shape: "rect",
       rect: [0.12, 0.07, 0.29, 0.72],
       title: "券盖侧视结构",
-      body: "左侧侧视图说明券盖具有厚度和罩覆关系。\n它补充地券与盖的组合方式，但不能被解释成额外机关或隐藏结构。",
-      record: "券盖侧视图说明其厚度和罩覆关系，不能解释成额外机关。",
+      body: "左侧侧视图显示券盖厚度。\n侧视图与正面图共同呈现券盖和地券本体的组合方式。",
+      record: "左侧侧视图显示券盖厚度，与正面图共同呈现券盖和地券本体的组合方式。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-04"
     },
@@ -5177,20 +5068,9 @@ addSceneView("rear_chamber", "rear_land_deed_cover_closeup", {
       shape: "rect",
       rect: [0.34, 0.82, 0.74, 0.97],
       title: "下方券盖",
-      body: "下方券盖与上方券盖形成形制对照。\n它帮助玩家理解地券并盖是一组出土实物，而不是单张图像的装饰背景。",
-      record: "下方券盖与上方券盖形成形制对照，说明地券并盖是一组出土实物。",
+      body: "下方券盖位于图像底部。\n它与上方券盖保持相近的形制。",
+      record: "下方券盖位于图像底部，与上方券盖保持相近的形制。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
-      sourceClueId: "HS-P0-04"
-    },
-    {
-      id: "land_deed_scale_bar",
-      label: "比例标尺",
-      shape: "rect",
-      rect: [0.10, 0.80, 0.34, 0.92],
-      title: "比例标尺",
-      body: "比例标尺用于提示图像是记录性图版。\n尺寸关系可以辅助复查，但不承担单独的剧情推理功能。",
-      record: "比例标尺提示该图为记录性图版，只用于辅助尺寸复查。",
-      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室图片热点线索流程映射表_v1.0.md",
       sourceClueId: "HS-P0-04"
     },
     {
@@ -5230,8 +5110,8 @@ addSceneView("rear_chamber", "rear_porcelain_bowl_closeup", {
       shape: "rect",
       rect: [0.14, 0.24, 0.47, 0.62],
       title: "白瓷碗碗体残片",
-      body: "白瓷碗主体残片显示器物已经破碎。\n它可以作为后室出土器物层的一部分，不应单独承担异常判断。",
-      record: "白瓷碗主体残片显示器物已破碎，应作为后室出土器物层的一部分。",
+      body: "白瓷碗主体残片位于画面左侧。\n器物呈破碎状态。",
+      record: "白瓷碗主体残片位于画面左侧，器物呈破碎状态。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P1-05"
     },
@@ -5241,8 +5121,8 @@ addSceneView("rear_chamber", "rear_porcelain_bowl_closeup", {
       shape: "rect",
       rect: [0.35, 0.13, 0.66, 0.40],
       title: "口沿与上部残片",
-      body: "上方残片保留了口沿弧线。\n这有助于确认它是器物残片，而不是文字、符号或特殊标记。",
-      record: "上方残片保留口沿弧线，可确认其为器物残片。",
+      body: "上方残片保留口沿弧线。\n口沿边缘与主体残片分离。",
+      record: "上方残片保留口沿弧线，口沿边缘与主体残片分离。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P1-05"
     },
@@ -5252,8 +5132,8 @@ addSceneView("rear_chamber", "rear_porcelain_bowl_closeup", {
       shape: "rect",
       rect: [0.20, 0.58, 0.62, 0.90],
       title: "下部散落残片",
-      body: "下部残片与主体碗体分离，说明出土状态并不完整。\n这类破碎状态更适合归入随葬器物保存状况，而不是单独推成事件线索。",
-      record: "下部散落残片说明白瓷碗出土状态不完整，应归入随葬器物保存状况。",
+      body: "下部残片散落在主体下方。\n残片之间保留空隙。",
+      record: "下部残片散落在主体下方，残片之间保留空隙。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P1-05"
     },
@@ -5263,32 +5143,10 @@ addSceneView("rear_chamber", "rear_porcelain_bowl_closeup", {
       shape: "rect",
       rect: [0.56, 0.25, 0.98, 0.84],
       title: "出土背景与残留痕迹",
-      body: "右侧背景保留出土记录和壁面残留的感觉。\n它提醒玩家：白瓷碗需要回到砖床、人骨、铁钉和地券的空间关系里，而不是单独解释。",
-      record: "白瓷碗出土背景提醒该器物需回到砖床、人骨、铁钉和地券的空间关系中复查。",
+      body: "右侧背景保留出土记录图版中的暗色区域。\n暗色区域与器物残片相邻。",
+      record: "右侧背景保留出土记录图版中的暗色区域，暗色区域与器物残片相邻。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P1-05"
-    },
-    {
-      id: "porcelain_bowl_no_text_signal",
-      label: "无文字信号",
-      shape: "rect",
-      rect: [0.12, 0.20, 0.70, 0.72],
-      title: "白瓷碗表面无明确文字信号",
-      body: "这张近景中可见器物残片和口沿弧线，但没有可读文字、刻款或明确标识。\n因此白瓷碗应先归入随葬器物和保存状态，不单独承担身份暗号或特殊信号。",
-      record: "白瓷碗近景未见明确文字、刻款或标识，应先归入随葬器物和保存状态。",
-      sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
-      sourceClueId: "HS-H-01"
-    },
-    {
-      id: "porcelain_bowl_context_relation",
-      label: "位置复查",
-      shape: "rect",
-      rect: [0.54, 0.54, 0.94, 0.92],
-      title: "白瓷碗与砖床遗存关系",
-      body: "白瓷碗的位置需要回到出土物分布图中复查。\n它可以补充后室器物层，但不能替代砖床、人骨、铁钉和地券构成的葬具主链。",
-      record: "白瓷碗位置需回到出土物分布图复查，可补充器物层但不能替代葬具主链。",
-      sourceFile: "docs/handoff/线索交付文档/01_核心交付/M1线索总表_PRD适配版_v1.0.md",
-      sourceClueId: "HS-H-01"
     },
     {
       id: "return_rear_distribution_from_bowl",
@@ -5327,8 +5185,8 @@ addSceneView("rear_chamber", "rear_bones_position_closeup", {
       shape: "rect",
       rect: [0.06, 0.06, 0.93, 0.78],
       title: "葬具范围与位置标记",
-      body: "图中的标记把人骨放回葬具范围内观察。\n这里的重点是范围叠合，而不是把骨骼姿态直接解释成扰动事件。",
-      record: "人骨位置图应先用于确认葬具范围与骨骼分布的叠合关系。",
+      body: "图中标记显示人骨位于葬具范围内。\n标记线与骨骼分布相互叠合。",
+      record: "图中标记显示人骨位于葬具范围内，标记线与骨骼分布相互叠合。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-02"
     },
@@ -5338,8 +5196,8 @@ addSceneView("rear_chamber", "rear_bones_position_closeup", {
       shape: "rect",
       rect: [0.08, 0.10, 0.27, 0.34],
       title: "头骨端",
-      body: "头骨端可以帮助判断人骨在葬具中的朝向。\n它只能说明相对位置，不能直接推出死因、身份或迁葬判断。",
-      record: "头骨端用于判断人骨相对朝向，不能直接推出死因、身份或迁葬。",
+      body: "头骨端位于图像左上区域。\n头骨端与肢骨集中区之间保留距离。",
+      record: "头骨端位于图像左上区域，与肢骨集中区之间保留距离。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-02"
     },
@@ -5349,8 +5207,8 @@ addSceneView("rear_chamber", "rear_bones_position_closeup", {
       shape: "rect",
       rect: [0.28, 0.17, 0.77, 0.48],
       title: "肢骨集中区",
-      body: "肢骨集中区显示骨骼并非铺满整个后室。\n这一信息需要和铁钉范围、砖床边界一起看，不能独立解释为异常移动。",
-      record: "肢骨集中区显示骨骼没有铺满整个后室，应与铁钉范围、砖床边界一起复查。",
+      body: "肢骨集中区位于图像中上部。\n骨骼集中在标记范围内。",
+      record: "肢骨集中区位于图像中上部，骨骼集中在标记范围内。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-02"
     },
@@ -5360,8 +5218,8 @@ addSceneView("rear_chamber", "rear_bones_position_closeup", {
       shape: "rect",
       rect: [0.07, 0.50, 0.31, 0.72],
       title: "左下葬具痕迹",
-      body: "左下方残留痕迹可作为葬具范围复查的一部分。\n它应与人骨集中区分开记录，避免把所有痕迹都等同于骨骼边界。",
-      record: "左下方残留痕迹应与人骨集中区分开记录，用于复查葬具范围。",
+      body: "左下方可见残留痕迹。\n该区域位于人骨集中区下方。",
+      record: "左下方可见残留痕迹，该区域位于人骨集中区下方。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-03"
     },
@@ -5371,8 +5229,8 @@ addSceneView("rear_chamber", "rear_bones_position_closeup", {
       shape: "rect",
       rect: [0.68, 0.52, 0.94, 0.72],
       title: "右下葬具痕迹",
-      body: "右下方残留痕迹与左下方痕迹共同提示葬具范围。\n它帮助把判断收束到葬具复原，而不是盗扰或人为破坏。",
-      record: "右下方残留痕迹提示葬具范围，帮助把判断收束到葬具复原。",
+      body: "右下方可见残留痕迹。\n该区域位于人骨集中区右下侧。",
+      record: "右下方可见残留痕迹，该区域位于人骨集中区右下侧。",
       sourceFile: "docs/handoff/线索交付文档/03_后室专项交付/M1后室线索表_正式交付版_v1.0.md",
       sourceClueId: "HS-P0-03"
     },
@@ -5431,7 +5289,7 @@ const CONCLUSION_DATA = {
           id: "analysis:tomb_gate:combo",
           label: "墓门组合判断",
           metText: "墓门章节已经完成观察、复查和组合，可进入主线结论。",
-          missingText: "还缺墓门组合判断。单条观察还不能生成结论卡，需先在记录夹里完成复查与组合。 "
+          missingText: "还缺墓门组合判断。单条观察尚未生成结论卡，需先在记录夹里完成复查与组合。 "
         }
       ],
       relations: ["R01", "R08"]
@@ -5462,7 +5320,7 @@ const CONCLUSION_DATA = {
           id: "analysis:corridor:review_direction",
           label: "通道导向复查",
           metText: "甬道两壁和中段方向已经复查，可确认甬道承担引导与过渡功能。",
-          missingText: "还缺通道导向复查。甬道不能只看顶部，还要把中段和两壁方向一起纳入。 "
+          missingText: "还缺通道导向复查。甬道还需要中段和两壁方向。 "
         },
         {
           id: "analysis:corridor:combo",
@@ -5499,7 +5357,7 @@ const CONCLUSION_DATA = {
           id: "analysis:front_chamber:review_ritual_sequence",
           label: "礼仪动线复查",
           metText: "礼仪动线复查已完成，可把东壁人物、南壁入口和北壁过渡放进同一条序列。",
-          missingText: "还缺礼仪动线复查。前室不能只看器物，必须把人物与空间引导一起判断。 "
+          missingText: "还缺礼仪动线复查。前室还需要人物与空间引导。 "
         },
         {
           id: "analysis:front_chamber:review_partition_structure",
@@ -5511,13 +5369,13 @@ const CONCLUSION_DATA = {
           excludedId: "front_chamber:pointed_shoes",
           label: "尖鞋误导已排除",
           metText: "尖鞋已被降级，单一服饰细节不会再直接支撑前室主线。",
-          missingText: "还缺尖鞋误导排除。单独鞋型还不能直接推成身份或年代判断。 "
+          missingText: "还缺尖鞋误导排除。单独鞋型先记录为服饰细节。 "
         },
         {
           excludedId: "front_chamber:east_wall_surface",
           label: "东壁温差误导已排除",
           metText: "东壁温差已被降级，单次手电照射下的体感差异不会直接进入主线判断。",
-          missingText: "还缺东壁温差误导排除。手电照射后的局部体感差异还不能直接当作异常主证。 "
+          missingText: "还缺东壁温差误导排除。手电照射后的局部差异先记录为体感异常。 "
         },
         {
           id: "analysis:front_chamber:combo",
@@ -5554,7 +5412,7 @@ const CONCLUSION_DATA = {
           id: "analysis:passage:review_spatial_structure",
           label: "窗棂与宝盖复查",
           metText: "窗棂和宝盖已经复查，可确认过道同时承担展开与收束两种空间作用。",
-          missingText: "还缺窗棂与宝盖复查。过道不能只看题记，还要把棂窗和顶部结构一起判断。 "
+          missingText: "还缺窗棂与宝盖复查。过道还需要棂窗和顶部结构。 "
         },
         {
           id: "analysis:passage:combo",
@@ -5603,13 +5461,13 @@ const CONCLUSION_DATA = {
           excludedId: "rear_chamber:woman_hand",
           label: "妇人手部新断口已排除",
           metText: "妇人手部新断口已被降级，不再直接推动后室主线。",
-          missingText: "还缺妇人手部新断口排除。单一点位的新旧差异还不能直接上升为主线判断。 "
+          missingText: "还缺妇人手部新断口排除。单一点位的新旧差异先记录为局部残损。 "
         },
         {
           excludedId: "rear_chamber:nail_count",
           label: "铁钉数量异常已排除",
           metText: "铁钉数量异常已被降级，单点数量差不会替代整体分布关系。",
-          missingText: "还缺铁钉数量异常排除。单独角点数量差还不能直接推出后室主结论。 "
+          missingText: "还缺铁钉数量异常排除。单独角点数量差先记录为角点细节。 "
         },
         {
           id: "analysis:rear_chamber:combo",
@@ -5852,7 +5710,7 @@ const NPC_DATA = {
       kicker: "章节完成",
       speaker: "考古领队",
       title: "过道判断",
-      body: "题记不能单独说明问题，但它已经把你带到后室的核心矛盾前面了。"
+      body: "题记、棂窗和顶部宝盖已经共同指向后室入口。"
     },
     rear_chamber: {
       kicker: "章节完成",
@@ -5903,7 +5761,7 @@ const ANALYSIS_DATA = {
             id: "analysis:tomb_gate:review_sealing_structure",
             sceneId: "tomb_gate",
             title: "封门方式复查",
-            text: "标尺复查显示，石英砂灰缝与周围胶结状态一致，砖下缘和地面交界连续。石英砂更像封门砌筑细节，不能单独当作异常主证。",
+            text: "标尺复查显示，石英砂灰缝与周围胶结状态一致，砖下缘和地面交界连续。石英砂归入封门砌筑细节。",
             track: "review",
             recordType: "review"
           }
@@ -5915,7 +5773,7 @@ const ANALYSIS_DATA = {
           buttonLabel: "将石英砂灰缝降级为待排除线索",
           description: "单点颗粒异常不足以直接进入主线结论。",
           requiresReviewRecordIds: ["analysis:tomb_gate:review_sealing_structure"],
-          resolutionText: "封门砖缝中的石英砂已被降级为待排除线索；它更像砌筑细节，不能直接支撑墓门异常判断。"
+          resolutionText: "封门砖缝中的石英砂已被降级为待排除线索；它归入砌筑细节，不进入墓门主线判断。"
         }
       ],
       combination: {
@@ -6035,16 +5893,16 @@ const ANALYSIS_DATA = {
         {
           recordId: "front_chamber:pointed_shoes",
           buttonLabel: "将尖鞋降级为服饰细节",
-          description: "单一鞋型不足以直接推断人物身份、年代或前室主功能。",
+          description: "单一鞋型归入人物服饰细节。",
           requiresReviewRecordIds: ["analysis:front_chamber:review_ritual_sequence"],
-          resolutionText: "女乐尖鞋已被降级为服饰细节；它只能补充人物形象，不能脱离礼仪动线单独支撑前室主线结论。"
+          resolutionText: "女乐尖鞋已被降级为服饰细节；它归入人物形象记录，前室主线仍以礼仪动线为主。"
         },
         {
           recordId: "front_chamber:east_wall_surface",
           buttonLabel: "将东壁温差降级为体感异常",
-          description: "手电照射下的短暂温差缺少稳定对照，暂不能上升为主线证据。",
+          description: "手电照射下的短暂温差记录为局部体感差异。",
           requiresReviewRecordIds: ["analysis:front_chamber:review_partition_structure"],
-          resolutionText: "东壁温差已被降级为体感异常；在缺少稳定对照的情况下，它不能直接证明前室存在独立异常层。"
+          resolutionText: "东壁温差已被降级为体感异常；它保留为局部观察记录，不进入前室主线判断。"
         }
       ],
       combination: {
@@ -6060,7 +5918,7 @@ const ANALYSIS_DATA = {
           id: "analysis:front_chamber:combo",
           sceneId: "front_chamber",
           title: "前室组合判断",
-          text: "西壁器物的年代错层与局部重绘、东壁至北壁的礼仪动线，以及南壁到顶部的入口分区共同说明，前室是被主动组织过的礼仪展示空间；尖鞋和体感温差这类单点异常不能替代主链判断。",
+          text: "西壁器物的年代错层与局部重绘、东壁至北壁的礼仪动线，以及南壁到顶部的入口分区共同说明，前室是被主动组织过的礼仪展示空间；尖鞋和体感温差归入辅助记录。",
           track: "review",
           recordType: "combination"
         }
@@ -6100,10 +5958,9 @@ const ANALYSIS_DATA = {
         {
           id: "review_burial_distribution",
           buttonLabel: "串联葬具证据链",
-          description: "先框定砖床边界，再叠合人骨与铁钉，最后回到地券文书。按这个顺序复查，可以确认哪些信息是空间定位，哪些信息是文书层。",
+          description: "按砖床边界、人骨与铁钉、出土物分布、地券文书的顺序整理后室葬具材料。",
           sourceRecordIds: [
             "rear_chamber:north_lower_bed_boundary",
-            "rear_chamber:north_lower_bed_axis",
             "rear_chamber:bones_nails",
             "rear_chamber:bones_position_burial_range",
             "rear_chamber:nail_count",
@@ -6114,25 +5971,25 @@ const ANALYSIS_DATA = {
           guideSteps: [
             {
               label: "1 北壁下部",
-              detail: "后室入口总览 → 北壁 → 北壁下部；点砖床边界和假门-砖床轴线。",
-              mobileDetail: "北壁 → 北壁下部；点砖床边界、轴线。",
-              recordIds: ["rear_chamber:north_lower_bed_boundary", "rear_chamber:north_lower_bed_axis"]
+              detail: "后室入口总览 → 北壁 → 北壁下部；点砖床边界。",
+              mobileDetail: "北壁 → 北壁下部；点砖床边界。",
+              recordIds: ["rear_chamber:north_lower_bed_boundary"]
             },
             {
               label: "2 人骨铁钉",
-              detail: "回到北壁；点人骨与铁钉，再在人骨近景点铁钉数量。",
+              detail: "北壁 → 人骨与铁钉；在人骨近景点铁钉数量。",
               mobileDetail: "北壁 → 人骨与铁钉；点铁钉数量。",
               recordIds: ["rear_chamber:bones_nails", "rear_chamber:nail_count"]
             },
             {
               label: "3 分布与人骨位置",
-              detail: "回到北壁；点出土物分布图，再进入人骨位置，确认葬具范围。",
+              detail: "北壁 → 出土物分布图 → 人骨位置。",
               mobileDetail: "北壁 → 分布图 → 人骨位置。",
               recordIds: ["rear_chamber:distribution_map", "rear_chamber:bones_position_burial_range"]
             },
             {
               label: "4 地券并盖",
-              detail: "回到北壁；点地券 → 地券并盖 → 地券本体，把文书层接入链条。",
+              detail: "北壁 → 地券 → 地券并盖 → 地券本体。",
               mobileDetail: "北壁 → 地券 → 地券并盖 → 地券本体。",
               recordIds: ["rear_chamber:land_deed_body_text_panel"]
             }
@@ -6158,21 +6015,21 @@ const ANALYSIS_DATA = {
           recordId: "rear_chamber:woman_hand",
           priority: 10,
           buttonLabel: "将妇人手部新断口降级为局部残损",
-          description: "单一手指断口只能说明局部残损或后期破坏，不能直接改写假门图像主链。",
+          description: "单一手指断口记录为局部残损或后期破坏。",
           requiresReviewRecordIds: ["analysis:rear_chamber:review_false_door_structure"],
           blockedText: "先完成假门图像复查，再处理这条手部断口。它要回到北壁假门、妇人启门和门缝槽口的整体关系里判断。",
           readyText: "假门图像复查已完成。现在可以把手部断口降级为局部残损，避免它单独替代北壁假门结构判断。",
-          resolutionText: "妇人手部新断口已被降级为局部残损；它可以提示后期破坏，但不能脱离假门整体结构单独推导后室主结论。"
+          resolutionText: "妇人手部新断口已被降级为局部残损；它记录为后期破坏痕迹，后室主线仍以假门整体结构为主。"
         },
         {
           recordId: "rear_chamber:nail_count",
           priority: 20,
           buttonLabel: "将铁钉数量异常降级为角点细节",
-          description: "铁钉数量差异必须先放回砖床、人骨位置和地券文书的同一条证据链中复查；它不能抢在整体分布关系之前作结论。",
+          description: "铁钉数量差异放入砖床、人骨位置和地券文书的同一条证据链中整理。",
           requiresReviewRecordIds: ["analysis:rear_chamber:review_burial_distribution"],
           blockedText: "先完成葬具证据链复查，再处理铁钉数量。原因是东北角、西南角的钉数差只能说明角点细节，必须和砖床边界、人骨范围、地券文书一起判断。",
-          readyText: "葬具证据链已完成。现在可以把铁钉数量异常降级为角点细节：它参与说明葬具痕迹，但不能单独推出额外葬仪异常。",
-          resolutionText: "铁钉数量异常已被降级为角点细节；它需要依附于砖床边界、人骨范围和地券文书的整体关系，不能单独证明后室存在额外葬仪异常。"
+          readyText: "葬具证据链已完成。现在可以把铁钉数量异常降级为角点细节：它参与说明葬具痕迹。",
+          resolutionText: "铁钉数量异常已被降级为角点细节；它归入砖床边界、人骨范围和地券文书的整体关系。"
         }
       ],
       combination: {
@@ -6221,7 +6078,7 @@ const ANALYSIS_DATA = {
           id: "analysis:rear_chamber:combo",
           sceneId: "rear_chamber",
           title: "后室组合判断",
-          text: "假门图像、地券文书与葬具证据链共同说明，后室第一版的核心证据来自图像、文书和遗存的互相印证；手部断口和角点钉数这类单点异常不能替代这条主链。",
+          text: "假门图像、地券文书与葬具证据链共同说明，后室第一版的核心证据来自图像、文书和遗存的互相印证；手部断口和角点钉数归入辅助记录。",
           track: "review",
           recordType: "combination"
         }
@@ -6263,7 +6120,7 @@ const ANALYSIS_DATA = {
         {
           recordId: "passage:tassel",
           buttonLabel: "将流苏降级为装饰性细节",
-          description: "流苏方向变化目前只构成细部信息，不能独立推动过道主线。",
+          description: "流苏方向变化目前记录为细部信息。",
           requiresReviewRecordIds: ["analysis:passage:review_spatial_structure"],
           resolutionText: "流苏已被降级为装饰性细节；在当前证据链里，它不足以单独推动过道的主线判断。"
         }
@@ -6277,7 +6134,7 @@ const ANALYSIS_DATA = {
           id: "analysis:passage:combo",
           sceneId: "passage",
           title: "过道组合判断",
-          text: "题记层次与窗棂、宝盖的空间复查共同说明，过道是时间信息与空间转换交汇的节点，单点装饰细节不能替代这条主链。",
+          text: "题记层次与窗棂、宝盖的空间复查共同说明，过道是时间信息与空间转换交汇的节点，单点装饰细节归入辅助记录。",
           track: "review",
           recordType: "combination"
         }
