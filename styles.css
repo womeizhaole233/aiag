@@ -472,8 +472,10 @@ button {
 .journal-card,
 .journal-action-card,
 .conclusion-card,
+.conclusion-wall-overview,
 .conclusion-detail-card,
 .relation-card,
+.synthesis-lane-card,
 .evidence-item,
 .clue-card {
   margin: 0;
@@ -486,6 +488,7 @@ button {
 .journal-card h2,
 .journal-action-card h2,
 .conclusion-card h2,
+.conclusion-wall-overview h2,
 .conclusion-detail-card h2,
 .clue-card h3 {
   margin: 8px 0;
@@ -496,8 +499,10 @@ button {
 .journal-card p,
 .journal-action-card p,
 .conclusion-card p,
+.conclusion-wall-overview p,
 .conclusion-detail-card p,
 .relation-card p,
+.synthesis-lane-card p,
 .evidence-item p,
 .clue-card p,
 .journal-note {
@@ -670,6 +675,7 @@ button {
 }
 
 .status-chip.is-in-progress,
+.status-chip.is-in_progress,
 .status-chip.is-partial,
 .workbench-chip.is-active,
 .workbench-tab.is-active {
@@ -693,6 +699,88 @@ button {
 
 .conclusion-card.is-active {
   border-color: var(--primary);
+}
+
+.conclusion-card.is-locked {
+  opacity: 0.72;
+}
+
+.conclusion-wall-overview {
+  border-color: rgba(120, 168, 255, 0.32);
+  background: rgba(120, 168, 255, 0.12);
+}
+
+.conclusion-wall-overview h2 {
+  color: var(--text);
+  font-size: 32px;
+}
+
+.conclusion-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.conclusion-flow-step {
+  display: grid;
+  gap: 2px;
+  min-width: 108px;
+  min-height: 52px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(244, 247, 252, 0.08);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.conclusion-flow-step span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.conclusion-flow-step strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.conclusion-flow-step.is-generated {
+  border-color: rgba(109, 211, 160, 0.45);
+  background: rgba(109, 211, 160, 0.12);
+}
+
+.conclusion-flow-step.is-in_progress {
+  border-color: rgba(120, 168, 255, 0.45);
+  background: rgba(120, 168, 255, 0.12);
+}
+
+.conclusion-flow-step.is-locked {
+  opacity: 0.68;
+}
+
+.conclusion-flow-arrow {
+  color: var(--text-faint);
+}
+
+.synthesis-lane-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.synthesis-lane-card {
+  display: grid;
+  gap: 8px;
+  background: rgba(244, 247, 252, 0.08);
+}
+
+.synthesis-lane-card h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.35;
 }
 
 .workbench-chip,
@@ -909,8 +997,17 @@ button {
   }
 
   .workbench-overview-grid,
+  .synthesis-lane-grid,
   .workbench-record-grid {
     grid-template-columns: 1fr;
+  }
+
+  .conclusion-flow {
+    align-items: stretch;
+  }
+
+  .conclusion-flow-step {
+    flex: 1 1 128px;
   }
 
   .workbench-progress-row {

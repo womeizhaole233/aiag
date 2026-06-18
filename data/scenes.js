@@ -195,7 +195,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.18, 0.2, 0.82, 0.76],
             title: "六段空间顺序",
-            body: "平剖面图把第一号墓的空间压缩成一条可读的轴线。\n后续所有墙面、题记、器物和葬具线索，都要回到这个轴线里定位。",
+            body: "平剖面图把第一号墓的空间压缩成一条可读的轴线。\n后续墙面、题记、器物和葬具线索，都可以沿这条轴线定位。",
             record: "第一号墓可按墓外、墓门、甬道、前室、过道、后室的顺序建立空间轴线。",
             sourceFile: "docs/handoff/线索交付文档/05_剧情体验交付/M1场景线索体验节奏表_v1.0.md",
             sourceClueId: "ENV-P0-01"
@@ -5216,7 +5216,7 @@ const CONCLUSION_DATA = {
           missingText: "还缺墓门组合判断。单条观察尚未生成结论卡，需先在记录夹里完成复查与组合。 "
         }
       ],
-      relations: ["R01", "R08"]
+      relations: ["R01", "R02", "R08"]
     },
     {
       id: "corridor",
@@ -5253,7 +5253,7 @@ const CONCLUSION_DATA = {
           missingText: "还缺甬道组合判断。当前仍是单条观察，需先在记录夹里完成复查与组合。 "
         }
       ],
-      relations: ["R03", "R07"]
+      relations: ["R01", "R03", "R08"]
     },
     {
       id: "front_chamber",
@@ -5308,7 +5308,7 @@ const CONCLUSION_DATA = {
           missingText: "还缺前室组合判断。当前仍是分散观察，需先完成复查并排除误导线索。 "
         }
       ],
-      relations: ["R01", "R05"]
+      relations: ["R01", "R04", "R08"]
     },
     {
       id: "passage",
@@ -5345,7 +5345,7 @@ const CONCLUSION_DATA = {
           missingText: "还缺过道组合判断。需先在记录夹里完成复查和组合，结论卡才会生成。 "
         }
       ],
-      relations: ["R03", "R04"]
+      relations: ["R01", "R05", "R08"]
     },
     {
       id: "rear_chamber",
@@ -5400,7 +5400,7 @@ const CONCLUSION_DATA = {
           missingText: "还缺后室组合判断。当前仍是分散观察，需先完成复查并排除误导线索。 "
         }
       ],
-      relations: ["R02", "R04", "R07"]
+      relations: ["R01", "R06", "R07", "R08"]
     },
     {
       id: "final_report",
@@ -5454,112 +5454,151 @@ const CONCLUSION_DATA = {
   relations: [
     {
       id: "R01",
-      title: "前室重绘",
-      summary: "用当前运行版已落地的墓门、前室器物和顶部证据，建立前室装饰调整的简化链。",
+      title: "空间序列链",
+      summary: "把墓门、甬道、前室、过道和后室按进入顺序合读，形成 M1 从入口到安葬核心的连续空间序列。",
       requirements: [
-        { id: "tomb_gate:lintel_back", label: "门额背面彩画" },
-        { anyOf: ["front_chamber:ewer", "front_chamber:high_bottle"], label: "前室器物年代矛盾" },
-        { anyOf: ["front_chamber:bracket_set", "front_chamber:northwest_corner"], label: "前室顶部铺作" }
+        { sceneId: "tomb_gate", completed: true, label: "墓门" },
+        { sceneId: "corridor", completed: true, label: "甬道" },
+        { sceneId: "front_chamber", completed: true, label: "前室" },
+        { sceneId: "passage", completed: true, label: "过道" },
+        { sceneId: "rear_chamber", completed: true, label: "后室" }
       ]
     },
     {
       id: "R02",
-      title: "后室身份抹除",
-      summary: "用后室北壁、地券、人骨和入口背面这些已实现证据，建立后室异常葬仪的简化链。",
+      title: "墓门结构链",
+      summary: "门额正背、封门砖与灰缝复查共同说明，墓门既是入口，也是第一道结构与装饰证据界面。",
       requirements: [
-        { id: "rear_chamber:woman_door", label: "妇人启门" },
-        { id: "rear_chamber:land_deed", label: "地券" },
-        { id: "rear_chamber:bones_nails", label: "人骨与铁钉" },
-        { anyOf: ["rear_chamber:rear_south_back_entrance", "rear_chamber:rear_south_high_table"], label: "后室南壁入口背面或高几" }
+        { id: "analysis:tomb_gate:review_surface_compare", label: "门额前后层次复查" },
+        { id: "analysis:tomb_gate:review_sealing_structure", label: "封门方式复查" },
+        { excludedId: "tomb_gate:brick_seam", label: "砖缝单点异常已降级" },
+        { id: "analysis:tomb_gate:combo", label: "墓门章节判断" }
       ]
     },
     {
       id: "R03",
-      title: "过道-甬道时间层",
-      summary: "用甬道顶部错位、两壁方向差和过道题记，建立时间层冲突的简化链。",
+      title: "甬道三面合读链",
+      summary: "顶部、东壁和西壁共同建立通道秩序，甬道承担墓门到前室之间的过渡与引导。",
       requirements: [
-        { id: "passage:inscription", label: "纪年题记" },
-        { id: "corridor:overlapping_pattern", label: "甬道重绘痕迹" },
-        { anyOf: ["corridor:east_wall_direction", "corridor:west_wall_inscription"], label: "甬道两壁对照" },
-        { id: "passage:ceiling_canopy", label: "过道顶部宝盖" }
+        { id: "analysis:corridor:review_roof_alignment", label: "顶部错位复查" },
+        { id: "analysis:corridor:review_direction", label: "通道导向复查" },
+        { id: "analysis:corridor:combo", label: "甬道章节判断" }
       ]
     },
     {
       id: "R04",
-      title: "后期进入分层",
-      summary: "用题记、文书、遗存、重绘和颜料覆盖，建立多次后期进入的简化链。",
+      title: "前室礼仪展示链",
+      summary: "人物、器物、入口秩序、北壁过渡与顶部结构共同说明，前室是被组织过的礼仪展示空间。",
       requirements: [
-        { id: "passage:inscription", label: "过道题记" },
-        { id: "rear_chamber:land_deed", label: "地券" },
-        { id: "rear_chamber:bones_nails", label: "人骨与铁钉" },
-        { id: "corridor:overlapping_pattern", label: "甬道叠胜彩画" },
-        { id: "rear_chamber:rear_northwest_pigment_layer", label: "西北壁颜料层位" }
+        { id: "analysis:front_chamber:review_artifact_tension", label: "器物组合复查" },
+        { id: "analysis:front_chamber:review_ritual_sequence", label: "礼仪动线复查" },
+        { id: "analysis:front_chamber:review_partition_structure", label: "入口分区与顶部结构复查" },
+        { id: "analysis:front_chamber:combo", label: "前室章节判断" }
       ]
     },
     {
       id: "R05",
-      title: "礼仪身份序列",
-      summary: "用东壁女乐、南壁壁函和北壁分区，建立前室礼仪空间的简化链。",
+      title: "过道时间转换链",
+      summary: "纪年题记、破子棂窗和顶部宝盖合读，说明过道集中承载时间锚点与前后室转换信息。",
       requirements: [
-        { id: "front_chamber:female_musicians", label: "东壁女乐" },
-        {
-          anyOf: [
-            "front_chamber:south_wall_overview",
-            "front_chamber:east_wall_niche",
-            "front_chamber:west_wall_niche",
-            "front_chamber:painted_column"
-          ],
-          label: "南壁壁函与倚柱"
-        },
-        { anyOf: ["front_chamber:north_west_mural", "front_chamber:north_east_mural"], label: "北壁过渡分区" }
+        { id: "analysis:passage:review_inscription_layer", label: "题记层次复查" },
+        { id: "analysis:passage:review_spatial_structure", label: "窗棂与宝盖复查" },
+        { id: "analysis:passage:combo", label: "过道章节判断" }
       ]
     },
     {
       id: "R06",
-      title: "后室日常化叙事",
-      summary: "用后室南壁、西南壁、西北壁和顶部近景，建立后室日常器物线的简化链。",
+      title: "后室安葬遗存链",
+      summary: "假门图像、地券文书、砖床、人骨和铁钉共同回到后室安葬核心区，而不是由单点异常独立解释。",
       requirements: [
-        { id: "rear_chamber:rear_south_high_table", label: "南壁高几" },
-        { anyOf: ["rear_chamber:rear_southwest_mirror_stand", "rear_chamber:rear_southwest_basin_stand"], label: "西南壁梳洗器物" },
-        { anyOf: ["rear_chamber:rear_northeast_lamp", "rear_chamber:rear_northwest_scissors_iron"], label: "东北/西北壁日常器物" },
-        { anyOf: ["rear_chamber:rear_ceiling_intermediate_bracket", "rear_chamber:rear_ceiling_small_bracket"], label: "后室顶部结构" }
+        { id: "analysis:rear_chamber:review_false_door_structure", label: "假门图像复查" },
+        { id: "analysis:rear_chamber:review_document_layer", label: "地券文书复查" },
+        { id: "analysis:rear_chamber:review_burial_distribution", label: "葬具证据链复查" },
+        { id: "analysis:rear_chamber:combo", label: "后室章节判断" }
       ]
     },
     {
       id: "R07",
-      title: "空间压缩与后室高潮",
-      summary: "第一版先用入口推进和后室核心证据，替代平剖面定位形成简化高潮链。",
+      title: "后室地下寝居链",
+      summary: "后室南壁、西南壁、东北/西北壁和顶部器物图像共同补充地下寝居与日常陈设的图像空间。",
       requirements: [
-        { sceneId: "tomb_gate", completed: true, label: "完成墓门章节" },
-        { sceneId: "corridor", completed: true, label: "完成甬道章节" },
-        { sceneId: "passage", completed: true, label: "完成过道章节" },
-        { id: "rear_chamber:woman_door", label: "妇人启门" },
-        { id: "rear_chamber:find_distribution", label: "出土物分布图" }
+        { anyOf: ["rear_chamber:rear_south_back_entrance", "rear_chamber:rear_south_high_table"], label: "南壁入口背面与高几" },
+        { anyOf: ["rear_chamber:rear_southwest_mirror_stand", "rear_chamber:rear_southwest_basin_stand"], label: "西南壁日用器物" },
+        { anyOf: ["rear_chamber:rear_northeast_lamp", "rear_chamber:rear_northwest_scissors_iron"], label: "东北/西北壁日用器物" },
+        { anyOf: ["rear_chamber:rear_ceiling_intermediate_bracket", "rear_chamber:rear_ceiling_small_bracket"], label: "后室顶部结构" }
       ]
     },
     {
       id: "R08",
-      title: "墓门结构扩展线",
-      summary: "原总表里的三墓联动暂未落地，第一版先把墓门结构线独立成后续扩展入口。",
+      title: "待验证降级链",
+      summary: "把容易被误读的单点异常放回复查和降级流程，避免它们串成超出材料的解释。",
       requirements: [
-        { id: "tomb_gate:lintel_back", label: "门额背面彩画" },
-        { id: "tomb_gate:brick_seam", label: "封门砖缝" },
-        { id: "tomb_gate:threshold", label: "门前地面" }
+        { excludedId: "tomb_gate:brick_seam", label: "砖缝单点异常已降级" },
+        { excludedId: "front_chamber:pointed_shoes", label: "尖鞋细节已降级" },
+        { excludedId: "front_chamber:east_wall_surface", label: "东壁体感异常已降级" },
+        { excludedId: "rear_chamber:woman_hand", label: "妇人手部断口已降级" },
+        { excludedId: "rear_chamber:nail_count", label: "铁钉数量差异已降级" }
       ]
     },
     {
       id: "R09",
-      title: "核心真相",
-      summary: "当前版把前室、后室、甬道与过道中已经成立的关键判断汇成终章主线。",
+      title: "终章三栏报告",
+      summary: "终章把已完成的章节判断分成可判断、可推测和仍存疑三类，形成第一版总线索。",
       requirements: [
-        { relationId: "R01", label: "前室重绘" },
-        { relationId: "R02", label: "后室身份抹除" },
-        { relationId: "R03", label: "过道-甬道时间层" },
-        { relationId: "R04", label: "后期进入分层" },
-        { relationId: "R06", label: "后室日常化叙事" }
+        { relationId: "R01", label: "空间序列链" },
+        { relationId: "R02", label: "墓门结构链" },
+        { relationId: "R03", label: "甬道三面合读链" },
+        { relationId: "R04", label: "前室礼仪展示链" },
+        { relationId: "R05", label: "过道时间转换链" },
+        { relationId: "R06", label: "后室安葬遗存链" },
+        { relationId: "R08", label: "待验证降级链" }
       ]
     }
-  ]
+  ],
+  finalSynthesis: {
+    title: "终章总线索",
+    summary: "章节结论卡会按空间顺序进入总线索。终章不新增奇异点，而是把已完成判断收束成第一版研究报告。",
+    chapterOrder: ["tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber"],
+    lanes: [
+      {
+        id: "space_sequence",
+        title: "空间顺序",
+        summary: "从墓门、甬道、前室、过道到后室，形成由入口进入安葬核心的连续序列。",
+        cardIds: ["tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber"]
+      },
+      {
+        id: "structure_transition",
+        title: "结构与过渡",
+        summary: "墓门、甬道、过道和后室假门共同说明，砖室空间通过结构图像层层转换。",
+        cardIds: ["tomb_gate", "corridor", "passage", "rear_chamber"]
+      },
+      {
+        id: "image_function",
+        title: "图像功能",
+        summary: "前室礼仪展示与后室地下寝居图像形成对照，说明图像不是单纯装饰。",
+        cardIds: ["front_chamber", "rear_chamber"]
+      },
+      {
+        id: "document_relic",
+        title: "文书与遗存",
+        summary: "过道题记、后室地券、人骨和铁钉共同构成时间、文书和安葬遗存的主证。",
+        cardIds: ["passage", "rear_chamber"]
+      },
+      {
+        id: "caution_boundary",
+        title: "待验证边界",
+        summary: "尖鞋、手部断口、铁钉数量差异等单点观察需要经过降级，不能替代章节判断。",
+        cardIds: ["tomb_gate", "front_chamber", "rear_chamber"]
+      }
+    ],
+    chapterContributions: {
+      tomb_gate: ["space_sequence", "structure_transition", "caution_boundary"],
+      corridor: ["space_sequence", "structure_transition"],
+      front_chamber: ["space_sequence", "image_function", "caution_boundary"],
+      passage: ["space_sequence", "structure_transition", "document_relic"],
+      rear_chamber: ["space_sequence", "structure_transition", "image_function", "document_relic", "caution_boundary"]
+    }
+  }
 };
 
 const NPC_DATA = {
@@ -5928,7 +5967,7 @@ const ANALYSIS_DATA = {
             id: "analysis:rear_chamber:review_burial_distribution",
             sceneId: "rear_chamber",
             title: "葬具证据链复查",
-            text: "小面板复查显示，砖床边界先限定后室遗存的空间范围，人骨和铁钉需要在这个范围内叠合判断，地券则作为文书层补充定位；真正稳定的主证不是某个角点数字，而是遗存、痕迹和文书共同回到砖床关系中。",
+            text: "小面板复查显示，砖床边界限定后室遗存的空间范围，人骨和铁钉在这个范围内叠合，地券作为文书层补充定位；较稳定的主证是遗存、痕迹和文书之间的对应关系。",
             track: "review",
             recordType: "review"
           }
@@ -5941,7 +5980,7 @@ const ANALYSIS_DATA = {
           buttonLabel: "将妇人手部新断口降级为局部残损",
           description: "单一手指断口记录为局部残损或后期破坏。",
           requiresReviewRecordIds: ["analysis:rear_chamber:review_false_door_structure"],
-          blockedText: "先完成假门图像复查，再处理这条手部断口。它要回到北壁假门、妇人启门和门缝槽口的整体关系里判断。",
+          blockedText: "先完成假门图像复查，再处理这条手部断口。北壁假门、妇人启门和门缝槽口需要作为同一组图像结构记录。",
           readyText: "假门图像复查已完成。现在可以把手部断口降级为局部残损，避免它单独替代北壁假门结构判断。",
           resolutionText: "妇人手部新断口已被降级为局部残损；它记录为后期破坏痕迹，后室主线仍以假门整体结构为主。"
         },

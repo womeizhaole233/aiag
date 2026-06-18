@@ -477,6 +477,10 @@ function getConclusionRelations() {
   return CONCLUSION_DATA?.relations || [];
 }
 
+function getFinalSynthesis() {
+  return CONCLUSION_DATA?.finalSynthesis || { lanes: [], chapterOrder: [], chapterContributions: {} };
+}
+
 function getNpcData() {
   return NPC_DATA || {};
 }
@@ -2329,8 +2333,119 @@ function getAllCardStatuses() {
   return getConclusionCards().map(getCardStatus);
 }
 
+function getCardStatusById(cardId, statuses = getAllCardStatuses()) {
+  return statuses.find((item) => item.card.id === cardId) || null;
+}
+
+function getSynthesisLaneStatus(lane, statuses) {
+  const cardStatuses = (lane.cardIds || []).map((cardId) => getCardStatusById(cardId, statuses)).filter(Boolean);
+  const completeCount = cardStatuses.filter((item) => item.status === "generated").length;
+
+  return {
+    completeCount,
+    totalCount: cardStatuses.length,
+    complete: cardStatuses.length > 0 && completeCount === cardStatuses.length,
+    cardStatuses
+  };
+}
+
+function buildConclusionFlowHtml(statuses) {
+  const synthesis = getFinalSynthesis();
+  const order = synthesis.chapterOrder || [];
+  if (!order.length) return "";
+
+  const steps = order
+    .map((cardId, index) => {
+      const item = getCardStatusById(cardId, statuses);
+      if (!item) return "";
+
+      return `
+        ${index ? '<span class="conclusion-flow-arrow" aria-hidden="true">→</span>' : ""}
+        <button class="conclusion-flow-step is-${item.status}" type="button" data-conclusion-card="${escapeHtml(cardId)}">
+          <span>${escapeHtml(item.card.chapter)}</span>
+          <strong>${escapeHtml(getStatusLabel(item.status))}</strong>
+        </button>
+      `;
+    })
+    .join("");
+
+  return `
+    <section class="conclusion-flow" aria-label="章节结论汇入终章">
+      ${steps}
+    </section>
+  `;
+}
+
+function buildFinalSynthesisHtml(selected, statuses) {
+  const synthesis = getFinalSynthesis();
+  const lanes = synthesis.lanes || [];
+  if (!selected || !lanes.length) return "";
+
+  if (selected.card.id === "final_report") {
+    return `
+      <section>
+        <h3 class="conclusion-section-title">${escapeHtml(synthesis.title || "终章总线索")}</h3>
+        <p class="empty-note">${escapeHtml(synthesis.summary || "章节结论会汇入终章。")}</p>
+        <div class="synthesis-lane-grid">
+          ${lanes
+            .map((lane) => {
+              const laneState = getSynthesisLaneStatus(lane, statuses);
+              return `
+                <article class="synthesis-lane-card">
+                  <div class="conclusion-meta">
+                    <span class="status-chip is-${laneState.complete ? "met" : laneState.completeCount ? "partial" : "missing"}">
+                      ${laneState.completeCount}/${laneState.totalCount}
+                    </span>
+                  </div>
+                  <h4>${escapeHtml(lane.title)}</h4>
+                  <p>${escapeHtml(lane.summary)}</p>
+                  <div class="relation-requirements">
+                    ${laneState.cardStatuses
+                      .map(
+                        (item) =>
+                          `<span class="relation-requirement${item.status === "generated" ? " is-met" : ""}">${escapeHtml(item.card.chapter)}</span>`
+                      )
+                      .join("")}
+                  </div>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  const laneIds = synthesis.chapterContributions?.[selected.card.id] || [];
+  const linkedLanes = lanes.filter((lane) => laneIds.includes(lane.id));
+  if (!linkedLanes.length) return "";
+
+  return `
+    <section>
+      <h3 class="conclusion-section-title">汇入终章总线索</h3>
+      <div class="synthesis-lane-grid">
+        ${linkedLanes
+          .map(
+            (lane) => `
+              <article class="synthesis-lane-card">
+                <div class="conclusion-meta">
+                  <span class="status-chip is-${selected.status === "generated" ? "met" : "partial"}">
+                    ${selected.status === "generated" ? "已汇入" : "完成后汇入"}
+                  </span>
+                </div>
+                <h4>${escapeHtml(lane.title)}</h4>
+                <p>${escapeHtml(lane.summary)}</p>
+              </article>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
 function ensureSelectedConclusionCard() {
-  const statuses = getAllCardStatuses().filter((item) => item.status === "generated");
+  const statuses = getAllCardStatuses();
   if (!statuses.length) {
     state.selectedConclusionId = null;
     return null;
@@ -2339,7 +2454,8 @@ function ensureSelectedConclusionCard() {
   const selected = statuses.find((item) => item.card.id === state.selectedConclusionId);
   if (selected) return selected;
 
-  const fallback = statuses.at(-1) || null;
+  const generatedStatuses = statuses.filter((item) => item.status === "generated");
+  const fallback = generatedStatuses.at(-1) || statuses.find((item) => item.status === "in_progress") || statuses[0] || null;
   if (!fallback) {
     state.selectedConclusionId = null;
     return null;
@@ -3182,7 +3298,7 @@ function renderJournal() {
             title: item.stateInfo.combination.resultRecord.title,
             body: item.stateInfo.combination.description,
             note: isAvailable
-              ? `复查和降级都已完成，可以生成${item.workflow.chapter}组合判断。`
+              ? `复查和降级都已完成，可以生成${item.workflow.chapter}组合判断；生成后会进入结论墙。`
               : `还缺 ${missingCount} 项：${missingReviewCount} 条复查、${missingExcludedCount} 条降级。按下方清单补齐后再生成组合判断。`,
             buttonLabel: isAvailable ? item.stateInfo.combination.buttonLabel : `还缺 ${missingCount} 项条件`,
             actionName: "create-scene-combo",
@@ -3248,6 +3364,17 @@ function renderJournal() {
         notes.push(record.resolutionText);
       }
 
+      if (record.recordType === "combination" && getConclusionCard(record.sceneId)) {
+        metaChips.push('<span class="status-chip is-met">已进入结论墙</span>');
+        notes.push({
+          text: "这条章节判断已进入结论墙，可在那里查看它如何汇入终章总线索。",
+          tone: "ready"
+        });
+        actionButtons.push(
+          `<button class="secondary-button" type="button" data-open-conclusion-card="${escapeHtml(record.sceneId)}">查看结论墙</button>`
+        );
+      }
+
       item.innerHTML = `
         <div class="journal-card-meta">
           <span class="status-chip is-${record.track === "excluded" ? "met" : record.track === "pending" ? "partial" : "generated"}">${escapeHtml(getJournalRecordTypeLabel(record))}</span>
@@ -3277,6 +3404,9 @@ function renderConclusions() {
   const generatedStatuses = statuses.filter((item) => item.status === "generated");
   const selected = ensureSelectedConclusionCard();
   const generatedCount = generatedStatuses.length;
+  const synthesis = getFinalSynthesis();
+  const chapterOrder = synthesis.chapterOrder || [];
+  const generatedChapterCount = chapterOrder.filter((cardId) => getCardStatusById(cardId, statuses)?.status === "generated").length;
 
   conclusionPanel.classList.toggle("hidden", !state.conclusionOpen);
   conclusionToggle.setAttribute("aria-expanded", String(state.conclusionOpen));
@@ -3284,7 +3414,18 @@ function renderConclusions() {
   conclusionList.innerHTML = "";
   updateSceneSafeArea();
 
-  generatedStatuses.forEach((item) => {
+  if (chapterOrder.length) {
+    const overview = document.createElement("article");
+    overview.className = "conclusion-wall-overview";
+    overview.innerHTML = `
+      <p class="eyebrow">终章总线索</p>
+      <h2>${generatedChapterCount}/${chapterOrder.length}</h2>
+      <p>章节结论卡会按空间顺序汇入终章。完成前，可先查看还缺少哪一段。</p>
+    `;
+    conclusionList.appendChild(overview);
+  }
+
+  statuses.forEach((item) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `conclusion-card is-${item.status}${selected?.card.id === item.card.id ? " is-active" : ""}`;
@@ -3310,6 +3451,8 @@ function renderConclusions() {
     return;
   }
 
+  const flowHtml = buildConclusionFlowHtml(statuses);
+  const synthesisHtml = buildFinalSynthesisHtml(selected, statuses);
   const missingUnlockStates = selected.unlockStates.filter((item) => !item.met);
   const unlockHtml = missingUnlockStates.length
     ? `
@@ -3353,36 +3496,8 @@ function renderConclusions() {
     `
     : '<p class="empty-note">这张卡主要用于汇总结论，不额外列出章节内证据。</p>';
 
-  const relationsHtml = selected.relationStates.length
-    ? `
-      <h3 class="conclusion-section-title">推理链映射</h3>
-      <div class="relation-list">
-        ${selected.relationStates
-          .map(
-            ({ relation, status, requirements }) => `
-              <article class="relation-card">
-                <div class="relation-meta">
-                  <span class="status-chip is-${status}">${getStatusLabel(status)}</span>
-                </div>
-                <p><strong>${escapeHtml(relation.title)}</strong></p>
-                <p>${escapeHtml(relation.summary)}</p>
-                <div class="relation-requirements">
-                  ${requirements
-                    .map(
-                      (item) =>
-                        `<span class="relation-requirement${item.met ? " is-met" : ""}">${escapeHtml(item.label)}</span>`
-                    )
-                    .join("")}
-                </div>
-              </article>
-            `
-          )
-          .join("")}
-      </div>
-    `
-    : "";
-
   conclusionDetail.innerHTML = `
+    ${flowHtml}
     <article class="conclusion-detail-card">
       <div class="conclusion-meta">
         <span class="status-chip is-${selected.status}">${getStatusLabel(selected.status)}</span>
@@ -3394,7 +3509,7 @@ function renderConclusions() {
     </article>
     ${unlockHtml}
     ${evidenceHtml}
-    ${relationsHtml}
+    ${synthesisHtml}
     <div class="clue-card-actions">
       <button class="secondary-button" type="button" data-open-workbench="clues">打开章节整理台</button>
     </div>
@@ -4071,6 +4186,13 @@ function renderWorkbenchGraph() {
 journalToggle.addEventListener("click", () => setJournal(!state.journalOpen));
 journalClose.addEventListener("click", () => setJournal(false));
 journalList.addEventListener("click", (event) => {
+  const conclusionTarget = event.target.closest("[data-open-conclusion-card]");
+  if (conclusionTarget) {
+    state.selectedConclusionId = conclusionTarget.getAttribute("data-open-conclusion-card");
+    setConclusionOpen(true);
+    return;
+  }
+
   const reviewTarget = event.target.closest("[data-run-review-step]");
   if (reviewTarget) {
     runReviewStep(reviewTarget.getAttribute("data-run-review-step"));
@@ -4088,6 +4210,12 @@ journalList.addEventListener("click", (event) => {
   createSceneCombination(comboTarget.getAttribute("data-create-scene-combo"));
 });
 conclusionDetail.addEventListener("click", (event) => {
+  const cardTarget = event.target.closest("[data-conclusion-card]");
+  if (cardTarget) {
+    selectConclusionCard(cardTarget.getAttribute("data-conclusion-card"));
+    return;
+  }
+
   const target = event.target.closest("[data-open-workbench]");
   if (!target) return;
   setWorkbenchOpen(true, target.getAttribute("data-open-workbench") || "clues");
