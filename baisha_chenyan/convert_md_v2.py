@@ -63,12 +63,12 @@ while i < len(lines):
             j += 1
 
         if has_options:
-            events.append(('choice_prompt', '\n'.join(prompt_lines).strip()))
+            events.append(('choice_prompt', '\n'.join(prompt_lines).strip(), '系统'))
             i = j  # move to #### 选项
         else:
             # Single-option choice node (player click)
             prompt_text = '\n'.join(prompt_lines).strip()
-            events.append(('choice_prompt', ''))
+            events.append(('choice_prompt', '', '你'))
             events.append(('choice_options', [('A', prompt_text)]))
             i = j
         continue
@@ -220,7 +220,8 @@ for idx, event in enumerate(events):
     if etype == 'choice_prompt':
         # Create choice prompt node
         mode = "choice_prompt"
-        choice_prompt_node = create_node("系统", event[1])
+        speaker = event[2] if len(event) > 2 else "系统"
+        choice_prompt_node = create_node(speaker, event[1])
         nodes[choice_prompt_node]["next"] = None
         choice_options_list = []
         choice_responses = {}
