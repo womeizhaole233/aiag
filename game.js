@@ -1,5 +1,24 @@
 const { SAVE_KEY, START_SCENE_ID, SCENES, POSITION_MAP, CONCLUSION_DATA, NPC_DATA, ANALYSIS_DATA } = window.M1_GAME_DATA;
+const STORY_DATA = window.M1_STORY_DATA || {};
 const LEGACY_STORAGE_KEYS = ["m1-gate-immersive-state-v2-source-text"];
+const CURRENT_STORY_VERSION = "m1-story-vn-dialogue-types-v1";
+const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明"]);
+const STORY_SELF_SPEAKERS = new Set(["你", "林砚秋"]);
+const DEFAULT_STORY_PORTRAITS = {
+  "来人": "assets/story/portraits/周淼.png",
+  "周淼": "assets/story/portraits/周淼.png",
+  "苏池": "assets/story/portraits/苏池.png",
+  "粟柏年": "assets/story/portraits/粟柏年.png",
+  "陈怀远": "assets/story/portraits/陈怀远.png",
+  "赵老倔": "assets/story/portraits/赵老倔.png",
+  "赵广田": "assets/story/portraits/赵老倔.png",
+  "民工老张": "assets/story/portraits/赵老倔.png",
+  "常福来": "assets/story/portraits/赵老倔.png",
+  "考古领队": "assets/story/portraits/粟柏年.png",
+  "记录员": "assets/story/portraits/周淼.png",
+  "考古队员": "assets/story/portraits/周淼.png",
+  "考古技工": "assets/story/portraits/陈怀远.png"
+};
 
 const state = {
   currentSceneId: START_SCENE_ID,
@@ -13,6 +32,7 @@ const state = {
   conclusionOpen: false,
   workbenchOpen: false,
   workbench: {
+    classifications: {},
     ui: {
       tab: "clues",
       chapterSceneId: START_SCENE_ID,
@@ -21,15 +41,51 @@ const state = {
   },
   selectedConclusionId: null,
   shownDialogueKeys: [],
+  storyVersion: CURRENT_STORY_VERSION,
   pendingNavigation: null,
+  pendingStoryNavigation: null,
+  pendingStoryMiniGame: null,
   pendingMiniGame: null
 };
+
+let storyUpgradePending = false;
 
 const MAX_SCENE_IMAGE_SCALE = 3;
 const MIN_SCENE_FRAME_WIDTH = 220;
 const MIN_SCENE_FRAME_HEIGHT = 180;
 const MIN_HOTSPOT_TOUCH_SIZE = 44;
 const HOTSPOT_TOUCH_PADDING = 6;
+const DEFAULT_CLASSIFICATION_OPTIONS = [
+  {
+    id: "fact",
+    label: "事实记录",
+    shortLabel: "事实",
+    statusClass: "met",
+    description: "位置、数量、文字或器物存在本身，可以先作为客观记录。"
+  },
+  {
+    id: "evidence",
+    label: "可合并推测",
+    shortLabel: "合看",
+    statusClass: "generated",
+    description: "需要和同组线索放在一起核对，之后才能支撑阶段判断。"
+  },
+  {
+    id: "doubt",
+    label: "存疑点",
+    shortLabel: "存疑",
+    statusClass: "partial",
+    description: "看起来可疑，但现在不能单独拿来下结论。"
+  },
+  {
+    id: "detail",
+    label: "补充细节",
+    shortLabel: "补充",
+    statusClass: "locked",
+    description: "有观察价值，但不支撑本章主判断。"
+  }
+];
+const REVIEW_READY_CLASSIFICATION_IDS = ["fact", "evidence", "doubt"];
 
 const sceneRoot = document.querySelector(".scene");
 const sceneStage = document.querySelector(".scene-stage");
@@ -57,6 +113,8 @@ const dialogueKicker = document.querySelector("#dialogueKicker");
 const dialogueSpeaker = document.querySelector("#dialogueSpeaker");
 const dialogueTitle = document.querySelector("#dialogueTitle");
 const dialogueBody = document.querySelector("#dialogueBody");
+const dialoguePortrait = document.querySelector("#dialoguePortrait");
+const dialogueChoices = document.querySelector("#dialogueChoices");
 const dialogueClose = document.querySelector("#dialogueClose");
 const workbenchToggle = document.querySelector("#workbenchToggle");
 const workbenchLayer = document.querySelector("#workbenchLayer");
@@ -64,6 +122,7 @@ const workbenchBox = document.querySelector(".workbench-box");
 const workbenchHeader = document.querySelector(".workbench-header");
 const workbenchClose = document.querySelector("#workbenchClose");
 const workbenchContent = document.querySelector("#workbenchContent");
+const npcChatButton = document.querySelector("#npcChatButton");
 const runePuzzleLayer = document.querySelector("#runePuzzleLayer");
 const runePuzzleClose = document.querySelector("#runePuzzleClose");
 const runePuzzleFeedback = document.querySelector("#runePuzzleFeedback");
@@ -110,6 +169,9 @@ const pipeSuccessTitle = document.querySelector("#pipeSuccessTitle");
 const pipeSuccessText = document.querySelector("#pipeSuccessText");
 const pipeClueImage = document.querySelector("#pipeClueImage");
 const pipeReplayButton = document.querySelector("#pipeReplayButton");
+const digMatchLayer = document.querySelector("#digMatchLayer");
+const digMatchClose = document.querySelector("#digMatchClose");
+const digMatchFrame = document.querySelector("#digMatchFrame");
 let positionMapLayer = null;
 let dialogueQueue = [];
 let activeDialogue = null;
@@ -159,6 +221,14 @@ const INSCRIPTION_REWARD = {
   title: "题记辨读记录",
   text: "过道东壁下部题记可辨“元符二年赵大翁布”。它提供 1099 年时间锚点和“赵大翁”称谓，但身份判断仍需结合其他材料复查。",
   clueIds: ["PASS-P0-01", "PASS-F-01", "PASS-H-02"]
+};
+const DIG_MATCH3_PUZZLE_ID = "mg_dig_match3";
+const DIG_MATCH3_REWARD = {
+  id: "tomb_gate:dig_clear_record",
+  sceneId: "tomb_gate",
+  title: "墓门前清理记录",
+  text: "清理土块、碎砖和杂物后，墓门前地面与封门砖下缘可以继续观察。清理结果仅支持确认入口边界和封门组织，不能直接推出盗扰或二次封门。",
+  clueIds: ["GATE-E-01", "GATE-P0-03"]
 };
 const RELIC_PUZZLE_ID = "mg_rear_relic_position";
 const RELIC_PAGES = {
@@ -405,6 +475,23 @@ function getView(sceneId, viewId) {
   return scene.views[viewId] || null;
 }
 
+function getNpcChatChapter() {
+  const sceneToChapter = {
+    environment: "墓门",
+    tomb_gate: "墓门",
+    corridor: "甬道",
+    front_chamber: "前室",
+    passage: "过道",
+    rear_chamber: "后室"
+  };
+  return sceneToChapter[state.currentSceneId] || "墓门";
+}
+
+function openNpcChatPage() {
+  const params = new URLSearchParams({ chapter: getNpcChatChapter() });
+  window.location.href = `npc_api/demo_chat.html?${params.toString()}`;
+}
+
 function hasRecord(recordId) {
   return state.records.some((record) => record.id === recordId);
 }
@@ -418,12 +505,13 @@ function hasCompletedPuzzle(puzzleId) {
 }
 
 function completePuzzle(puzzleId) {
-  if (!puzzleId || hasCompletedPuzzle(puzzleId)) return;
+  if (!puzzleId || hasCompletedPuzzle(puzzleId)) return false;
   state.completedPuzzleIds.push(puzzleId);
+  return true;
 }
 
 function completeScene(sceneId) {
-  if (!sceneId || hasCompletedScene(sceneId)) return;
+  if (!sceneId || hasCompletedScene(sceneId)) return false;
   const workflow = getAnalysisWorkflow(sceneId);
   if (workflow?.combination?.resultRecord?.id && !hasRecord(workflow.combination.resultRecord.id)) {
     queueDialogue(
@@ -431,18 +519,22 @@ function completeScene(sceneId) {
         kicker: "章节未收束",
         speaker: "记录夹",
         title: `${workflow.chapter}还未形成组合判断`,
-        body: `当前只完成了现场观察。请先在记录夹里完成工具复查，并把单点异常降级或排除后，再提交${workflow.chapter}的组合判断。`
+        body: `当前只完成了现场观察。请先在整理台完成线索分类、证据组合和存疑降级，再提交${workflow.chapter}的章节判断。`
       },
       `analysis_block:${sceneId}`
     );
-    return;
+    return false;
   }
   state.completedSceneIds.push(sceneId);
   if (getConclusionCard(sceneId)) {
     showConclusionCard(sceneId);
   }
-  queueDialogue(buildSceneCompletionDialogue(sceneId), `scene_update:${sceneId}`);
+  if (!queueSceneCompletionDialogue(sceneId)) {
+    queueDialogue(buildSceneCompletionDialogue(sceneId), `scene_update:${sceneId}`);
+  }
+  queueCompletionSummary(sceneId);
   queueFinalReportSequence();
+  return true;
 }
 
 function markVisited(sceneId = state.currentSceneId, viewId = getCurrentView().id) {
@@ -484,17 +576,214 @@ function getNpcData() {
   return NPC_DATA || {};
 }
 
+function getStoryData() {
+  return STORY_DATA || {};
+}
+
+function getStoryEvent(eventId) {
+  return getStoryData().events?.[eventId] || null;
+}
+
+function getStoryNode(nodeId) {
+  return getStoryData().nodes?.[nodeId] || null;
+}
+
+function normalizeStoryAssetPath(path) {
+  if (!path) return "";
+  return String(path).replace(/\\/g, "/");
+}
+
+function isPlaceholderText(value) {
+  const text = String(value || "").trim();
+  return Boolean(text && (/^[?？\s]+$/.test(text) || /\?{3,}|？{3,}/.test(text)));
+}
+
+function isCorruptStoryText(value) {
+  const text = String(value || "");
+  if (!text) return false;
+  const questionCount = (text.match(/[?？]/g) || []).length;
+  const cjkCount = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  return questionCount >= 6 && questionCount > cjkCount;
+}
+
+function getDisplaySpeaker(speaker) {
+  if (speaker === "系统") return "旁白";
+  if (isPlaceholderText(speaker)) return "来人";
+  return speaker || "";
+}
+
+function getStorySpeakerKind(speaker) {
+  const display = getDisplaySpeaker(speaker);
+  if (!display || STORY_NARRATION_SPEAKERS.has(display)) return "narration";
+  if (STORY_SELF_SPEAKERS.has(display)) return "self";
+  return "npc";
+}
+
+function shouldUseStoryPortrait(dialogue) {
+  const kind = dialogue?.speakerKind || getStorySpeakerKind(dialogue?.speaker);
+  return kind === "npc";
+}
+
+function normalizeSpeakerTag(value) {
+  return String(value || "")
+    .replace(/[：:]\s*$/, "")
+    .trim();
+}
+
+function speakerTagMatches(tag, speaker) {
+  const normalizedTag = normalizeSpeakerTag(tag);
+  const normalizedSpeaker = normalizeSpeakerTag(getDisplaySpeaker(speaker));
+  return Boolean(normalizedTag && normalizedSpeaker && (normalizedTag === normalizedSpeaker || normalizedTag.includes(normalizedSpeaker)));
+}
+
+function isLikelySpokenQuote(value) {
+  const text = String(value || "").trim();
+  return /[。？！!?…，,]/.test(text);
+}
+
+function cleanStorySpeechText(value) {
+  return String(value || "")
+    .replace(/\r/g, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n[ \t]+/g, "\n")
+    .trim();
+}
+
+function extractNpcSpeechText(body, speaker) {
+  const text = String(body || "");
+  if (!text) return "";
+
+  const segments = [];
+  const looseSegments = [];
+  const pattern = /（([^）]+)）\s*["“]([^"”]+)["”]|["“]([^"”]+)["”]/g;
+  let match;
+  let lastTaggedSpeaker = "";
+  let hasCurrentSpeakerTag = false;
+
+  while ((match = pattern.exec(text))) {
+    if (match[1]) {
+      lastTaggedSpeaker = match[1];
+      if (speakerTagMatches(lastTaggedSpeaker, speaker)) {
+        hasCurrentSpeakerTag = true;
+        segments.push(match[2]);
+      }
+      continue;
+    }
+
+    const quote = match[3];
+    if (hasCurrentSpeakerTag && speakerTagMatches(lastTaggedSpeaker, speaker) && isLikelySpokenQuote(quote)) {
+      segments.push(quote);
+    } else if (!lastTaggedSpeaker && isLikelySpokenQuote(quote)) {
+      looseSegments.push(quote);
+    } else if (!hasCurrentSpeakerTag && isLikelySpokenQuote(quote)) {
+      looseSegments.push(quote);
+    }
+  }
+
+  const selected = segments.length ? segments : looseSegments;
+  return selected.map(cleanStorySpeechText).filter(Boolean).join("\n\n");
+}
+
+function hasExplicitStorySpeakerTag(body) {
+  return /（[^）]+）\s*["“]/.test(String(body || ""));
+}
+
+function getDialoguePortrait(dialogue) {
+  if (dialogue?.storyNodeId && !shouldUseStoryPortrait(dialogue)) return "";
+  const portraits = { ...DEFAULT_STORY_PORTRAITS, ...(getStoryData().speakerPortraits || {}) };
+  const speaker = getDisplaySpeaker(dialogue?.speaker);
+  return normalizeStoryAssetPath(dialogue?.portrait || portraits[speaker] || portraits[dialogue?.speaker] || "");
+}
+
+function getStoryAllowedNodes(eventInfo) {
+  return new Set(eventInfo?.nodes || []);
+}
+
+function buildStoryDialogue(nodeId, eventId) {
+  const node = getStoryNode(nodeId);
+  const eventInfo = getStoryEvent(eventId);
+  if (!node || !eventInfo) return null;
+  if (isCorruptStoryText(node.body)) return null;
+
+  const allowedNodes = getStoryAllowedNodes(eventInfo);
+  const isAllowed = (nextNodeId) => Boolean(nextNodeId && allowedNodes.has(nextNodeId));
+  const choices = (node.choices || [])
+    .filter((choice) => isAllowed(choice.next) && !isCorruptStoryText(choice.text))
+    .map((choice) => ({
+      text: isPlaceholderText(choice.text) ? "继续观察" : choice.text,
+      next: choice.next
+    }));
+  const speaker = getDisplaySpeaker(node.speaker);
+  const rawBody = node.body || "";
+  const extractedSpeech = extractNpcSpeechText(rawBody, speaker);
+  let speakerKind = getStorySpeakerKind(speaker);
+  if (speakerKind === "npc" && !extractedSpeech && hasExplicitStorySpeakerTag(rawBody)) {
+    speakerKind = "narration";
+  }
+
+  return {
+    id: `story:${node.id}`,
+    kicker: isPlaceholderText(node.kicker) ? "白沙手记" : node.kicker || "白沙手记",
+    speaker,
+    speakerKind,
+    title: node.title || "",
+    body: speakerKind === "npc" ? extractedSpeech || rawBody : rawBody,
+    portrait: node.portrait || "",
+    backgroundImage: node.backgroundImage || "",
+    choices,
+    storyEventId: eventId,
+    storyNodeId: node.id,
+    storyNext: isAllowed(node.next) ? node.next : null
+  };
+}
+
+function queueStoryEvent(eventId, key = eventId) {
+  const eventInfo = getStoryEvent(eventId);
+  if (!eventInfo?.start) return false;
+  const dialogue = buildStoryDialogue(eventInfo.start, eventId);
+  return queueDialogue(dialogue, `story:${key}`);
+}
+
+function queueStoryContinuation(nextNodeId, dialogue = activeDialogue) {
+  const nextDialogue = buildStoryDialogue(nextNodeId, dialogue?.storyEventId);
+  if (!nextDialogue) return false;
+  dialogueQueue.unshift(nextDialogue);
+  return true;
+}
+
 function getAnalysisData() {
   return ANALYSIS_DATA || {};
+}
+
+function getClassificationOptions() {
+  const options = getAnalysisData().classificationOptions;
+  return Array.isArray(options) && options.length ? options : DEFAULT_CLASSIFICATION_OPTIONS;
+}
+
+function getClassificationOption(classificationId) {
+  return getClassificationOptions().find((option) => option.id === classificationId) || null;
+}
+
+function getRecordClassification(recordId) {
+  return state.workbench.classifications?.[recordId] || "";
+}
+
+function setRecordClassification(recordId, classificationId) {
+  const record = getRecord(recordId);
+  const option = getClassificationOption(classificationId);
+  if (!record || !option) return false;
+  if (record.track === "excluded" && option.id !== "detail") return false;
+  state.workbench.classifications[recordId] = option.id;
+  return true;
 }
 
 function getAnalysisTracks() {
   return (
     getAnalysisData().journalTracks || [
       { id: "observation", label: "观察记录", emptyText: "已发现的信息会自动收在这里。" },
-      { id: "review", label: "工具复查", emptyText: "满足条件的复查记录会出现在这里。" },
-      { id: "pending", label: "待验证", emptyText: "目前没有待验证线索。" },
-      { id: "excluded", label: "已排除", emptyText: "被排除的线索会显示在这里。" }
+      { id: "review", label: "证据组合", emptyText: "合看核对后的记录会出现在这里。" },
+      { id: "pending", label: "存疑点", emptyText: "目前没有需要暂存疑问的线索。" },
+      { id: "excluded", label: "已降级", emptyText: "被降级为补充细节的线索会显示在这里。" }
     ]
   );
 }
@@ -555,16 +844,55 @@ function isRecordExcluded(recordId) {
   return getRecord(recordId)?.track === "excluded";
 }
 
+function getReviewStepsForRecord(sceneId, recordId) {
+  const workflow = getAnalysisWorkflow(sceneId);
+  return (workflow?.reviewSteps || []).filter((step) => (step.sourceRecordIds || []).includes(recordId));
+}
+
+function getRecommendedClassification(sceneId, recordId) {
+  const record = getRecord(recordId);
+  if (!record) return "";
+  if (record.track === "excluded") return "detail";
+  if (findPendingResolution(recordId) || record.track === "pending") return "doubt";
+  if (getReviewStepsForRecord(sceneId, recordId).length) return "evidence";
+  return "detail";
+}
+
+function isReviewReadyClassification(classificationId) {
+  return REVIEW_READY_CLASSIFICATION_IDS.includes(classificationId);
+}
+
+function getClassificationState(sceneId, targetRecordIds = getWorkbenchTargetRecordIds(sceneId)) {
+  const collectedRecordIds = uniqueRecordIds(targetRecordIds).filter((recordId) => hasRecord(recordId));
+  const classifiedRecordIds = collectedRecordIds.filter((recordId) => getRecordClassification(recordId));
+  const missingClassificationIds = collectedRecordIds.filter((recordId) => !getRecordClassification(recordId));
+  return {
+    collectedRecordIds,
+    classifiedRecordIds,
+    missingClassificationIds,
+    collectedCount: collectedRecordIds.length,
+    classifiedCount: classifiedRecordIds.length,
+    complete: collectedRecordIds.length > 0 && !missingClassificationIds.length
+  };
+}
+
 function getReviewStepState(step) {
   const created = hasRecord(step.resultRecord.id);
   const sourceRecordIds = step.sourceRecordIds || [];
   const collectedSourceIds = sourceRecordIds.filter((recordId) => hasRecord(recordId));
   const missingSourceIds = sourceRecordIds.filter((recordId) => !hasRecord(recordId));
+  const missingClassificationIds = collectedSourceIds.filter((recordId) => !getRecordClassification(recordId));
+  const blockedClassificationIds = collectedSourceIds.filter((recordId) => {
+    const classificationId = getRecordClassification(recordId);
+    return classificationId && !isReviewReadyClassification(classificationId);
+  });
   return {
     created,
-    available: !created && !missingSourceIds.length,
+    available: !created && !missingSourceIds.length && !missingClassificationIds.length && !blockedClassificationIds.length,
     collectedSourceIds,
-    missingSourceIds
+    missingSourceIds,
+    missingClassificationIds,
+    blockedClassificationIds
   };
 }
 
@@ -587,19 +915,22 @@ function getCombinationState(sceneId) {
       created: false,
       available: false,
       missingReviewIds: [],
-      missingExcludedIds: []
+      missingExcludedIds: [],
+      missingClassificationIds: []
     };
   }
 
   const created = hasRecord(combination.resultRecord.id);
   const missingReviewIds = (combination.requiresReviewRecordIds || []).filter((recordId) => !hasRecord(recordId));
   const missingExcludedIds = (combination.requiresExcludedRecordIds || []).filter((recordId) => !isRecordExcluded(recordId));
+  const missingClassificationIds = getClassificationState(sceneId).missingClassificationIds;
   return {
     combination,
     created,
-    available: !created && !missingReviewIds.length && !missingExcludedIds.length,
+    available: !created && !missingReviewIds.length && !missingExcludedIds.length && !missingClassificationIds.length,
     missingReviewIds,
-    missingExcludedIds
+    missingExcludedIds,
+    missingClassificationIds
   };
 }
 
@@ -661,7 +992,7 @@ function runReviewStep(stepId) {
   addManualRecord(match.step.resultRecord);
   queueDialogue(
     {
-      kicker: "工具复查",
+      kicker: "合看核对",
       speaker: "记录夹",
       title: match.step.resultRecord.title,
       body: match.step.resultRecord.text
@@ -683,9 +1014,10 @@ function resolvePendingRecord(recordId) {
 
   stateInfo.record.track = "excluded";
   stateInfo.record.resolutionText = match.resolution.resolutionText;
+  state.workbench.classifications[recordId] = "detail";
   queueDialogue(
     {
-      kicker: "误导排除",
+      kicker: "存疑降级",
       speaker: "记录夹",
       title: `${stateInfo.record.title}已降级`,
       body: match.resolution.resolutionText
@@ -712,7 +1044,7 @@ function createSceneCombination(sceneId) {
 
 function buildSceneCompletionDialogue(sceneId) {
   const card = getConclusionCard(sceneId);
-  const npcDialogue = getNpcData().sceneCompletions?.[sceneId] || {};
+  const npcDialogue = getFirstDialogue(getNpcData().sceneCompletions?.[sceneId]);
   const summary = card?.completionSummary || {};
   const bodyParts = [];
 
@@ -747,7 +1079,10 @@ function getConclusionRelation(relationId) {
 }
 
 function canEnterCorridor() {
-  return hasCompletedScene("tomb_gate") || (getSceneRecordCount("tomb_gate") >= 3 && hasRecord("tomb_gate:lintel_back"));
+  return (
+    hasCompletedPuzzle(DIG_MATCH3_PUZZLE_ID) &&
+    (hasCompletedScene("tomb_gate") || (getSceneRecordCount("tomb_gate") >= 3 && hasRecord("tomb_gate:lintel_back")))
+  );
 }
 
 function canEnterFrontChamber() {
@@ -762,20 +1097,28 @@ function canEnterFrontChamber() {
 function canUseTransition(transition) {
   if (!transition) return false;
   if (transition.completeOnly) return getMissingRequirements(transition).length === 0;
+  if (transition.unlocked && !transition.completesSceneId) return Boolean(SCENES[transition.targetSceneId]);
+  if (getMissingRequirements(transition).length) return false;
   if (transition.unlocked) return Boolean(SCENES[transition.targetSceneId]);
   if (transition.targetSceneId === "corridor") return canEnterCorridor();
   if (transition.targetSceneId === "front_chamber") return canEnterFrontChamber();
-  if (getMissingRequirements(transition).length) return false;
   return Boolean(SCENES[transition.targetSceneId]);
 }
 
-function getMissingRequirements(transition) {
-  if (!transition?.missingRecords) return [];
-  if (transition.completesSceneId && hasCompletedScene(transition.completesSceneId)) return [];
+function getTransitionCompletionSceneId(transition, sceneId = state.currentSceneId) {
+  if (!transition || (transition.unlocked && !transition.completesSceneId)) return null;
+  if (transition.completeOnly && !transition.completesSceneId) return null;
+  return transition.completesSceneId || sceneId || null;
+}
 
-  return transition.missingRecords.filter((requirement) => {
+function getMissingRequirements(transition, sceneId = state.currentSceneId) {
+  const completingSceneId = getTransitionCompletionSceneId(transition, sceneId);
+  if (completingSceneId && hasCompletedScene(completingSceneId)) return [];
+
+  const missing = (transition?.missingRecords || []).filter((requirement) => {
     if (requirement.anyOf) return !requirement.anyOf.some((recordId) => hasRecord(recordId));
     if (requirement.id) return !hasRecord(requirement.id);
+    if (requirement.puzzleId) return !hasCompletedPuzzle(requirement.puzzleId);
     if (requirement.excludedId) return !isRecordExcluded(requirement.excludedId);
     if (requirement.sceneId && requirement.completed) {
       return !hasCompletedScene(requirement.sceneId);
@@ -785,6 +1128,18 @@ function getMissingRequirements(transition) {
     }
     return false;
   });
+
+  const workflow = completingSceneId ? getAnalysisWorkflow(completingSceneId) : null;
+  const comboRecordId = workflow?.combination?.resultRecord?.id;
+  if (comboRecordId && !hasRecord(comboRecordId)) {
+    missing.push({
+      id: comboRecordId,
+      label: `${workflow.chapter}章节整理台`,
+      missingText: `请先在整理台完成${workflow.chapter}的线索分类、证据组合、存疑降级和章节判断。`
+    });
+  }
+
+  return missing;
 }
 
 function getLockedBody(hotspot, transition) {
@@ -818,18 +1173,122 @@ function queueDialogue(dialogue, key) {
   return true;
 }
 
+function toDialogueList(dialogues) {
+  if (!dialogues) return [];
+  return Array.isArray(dialogues) ? dialogues.filter(Boolean) : [dialogues];
+}
+
+function getFirstDialogue(dialogues) {
+  return toDialogueList(dialogues)[0] || {};
+}
+
+function queueDialogueList(dialogues, keyPrefix) {
+  return toDialogueList(dialogues).reduce((queued, dialogue, index) => {
+    const key = `${keyPrefix}:${dialogue.id || index}`;
+    return queueDialogue(dialogue, key) || queued;
+  }, false);
+}
+
+function hasPendingDialogue() {
+  return Boolean(activeDialogue || dialogueQueue.length || !dialogueLayer.classList.contains("hidden"));
+}
+
+function deferNavigationUntilStory(navigation) {
+  if (!navigation?.sceneId || !hasPendingDialogue()) return false;
+  state.pendingStoryNavigation = {
+    sceneId: navigation.sceneId,
+    viewId: navigation.viewId || null
+  };
+  save();
+  return true;
+}
+
+function runPendingStoryNavigation() {
+  if (!state.pendingStoryNavigation || hasPendingDialogue()) return false;
+  const navigation = state.pendingStoryNavigation;
+  state.pendingStoryNavigation = null;
+  navigateTo(navigation);
+  save();
+  renderScene();
+  renderJournal();
+  renderConclusions();
+  flushDialogueQueue();
+  return true;
+}
+
+function runPendingStoryMiniGame() {
+  if (!state.pendingStoryMiniGame || hasPendingDialogue()) return false;
+  const puzzleId = state.pendingStoryMiniGame;
+  state.pendingStoryMiniGame = null;
+  save();
+  openMiniGame(puzzleId);
+  return true;
+}
+
+function navigateAfterStory(navigation) {
+  if (!navigation?.sceneId) return;
+  if (deferNavigationUntilStory(navigation)) {
+    flushDialogueQueue();
+    return;
+  }
+  navigateTo(navigation);
+  save();
+  renderScene();
+  renderJournal();
+  renderConclusions();
+  flushDialogueQueue();
+}
+
 function renderActiveDialogue() {
   if (!activeDialogue) {
     dialogueLayer.classList.add("hidden");
+    dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc");
+    dialoguePortrait?.classList.remove("is-visible");
+    if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
     return;
   }
 
   dialogueKicker.textContent = activeDialogue.kicker || "章节提示";
-  dialogueSpeaker.textContent = activeDialogue.speaker || "";
-  dialogueSpeaker.style.display = activeDialogue.speaker ? "block" : "none";
+  const speaker = getDisplaySpeaker(activeDialogue.speaker);
+  const speakerKind = activeDialogue.speakerKind || (activeDialogue.storyNodeId ? getStorySpeakerKind(speaker) : "dialogue");
+  dialogueLayer.classList.toggle("is-narration", speakerKind === "narration");
+  dialogueLayer.classList.toggle("is-self", speakerKind === "self");
+  dialogueLayer.classList.toggle("is-npc", speakerKind === "npc");
+  dialogueSpeaker.textContent = speaker;
+  dialogueSpeaker.style.display = speaker && (!activeDialogue.storyNodeId || speakerKind === "npc") ? "inline-flex" : "none";
   dialogueTitle.textContent = activeDialogue.title || "";
+  dialogueTitle.style.display = activeDialogue.title ? "block" : "none";
   dialogueBody.textContent = activeDialogue.body || "";
   dialogueClose.textContent = activeDialogue.closeLabel || "继续";
+
+  const portrait = getDialoguePortrait(activeDialogue);
+  if (dialoguePortrait) {
+    if (portrait) {
+      dialoguePortrait.src = portrait;
+      dialoguePortrait.classList.add("is-visible");
+      dialogueLayer.classList.add("has-portrait");
+    } else {
+      dialoguePortrait.removeAttribute("src");
+      dialoguePortrait.classList.remove("is-visible");
+      dialogueLayer.classList.remove("has-portrait");
+    }
+  }
+
+  if (dialogueChoices) {
+    dialogueChoices.innerHTML = "";
+    const choices = activeDialogue.choices || [];
+    dialogueChoices.classList.toggle("is-visible", choices.length > 0);
+    choices.forEach((choice, index) => {
+      const button = document.createElement("button");
+      button.className = "dialogue-choice-button";
+      button.type = "button";
+      button.dataset.choiceIndex = String(index);
+      button.textContent = choice.text || `选项 ${index + 1}`;
+      dialogueChoices.append(button);
+    });
+    dialogueClose.style.display = choices.length ? "none" : "";
+  }
+
   dialogueLayer.classList.remove("hidden");
 }
 
@@ -841,22 +1300,50 @@ function flushDialogueQueue() {
   renderActiveDialogue();
 }
 
-function closeDialogue() {
+function closeDialogue(options = {}) {
+  const dialogue = activeDialogue;
+  if (!options.skipStoryNext && dialogue?.storyNext) {
+    queueStoryContinuation(dialogue.storyNext, dialogue);
+  }
   dialogueLayer.classList.add("hidden");
+  dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc");
+  dialoguePortrait?.classList.remove("is-visible");
+  if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
+  if (dialogueChoices) {
+    dialogueChoices.innerHTML = "";
+    dialogueChoices.classList.remove("is-visible");
+  }
   activeDialogue = null;
   flushDialogueQueue();
+  runPendingStoryNavigation();
+  runPendingStoryMiniGame();
 }
 
 function queueOpeningDialogues() {
   if (state.records.length || state.completedSceneIds.length || state.currentSceneId !== START_SCENE_ID) return;
-  (getNpcData().opening || []).forEach((dialogue, index) => {
-    queueDialogue(dialogue, `opening:${dialogue.id || index}`);
-  });
+  if (!queueStoryEvent("opening", "opening")) {
+    queueDialogueList(getNpcData().opening, "opening");
+  }
 }
 
 function queueSceneEntryDialogue(sceneId) {
-  const dialogue = getNpcData().sceneEntries?.[sceneId];
-  queueDialogue(dialogue, `scene_entry:${sceneId}`);
+  if (!queueStoryEvent(`scene_entry_${sceneId}`, `scene_entry:${sceneId}`)) {
+    queueDialogueList(getNpcData().sceneEntries?.[sceneId], `scene_entry:${sceneId}`);
+  }
+}
+
+function queueClueReaction(recordId) {
+  return (
+    queueStoryEvent(`clue_${recordId}`, `clue:${recordId}`) ||
+    queueDialogueList(getNpcData().clueReactions?.[recordId], `clue:${recordId}`)
+  );
+}
+
+function queuePuzzleCompletionDialogue(puzzleId) {
+  return (
+    queueStoryEvent(`puzzle_${puzzleId}_complete`, `minigame:${puzzleId}:complete`) ||
+    queueDialogueList(getNpcData().puzzleCompletions?.[puzzleId], `minigame:${puzzleId}:complete`)
+  );
 }
 
 function queueCardPrompt(cardId) {
@@ -888,8 +1375,10 @@ function queueCompletionSummary(sceneId) {
 }
 
 function queueSceneCompletionDialogue(sceneId) {
-  const dialogue = getNpcData().sceneCompletions?.[sceneId];
-  queueDialogue(dialogue, `scene_complete:${sceneId}`);
+  return (
+    queueStoryEvent(`scene_complete_${sceneId}`, `scene_complete:${sceneId}`) ||
+    queueDialogueList(getNpcData().sceneCompletions?.[sceneId], `scene_complete:${sceneId}`)
+  );
 }
 
 function queueFinalReportSequence() {
@@ -898,7 +1387,37 @@ function queueFinalReportSequence() {
   if (getCardStatus(finalCard).status !== "generated") return;
 
   showConclusionCard("final_report");
-  queueDialogue(buildSceneCompletionDialogue("final_report"), "scene_update:final_report");
+  if (!queueSceneCompletionDialogue("final_report")) {
+    queueDialogue(buildSceneCompletionDialogue("final_report"), "scene_update:final_report");
+  }
+  queueCompletionSummary("final_report");
+}
+
+function getStoryChapterOrder() {
+  return ["environment", "tomb_gate", "corridor", "front_chamber", "passage", "rear_chamber"];
+}
+
+function getStoryPuzzleOrder() {
+  return [DIG_MATCH3_PUZZLE_ID, PIPE_PUZZLE_ID, RUNE_PUZZLE_ID, PATTERN_PUZZLE_ID, INSCRIPTION_PUZZLE_ID, RELIC_PUZZLE_ID];
+}
+
+function queueStoryUpgradeDialogues() {
+  if (!storyUpgradePending) return;
+  storyUpgradePending = false;
+  queueSceneEntryDialogue(state.currentSceneId);
+
+  const completedChapters = getStoryChapterOrder().filter((sceneId) => hasCompletedScene(sceneId));
+  const latestChapter = completedChapters[completedChapters.length - 1];
+  if (latestChapter) {
+    queueSceneCompletionDialogue(latestChapter);
+  }
+
+  const completedPuzzles = getStoryPuzzleOrder().filter((puzzleId) => hasCompletedPuzzle(puzzleId));
+  const latestPuzzle = completedPuzzles[completedPuzzles.length - 1];
+  if (latestPuzzle) {
+    queuePuzzleCompletionDialogue(latestPuzzle);
+  }
+  save();
 }
 
 function showConclusionCard(cardId) {
@@ -950,6 +1469,7 @@ function cleanupLegacyStorage() {
 
 function normalizeWorkbench(workbench) {
   const normalized = {
+    classifications: {},
     ui: {
       tab: "clues",
       chapterSceneId: START_SCENE_ID,
@@ -958,6 +1478,17 @@ function normalizeWorkbench(workbench) {
   };
 
   if (!workbench || typeof workbench !== "object" || Array.isArray(workbench)) return normalized;
+
+  const validClassificationIds = new Set(getClassificationOptions().map((option) => option.id));
+  const classifications =
+    workbench.classifications && typeof workbench.classifications === "object" && !Array.isArray(workbench.classifications)
+      ? workbench.classifications
+      : {};
+  Object.entries(classifications).forEach(([recordId, classificationId]) => {
+    if (typeof recordId === "string" && validClassificationIds.has(classificationId)) {
+      normalized.classifications[recordId] = classificationId;
+    }
+  });
 
   const ui = workbench.ui && typeof workbench.ui === "object" && !Array.isArray(workbench.ui) ? workbench.ui : {};
   normalized.ui.tab = "clues";
@@ -997,6 +1528,18 @@ function load() {
     state.workbench = normalizeWorkbench(data.workbench);
     state.selectedConclusionId = typeof data.selectedConclusionId === "string" ? data.selectedConclusionId : null;
     state.shownDialogueKeys = Array.isArray(data.shownDialogueKeys) ? data.shownDialogueKeys : [];
+    storyUpgradePending =
+      data.storyVersion !== CURRENT_STORY_VERSION &&
+      (state.records.length > 0 || state.completedSceneIds.length > 0 || state.completedPuzzleIds.length > 0);
+    state.storyVersion = CURRENT_STORY_VERSION;
+    state.pendingStoryNavigation =
+      data.pendingStoryNavigation && SCENES[data.pendingStoryNavigation.sceneId]
+        ? {
+            sceneId: data.pendingStoryNavigation.sceneId,
+            viewId: data.pendingStoryNavigation.viewId || null
+          }
+        : null;
+    state.pendingStoryMiniGame = typeof data.pendingStoryMiniGame === "string" ? data.pendingStoryMiniGame : null;
     save();
   } catch {
     localStorage.removeItem(SAVE_KEY);
@@ -1004,6 +1547,7 @@ function load() {
 }
 
 function save() {
+  state.storyVersion = CURRENT_STORY_VERSION;
   localStorage.setItem(SAVE_KEY, JSON.stringify(state));
 }
 
@@ -1070,7 +1614,9 @@ function openMessage(hotspot) {
     return;
   }
 
+  const recordId = `${state.currentSceneId}:${hotspot.id}`;
   const addedRecord = addRecord(hotspot);
+  if (addedRecord) queueClueReaction(recordId);
   const transition = canUseTransition(hotspot.transition) ? hotspot.transition : null;
   const viewTransition = !transition && canUseViewTransition(hotspot.viewTransition) ? hotspot.viewTransition : null;
   const closeupTransition =
@@ -1082,7 +1628,7 @@ function openMessage(hotspot) {
       : {
           sceneId: transition.targetSceneId,
           viewId: transition.targetViewId,
-          completeSceneId: transition.unlocked ? null : transition.completesSceneId || state.currentSceneId
+          completeSceneId: transition.completesSceneId || (transition.unlocked ? null : state.currentSceneId)
         }
     : viewTransition
       ? { sceneId: state.currentSceneId, viewId: viewTransition.targetViewId }
@@ -1104,10 +1650,15 @@ function openMessage(hotspot) {
     `${activeTransition ? activeTransition.body : lockedBody || hotspot.body}${getCompletionHint(hotspot, addedRecord)}`,
     activeTransition ? null : hotspot.detailImage
   );
-  messageClose.textContent = activeTransition?.closeLabel || "收录";
+  messageClose.textContent = activeTransition?.closeLabel || getMiniGameCloseLabel(pendingMiniGame) || "收录";
   state.pendingNavigation = navigation;
   state.pendingMiniGame = pendingMiniGame;
   messageLayer.classList.remove("hidden");
+}
+
+function getMiniGameCloseLabel(puzzleId) {
+  if (puzzleId === DIG_MATCH3_PUZZLE_ID) return "开始清理";
+  return "";
 }
 
 
@@ -1135,6 +1686,11 @@ function shouldOpenInscriptionPuzzle(hotspot) {
 function shouldOpenRelicPuzzle(hotspot) {
   if (state.currentSceneId !== "rear_chamber" || hasCompletedPuzzle(RELIC_PUZZLE_ID)) return false;
   return hotspot.id === "distribution_map";
+}
+
+function shouldOpenDigMatch3Puzzle(hotspot) {
+  if (state.currentSceneId !== "tomb_gate" || hasCompletedPuzzle(DIG_MATCH3_PUZZLE_ID)) return false;
+  return hotspot.id === "door_opening";
 }
 
 function openRunePuzzle() {
@@ -1182,17 +1738,22 @@ function handleRuneChoice(button) {
     return;
   }
 
-  completePuzzle(RUNE_PUZZLE_ID);
-  completeScene("tomb_gate");
+  if (completePuzzle(RUNE_PUZZLE_ID)) queuePuzzleCompletionDialogue(RUNE_PUZZLE_ID);
+  const sceneReady = completeScene("tomb_gate") || hasCompletedScene("tomb_gate");
   save();
   runePuzzleFeedback.textContent = "墓门验证完成。封门意象被整理为可通行的路径，甬道已经解锁。";
   runePuzzleFeedback.className = "puzzle-feedback success";
   setTimeout(() => {
     closeRunePuzzle();
-    navigateTo({ sceneId: "corridor" });
+    if (sceneReady) {
+      navigateAfterStory({ sceneId: "corridor" });
+      return;
+    }
     save();
     renderScene();
     renderJournal();
+    renderConclusions();
+    flushDialogueQueue();
   }, 850);
 }
 
@@ -1238,11 +1799,12 @@ function handlePatternChoice(tile) {
     return;
   }
 
-  completePuzzle(PATTERN_PUZZLE_ID);
+  if (completePuzzle(PATTERN_PUZZLE_ID)) queuePuzzleCompletionDialogue(PATTERN_PUZZLE_ID);
   completeScene("corridor");
   save();
   patternPuzzleFeedback.textContent = "叠胜纹拼合完成。九块残片重新闭合成完整菱形，刮除后重绘的修改痕迹显露出来。前室路径已经解锁。";
   patternPuzzleFeedback.className = "puzzle-feedback success";
+  flushDialogueQueue();
 }
 
 function openInscriptionPuzzle() {
@@ -1428,14 +1990,17 @@ function markInscriptionReportError(button) {
 }
 
 function completeInscriptionPuzzle() {
-  completePuzzle(INSCRIPTION_PUZZLE_ID);
+  if (completePuzzle(INSCRIPTION_PUZZLE_ID)) queuePuzzleCompletionDialogue(INSCRIPTION_PUZZLE_ID);
   addRewardRecord(INSCRIPTION_REWARD);
   save();
   renderJournal();
   inscriptionPuzzleFeedback.textContent = "题记辨读完成：已读出“元符二年”，找到“赵大翁”称谓，并改正了过度推断的报告句子。";
   inscriptionPuzzleFeedback.className = "puzzle-feedback success";
   renderInscriptionPuzzle();
-  setTimeout(closeInscriptionPuzzle, 1050);
+  setTimeout(() => {
+    closeInscriptionPuzzle();
+    flushDialogueQueue();
+  }, 1050);
 }
 
 function openRelicPuzzle() {
@@ -1574,14 +2139,17 @@ function completeRelicTarget(relic) {
     return;
   }
 
-  completePuzzle(RELIC_PUZZLE_ID);
+  if (completePuzzle(RELIC_PUZZLE_ID)) queuePuzzleCompletionDialogue(RELIC_PUZZLE_ID);
   addRewardRecord(RELIC_REWARD);
   save();
   renderJournal();
   relicPuzzleFeedback.textContent = "M1展开图册寻宝完成。遗物定位记录已收录。";
   relicPuzzleFeedback.className = "puzzle-feedback success";
   renderRelicPuzzle();
-  setTimeout(closeRelicPuzzle, 900);
+  setTimeout(() => {
+    closeRelicPuzzle();
+    flushDialogueQueue();
+  }, 900);
 }
 
 function getRelicAtPosition(x, y) {
@@ -1727,6 +2295,41 @@ function closePipePuzzle() {
   pipePuzzleLayer.classList.add("hidden");
 }
 
+function openDigMatchPuzzle() {
+  if (!digMatchLayer || !digMatchFrame) return;
+  digMatchFrame.src = `消消乐.html?embed=1&miniGame=${encodeURIComponent(DIG_MATCH3_PUZZLE_ID)}`;
+  digMatchLayer.classList.remove("hidden");
+}
+
+function closeDigMatchPuzzle() {
+  if (!digMatchLayer || !digMatchFrame) return;
+  digMatchLayer.classList.add("hidden");
+  digMatchFrame.src = "about:blank";
+}
+
+function completeDigMatch3Puzzle() {
+  if (completePuzzle(DIG_MATCH3_PUZZLE_ID)) queuePuzzleCompletionDialogue(DIG_MATCH3_PUZZLE_ID);
+  addRewardRecord(DIG_MATCH3_REWARD);
+  save();
+  renderJournal();
+  renderConclusions();
+  renderScene();
+  closeDigMatchPuzzle();
+  flushDialogueQueue();
+}
+
+function handleMiniGameMessage(event) {
+  if (digMatchFrame && event.source !== digMatchFrame.contentWindow) return;
+  const data = event.data;
+  if (!data || typeof data !== "object") return;
+  if (data.puzzleId !== DIG_MATCH3_PUZZLE_ID) return;
+  if (data.type === "M1_MINIGAME_COMPLETE") {
+    completeDigMatch3Puzzle();
+  } else if (data.type === "M1_MINIGAME_EXIT") {
+    closeDigMatchPuzzle();
+  }
+}
+
 function renderPipePuzzle() {
   pipeBoard.innerHTML = "";
   pipeTiles.flat().forEach((tile) => {
@@ -1865,10 +2468,11 @@ function finishPipePuzzle() {
   const puzzleId = level.puzzleId || PIPE_PUZZLE_ID;
   if (hasCompletedPuzzle(puzzleId) && !PIPE_DEMO_MODE) return;
   pipeSolved = true;
-  completePuzzle(puzzleId);
+  if (completePuzzle(puzzleId)) queuePuzzleCompletionDialogue(puzzleId);
+  let sceneReady = false;
   if (PIPE_MAIN_FLOW_ENABLED && !pipeStandaloneMode) {
     completePuzzle(RUNE_PUZZLE_ID);
-    completeScene("tomb_gate");
+    sceneReady = completeScene("tomb_gate") || hasCompletedScene("tomb_gate");
   }
   addRewardRecord(level.reward);
   save();
@@ -1881,10 +2485,15 @@ function finishPipePuzzle() {
   if (PIPE_DEMO_MODE || pipeStandaloneMode || !PIPE_MAIN_FLOW_ENABLED) return;
   setTimeout(() => {
     closePipePuzzle();
-    navigateTo({ sceneId: "corridor" });
+    if (sceneReady) {
+      navigateAfterStory({ sceneId: "corridor" });
+      return;
+    }
     save();
     renderScene();
     renderJournal();
+    renderConclusions();
+    flushDialogueQueue();
   }, 850);
 }
 
@@ -1898,6 +2507,7 @@ function showPipeSuccess(level) {
 }
 
 function getPendingMiniGame(hotspot, transition, navigation) {
+  if (shouldOpenDigMatch3Puzzle(hotspot)) return DIG_MATCH3_PUZZLE_ID;
   if (shouldOpenInscriptionPuzzle(hotspot)) return INSCRIPTION_PUZZLE_ID;
   if (shouldOpenRelicPuzzle(hotspot)) return RELIC_PUZZLE_ID;
   if (shouldOpenPatternPuzzle(hotspot)) return PATTERN_PUZZLE_ID;
@@ -1906,6 +2516,10 @@ function getPendingMiniGame(hotspot, transition, navigation) {
 }
 
 function openMiniGame(puzzleId) {
+  if (puzzleId === DIG_MATCH3_PUZZLE_ID) {
+    openDigMatchPuzzle();
+    return;
+  }
   if (puzzleId === INSCRIPTION_PUZZLE_ID) {
     openInscriptionPuzzle();
     return;
@@ -1938,7 +2552,14 @@ function closeMessage() {
   renderJournal();
   renderConclusions();
   flushDialogueQueue();
-  if (pendingMiniGame) openMiniGame(pendingMiniGame);
+  if (pendingMiniGame) {
+    if (hasPendingDialogue()) {
+      state.pendingStoryMiniGame = pendingMiniGame;
+      save();
+      return;
+    }
+    openMiniGame(pendingMiniGame);
+  }
 }
 
 function ensurePositionMapLayer() {
@@ -1951,27 +2572,23 @@ function ensurePositionMapLayer() {
   Object.assign(positionMapLayer.style, {
     position: "fixed",
     inset: "0",
-    zIndex: "14",
+    zIndex: "6",
     display: "none",
     placeItems: "center",
-    padding: "24px",
-    overflow: "auto",
-    background: "linear-gradient(180deg, rgba(55, 39, 24, 0.42), rgba(33, 23, 14, 0.58))",
-    backdropFilter: "blur(8px)"
+    padding: "18px",
+    background: "rgba(0, 0, 0, 0.62)"
   });
-  positionMapLayer.tabIndex = -1;
 
   const panel = document.createElement("article");
   Object.assign(panel.style, {
     width: "min(980px, 100%)",
     maxHeight: "calc(100vh - 36px)",
-    padding: "22px",
-    border: "1px solid rgba(71, 52, 30, 0.44)",
-    borderRadius: "28px",
-    background: "linear-gradient(180deg, rgba(251, 247, 239, 0.98), rgba(239, 229, 210, 0.96))",
-    boxShadow: "0 26px 70px rgba(48, 35, 22, 0.24)",
-    color: "#352719",
-    overflow: "auto"
+    padding: "14px",
+    border: "1px solid rgba(201, 157, 87, 0.52)",
+    borderRadius: "8px",
+    background: "rgba(13, 12, 11, 0.94)",
+    boxShadow: "0 22px 70px rgba(0, 0, 0, 0.46)",
+    backdropFilter: "blur(10px)"
   });
 
   const header = document.createElement("header");
@@ -1987,19 +2604,17 @@ function ensurePositionMapLayer() {
   title.textContent = "墓室定位图";
   Object.assign(title.style, {
     margin: "0",
-    color: "#a37a43",
-    fontSize: "13px",
-    letterSpacing: "0.18em",
-    textTransform: "uppercase"
+    color: "#c99d57",
+    fontSize: "13px"
   });
 
   const closeButton = document.createElement("button");
   closeButton.type = "button";
   closeButton.textContent = "关闭";
   Object.assign(closeButton.style, {
-    minHeight: "34px",
+    minHeight: "32px",
     border: "0",
-    color: "#62503d",
+    color: "#c6b9a4",
     background: "transparent",
     cursor: "pointer"
   });
@@ -2011,7 +2626,7 @@ function ensurePositionMapLayer() {
   summary.dataset.positionMapSummary = "true";
   Object.assign(summary.style, {
     margin: "0 0 10px",
-    color: "#62503d",
+    color: "#e8dcc7",
     fontSize: "14px",
     lineHeight: "1.65"
   });
@@ -2020,9 +2635,8 @@ function ensurePositionMapLayer() {
   Object.assign(mapFrame.style, {
     position: "relative",
     overflow: "hidden",
-    borderRadius: "18px",
-    border: "1px solid rgba(71, 52, 30, 0.2)",
-    background: "linear-gradient(180deg, rgba(255, 250, 242, 0.92), rgba(229, 215, 193, 0.86))"
+    borderRadius: "7px",
+    background: "#050505"
   });
 
   const image = document.createElement("img");
@@ -2054,6 +2668,9 @@ function ensurePositionMapLayer() {
   positionMapLayer.addEventListener("click", (event) => {
     if (event.target === positionMapLayer) closePositionMap();
   });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && positionMapLayer.style.display !== "none") closePositionMap();
+  });
   document.body.appendChild(positionMapLayer);
   return positionMapLayer;
 }
@@ -2063,17 +2680,11 @@ function openPositionMap() {
   renderPositionMapSummary();
   renderPositionMapMarkers();
   layer.style.display = "grid";
-  layer.focus();
 }
 
 function closePositionMap() {
   if (!positionMapLayer) return;
-  const activeElement = document.activeElement;
-  if (activeElement instanceof HTMLElement && positionMapLayer.contains(activeElement)) {
-    activeElement.blur();
-  }
-  positionMapLayer.remove();
-  positionMapLayer = null;
+  positionMapLayer.style.display = "none";
 }
 
 function hasVisitedScene(sceneId) {
@@ -2105,14 +2716,14 @@ function makePositionMapLegend() {
     flexWrap: "wrap",
     gap: "12px",
     marginTop: "10px",
-    color: "#62503d",
+    color: "#c6b9a4",
     fontSize: "12px"
   });
 
   [
-    ["#352719", "当前位置"],
-    ["#738974", "已完成"],
-    ["#a37a43", "已探索"]
+    ["#f4ead6", "当前位置"],
+    ["#8fc7aa", "已完成"],
+    ["#c99d57", "已探索"]
   ].forEach(([color, text]) => {
     const item = document.createElement("span");
     item.textContent = text;
@@ -3016,7 +3627,17 @@ function getHotspotCenter(hotspot, image) {
 
 function navigateTo({ sceneId, viewId, completeSceneId }) {
   const previousSceneId = state.currentSceneId;
-  completeScene(completeSceneId);
+  const requiresCompletion = Boolean(completeSceneId && !hasCompletedScene(completeSceneId));
+  const completedNow = completeScene(completeSceneId);
+
+  if (requiresCompletion && !completedNow) {
+    save();
+    return;
+  }
+
+  if (completedNow && sceneId && sceneId !== state.currentSceneId && deferNavigationUntilStory({ sceneId, viewId })) {
+    return;
+  }
 
   if (sceneId && SCENES[sceneId]) {
     state.currentSceneId = sceneId;
@@ -3035,9 +3656,9 @@ function navigateTo({ sceneId, viewId, completeSceneId }) {
 
 function getJournalRecordTypeLabel(record) {
   if (record.recordType === "combination") return "组合判断";
-  if (record.recordType === "review") return "工具复查";
-  if (record.track === "pending") return "待验证";
-  if (record.track === "excluded") return "已排除";
+  if (record.recordType === "review") return "合看核对";
+  if (record.track === "pending") return "存疑点";
+  if (record.track === "excluded") return "已降级";
   return "现场观察";
 }
 
@@ -3080,7 +3701,12 @@ function getAvailableReviewActions() {
   return getAllAnalysisWorkflows().flatMap(({ sceneId, workflow }) =>
     (workflow.reviewSteps || [])
       .map((step) => ({ sceneId, workflow, step, stateInfo: getReviewStepState(step) }))
-      .filter((item) => item.stateInfo.available || shouldShowReviewProgress(item.sceneId, item.step, item.stateInfo))
+      .filter(
+        (item) =>
+          item.stateInfo.available ||
+          item.stateInfo.collectedSourceIds.length ||
+          shouldShowReviewProgress(item.sceneId, item.step, item.stateInfo)
+      )
   );
 }
 
@@ -3088,11 +3714,17 @@ function getReviewProgressSteps(step) {
   return (step.guideSteps || []).map((guide) => {
     const recordIds = guide.recordIds || [];
     const collectedCount = recordIds.filter((recordId) => hasRecord(recordId)).length;
+    const readyCount = recordIds.filter((recordId) => hasRecord(recordId) && isReviewReadyClassification(getRecordClassification(recordId))).length;
+    const classificationPrompt =
+      collectedCount && readyCount < recordIds.length ? " 已收录线索还需分入事实记录或可合并推测。" : "";
     return {
       ...guide,
       collectedCount,
+      readyCount,
       totalCount: recordIds.length,
-      complete: recordIds.length > 0 && collectedCount === recordIds.length
+      complete: recordIds.length > 0 && readyCount === recordIds.length,
+      statusLabel: recordIds.length > 0 && readyCount === recordIds.length ? "已就绪" : collectedCount ? `${readyCount}/${recordIds.length}` : "待观察",
+      detail: `${guide.detail || ""}${classificationPrompt}`
     };
   });
 }
@@ -3108,6 +3740,7 @@ function shouldShowCombinationProgress(sceneId, stateInfo) {
   return (
     hasVisitedScene(sceneId) ||
     stateInfo.available ||
+    stateInfo.missingClassificationIds.length ||
     (stateInfo.combination.requiresReviewRecordIds || []).some((recordId) => hasRecord(recordId)) ||
     (stateInfo.combination.requiresExcludedRecordIds || []).some((recordId) => getRecord(recordId))
   );
@@ -3122,33 +3755,52 @@ function getAnalysisRecordLabel(recordId) {
   return getRecordLabel(recordId);
 }
 
-function getCombinationProgressSteps(combination) {
+function getCombinationClassificationStep(sceneId) {
+  const stateInfo = getClassificationState(sceneId);
+  const missingLabels = stateInfo.missingClassificationIds.slice(0, 3).map(getRecordLabel);
+  return {
+    label: "0 线索分类",
+    detail: stateInfo.complete
+      ? "已找到的本章线索都完成分类，可以进入证据组合与章节判断。"
+      : stateInfo.collectedCount
+        ? `还有 ${stateInfo.missingClassificationIds.length} 条已找到线索未分类：${missingLabels.join("、")}`
+        : "先在场景中收录线索，再回到整理台分类。",
+    complete: stateInfo.complete,
+    statusLabel: stateInfo.complete ? "已完成" : "待分类"
+  };
+}
+
+function getCombinationProgressSteps(combination, sceneId) {
+  const classificationStep = sceneId ? [getCombinationClassificationStep(sceneId)] : [];
   if (combination.requirementSteps?.length) {
-    return combination.requirementSteps.map((requirement) => {
+    return [
+      ...classificationStep,
+      ...combination.requirementSteps.map((requirement) => {
       const complete = requirement.excludedId ? isRecordExcluded(requirement.excludedId) : hasRecord(requirement.id);
       return {
         label: requirement.label,
         detail: complete ? requirement.metText || requirement.detail : requirement.missingText || requirement.detail,
         mobileDetail: requirement.mobileDetail,
         complete,
-        statusLabel: complete ? "已完成" : requirement.excludedId ? "待降级" : "待复查"
+        statusLabel: complete ? "已完成" : requirement.excludedId ? "待降级" : "待合看"
       };
-    });
+      })
+    ];
   }
 
   const reviewSteps = (combination.requiresReviewRecordIds || []).map((recordId) => ({
     label: getAnalysisRecordLabel(recordId),
-    detail: "完成这条工具复查后，才能进入章节组合判断。",
+    detail: "完成这组线索的合看核对后，才能进入章节判断。",
     complete: hasRecord(recordId),
-    statusLabel: hasRecord(recordId) ? "已完成" : "待复查"
+    statusLabel: hasRecord(recordId) ? "已完成" : "待合看"
   }));
   const excludedSteps = (combination.requiresExcludedRecordIds || []).map((recordId) => ({
     label: getRecordLabel(recordId),
-    detail: "将这条单点异常降级或排除后，才能进入章节组合判断。",
+    detail: "将这条存疑点降级为补充细节后，才能进入章节判断。",
     complete: isRecordExcluded(recordId),
     statusLabel: isRecordExcluded(recordId) ? "已完成" : "待降级"
   }));
-  return [...reviewSteps, ...excludedSteps];
+  return [...classificationStep, ...reviewSteps, ...excludedSteps];
 }
 
 function buildJournalActionCard({
@@ -3186,7 +3838,7 @@ function buildJournalActionCard({
     : "";
   const progressHtml = progressSteps.length
     ? `
-      <div class="review-progress-panel" aria-label="${escapeHtml(progressLabel || "复查点击顺序")}">
+      <div class="review-progress-panel" aria-label="${escapeHtml(progressLabel || "合看核对顺序")}">
         ${progressSteps
           .map((item) => {
             const status =
@@ -3250,15 +3902,18 @@ function renderJournal() {
         const missingLabels = item.stateInfo.missingSourceIds.map((recordId) => getRecordLabel(recordId));
         const progressSteps = getReviewProgressSteps(item.step);
         const isAvailable = item.stateInfo.available;
+        const blockedLabel = getReviewActionBlockedLabel(item.stateInfo);
         sectionActions.push(
           buildJournalActionCard({
-            eyebrow: `${item.workflow.chapter} / 工具复查`,
+            eyebrow: `${item.workflow.chapter} / 合看核对`,
             title: item.step.resultRecord.title,
             body: item.step.description,
             note: isAvailable
-              ? `证据已收齐：${item.step.sourceRecordIds.map((recordId) => getRecordLabel(recordId)).join("、")}`
-              : `按下方顺序继续点击；还缺：${missingLabels.join("、")}`,
-            buttonLabel: isAvailable ? item.step.buttonLabel : `还缺 ${missingLabels.length} 项证据`,
+              ? `线索已收齐并完成分类：${item.step.sourceRecordIds.map((recordId) => getRecordLabel(recordId)).join("、")}`
+              : item.stateInfo.missingSourceIds.length
+                ? `按下方顺序继续点击；还缺：${missingLabels.join("、")}`
+                : getReviewStepBlockedText(item.step, item.stateInfo),
+            buttonLabel: isAvailable ? item.step.buttonLabel : blockedLabel,
             actionName: "run-review-step",
             actionValue: item.step.id,
             chainItems: item.step.chainItems || [],
@@ -3270,10 +3925,11 @@ function renderJournal() {
       });
 
       getAvailableCombinationActions().forEach((item) => {
-        const progressSteps = getCombinationProgressSteps(item.stateInfo.combination);
+        const progressSteps = getCombinationProgressSteps(item.stateInfo.combination, item.sceneId);
+        const missingClassificationCount = item.stateInfo.missingClassificationIds.length;
         const missingReviewCount = item.stateInfo.missingReviewIds.length;
         const missingExcludedCount = item.stateInfo.missingExcludedIds.length;
-        const missingCount = missingReviewCount + missingExcludedCount;
+        const missingCount = missingClassificationCount + missingReviewCount + missingExcludedCount;
         const isAvailable = item.stateInfo.available;
         sectionActions.push(
           buildJournalActionCard({
@@ -3281,8 +3937,8 @@ function renderJournal() {
             title: item.stateInfo.combination.resultRecord.title,
             body: item.stateInfo.combination.description,
             note: isAvailable
-              ? `复查和降级都已完成，可以生成${item.workflow.chapter}组合判断；生成后会进入结论墙。`
-              : `还缺 ${missingCount} 项：${missingReviewCount} 条复查、${missingExcludedCount} 条降级。按下方清单补齐后再生成组合判断。`,
+              ? `分类、合看核对和存疑处理都已完成，可以生成${item.workflow.chapter}章节判断；生成后会进入结论墙。`
+              : `还缺 ${missingCount} 项：${missingClassificationCount} 条分类、${missingReviewCount} 组合核对、${missingExcludedCount} 个存疑处理。按下方清单补齐后再生成章节判断。`,
             buttonLabel: isAvailable ? item.stateInfo.combination.buttonLabel : `还缺 ${missingCount} 项条件`,
             actionName: "create-scene-combo",
             actionValue: item.sceneId,
@@ -3321,20 +3977,27 @@ function renderJournal() {
       const actionButtons = [];
       const metaChips = [];
       const notes = [];
+      const classificationOption = getClassificationOption(getRecordClassification(record.id));
+
+      if (record.recordType === "observation" && classificationOption) {
+        metaChips.push(
+          `<span class="status-chip is-${escapeHtml(classificationOption.statusClass || "locked")}">${escapeHtml(classificationOption.label)}</span>`
+        );
+      }
 
       if (record.track === "pending") {
         const resolutionMatch = findPendingResolution(record.id);
         if (resolutionMatch) {
           const resolutionState = getPendingResolutionState(resolutionMatch.resolution);
           if (resolutionState.available) {
-            metaChips.push('<span class="status-chip is-generated">可处理</span>');
+            metaChips.push('<span class="status-chip is-generated">可降级</span>');
             notes.push({ text: resolutionMatch.resolution.readyText || resolutionMatch.resolution.description, tone: "ready" });
             actionButtons.push(
               `<button class="primary-button" type="button" data-resolve-pending="${escapeHtml(record.id)}">${escapeHtml(resolutionMatch.resolution.buttonLabel)}</button>`
             );
           } else if (resolutionState.missingReviewIds.length) {
             const missingLabels = resolutionState.missingReviewIds.map((recordId) => getRecordLabel(recordId)).join("、");
-            metaChips.push('<span class="status-chip is-partial">待复查</span>');
+            metaChips.push('<span class="status-chip is-partial">待合看</span>');
             notes.push({
               text: resolutionMatch.resolution.blockedText || `还需先完成：${missingLabels}`,
               tone: "blocked"
@@ -3434,7 +4097,7 @@ function renderConclusions() {
 
   if (!selected) {
     conclusionDetail.innerHTML = `
-      <p class="empty-note">结论卡会在当前章节的线索收集、复查与推导完成后自动生成。</p>
+      <p class="empty-note">结论卡会在当前章节的线索分类、证据组合与推导完成后自动生成。</p>
       <div class="clue-card-actions">
         <button class="secondary-button" type="button" data-open-workbench="clues">打开章节整理台</button>
       </div>
@@ -3520,15 +4183,15 @@ function getWorkbenchChapterLabel(sceneId) {
 
 function getTrackLabel(trackId) {
   if (trackId === "observation") return "观察记录";
-  if (trackId === "review") return "工具复查";
-  if (trackId === "pending") return "待验证";
-  if (trackId === "excluded") return "已排除";
+  if (trackId === "review") return "证据组合";
+  if (trackId === "pending") return "存疑点";
+  if (trackId === "excluded") return "已降级";
   return trackId;
 }
 
 function getRecordKindLabel(record) {
   if (record.recordType === "combination") return "组合判断";
-  if (record.recordType === "review") return "复查记录";
+  if (record.recordType === "review") return "合看记录";
   if (record.recordType === "observation") return "现场观察";
   return "记录";
 }
@@ -3598,8 +4261,30 @@ function getWorkbenchReviewItems(sceneId) {
   return (workflow?.reviewSteps || []).map((step) => ({ step, stateInfo: getReviewStepState(step) }));
 }
 
-function getWorkbenchNextStep(sceneId, targetRecordIds, reviewItems, pendingItems, combinationState) {
+function getReviewStepBlockedText(step, stateInfo) {
+  if (stateInfo.missingSourceIds.length) {
+    return `“${step.resultRecord.title}”还缺 ${stateInfo.missingSourceIds.length} 条观察。`;
+  }
+  if (stateInfo.missingClassificationIds.length) {
+    const labels = stateInfo.missingClassificationIds.slice(0, 3).map(getRecordLabel).join("、");
+    return `“${step.resultRecord.title}”还缺 ${stateInfo.missingClassificationIds.length} 条线索分类：${labels}。`;
+  }
+  if (stateInfo.blockedClassificationIds.length) {
+    const labels = stateInfo.blockedClassificationIds.slice(0, 3).map(getRecordLabel).join("、");
+    return `“${step.resultRecord.title}”需要把这些线索先放入事实记录或可合并推测：${labels}。`;
+  }
+  return `“${step.resultRecord.title}”还不能合看核对。`;
+}
+
+function getWorkbenchNextStep(sceneId, targetRecordIds, reviewItems, pendingItems, combinationState, classificationState) {
   const missingTargets = targetRecordIds.filter((recordId) => !hasRecord(recordId));
+  if (classificationState.collectedCount && classificationState.missingClassificationIds.length) {
+    return {
+      title: "先给线索分类",
+      body: `还有 ${classificationState.missingClassificationIds.length} 条已找到线索未分类。先判断它们是事实记录、可合并推测、存疑点还是补充细节。`
+    };
+  }
+
   if (missingTargets.length) {
     return {
       title: "先补齐本章观察",
@@ -3610,25 +4295,26 @@ function getWorkbenchNextStep(sceneId, targetRecordIds, reviewItems, pendingItem
   const nextReview = reviewItems.find((item) => !item.stateInfo.created);
   if (nextReview) {
     return nextReview.stateInfo.available
-      ? { title: "可以开始复查", body: `证据已收齐，可以执行“${nextReview.step.buttonLabel}”。` }
+      ? { title: "可以合看核对", body: `线索已收齐并完成分类，可以执行“${nextReview.step.buttonLabel}”。` }
       : {
-          title: "继续补齐复查证据",
-          body: `“${nextReview.step.resultRecord.title}”还缺 ${nextReview.stateInfo.missingSourceIds.length} 条观察。`
+          title: "继续准备证据组合",
+          body: getReviewStepBlockedText(nextReview.step, nextReview.stateInfo)
         };
   }
 
   const nextPending = pendingItems.find((item) => item.record?.track === "pending");
   if (nextPending?.resolution) {
     return nextPending.stateInfo?.available
-      ? { title: "处理待验证观察", body: `可以将“${nextPending.record.title}”降级或归档。` }
-      : { title: "待验证还不能处理", body: nextPending.resolution.blockedText || "先完成相关复查，再处理待验证观察。" };
+      ? { title: "处理存疑点", body: `可以将“${nextPending.record.title}”降级为补充细节。` }
+      : { title: "存疑点暂不能处理", body: nextPending.resolution.blockedText || "先完成相关合看核对，再处理存疑点。" };
   }
 
   if (combinationState.combination && !combinationState.created) {
-    const missingCount = combinationState.missingReviewIds.length + combinationState.missingExcludedIds.length;
+    const missingCount =
+      combinationState.missingClassificationIds.length + combinationState.missingReviewIds.length + combinationState.missingExcludedIds.length;
     return combinationState.available
-      ? { title: "生成章节判断", body: `复查和待验证处理已经完成，可以形成${getSceneLabel(sceneId)}章节判断。` }
-      : { title: "章节判断尚未完成", body: `还缺 ${missingCount} 项条件：先完成复查和待验证处理。` };
+      ? { title: "生成章节判断", body: `分类、合看核对和存疑处理已经完成，可以形成${getSceneLabel(sceneId)}章节判断。` }
+      : { title: "章节判断尚未完成", body: `还缺 ${missingCount} 项条件：先完成分类、合看核对和存疑处理。` };
   }
 
   return {
@@ -3654,6 +4340,139 @@ function buildWorkbenchProgressRows(steps = []) {
         .join("")}
     </div>
   `;
+}
+
+function buildClassificationGuide() {
+  return `
+    <div class="classification-guide-grid" aria-label="线索分类选项">
+      ${getClassificationOptions()
+        .map(
+          (option) => `
+            <div class="classification-guide-item">
+              <strong>${escapeHtml(option.label)}</strong>
+              <span>${escapeHtml(option.description)}</span>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function buildClassificationControls(recordId, title) {
+  const currentClassification = getRecordClassification(recordId);
+  return `
+    <div class="classification-choice-list" role="group" aria-label="${escapeHtml(title)}分类">
+      ${getClassificationOptions()
+        .map((option) => {
+          const active = currentClassification === option.id;
+          return `
+            <button
+              class="classification-choice${active ? " is-active" : ""}"
+              type="button"
+              data-classify-record="${escapeHtml(recordId)}"
+              data-classification="${escapeHtml(option.id)}"
+              aria-pressed="${active ? "true" : "false"}"
+              title="${escapeHtml(option.description)}"
+            >
+              ${escapeHtml(option.label)}
+            </button>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
+function getClassificationFeedback(sceneId, recordId) {
+  const record = getRecord(recordId);
+  if (!record) return { tone: "blocked", text: "尚未收录，先回到场景中观察对应图像。" };
+
+  const currentClassification = getRecordClassification(recordId);
+  const recommendedClassification = getRecommendedClassification(sceneId, recordId);
+  const currentOption = getClassificationOption(currentClassification);
+  const recommendedOption = getClassificationOption(recommendedClassification);
+  const reviewSteps = getReviewStepsForRecord(sceneId, recordId);
+  const companionIds = uniqueRecordIds(reviewSteps.flatMap((step) => step.sourceRecordIds || [])).filter((id) => id !== recordId);
+  const companionText = companionIds.slice(0, 3).map(getRecordLabel).join("、");
+
+  if (!currentOption) {
+    return { tone: "blocked", text: `先给它分一类；系统建议先看作“${recommendedOption?.label || "补充细节"}”。` };
+  }
+
+  if (record.track === "excluded") {
+    return { tone: "ready", text: "这条存疑点已降级，保留为补充细节，不进入本章主判断。" };
+  }
+
+  if (currentClassification === recommendedClassification) {
+    if (currentClassification === "evidence" && companionText) {
+      return { tone: "ready", text: `分类合理。它需要和 ${companionText} 放在一起合看。` };
+    }
+    if (currentClassification === "doubt") {
+      return { tone: "ready", text: "分类合理。它先保留疑问，等相关证据组合完成后再决定降级或保留。" };
+    }
+    if (currentClassification === "fact") {
+      return { tone: "ready", text: "分类合理。它可以作为客观事实记录，支撑后续整理。" };
+    }
+    return { tone: "ready", text: "分类合理。它可以作为补充细节保留。" };
+  }
+
+  if (recommendedClassification === "evidence" && currentClassification === "doubt") {
+    return {
+      tone: "blocked",
+      text: companionText
+        ? `可以先存疑，但这条线索需要和 ${companionText} 合看；准备核对时请转入“可合并推测”。`
+        : "可以先存疑，但准备核对时请转入“可合并推测”。"
+    };
+  }
+
+  if (recommendedClassification === "doubt" && isReviewReadyClassification(currentClassification)) {
+    if (reviewSteps.length) {
+      return {
+        tone: "ready",
+        text: "可以临时放入证据组合参与合看；核对完成后仍要回到存疑处理，把它降级或保留存疑。"
+      };
+    }
+    return { tone: "blocked", text: "这条线索看起来可疑，但不能单独进入主证据；更适合先放入存疑点。" };
+  }
+
+  return {
+    tone: "blocked",
+    text: `当前分为“${currentOption.label}”。系统建议更接近“${recommendedOption?.label || "补充细节"}”，可根据新证据随时调整。`
+  };
+}
+
+function buildReviewSourceList(step) {
+  const sourceRecordIds = step.sourceRecordIds || [];
+  if (!sourceRecordIds.length) return "";
+  return `
+    <div class="workbench-source-list" aria-label="本次合看的线索">
+      <span class="workbench-source-label">本次合看</span>
+      ${sourceRecordIds
+        .map((recordId) => {
+          const record = getRecord(recordId);
+          const classification = getRecordClassification(recordId);
+          const option = getClassificationOption(classification);
+          const ready = Boolean(record && classification && isReviewReadyClassification(classification));
+          const className = !record ? "missing" : ready ? "met" : "partial";
+          const status = !record ? "待观察" : !classification ? "待分类" : option?.shortLabel || option?.label || "已分类";
+          return `
+            <span class="workbench-source-chip is-${className}">
+              <strong>${escapeHtml(getRecordLabel(recordId))}</strong>
+              <em>${escapeHtml(status)}</em>
+            </span>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
+function getReviewActionBlockedLabel(stateInfo) {
+  if (stateInfo.missingSourceIds.length) return `还缺 ${stateInfo.missingSourceIds.length} 条观察`;
+  if (stateInfo.missingClassificationIds.length) return `还有 ${stateInfo.missingClassificationIds.length} 条待分类`;
+  if (stateInfo.blockedClassificationIds.length) return "调整分类后合看";
+  return "暂不能合看";
 }
 
 function getWorkbenchFallbackPosition() {
@@ -3730,9 +4549,11 @@ function renderWorkbenchClues() {
   const reviewItems = getWorkbenchReviewItems(selectedChapter);
   const pendingItems = getWorkbenchPendingItems(selectedChapter);
   const combinationState = getCombinationState(selectedChapter);
+  const classificationState = getClassificationState(selectedChapter, targetRecordIds);
   const supplementalRecords = getWorkbenchSupplementalRecords(selectedChapter, targetRecordIds);
-  const nextStep = getWorkbenchNextStep(selectedChapter, targetRecordIds, reviewItems, pendingItems, combinationState);
+  const nextStep = getWorkbenchNextStep(selectedChapter, targetRecordIds, reviewItems, pendingItems, combinationState, classificationState);
   const collectedTargetCount = targetRecordIds.filter((recordId) => hasRecord(recordId)).length;
+  const classifiedTargetCount = classificationState.classifiedCount;
   const completedReviewCount = reviewItems.filter((item) => item.stateInfo.created).length;
   const openPendingCount = pendingItems.filter((item) => item.record?.track === "pending").length;
   const resolvedPendingCount = pendingItems.filter((item) => item.record?.track === "excluded").length;
@@ -3742,14 +4563,11 @@ function renderWorkbenchClues() {
     .map((recordId) => {
       const record = getRecord(recordId);
       const title = record?.title || getRecordLabel(recordId);
-      const statusLabel = record
-        ? record.track === "pending"
-          ? "待验证"
-          : record.track === "excluded"
-            ? "已降级"
-            : "已收录"
-        : "尚未收录";
-      const statusClass = record ? (record.track === "pending" ? "partial" : "met") : "missing";
+      const classificationId = getRecordClassification(recordId);
+      const classification = getClassificationOption(classificationId);
+      const feedback = record ? getClassificationFeedback(selectedChapter, recordId) : null;
+      const statusLabel = record ? classification?.label || "未分类" : "尚未收录";
+      const statusClass = record ? classification?.statusClass || "partial" : "missing";
       return `
         <article class="clue-card">
           <div class="journal-card-meta">
@@ -3758,6 +4576,8 @@ function renderWorkbenchClues() {
           </div>
           <h3>${escapeHtml(title)}</h3>
           <p>${escapeHtml(record ? getRecordExcerpt(record.text) : "尚未收录。回到场景中继续观察相关图像。")}</p>
+          ${record && record.track !== "excluded" ? buildClassificationControls(recordId, title) : ""}
+          ${feedback ? buildJournalNote(feedback) : ""}
         </article>
       `;
     })
@@ -3767,15 +4587,15 @@ function renderWorkbenchClues() {
     .map((item) => {
       const record = item.record;
       const resolution = item.resolution;
-      const title = record?.title || (resolution ? getRecordLabel(resolution.recordId) : "待验证观察");
+      const title = record?.title || (resolution ? getRecordLabel(resolution.recordId) : "存疑点");
       const isResolved = record?.track === "excluded";
       const isReady = Boolean(item.stateInfo?.available);
-      const statusLabel = !record ? "尚未收录" : isResolved ? "已降级" : isReady ? "可处理" : "待复查";
+      const statusLabel = !record ? "尚未收录" : isResolved ? "已降级" : isReady ? "可降级" : "待合看";
       const statusClass = !record ? "missing" : isResolved ? "met" : isReady ? "generated" : "partial";
       const note = isResolved
         ? record.resolutionText
         : record
-          ? resolution?.readyText || resolution?.blockedText || resolution?.description || "这条观察需要结合复查结果处理。"
+          ? resolution?.readyText || resolution?.blockedText || resolution?.description || "这条观察需要结合证据组合处理。"
           : "尚未在场景中收录。";
       const action =
         isReady && record && resolution
@@ -3797,27 +4617,49 @@ function renderWorkbenchClues() {
 
   const reviewCards = reviewItems
     .map(({ step, stateInfo }) => {
-      const statusLabel = stateInfo.created ? "已完成" : stateInfo.available ? "可复查" : "待收集";
+      const statusLabel = stateInfo.created
+        ? "已完成"
+        : stateInfo.available
+          ? "可合看"
+          : stateInfo.missingSourceIds.length
+            ? "待观察"
+            : stateInfo.missingClassificationIds.length
+              ? "待分类"
+              : "待调整分类";
       const statusClass = stateInfo.created ? "met" : stateInfo.available ? "generated" : "partial";
       const missingLabels = stateInfo.missingSourceIds.slice(0, 4).map(getRecordLabel);
       const fallbackSteps = (step.sourceRecordIds || []).map((recordId) => ({
         label: getRecordLabel(recordId),
-        detail: hasRecord(recordId) ? "已收录。" : "尚未收录。",
-        complete: hasRecord(recordId),
-        statusLabel: hasRecord(recordId) ? "已完成" : "待观察"
+        detail: !hasRecord(recordId)
+          ? "尚未收录。"
+          : !getRecordClassification(recordId)
+            ? "已收录，先完成分类。"
+            : isReviewReadyClassification(getRecordClassification(recordId))
+              ? `已分入${getClassificationOption(getRecordClassification(recordId))?.label || "可合看类别"}。`
+              : `当前分类为${getClassificationOption(getRecordClassification(recordId))?.label || "其他"}，需转入事实记录或可合并推测。`,
+        complete: hasRecord(recordId) && isReviewReadyClassification(getRecordClassification(recordId)),
+        statusLabel: !hasRecord(recordId)
+          ? "待观察"
+          : !getRecordClassification(recordId)
+            ? "待分类"
+            : isReviewReadyClassification(getRecordClassification(recordId))
+              ? "已就绪"
+              : "待调整"
       }));
       const progressRows = getReviewProgressSteps(step);
       const progressHtml = buildWorkbenchProgressRows(progressRows.length ? progressRows : fallbackSteps);
+      const blockedLabel = getReviewActionBlockedLabel(stateInfo);
       const action = stateInfo.created
         ? ""
-        : `<div class="clue-card-actions"><button class="${stateInfo.available ? "primary-button" : "secondary-button"}" type="button" data-run-review-step="${escapeHtml(step.id)}" ${stateInfo.available ? "" : "disabled"}>${escapeHtml(stateInfo.available ? step.buttonLabel : `还缺 ${stateInfo.missingSourceIds.length} 条观察`)}</button></div>`;
+        : `<div class="clue-card-actions"><button class="${stateInfo.available ? "primary-button" : "secondary-button"}" type="button" data-run-review-step="${escapeHtml(step.id)}" ${stateInfo.available ? "" : "disabled"}>${escapeHtml(stateInfo.available ? step.buttonLabel : blockedLabel)}</button></div>`;
       return `
         <article class="clue-card">
           <div class="journal-card-meta">
             <span class="status-chip is-${statusClass}">${escapeHtml(statusLabel)}</span>
           </div>
           <h3>${escapeHtml(step.resultRecord.title)}</h3>
-          <p>${escapeHtml(stateInfo.available || stateInfo.created ? step.description : `还缺：${missingLabels.join("、")}`)}</p>
+          <p>${escapeHtml(stateInfo.available || stateInfo.created ? step.description : stateInfo.missingSourceIds.length ? `还缺：${missingLabels.join("、")}` : getReviewStepBlockedText(step, stateInfo))}</p>
+          ${buildReviewSourceList(step)}
           ${progressHtml}
           ${action}
         </article>
@@ -3833,11 +4675,11 @@ function renderWorkbenchClues() {
         </div>
         <h3>${escapeHtml(combinationState.combination.resultRecord.title)}</h3>
         <p>${escapeHtml(combinationState.combination.description)}</p>
-        ${buildWorkbenchProgressRows(getCombinationProgressSteps(combinationState.combination))}
+        ${buildWorkbenchProgressRows(getCombinationProgressSteps(combinationState.combination, selectedChapter))}
         ${
           combinationState.created
             ? ""
-            : `<div class="clue-card-actions"><button class="${combinationState.available ? "primary-button" : "secondary-button"}" type="button" data-create-scene-combo="${escapeHtml(selectedChapter)}" ${combinationState.available ? "" : "disabled"}>${escapeHtml(combinationState.available ? combinationState.combination.buttonLabel : `还缺 ${combinationState.missingReviewIds.length + combinationState.missingExcludedIds.length} 项条件`)}</button></div>`
+            : `<div class="clue-card-actions"><button class="${combinationState.available ? "primary-button" : "secondary-button"}" type="button" data-create-scene-combo="${escapeHtml(selectedChapter)}" ${combinationState.available ? "" : "disabled"}>${escapeHtml(combinationState.available ? combinationState.combination.buttonLabel : `还缺 ${combinationState.missingClassificationIds.length + combinationState.missingReviewIds.length + combinationState.missingExcludedIds.length} 项条件`)}</button></div>`
         }
       </article>
     `
@@ -3882,18 +4724,25 @@ function renderWorkbenchClues() {
         <h2 class="workbench-section-title">${escapeHtml(getWorkbenchChapterLabel(selectedChapter))}章节整理</h2>
         <div class="workbench-overview-grid">
           <div class="workbench-status-card">
-            <span>整理所需观察</span>
+            <span>已收录线索</span>
             <strong>${collectedTargetCount}/${targetRecordIds.length || collectedTargetCount}</strong>
           </div>
           <div class="workbench-status-card">
-            <span>复查</span>
+            <span>已分类</span>
+            <strong>${classifiedTargetCount}/${classificationState.collectedCount || collectedTargetCount}</strong>
+          </div>
+          <div class="workbench-status-card">
+            <span>证据组合</span>
             <strong>${completedReviewCount}/${reviewItems.length}</strong>
           </div>
           <div class="workbench-status-card">
-            <span>待验证</span>
+            <span>存疑处理</span>
             <strong>${resolvedPendingCount}/${pendingItems.length}</strong>
             ${openPendingCount ? `<em>${openPendingCount} 条待处理</em>` : ""}
           </div>
+        </div>
+
+        <div class="workbench-overview-grid is-single">
           <div class="workbench-status-card">
             <span>章节判断</span>
             <strong>${escapeHtml(comboLabel)}</strong>
@@ -3901,18 +4750,19 @@ function renderWorkbenchClues() {
         </div>
 
         <section>
-          <h2 class="workbench-section-title">整理所需观察</h2>
+          <h2 class="workbench-section-title">线索分类</h2>
+          ${buildClassificationGuide()}
           <div class="workbench-record-grid">${targetCards || '<p class="empty-note">本章尚无整理所需观察。</p>'}</div>
         </section>
 
         <section>
-          <h2 class="workbench-section-title">待验证</h2>
-          <div class="workbench-record-grid">${pendingCards || '<p class="empty-note">当前没有待验证观察。</p>'}</div>
+          <h2 class="workbench-section-title">证据组合</h2>
+          <div class="workbench-record-grid">${reviewCards || '<p class="empty-note">本章暂未设置证据组合。</p>'}</div>
         </section>
 
         <section>
-          <h2 class="workbench-section-title">复查</h2>
-          <div class="workbench-record-grid">${reviewCards || '<p class="empty-note">本章暂未设置复查动作。</p>'}</div>
+          <h2 class="workbench-section-title">存疑处理</h2>
+          <div class="workbench-record-grid">${pendingCards || '<p class="empty-note">当前没有存疑点。</p>'}</div>
         </section>
 
         <section>
@@ -3973,6 +4823,18 @@ workbenchLayer.addEventListener("click", (event) => {
   if (event.target === workbenchLayer) setWorkbenchOpen(false);
 });
 workbenchContent.addEventListener("click", (event) => {
+  const classificationTarget = event.target.closest("[data-classify-record]");
+  if (classificationTarget) {
+    const recordId = classificationTarget.getAttribute("data-classify-record");
+    const classificationId = classificationTarget.getAttribute("data-classification");
+    if (setRecordClassification(recordId, classificationId)) {
+      save();
+      renderWorkbench();
+      renderJournal();
+    }
+    return;
+  }
+
   const reviewTarget = event.target.closest("[data-run-review-step]");
   if (reviewTarget) {
     runReviewStep(reviewTarget.getAttribute("data-run-review-step"));
@@ -4034,13 +4896,21 @@ workbenchHeader?.addEventListener("pointercancel", (event) => {
   syncWorkbenchPosition(true);
 });
 workbenchToggle?.addEventListener("click", () => setWorkbenchOpen(!state.workbenchOpen));
+npcChatButton?.addEventListener("click", openNpcChatPage);
 dialogueClose.addEventListener("click", closeDialogue);
+dialogueChoices?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-choice-index]");
+  if (!button || !activeDialogue) return;
+  const choice = (activeDialogue.choices || [])[Number(button.dataset.choiceIndex)];
+  if (choice?.next) queueStoryContinuation(choice.next, activeDialogue);
+  closeDialogue({ skipStoryNext: true });
+});
 messageClose.addEventListener("click", closeMessage);
 messageLayer.addEventListener("click", (event) => {
   if (event.target === messageLayer) closeMessage();
 });
 dialogueLayer.addEventListener("click", (event) => {
-  if (event.target === dialogueLayer) closeDialogue();
+  if (event.target === dialogueLayer && !(activeDialogue?.choices || []).length) closeDialogue();
 });
 
 runePuzzleClose.addEventListener("click", closeRunePuzzle);
@@ -4134,6 +5004,11 @@ pipePuzzleLayer.addEventListener("click", (event) => {
   if (event.target === pipePuzzleLayer) closePipePuzzle();
 });
 pipeReplayButton.addEventListener("click", () => openPipePuzzle(currentPipeLevelId));
+digMatchClose.addEventListener("click", closeDigMatchPuzzle);
+digMatchLayer.addEventListener("click", (event) => {
+  if (event.target === digMatchLayer) closeDigMatchPuzzle();
+});
+window.addEventListener("message", handleMiniGameMessage);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     if (positionMapLayer) closePositionMap();
@@ -4143,7 +5018,8 @@ document.addEventListener("keydown", (event) => {
     if (!inscriptionPuzzleLayer.classList.contains("hidden")) closeInscriptionPuzzle();
     if (!relicPuzzleLayer.classList.contains("hidden")) closeRelicPuzzle();
     if (!pipePuzzleLayer.classList.contains("hidden")) closePipePuzzle();
-    if (!dialogueLayer.classList.contains("hidden")) closeDialogue();
+    if (!digMatchLayer.classList.contains("hidden")) closeDigMatchPuzzle();
+    if (!dialogueLayer.classList.contains("hidden") && !(activeDialogue?.choices || []).length) closeDialogue();
     if (!workbenchLayer.classList.contains("hidden")) setWorkbenchOpen(false);
     setJournal(false);
     setConclusionOpen(false);
@@ -4167,10 +5043,15 @@ renderJournal();
 renderConclusions();
 renderWorkbench();
 queueOpeningDialogues();
+queueStoryUpgradeDialogues();
 queueSceneEntryDialogue(state.currentSceneId);
 flushDialogueQueue();
+runPendingStoryNavigation();
+runPendingStoryMiniGame();
 const startupMiniGame = new URLSearchParams(window.location.search).get("miniGame");
-if (startupMiniGame === PATTERN_PUZZLE_ID) {
+if (startupMiniGame === DIG_MATCH3_PUZZLE_ID) {
+  openDigMatchPuzzle();
+} else if (startupMiniGame === PATTERN_PUZZLE_ID) {
   openPatternPuzzle();
 } else if (startupMiniGame === INSCRIPTION_PUZZLE_ID) {
   openInscriptionPuzzle();

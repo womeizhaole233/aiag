@@ -203,13 +203,13 @@ DIALOGUES = {
     "go_to_site": {
         "speaker": "系统",
         "text": "缓坡顶上，你看见了那片隆起的高地。",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "meet_su_teacher"
     },
     "meet_su_teacher": {
         "speaker": "系统",
         "text": "一个瘦高的身影正蹲在土台边上，手电光在暮色里晃。他穿了一身洗得发白的蓝布中山装，背对着你，正用放大镜一寸一寸地看着什么。",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "question_1"
     },
     "question_1": {
@@ -243,13 +243,13 @@ DIALOGUES = {
     "teacher_intro": {
         "speaker": "系统",
         "text": "你与他打了个照面。\n\n瘦而高，眼镜腿断过一次，用白胶布缠着。\n\n粟柏年，29岁，北大考古专业青年教师，也是你接下来的领队老师。",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "teacher_say"
     },
     "teacher_say": {
         "speaker": "粟柏年",
         "text": "“休息吧，”他温和道，“明天会很累。”",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [{"text": "第一章：墓门清理", "next": "chapter1"}], "next": None
     },
     "chapter1": {
@@ -326,13 +326,13 @@ DIALOGUES = {
     "discover_second_tomb": {
         "speaker": "民工老张",
         "text": "“粟队长！北边又顶出来一个砖顶子！”",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "su_response"
     },
     "su_response": {
         "speaker": "粟柏年",
         "text": "“多远？”\n\n“二十来米，西北。”\n\n他回头看了一眼正在测绘的墓门，“先把顶砖回封，浮土盖回去，做个标记。今天所有人还在一号墓上。另一座要等这边的档期。”",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "tomb_open"
     },
     "tomb_open": {
@@ -522,7 +522,7 @@ DIALOGUES = {
     "chapter2": {
         "speaker": "系统",
         "text": "1952 年 1 月 1 日。新年没有任何仪式，工地照常开工。\n\n二号墓位于一号墓西北约二十米。封门砖比一号墓更整齐，砖缝灌着白灰。粟柏年判断：墓主身份高于一号墓主。\n\n一天后，墓门打开。",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "chapter2_enter"
     },
     "chapter2_enter": {
@@ -596,7 +596,7 @@ DIALOGUES = {
     "chapter3": {
         "speaker": "系统",
         "text": "1952 年 1 月 4 日。三号墓位于一、二号墓之间稍偏南，规模最小，封土几乎被犁平。\n\n墓门粗糙，封门砖大小不一，有几块明显是从别处拆来的旧砖。\n\n墓室内壁无画，只有素面白灰。棺床上一具骨架，无棺。",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "chapter3_bones"
     },
     "chapter3_bones": {
@@ -689,7 +689,7 @@ DIALOGUES = {
     "travel3_back": {
         "speaker": "系统",
         "text": "铜扣再没有热过。\n\n你回到 1 月 14 日的清晨。粟柏年带着两个民工已经站在北面那棵老柏树下了。\n\n探沟挖到第七步、约两米深的地方，铲子碰到一个东西——",
-        "background_image": "assets/M1/02墓道与墓门/第一号墓外围.png",
+        "background_image": "assets/M1/02墓道与墓门/第一号墓葬外围修改版.png",
         "choices": [], "next": "final_box"
     },
 

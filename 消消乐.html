@@ -22,6 +22,19 @@
             padding: 20px;
         }
 
+        html.embedded,
+        html.embedded body {
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        html.embedded body {
+            padding: 0;
+            background: transparent;
+        }
+
         /* 主游戏面板 - 古墓石椁风格 */
         .tomb-panel {
             width: 1500px;
@@ -34,6 +47,35 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(0px);
+        }
+
+        html.embedded .tomb-panel {
+            width: 100vw;
+            height: 100vh;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        html.embedded .game-layout {
+            gap: 18px;
+            padding: 16px;
+        }
+
+        html.embedded .match-area {
+            min-width: 0;
+            display: grid;
+            place-items: center;
+        }
+
+        html.embedded canvas {
+            width: min(100%, calc((100vh - 52px) * 1.09));
+            max-height: calc(100vh - 52px);
+        }
+
+        html.embedded .right-altar {
+            gap: 16px;
+            padding: 18px 14px;
         }
 
         /* 装饰性火把 / 符文 */
@@ -227,6 +269,316 @@
             z-index: 999;
             font-family: monospace;
         }
+
+        @media (max-width: 900px) {
+            html.embedded .tomb-panel {
+                overflow: auto;
+            }
+
+            html.embedded .game-layout {
+                min-height: 100%;
+                flex-direction: column;
+            }
+
+            html.embedded .match-area {
+                flex: 0 0 auto;
+            }
+
+            html.embedded canvas {
+                width: min(100%, calc((100vh - 230px) * 1.09));
+                max-height: calc(100vh - 230px);
+            }
+
+            html.embedded .right-altar {
+                flex: 0 0 auto;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+                border-left: 0;
+                border-right: 0;
+                border-top: 2px solid #c29a6b;
+                border-bottom: 2px solid #7a5a3a;
+            }
+
+            html.embedded .relic-shadow,
+            html.embedded .soil-meter,
+            html.embedded .tomb-buttons {
+                width: min(100%, 260px);
+            }
+
+            html.embedded .shadow-icon {
+                font-size: 42px;
+                padding: 8px;
+            }
+
+            html.embedded .vertical-progress {
+                height: 96px;
+            }
+
+            html.embedded .btn-tomb {
+                flex: 1 1 110px;
+                padding: 10px 14px;
+                font-size: 15px;
+            }
+        }
+
+        /* 主线统一视觉：底图 + 暗色玻璃面板 */
+        body {
+            color: #edf2f7;
+            font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+            background:
+                linear-gradient(180deg, rgba(5, 10, 17, 0.34), rgba(5, 10, 17, 0.78)),
+                url("assets/M1/02墓道与墓门/第一号墓墓门(彭华士摄).png") center / cover no-repeat,
+                #06090f;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at center, transparent 36%, rgba(2, 8, 14, 0.42) 100%),
+                rgba(2, 8, 14, 0.24);
+            pointer-events: none;
+        }
+
+        html.embedded body {
+            background:
+                linear-gradient(180deg, rgba(5, 10, 17, 0.2), rgba(5, 10, 17, 0.56)),
+                url("assets/M1/02墓道与墓门/第一号墓墓门(彭华士摄).png") center / cover no-repeat,
+                #06090f;
+        }
+
+        .tomb-panel {
+            width: min(1500px, calc(100vw - 32px));
+            height: min(900px, calc(100dvh - 32px));
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            background:
+                linear-gradient(180deg, rgba(17, 24, 39, 0.82), rgba(8, 13, 22, 0.9)),
+                rgba(17, 24, 39, 0.76);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42);
+            backdrop-filter: blur(18px);
+        }
+
+        html.embedded .tomb-panel {
+            width: 100vw;
+            height: 100vh;
+            background:
+                linear-gradient(180deg, rgba(17, 24, 39, 0.76), rgba(8, 13, 22, 0.88)),
+                rgba(17, 24, 39, 0.76);
+        }
+
+        .tomb-panel::before,
+        .tomb-panel::after {
+            content: none;
+        }
+
+        .game-layout {
+            gap: 16px;
+            padding: 16px;
+        }
+
+        .match-area,
+        .right-altar,
+        .relic-shadow,
+        .soil-meter {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 8px;
+            background: rgba(10, 15, 24, 0.58);
+            box-shadow: none;
+            backdrop-filter: blur(14px);
+        }
+
+        .match-area {
+            display: grid;
+            place-items: center;
+            min-width: 0;
+            padding: 12px;
+        }
+
+        canvas {
+            width: min(100%, calc((100dvh - 92px) * 1.09));
+            max-height: calc(100dvh - 92px);
+            border-radius: 8px;
+            background: #10151f;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 16px 38px rgba(0, 0, 0, 0.32);
+        }
+
+        .right-altar {
+            align-items: stretch;
+            gap: 12px;
+            padding: 14px;
+            border-left: 1px solid rgba(255, 255, 255, 0.16);
+            border-right: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .relic-shadow {
+            display: grid;
+            gap: 8px;
+            padding: 14px;
+            text-align: left;
+        }
+
+        .relic-shadow p,
+        .meter-label {
+            color: rgba(226, 232, 240, 0.82);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-shadow: none;
+            text-transform: uppercase;
+        }
+
+        .shadow-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border: 1px solid rgba(120, 168, 255, 0.36);
+            border-radius: 8px;
+            background: rgba(120, 168, 255, 0.12);
+            color: #edf2f7;
+            filter: none;
+            font-size: 28px;
+        }
+
+        .relic-name {
+            color: #edf2f7;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .soil-meter {
+            display: grid;
+            gap: 10px;
+            padding: 14px;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+        }
+
+        .vertical-progress {
+            width: 100%;
+            height: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            background: rgba(244, 247, 252, 0.12);
+            box-shadow: none;
+        }
+
+        .progress-fill {
+            right: auto;
+            bottom: auto;
+            left: 0;
+            height: 100% !important;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #78a8ff, #6dd3a0);
+            box-shadow: none;
+            transition: width 0.8s ease;
+        }
+
+        .percent-text {
+            margin: 0;
+            color: #edf2f7;
+            font-size: 32px;
+            line-height: 1;
+            text-align: left;
+            text-shadow: none;
+        }
+
+        .tomb-buttons {
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        .btn-tomb {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 0 14px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 999px;
+            background: rgba(10, 15, 24, 0.58);
+            color: #edf2f7;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-shadow: none;
+            transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+        }
+
+        .btn-tomb:hover {
+            border-color: #78a8ff;
+            background: rgba(120, 168, 255, 0.16);
+            color: #edf2f7;
+            transform: translateY(-1px);
+        }
+
+        .btn-tomb:active {
+            transform: translateY(0);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .dig-note {
+            margin-top: 0;
+            color: rgba(226, 232, 240, 0.72);
+            font-size: 13px;
+            line-height: 1.65;
+            text-align: left;
+        }
+
+        .toast-msg {
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-left: 3px solid #78a8ff;
+            border-radius: 8px;
+            background: rgba(10, 15, 24, 0.82);
+            color: #edf2f7;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.32);
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .tomb-panel,
+            html.embedded .tomb-panel {
+                overflow: auto;
+            }
+
+            .game-layout,
+            html.embedded .game-layout {
+                min-height: 100%;
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            canvas,
+            html.embedded canvas {
+                width: min(100%, calc((100dvh - 250px) * 1.09));
+                max-height: calc(100dvh - 250px);
+            }
+
+            .right-altar,
+            html.embedded .right-altar {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 10px;
+                border: 1px solid rgba(255, 255, 255, 0.16);
+            }
+
+            html.embedded .relic-shadow,
+            html.embedded .soil-meter,
+            html.embedded .tomb-buttons {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -240,38 +592,50 @@
         <!-- 右侧祭坛 -->
         <div class="right-altar">
             <div class="relic-shadow">
-                <p>⚱️ 尘封圣物 ⚱️</p>
-                <div class="shadow-icon">🏺</div>
-                <div style="font-size: 14px; margin-top: 6px; color:#e7c487;">「古代祭祀罐」</div>
+                <p>清理目标</p>
+                <div class="shadow-icon">罐</div>
+                <div class="relic-name">古代祭祀罐</div>
             </div>
 
             <div class="soil-meter">
                 <div class="meter-label">
-                    <span>⛏️ 剩余进度</span>
-                    <span>⚡</span>
+                    <span>剩余土层</span>
+                    <span>目标 100</span>
                 </div>
                 <div class="vertical-progress">
-                    <div id="soilFill" class="progress-fill" style="height: 100%;"></div>
+                    <div id="soilFill" class="progress-fill" style="height: 100%; width: 100%;"></div>
                 </div>
                 <div class="percent-text" id="soilPercent">100%</div>
             </div>
 
             <div class="tomb-buttons">
-                <button class="btn-tomb" id="resetBtn">🪦 重置游戏</button>
-                <button class="btn-tomb" id="exitBtn">🚪 退出游戏</button>
+                <button class="btn-tomb" id="resetBtn">重置游戏</button>
+                <button class="btn-tomb" id="exitBtn">退出游戏</button>
             </div>
-            <div style="font-size: 13px; color:#c9aa76; margin-top: 10px; text-align: center;">✦ 交换相邻方块 ✦<br>累积消除100块方块即可获胜</div>
+            <div class="dig-note">交换相邻方块，累积消除 100 块后完成墓门前清理。</div>
         </div>
     </div>
 </div>
 
 <script>
     (function(){
+        const params = new URLSearchParams(window.location.search);
+        const isEmbedded = params.get('embed') === '1';
+        const miniGameId = params.get('miniGame') || 'mg_dig_match3';
+        const parentTargetOrigin = /^https?:/.test(window.location.origin) ? window.location.origin : '*';
+        document.documentElement.classList.toggle('embedded', isEmbedded);
+
+        function notifyParent(type) {
+            if(!isEmbedded || window.parent === window) return;
+            window.parent.postMessage({ type, puzzleId: miniGameId }, parentTargetOrigin);
+        }
+
         // ---------------- 古墓消消乐核心配置 ----------------
         const ROWS = 11;
         const COLS = 12;
         const CELL_W = 90;
         const CELL_H = 90;
+        const TARGET_ELIMINATIONS = 100;
 
         // 动画常量
         const ELIMINATE_DELAY = 500;  // 消除高亮时长 0.5秒
@@ -352,8 +716,9 @@
 
         // 辅助函数: 更新UI进度条 (由 totalEliminated 驱动)
         function updateSoilUI() {
-            let percent = Math.max(0, Math.min(100, 100 - totalEliminated));
+            let percent = Math.max(0, Math.min(100, ((TARGET_ELIMINATIONS - totalEliminated) / TARGET_ELIMINATIONS) * 100));
             soilFillDiv.style.height = percent + "%";
+            soilFillDiv.style.width = percent + "%";
             soilPercentSpan.innerText = Math.floor(percent) + "%";
         }
 
@@ -371,6 +736,12 @@
                 }
             }
             return grid;
+        }
+
+        function swapGridCells(grid, r1, c1, r2, c2) {
+            let temp = grid[r1][c1];
+            grid[r1][c1] = grid[r2][c2];
+            grid[r2][c2] = temp;
         }
 
         // ---------- 核心匹配检测 ----------
@@ -437,6 +808,60 @@
                     for(let r=0; r<ROWS; r++) grid[r][c] = columnVals[r];
                 }
             }
+        }
+
+        function createsMatchAfterSwap(grid, r1, c1, r2, c2) {
+            if(r1<0||r1>=ROWS||c1<0||c1>=COLS||r2<0||r2>=ROWS||c2<0||c2>=COLS) return false;
+            if(grid[r1][c1] === grid[r2][c2]) return false;
+            swapGridCells(grid, r1, c1, r2, c2);
+            let hasMatch = getAllMatches(grid).length > 0;
+            swapGridCells(grid, r1, c1, r2, c2);
+            return hasMatch;
+        }
+
+        function hasAvailableMove(grid) {
+            for(let r=0; r<ROWS; r++) {
+                for(let c=0; c<COLS; c++) {
+                    if(c + 1 < COLS && createsMatchAfterSwap(grid, r, c, r, c + 1)) return true;
+                    if(r + 1 < ROWS && createsMatchAfterSwap(grid, r, c, r + 1, c)) return true;
+                }
+            }
+            return false;
+        }
+
+        function seedGuaranteedMove(grid) {
+            if(ROWS < 3 || COLS < 4) return grid;
+            grid[0][0] = TYPE_SOIL;
+            grid[0][1] = TYPE_STONE;
+            grid[0][2] = TYPE_SOIL;
+            grid[0][3] = TYPE_SHARD;
+            grid[1][0] = TYPE_SHARD;
+            grid[1][1] = TYPE_SOIL;
+            grid[1][2] = TYPE_BRICK;
+            grid[2][1] = TYPE_SHARD;
+            return grid;
+        }
+
+        function generatePlayableGrid() {
+            for(let attempt=0; attempt<300; attempt++) {
+                let grid = generateRandomGrid();
+                stabilizeGridWithoutProgress(grid);
+                if(hasAvailableMove(grid)) return grid;
+            }
+            let fallback = generateRandomGrid();
+            stabilizeGridWithoutProgress(fallback);
+            seedGuaranteedMove(fallback);
+            return fallback;
+        }
+
+        function refreshBoardIfNoMoves(showMsg = true) {
+            if(!gameActive || hasAvailableMove(gameGrid)) return false;
+            gameGrid = generatePlayableGrid();
+            selectedRow = -1;
+            selectedCol = -1;
+            drawCanvas();
+            if(showMsg) showToast("🧭 这片土层没有可清理走法，已重新拨开浮土...");
+            return true;
         }
 
         // 延迟函数
@@ -609,9 +1034,9 @@
                 // 扣除土层进度
                 if(updateProgress && matchCount > 0) {
                     totalEliminated += matchCount;
-                    currentSoilPercent = Math.max(0, 100 - totalEliminated);
+                    currentSoilPercent = Math.max(0, TARGET_ELIMINATIONS - totalEliminated);
                     updateSoilUI();
-                    if(totalEliminated >= 100) {
+                    if(totalEliminated >= TARGET_ELIMINATIONS) {
                         await performEliminationAnimation(matches);
                         winGame();
                         return true;
@@ -622,6 +1047,7 @@
                 await performEliminationAnimation(matches);
             }
 
+            refreshBoardIfNoMoves(true);
             return anyAction;
         }
 
@@ -644,9 +1070,7 @@
             fallingBlocks = [];
             updateSoilUI();
 
-            let newGrid = generateRandomGrid();
-            stabilizeGridWithoutProgress(newGrid);
-            gameGrid = newGrid;
+            gameGrid = generatePlayableGrid();
             drawCanvas();
 
             if(showMsg) showToast("🪦 墓穴已重置，继续挖掘...");
@@ -657,9 +1081,7 @@
             if(!gameActive) return;
             gameActive = false;
             showToast("✨ 圣物出土！消除100块方块，获得【古代祭祀罐】 ✨");
-            setTimeout(() => {
-                resetFullGame(true);
-            }, 800);
+            notifyParent('M1_MINIGAME_COMPLETE');
         }
 
         // 尝试交换两个格子
@@ -879,7 +1301,7 @@
                     isProcessing = false;
                     return;
                 }
-                if(totalEliminated >= 100) {
+                if(totalEliminated >= TARGET_ELIMINATIONS) {
                     isProcessing = false;
                     return;
                 }
@@ -887,7 +1309,7 @@
             isProcessing = false;
 
             // 检查累积消除是否达到100（二次保险）
-            if(totalEliminated >= 100 && gameActive) {
+            if(totalEliminated >= TARGET_ELIMINATIONS && gameActive) {
                 winGame();
             }
         }
@@ -904,13 +1326,12 @@
             if(isProcessing) return;
             resetFullGame(true);
             showToast("⛏️ 离开了墓室，没有带回文物... ⛏️");
+            notifyParent('M1_MINIGAME_EXIT');
         }
 
         // 初始化游戏
         function initGame() {
-            let initGrid = generateRandomGrid();
-            stabilizeGridWithoutProgress(initGrid);
-            gameGrid = initGrid;
+            gameGrid = generatePlayableGrid();
             currentSoilPercent = 100;
             totalEliminated = 0;
             gameActive = true;

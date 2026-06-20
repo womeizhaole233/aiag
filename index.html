@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>白沙宋墓 M1</title>
-    <link rel="stylesheet" href="styles.css?v=scene-art-minigame-merge-20260613" />
+    <link rel="stylesheet" href="styles.css?v=dialogue-title-tone-20260620" />
   </head>
   <body>
     <main class="scene" aria-label="第一号墓墓门">
@@ -18,6 +18,9 @@
           </button>
           <button id="workbenchToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="workbenchLayer">
             工作台
+          </button>
+          <button id="npcChatButton" class="chrome-button" type="button">
+            对话
           </button>
         </div>
       </div>
@@ -65,11 +68,15 @@
     </div>
 
     <div id="dialogueLayer" class="dialogue-layer hidden" role="dialog" aria-modal="true" aria-labelledby="dialogueTitle">
+      <div class="dialogue-portrait-layer" aria-hidden="true">
+        <img id="dialoguePortrait" alt="" />
+      </div>
       <article class="dialogue-box">
         <p id="dialogueKicker" class="eyebrow">章节提示</p>
         <p id="dialogueSpeaker" class="dialogue-speaker"></p>
         <h1 id="dialogueTitle"></h1>
         <p id="dialogueBody"></p>
+        <div id="dialogueChoices" class="dialogue-choices" aria-label="剧情选项"></div>
         <button id="dialogueClose" class="primary-button" type="button">继续</button>
       </article>
     </div>
@@ -267,7 +274,7 @@
                 <button class="inscription-error-line" data-error="whole" type="button">这条题记已经解释了整座墓的身份问题。</button>
               </p>
               <div id="inscriptionCorrections" class="inscription-corrections" aria-label="已改正的问题">
-                <span data-error-slot="owner">墓主身份：待复查</span>
+                <span data-error-slot="owner">墓主身份：仍存疑</span>
                 <span data-error-slot="whole">整墓结论：不能单证推出</span>
               </div>
               <p class="inscription-name-note">
@@ -358,7 +365,21 @@
       </article>
     </div>
 
-    <script src="data/scenes.js?v=scene-art-minigame-merge-20260613"></script>
-    <script src="game.js?v=scene-art-minigame-merge-20260613"></script>
+    <div id="digMatchLayer" class="puzzle-layer dig-match-layer hidden" role="dialog" aria-modal="true" aria-labelledby="digMatchTitle">
+      <article class="puzzle-box dig-match-box">
+        <header class="puzzle-header">
+          <div>
+            <p class="eyebrow">墓门清理</p>
+            <h1 id="digMatchTitle">清理墓门前土层</h1>
+          </div>
+          <button id="digMatchClose" class="plain-button" type="button">稍后</button>
+        </header>
+        <iframe id="digMatchFrame" class="dig-match-frame" title="挖土消消乐" src="about:blank" loading="lazy"></iframe>
+      </article>
+    </div>
+
+    <script src="data/scenes.js?v=position-map-markers-20260620"></script>
+    <script src="data/story-vn.js?v=dialogue-types-20260620"></script>
+    <script src="game.js?v=dialogue-types-20260620"></script>
   </body>
 </html>
