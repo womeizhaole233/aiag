@@ -1,0 +1,623 @@
+﻿
+> baisha_chenyan\new story.md:231:### 玩家点击
+  baisha_chenyan\new story.md:232:
+  baisha_chenyan\new story.md:233:这是……？
+  baisha_chenyan\new story.md:234:
+  baisha_chenyan\new story.md:235:### 粟柏年
+  baisha_chenyan\new story.md:236:
+  baisha_chenyan\new story.md:237:你外祖父。1940年，他随历史所调查组来过白沙。这条线是他手绘的。
+  baisha_chenyan\new story.md:238:
+  baisha_chenyan\new story.md:239:### 系统
+  baisha_chenyan\new story.md:240:
+  baisha_chenyan\new story.md:241:你的手指碰到领口里的银扣，隐隐感觉有些发烫。
+  baisha_chenyan\new story.md:242:
+  baisha_chenyan\new story.md:243:### 粟柏年
+  baisha_chenyan\new story.md:244:
+  baisha_chenyan\new story.md:245:待会儿你要进的是一座完整的墓。不是单个谜题，是一个从外到内的空间系统。
+  baisha_chenyan\new story.md:246:
+  baisha_chenyan\new story.md:247:每走一步，前面的发现都会重新被后面的证据检验。
+  baisha_chenyan\new story.md:248:
+  baisha_chenyan\new story.md:249:### 系统
+  baisha_chenyan\new story.md:250:
+  baisha_chenyan\new story.md:251:他把草图折好，塞回口袋，抬头看了你一眼。
+  baisha_chenyan\new story.md:252:
+  baisha_chenyan\new story.md:253:### 粟柏年
+  baisha_chenyan\new story.md:254:
+  baisha_chenyan\new story.md:255:现在，把白沙位置、墓群范围和这条空间序列标在你的记录本上。顺序别乱。
+  baisha_chenyan\new story.md:256:
+  baisha_chenyan\new story.md:257:### 系统
+  baisha_chenyan\new story.md:258:
+  baisha_chenyan\new story.md:259:你在笔记上画下三个框：位置图、范围图、序列轴。
+  baisha_chenyan\new story.md:260:
+  baisha_chenyan\new story.md:261:在标注墓群范围时，你注意到土岗西北角还有一片未探明的空白区。
+> baisha_chenyan\new story.md:281:### 玩家点击
+  baisha_chenyan\new story.md:282:
+  baisha_chenyan\new story.md:283:#### 选项
+  baisha_chenyan\new story.md:284:
+  baisha_chenyan\new story.md:285:A. “只靠踩就能知道？”
+  baisha_chenyan\new story.md:286:
+  baisha_chenyan\new story.md:287:B. “为什么不是自然土？”
+  baisha_chenyan\new story.md:288:
+  baisha_chenyan\new story.md:289:C. 蹲下来观察土色
+  baisha_chenyan\new story.md:290:
+  baisha_chenyan\new story.md:291:------
+  baisha_chenyan\new story.md:292:
+  baisha_chenyan\new story.md:293:#### 选A
+  baisha_chenyan\new story.md:294:
+  baisha_chenyan\new story.md:295:### 赵老倔
+  baisha_chenyan\new story.md:296:
+  baisha_chenyan\new story.md:297:“踩得多了就知道。”
+  baisha_chenyan\new story.md:298:
+  baisha_chenyan\new story.md:299:“跟认路一样。”
+  baisha_chenyan\new story.md:300:
+  baisha_chenyan\new story.md:301:### 系统
+  baisha_chenyan\new story.md:302:
+  baisha_chenyan\new story.md:303:------
+  baisha_chenyan\new story.md:304:
+  baisha_chenyan\new story.md:305:### 系统
+  baisha_chenyan\new story.md:306:
+  baisha_chenyan\new story.md:307:#### 选B
+  baisha_chenyan\new story.md:308:
+  baisha_chenyan\new story.md:309:### 赵老倔
+  baisha_chenyan\new story.md:310:
+  baisha_chenyan\new story.md:311:“自然土没这么实。”
+> baisha_chenyan\new story.md:387:### 玩家点击
+  baisha_chenyan\new story.md:388:
+  baisha_chenyan\new story.md:389:#### 选项
+  baisha_chenyan\new story.md:390:
+  baisha_chenyan\new story.md:391:A. 看夯层厚度
+  baisha_chenyan\new story.md:392:
+  baisha_chenyan\new story.md:393:B. 看夯窝
+  baisha_chenyan\new story.md:394:
+  baisha_chenyan\new story.md:395:C. 看土色
+  baisha_chenyan\new story.md:396:
+  baisha_chenyan\new story.md:397:#### 选A
+  baisha_chenyan\new story.md:398:
+  baisha_chenyan\new story.md:399:### 系统
+  baisha_chenyan\new story.md:400:
+  baisha_chenyan\new story.md:401:夯层厚薄相近，像被人刻意控制过。
+  baisha_chenyan\new story.md:402:
+  baisha_chenyan\new story.md:403:#### 选B（最佳）
+  baisha_chenyan\new story.md:404:
+  baisha_chenyan\new story.md:405:### 系统
+  baisha_chenyan\new story.md:406:
+  baisha_chenyan\new story.md:407:断面上密布圆形浅坑，排列十分均匀。
+  baisha_chenyan\new story.md:408:
+  baisha_chenyan\new story.md:409:#### 选C
+  baisha_chenyan\new story.md:410:
+  baisha_chenyan\new story.md:411:### 系统
+  baisha_chenyan\new story.md:412:
+  baisha_chenyan\new story.md:413:土色整体偏黄褐，没有明显变化。
+  baisha_chenyan\new story.md:414:
+  baisha_chenyan\new story.md:415:### 粟柏年
+  baisha_chenyan\new story.md:416:
+  baisha_chenyan\new story.md:417:看见了吗？
+> baisha_chenyan\new story.md:457:### 玩家点击
+  baisha_chenyan\new story.md:458:
+  baisha_chenyan\new story.md:459:#### 选项
+  baisha_chenyan\new story.md:460:
+  baisha_chenyan\new story.md:461:A. 从外层开始拆
+  baisha_chenyan\new story.md:462:
+  baisha_chenyan\new story.md:463:B. 从中层开始拆
+  baisha_chenyan\new story.md:464:
+  baisha_chenyan\new story.md:465:C. 从内层开始拆
+  baisha_chenyan\new story.md:466:
+  baisha_chenyan\new story.md:467:#### 选A（最佳）
+  baisha_chenyan\new story.md:468:
+  baisha_chenyan\new story.md:469:### 系统
+  baisha_chenyan\new story.md:470:
+  baisha_chenyan\new story.md:471:外层混合砌法最不稳定，先拆它，内层还有中层抵着。
+  baisha_chenyan\new story.md:472:
+  baisha_chenyan\new story.md:473:### 粟柏年
+  baisha_chenyan\new story.md:474:
+  baisha_chenyan\new story.md:475:正确。
+  baisha_chenyan\new story.md:476:
+  baisha_chenyan\new story.md:477:反过来就不行。
+  baisha_chenyan\new story.md:478:
+  baisha_chenyan\new story.md:479:### 系统
+  baisha_chenyan\new story.md:480:
+  baisha_chenyan\new story.md:481:#### 选B
+  baisha_chenyan\new story.md:482:
+  baisha_chenyan\new story.md:483:### 系统
+  baisha_chenyan\new story.md:484:
+  baisha_chenyan\new story.md:485:中层被外层和内层夹住，贸然从中间动手，容易破坏整体受力。
+  baisha_chenyan\new story.md:486:
+  baisha_chenyan\new story.md:487:### 粟柏年
+> baisha_chenyan\new story.md:533:### 玩家点击
+  baisha_chenyan\new story.md:534:
+  baisha_chenyan\new story.md:535:#### 选项
+  baisha_chenyan\new story.md:536:
+  baisha_chenyan\new story.md:537:A. 墓主人名字
+  baisha_chenyan\new story.md:538:
+  baisha_chenyan\new story.md:539:B. 年号
+  baisha_chenyan\new story.md:540:
+  baisha_chenyan\new story.md:541:C. 吉祥语
+  baisha_chenyan\new story.md:542:
+  baisha_chenyan\new story.md:543:D. 暂时无法判断
+  baisha_chenyan\new story.md:544:
+  baisha_chenyan\new story.md:545:#### 选A
+  baisha_chenyan\new story.md:546:
+  baisha_chenyan\new story.md:547:### 系统
+  baisha_chenyan\new story.md:548:
+  baisha_chenyan\new story.md:549:这个解释最直观。
+  baisha_chenyan\new story.md:550:
+  baisha_chenyan\new story.md:551:但证据不足。
+  baisha_chenyan\new story.md:552:
+  baisha_chenyan\new story.md:553:### 粟柏年
+  baisha_chenyan\new story.md:554:
+  baisha_chenyan\new story.md:555:名字不能只凭两个字定。
+  baisha_chenyan\new story.md:556:
+  baisha_chenyan\new story.md:557:先放一放。
+  baisha_chenyan\new story.md:558:
+  baisha_chenyan\new story.md:559:### 系统
+  baisha_chenyan\new story.md:560:
+  baisha_chenyan\new story.md:561:#### 选B
+  baisha_chenyan\new story.md:562:
+  baisha_chenyan\new story.md:563:### 系统
+> baisha_chenyan\new story.md:641:### 玩家点击
+  baisha_chenyan\new story.md:642:
+  baisha_chenyan\new story.md:643:#### 选项
+  baisha_chenyan\new story.md:644:
+  baisha_chenyan\new story.md:645:A. “赵师傅，你家用的什么砖？”
+  baisha_chenyan\new story.md:646:
+  baisha_chenyan\new story.md:647:B. 笑笑不说话，继续低头编号。
+  baisha_chenyan\new story.md:648:
+  baisha_chenyan\new story.md:649:C. “九百年了，烧它的人早没了，它还在。”
+  baisha_chenyan\new story.md:650:
+  baisha_chenyan\new story.md:651:#### 选A
+  baisha_chenyan\new story.md:652:
+  baisha_chenyan\new story.md:653:### 系统
+  baisha_chenyan\new story.md:654:
+  baisha_chenyan\new story.md:655:赵老倔从嘴里抽出旱烟袋，在鞋底磕了两下。
+  baisha_chenyan\new story.md:656:
+  baisha_chenyan\new story.md:657:### 赵老倔
+  baisha_chenyan\new story.md:658:
+  baisha_chenyan\new story.md:659:俺家是土坯砖，自己打的。
+  baisha_chenyan\new story.md:660:
+  baisha_chenyan\new story.md:661:哪用得起烧窑砖。
+  baisha_chenyan\new story.md:662:
+  baisha_chenyan\new story.md:663:### 系统
+  baisha_chenyan\new story.md:664:
+  baisha_chenyan\new story.md:665:他低头看着手里的墓砖，又补了一句。
+  baisha_chenyan\new story.md:666:
+  baisha_chenyan\new story.md:667:### 赵老倔
+  baisha_chenyan\new story.md:668:
+  baisha_chenyan\new story.md:669:活人住不上，死人倒住上了。
+  baisha_chenyan\new story.md:670:
+  baisha_chenyan\new story.md:671:### 系统
+> baisha_chenyan\new story.md:733:### 玩家点击
+  baisha_chenyan\new story.md:734:
+  baisha_chenyan\new story.md:735:#### 选项
+  baisha_chenyan\new story.md:736:
+  baisha_chenyan\new story.md:737:A. “继续拆吧。裂缝不大，应该不会有大问题。”
+  baisha_chenyan\new story.md:738:
+  baisha_chenyan\new story.md:739:B. “停。先架支撑。”
+  baisha_chenyan\new story.md:740:
+  baisha_chenyan\new story.md:741:C. “我去叫陈工来看看，他经验丰富。”
+  baisha_chenyan\new story.md:742:
+  baisha_chenyan\new story.md:743:#### 选A
+  baisha_chenyan\new story.md:744:
+  baisha_chenyan\new story.md:745:### 系统
+  baisha_chenyan\new story.md:746:
+  baisha_chenyan\new story.md:747:粟柏年伸手按住你正准备递给赵老倔的下一块砖号。
+  baisha_chenyan\new story.md:748:
+  baisha_chenyan\new story.md:749:力道很轻。
+  baisha_chenyan\new story.md:750:
+  baisha_chenyan\new story.md:751:### 系统
+  baisha_chenyan\new story.md:752:
+  baisha_chenyan\new story.md:753:但很确定。
+  baisha_chenyan\new story.md:754:
+  baisha_chenyan\new story.md:755:### 粟柏年
+  baisha_chenyan\new story.md:756:
+  baisha_chenyan\new story.md:757:裂缝的宽度不到一毫米。
+  baisha_chenyan\new story.md:758:
+  baisha_chenyan\new story.md:759:但它在内层卧丁砖上——这块砖直接承受墓室内部的压力。
+  baisha_chenyan\new story.md:760:
+  baisha_chenyan\new story.md:761:墓道填土清掉以后，外侧土压力消失。
+  baisha_chenyan\new story.md:762:
+  baisha_chenyan\new story.md:763:如果墓室内部有局部坍塌，内层承担的力已经不均匀了。
+> baisha_chenyan\new story.md:911:### 玩家点击
+  baisha_chenyan\new story.md:912:
+  baisha_chenyan\new story.md:913:#### 选项
+  baisha_chenyan\new story.md:914:
+  baisha_chenyan\new story.md:915:A. 先看地面
+  baisha_chenyan\new story.md:916:
+  baisha_chenyan\new story.md:917:B. 先看顶部
+  baisha_chenyan\new story.md:918:
+  baisha_chenyan\new story.md:919:C. 先看前方
+  baisha_chenyan\new story.md:920:
+  baisha_chenyan\new story.md:921:#### 选A
+  baisha_chenyan\new story.md:922:
+  baisha_chenyan\new story.md:923:### 系统
+  baisha_chenyan\new story.md:924:
+  baisha_chenyan\new story.md:925:地砖保存得出奇完整。
+  baisha_chenyan\new story.md:926:
+  baisha_chenyan\new story.md:927:灰尘很薄。
+  baisha_chenyan\new story.md:928:
+  baisha_chenyan\new story.md:929:### 系统
+  baisha_chenyan\new story.md:930:
+  baisha_chenyan\new story.md:931:像有人刚刚从这里退开。
+  baisha_chenyan\new story.md:932:
+  baisha_chenyan\new story.md:933:#### 选B（最佳）
+  baisha_chenyan\new story.md:934:
+  baisha_chenyan\new story.md:935:### 系统
+  baisha_chenyan\new story.md:936:
+  baisha_chenyan\new story.md:937:你的手电最先照到甬道顶部。
+  baisha_chenyan\new story.md:938:
+  baisha_chenyan\new story.md:939:砖层一层层向中心收拢。
+  baisha_chenyan\new story.md:940:
+  baisha_chenyan\new story.md:941:### 系统
+> baisha_chenyan\new story.md:1053:### 玩家点击
+  baisha_chenyan\new story.md:1054:
+  baisha_chenyan\new story.md:1055:#### 选项
+  baisha_chenyan\new story.md:1056:
+  baisha_chenyan\new story.md:1057:A. 顶部叠胜
+  baisha_chenyan\new story.md:1058:
+  baisha_chenyan\new story.md:1059:B. 东壁人物
+  baisha_chenyan\new story.md:1060:
+  baisha_chenyan\new story.md:1061:C. 西壁马匹
+  baisha_chenyan\new story.md:1062:
+  baisha_chenyan\new story.md:1063:------
+  baisha_chenyan\new story.md:1064:
+  baisha_chenyan\new story.md:1065:#### 选A
+  baisha_chenyan\new story.md:1066:
+  baisha_chenyan\new story.md:1067:### 系统
+  baisha_chenyan\new story.md:1068:
+  baisha_chenyan\new story.md:1069:顶部的赭黄色叠胜最醒目。
+  baisha_chenyan\new story.md:1070:
+  baisha_chenyan\new story.md:1071:像一枚悬在空间中央的印记。
+  baisha_chenyan\new story.md:1072:
+  baisha_chenyan\new story.md:1073:### 系统
+  baisha_chenyan\new story.md:1074:
+  baisha_chenyan\new story.md:1075:------
+  baisha_chenyan\new story.md:1076:
+  baisha_chenyan\new story.md:1077:#### 选B
+  baisha_chenyan\new story.md:1078:
+  baisha_chenyan\new story.md:1079:### 系统
+  baisha_chenyan\new story.md:1080:
+  baisha_chenyan\new story.md:1081:东壁人物保存得更完整。
+  baisha_chenyan\new story.md:1082:
+  baisha_chenyan\new story.md:1083:司阍的衣纹甚至还能辨认。
+> baisha_chenyan\new story.md:1145:### 玩家点击
+  baisha_chenyan\new story.md:1146:
+  baisha_chenyan\new story.md:1147:#### 选项
+  baisha_chenyan\new story.md:1148:
+  baisha_chenyan\new story.md:1149:A. 通行
+  baisha_chenyan\new story.md:1150:
+  baisha_chenyan\new story.md:1151:B. 装饰
+  baisha_chenyan\new story.md:1152:
+  baisha_chenyan\new story.md:1153:C. 引导
+  baisha_chenyan\new story.md:1154:
+  baisha_chenyan\new story.md:1155:------
+  baisha_chenyan\new story.md:1156:
+  baisha_chenyan\new story.md:1157:#### 选A
+  baisha_chenyan\new story.md:1158:
+  baisha_chenyan\new story.md:1159:### 粟柏年
+  baisha_chenyan\new story.md:1160:
+  baisha_chenyan\new story.md:1161:当然能通行。
+  baisha_chenyan\new story.md:1162:
+  baisha_chenyan\new story.md:1163:但这不是我问的。
+  baisha_chenyan\new story.md:1164:
+  baisha_chenyan\new story.md:1165:### 系统
+  baisha_chenyan\new story.md:1166:
+  baisha_chenyan\new story.md:1167:------
+  baisha_chenyan\new story.md:1168:
+  baisha_chenyan\new story.md:1169:### 系统
+  baisha_chenyan\new story.md:1170:
+  baisha_chenyan\new story.md:1171:#### 选B
+  baisha_chenyan\new story.md:1172:
+  baisha_chenyan\new story.md:1173:### 粟柏年
+  baisha_chenyan\new story.md:1174:
+  baisha_chenyan\new story.md:1175:墓里没有哪面墙只是为了好看。
+> baisha_chenyan\new story.md:1264:### 玩家点击
+  baisha_chenyan\new story.md:1265:
+  baisha_chenyan\new story.md:1266:#### 选项
+  baisha_chenyan\new story.md:1267:
+  baisha_chenyan\new story.md:1268:A. 顶部
+  baisha_chenyan\new story.md:1269:
+  baisha_chenyan\new story.md:1270:B. 东壁
+  baisha_chenyan\new story.md:1271:
+  baisha_chenyan\new story.md:1272:C. 西壁
+  baisha_chenyan\new story.md:1273:
+  baisha_chenyan\new story.md:1274:------
+  baisha_chenyan\new story.md:1275:
+  baisha_chenyan\new story.md:1276:#### 选A（最佳）
+  baisha_chenyan\new story.md:1277:
+  baisha_chenyan\new story.md:1278:### 周淼
+  baisha_chenyan\new story.md:1279:
+  baisha_chenyan\new story.md:1280:我也是。
+  baisha_chenyan\new story.md:1281:
+  baisha_chenyan\new story.md:1282:空间关系先定下来。
+  baisha_chenyan\new story.md:1283:
+  baisha_chenyan\new story.md:1284:人物可以后补。
+  baisha_chenyan\new story.md:1285:
+  baisha_chenyan\new story.md:1286:### 系统
+  baisha_chenyan\new story.md:1287:
+  baisha_chenyan\new story.md:1288:------
+  baisha_chenyan\new story.md:1289:
+  baisha_chenyan\new story.md:1290:### 系统
+  baisha_chenyan\new story.md:1291:
+  baisha_chenyan\new story.md:1292:#### 选B
+  baisha_chenyan\new story.md:1293:
+  baisha_chenyan\new story.md:1294:### 周淼
+> baisha_chenyan\new story.md:1462:### 玩家点击
+  baisha_chenyan\new story.md:1463:
+  baisha_chenyan\new story.md:1464:什么不对？
+  baisha_chenyan\new story.md:1465:
+  baisha_chenyan\new story.md:1466:### 系统
+  baisha_chenyan\new story.md:1467:
+  baisha_chenyan\new story.md:1468:她用炭笔在速写簿上快速勾出几笔。
+  baisha_chenyan\new story.md:1469:
+  baisha_chenyan\new story.md:1470:### 周淼
+  baisha_chenyan\new story.md:1471:
+  baisha_chenyan\new story.md:1472:这一段不像山石皴法。
+  baisha_chenyan\new story.md:1473:
+  baisha_chenyan\new story.md:1474:倒像是后来补上去的线。
+  baisha_chenyan\new story.md:1475:
+  baisha_chenyan\new story.md:1476:### 系统
+  baisha_chenyan\new story.md:1477:
+  baisha_chenyan\new story.md:1478:陈怀远闻声走过来。
+  baisha_chenyan\new story.md:1479:
+  baisha_chenyan\new story.md:1480:老花镜往下一滑。
+  baisha_chenyan\new story.md:1481:
+  baisha_chenyan\new story.md:1482:### 陈怀远
+  baisha_chenyan\new story.md:1483:
+  baisha_chenyan\new story.md:1484:后补的？
+  baisha_chenyan\new story.md:1485:
+  baisha_chenyan\new story.md:1486:### 周淼
+  baisha_chenyan\new story.md:1487:
+  baisha_chenyan\new story.md:1488:像，但我不确定。
+  baisha_chenyan\new story.md:1489:
+  baisha_chenyan\new story.md:1490:### 系统
+  baisha_chenyan\new story.md:1491:
+  baisha_chenyan\new story.md:1492:粟柏年接过手电，只看了一眼。
+> baisha_chenyan\new story.md:1550:### 玩家点击
+  baisha_chenyan\new story.md:1551:
+  baisha_chenyan\new story.md:1552:#### 选项
+  baisha_chenyan\new story.md:1553:
+  baisha_chenyan\new story.md:1554:A. 从右向左
+  baisha_chenyan\new story.md:1555:
+  baisha_chenyan\new story.md:1556:B. 从左向右
+  baisha_chenyan\new story.md:1557:
+  baisha_chenyan\new story.md:1558:C. 从上向下
+  baisha_chenyan\new story.md:1559:
+  baisha_chenyan\new story.md:1560:------
+  baisha_chenyan\new story.md:1561:
+  baisha_chenyan\new story.md:1562:#### 选A（最佳）
+  baisha_chenyan\new story.md:1563:
+  baisha_chenyan\new story.md:1564:### 系统
+  baisha_chenyan\new story.md:1565:
+  baisha_chenyan\new story.md:1566:你顺着笔势读下去。
+  baisha_chenyan\new story.md:1567:
+  baisha_chenyan\new story.md:1568:元符二年。
+  baisha_chenyan\new story.md:1569:
+  baisha_chenyan\new story.md:1570:### 系统
+  baisha_chenyan\new story.md:1571:
+  baisha_chenyan\new story.md:1572:赵大翁布。
+  baisha_chenyan\new story.md:1573:
+  baisha_chenyan\new story.md:1574:------
+  baisha_chenyan\new story.md:1575:
+  baisha_chenyan\new story.md:1576:#### 选B
+  baisha_chenyan\new story.md:1577:
+  baisha_chenyan\new story.md:1578:### 系统
+  baisha_chenyan\new story.md:1579:
+  baisha_chenyan\new story.md:1580:字能认出来。
+> baisha_chenyan\new story.md:1662:### 玩家点击
+  baisha_chenyan\new story.md:1663:
+  baisha_chenyan\new story.md:1664:#### 选项
+  baisha_chenyan\new story.md:1665:
+  baisha_chenyan\new story.md:1666:A. 格栅
+  baisha_chenyan\new story.md:1667:
+  baisha_chenyan\new story.md:1668:B. 菱花
+  baisha_chenyan\new story.md:1669:
+  baisha_chenyan\new story.md:1670:C. 门
+  baisha_chenyan\new story.md:1671:
+  baisha_chenyan\new story.md:1672:------
+  baisha_chenyan\new story.md:1673:
+  baisha_chenyan\new story.md:1674:#### 选A
+  baisha_chenyan\new story.md:1675:
+  baisha_chenyan\new story.md:1676:### 陈怀远
+  baisha_chenyan\new story.md:1677:
+  baisha_chenyan\new story.md:1678:差不多。
+  baisha_chenyan\new story.md:1679:
+  baisha_chenyan\new story.md:1680:### 系统
+  baisha_chenyan\new story.md:1681:
+  baisha_chenyan\new story.md:1682:------
+  baisha_chenyan\new story.md:1683:
+  baisha_chenyan\new story.md:1684:### 系统
+  baisha_chenyan\new story.md:1685:
+  baisha_chenyan\new story.md:1686:#### 选B（最佳）
+  baisha_chenyan\new story.md:1687:
+  baisha_chenyan\new story.md:1688:### 陈怀远
+  baisha_chenyan\new story.md:1689:
+  baisha_chenyan\new story.md:1690:对。
+  baisha_chenyan\new story.md:1691:
+  baisha_chenyan\new story.md:1692:棂条旋转四十五度。
+> baisha_chenyan\new story.md:1820:### 玩家点击
+  baisha_chenyan\new story.md:1821:
+  baisha_chenyan\new story.md:1822:#### 选项
+  baisha_chenyan\new story.md:1823:
+  baisha_chenyan\new story.md:1824:A. 两具都是男性
+  baisha_chenyan\new story.md:1825:
+  baisha_chenyan\new story.md:1826:B. 一男一女
+  baisha_chenyan\new story.md:1827:
+  baisha_chenyan\new story.md:1828:C. 看不出来
+  baisha_chenyan\new story.md:1829:
+  baisha_chenyan\new story.md:1830:------
+  baisha_chenyan\new story.md:1831:
+  baisha_chenyan\new story.md:1832:#### 选A
+  baisha_chenyan\new story.md:1833:
+  baisha_chenyan\new story.md:1834:### 系统
+  baisha_chenyan\new story.md:1835:
+  baisha_chenyan\new story.md:1836:你主要依据头骨大小判断。
+  baisha_chenyan\new story.md:1837:
+  baisha_chenyan\new story.md:1838:------
+  baisha_chenyan\new story.md:1839:
+  baisha_chenyan\new story.md:1840:#### 选B
+  baisha_chenyan\new story.md:1841:
+  baisha_chenyan\new story.md:1842:### 系统
+  baisha_chenyan\new story.md:1843:
+  baisha_chenyan\new story.md:1844:两具骨骼确实存在差异。
+  baisha_chenyan\new story.md:1845:
+  baisha_chenyan\new story.md:1846:------
+  baisha_chenyan\new story.md:1847:
+  baisha_chenyan\new story.md:1848:#### 选C（最佳）
+  baisha_chenyan\new story.md:1849:
+  baisha_chenyan\new story.md:1850:### 苏池
+> baisha_chenyan\new story.md:1898:### 玩家点击
+  baisha_chenyan\new story.md:1899:
+  baisha_chenyan\new story.md:1900:#### 选项
+  baisha_chenyan\new story.md:1901:
+  baisha_chenyan\new story.md:1902:A. 原葬
+  baisha_chenyan\new story.md:1903:
+  baisha_chenyan\new story.md:1904:B. 迁葬
+  baisha_chenyan\new story.md:1905:
+  baisha_chenyan\new story.md:1906:C. 盗扰
+  baisha_chenyan\new story.md:1907:
+  baisha_chenyan\new story.md:1908:------
+  baisha_chenyan\new story.md:1909:
+  baisha_chenyan\new story.md:1910:#### 选A
+  baisha_chenyan\new story.md:1911:
+  baisha_chenyan\new story.md:1912:### 苏池
+  baisha_chenyan\new story.md:1913:
+  baisha_chenyan\new story.md:1914:如果原葬。
+  baisha_chenyan\new story.md:1915:
+  baisha_chenyan\new story.md:1916:骨骼不会只剩头部保持位置。
+  baisha_chenyan\new story.md:1917:
+  baisha_chenyan\new story.md:1918:### 系统
+  baisha_chenyan\new story.md:1919:
+  baisha_chenyan\new story.md:1920:------
+  baisha_chenyan\new story.md:1921:
+  baisha_chenyan\new story.md:1922:### 系统
+  baisha_chenyan\new story.md:1923:
+  baisha_chenyan\new story.md:1924:#### 选B（最佳）
+  baisha_chenyan\new story.md:1925:
+  baisha_chenyan\new story.md:1926:### 苏池
+  baisha_chenyan\new story.md:1927:
+  baisha_chenyan\new story.md:1928:接近了。
+> baisha_chenyan\new story.md:2226:### 玩家点击
+  baisha_chenyan\new story.md:2227:
+  baisha_chenyan\new story.md:2228:什么意思？
+  baisha_chenyan\new story.md:2229:
+  baisha_chenyan\new story.md:2230:### 周淼
+  baisha_chenyan\new story.md:2231:
+  baisha_chenyan\new story.md:2232:经纬密度太高。
+  baisha_chenyan\new story.md:2233:
+  baisha_chenyan\new story.md:2234:### 系统
+  baisha_chenyan\new story.md:2235:
+  baisha_chenyan\new story.md:2236:她用指尖轻轻比划。
+  baisha_chenyan\new story.md:2237:
+  baisha_chenyan\new story.md:2238:### 周淼
+  baisha_chenyan\new story.md:2239:
+  baisha_chenyan\new story.md:2240:这种绢比地券用料好得多。
+  baisha_chenyan\new story.md:2241:
+  baisha_chenyan\new story.md:2242:更像专门保存的文书。
+  baisha_chenyan\new story.md:2243:
+  baisha_chenyan\new story.md:2244:### 系统
+  baisha_chenyan\new story.md:2245:
+  baisha_chenyan\new story.md:2246:苏池推了推眼镜。
+  baisha_chenyan\new story.md:2247:
+  baisha_chenyan\new story.md:2248:### 苏池
+  baisha_chenyan\new story.md:2249:
+  baisha_chenyan\new story.md:2250:我关心的不是绢，而是内容。
+  baisha_chenyan\new story.md:2251:
+  baisha_chenyan\new story.md:2252:### 系统
+  baisha_chenyan\new story.md:2253:
+  baisha_chenyan\new story.md:2254:他看向绢帛。
+  baisha_chenyan\new story.md:2255:
+  baisha_chenyan\new story.md:2256:### 苏池
+> baisha_chenyan\new story.md:2408:### 玩家点击
+  baisha_chenyan\new story.md:2409:
+  baisha_chenyan\new story.md:2410:#### 选项
+  baisha_chenyan\new story.md:2411:
+  baisha_chenyan\new story.md:2412:A. 私
+  baisha_chenyan\new story.md:2413:
+  baisha_chenyan\new story.md:2414:B. 官
+  baisha_chenyan\new story.md:2415:
+  baisha_chenyan\new story.md:2416:C. 盗
+  baisha_chenyan\new story.md:2417:
+  baisha_chenyan\new story.md:2418:#### 选A（最佳）
+  baisha_chenyan\new story.md:2419:
+  baisha_chenyan\new story.md:2420:### 系统
+  baisha_chenyan\new story.md:2421:
+  baisha_chenyan\new story.md:2422:你把残笔和上下文合起来看。
+  baisha_chenyan\new story.md:2423:
+  baisha_chenyan\new story.md:2424:“私”最顺。
+  baisha_chenyan\new story.md:2425:
+  baisha_chenyan\new story.md:2426:### 系统
+  baisha_chenyan\new story.md:2427:
+  baisha_chenyan\new story.md:2428:#### 选B或C
+  baisha_chenyan\new story.md:2429:
+  baisha_chenyan\new story.md:2430:### 系统
+  baisha_chenyan\new story.md:2431:
+  baisha_chenyan\new story.md:2432:字形似乎对不上。
+  baisha_chenyan\new story.md:2433:
+  baisha_chenyan\new story.md:2434:你重新比对上下文。
+  baisha_chenyan\new story.md:2435:
+  baisha_chenyan\new story.md:2436:### 系统
+  baisha_chenyan\new story.md:2437:
+  baisha_chenyan\new story.md:2438:最后写下：
+> baisha_chenyan\new story.md:2460:### 玩家点击
+  baisha_chenyan\new story.md:2461:
+  baisha_chenyan\new story.md:2462:#### 选项
+  baisha_chenyan\new story.md:2463:
+  baisha_chenyan\new story.md:2464:A. 酉
+  baisha_chenyan\new story.md:2465:
+  baisha_chenyan\new story.md:2466:B. 目
+  baisha_chenyan\new story.md:2467:
+  baisha_chenyan\new story.md:2468:C. 心
+  baisha_chenyan\new story.md:2469:
+  baisha_chenyan\new story.md:2470:#### 选A（最佳）
+  baisha_chenyan\new story.md:2471:
+  baisha_chenyan\new story.md:2472:### 系统
+  baisha_chenyan\new story.md:2473:
+  baisha_chenyan\new story.md:2474:水渍下面露出一点“酉”旁。
+  baisha_chenyan\new story.md:2475:
+  baisha_chenyan\new story.md:2476:像“酒”。
+  baisha_chenyan\new story.md:2477:
+  baisha_chenyan\new story.md:2478:### 系统
+  baisha_chenyan\new story.md:2479:
+  baisha_chenyan\new story.md:2480:#### 选B或C
+  baisha_chenyan\new story.md:2481:
+  baisha_chenyan\new story.md:2482:### 系统
+  baisha_chenyan\new story.md:2483:
+  baisha_chenyan\new story.md:2484:偏旁位置不对。
+  baisha_chenyan\new story.md:2485:
+  baisha_chenyan\new story.md:2486:你换了个角度照光。
+  baisha_chenyan\new story.md:2487:
+  baisha_chenyan\new story.md:2488:### 系统
+  baisha_chenyan\new story.md:2489:
+  baisha_chenyan\new story.md:2490:“酉”旁浮出来了。
+> baisha_chenyan\new story.md:2526:### 玩家点击
+  baisha_chenyan\new story.md:2527:
+  baisha_chenyan\new story.md:2528:#### 选项
+  baisha_chenyan\new story.md:2529:
+  baisha_chenyan\new story.md:2530:A. 知
+  baisha_chenyan\new story.md:2531:
+  baisha_chenyan\new story.md:2532:B. 矩
+  baisha_chenyan\new story.md:2533:
+  baisha_chenyan\new story.md:2534:C. 矫
+  baisha_chenyan\new story.md:2535:
+  baisha_chenyan\new story.md:2536:#### 选A（最佳）
+  baisha_chenyan\new story.md:2537:
+  baisha_chenyan\new story.md:2538:### 系统
+  baisha_chenyan\new story.md:2539:
+  baisha_chenyan\new story.md:2540:“矢”部之后接“口”。
+  baisha_chenyan\new story.md:2541:
+  baisha_chenyan\new story.md:2542:是“知”。
+  baisha_chenyan\new story.md:2543:
+  baisha_chenyan\new story.md:2544:### 系统
+  baisha_chenyan\new story.md:2545:
+  baisha_chenyan\new story.md:2546:你写下最后一行：知我罪我，惟待后人。
+  baisha_chenyan\new story.md:2547:
+  baisha_chenyan\new story.md:2548:崇宁五年腊月。
+  baisha_chenyan\new story.md:2549:
+  baisha_chenyan\new story.md:2550:### 系统
+  baisha_chenyan\new story.md:2551:
+  baisha_chenyan\new story.md:2552:赵怀诚泣血谨记。
+  baisha_chenyan\new story.md:2553:
+  baisha_chenyan\new story.md:2554:### 系统
+  baisha_chenyan\new story.md:2555:
+  baisha_chenyan\new story.md:2556:绢帛摊在你面前。
+
+
