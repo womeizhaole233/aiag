@@ -1,0 +1,100 @@
+﻿diff --git a/baisha_chenyan/chapters.json b/baisha_chenyan/chapters.json
+new file mode 100644
+index 0000000..5dc48e8
+--- /dev/null
++++ b/baisha_chenyan/chapters.json
+@@ -0,0 +1,94 @@
++{
++  "chapters": [
++    {
++      "id": "prologue",
++      "number": 0,
++      "title": "妤斿瓙",
++      "background_image": "assets/M1/01鐜鍦板浘/鐧芥矙瀹嬪鍦板舰鍥?png",
++      "description": "",
++      "start_node": "n00001",
++      "end_node": "n00046"
++    },
++    {
++      "id": "chapter_1",
++      "number": 1,
++      "title": "澧撳",
++      "background_image": "assets/M1/00_澧撹懍鍏ㄦ櫙涓庣粨鏋勫浘/绗竴鍙峰鍚庡骞炽€佸墫闈㈠浘.png",
++      "description": "",
++      "start_node": "n00047",
++      "end_node": "n00088"
++    },
++    {
++      "id": "chapter_2",
++      "number": 2,
++      "title": "澧撻棬",
++      "background_image": "assets/M1/02澧撻亾涓庡闂?灏侀棬鐮栫殑缁勭粐.png",
++      "description": "",
++      "start_node": "n00089",
++      "end_node": "n00144"
++    },
++    {
++      "id": "chapter_3",
++      "number": 3,
++      "title": "鐢亾",
++      "background_image": "assets/M1/03鐢亾/鐢亾椤跺彔鑳滃僵鐢?png",
++      "description": "",
++      "start_node": "n00145",
++      "end_node": "n00186"
++    },
++    {
++      "id": "chapter_4",
++      "number": 4,
++      "title": "鍓嶅",
++      "background_image": "assets/M1/16_鍑哄湡鍣ㄧ墿涓庝汉楠?鍦板埜.png",
++      "description": "",
++      "start_node": "n00187",
++      "end_node": "n00218"
++    },
++    {
++      "id": "chapter_5",
++      "number": 5,
++      "title": "杩囬亾",
++      "background_image": "assets/M1/09_杩囬亾/杩囬亾涓滃澹佺敾鍜岀邯骞撮璁?png",
++      "description": "",
++      "start_node": "n00219",
++      "end_node": "n00246"
++    },
++    {
++      "id": "chapter_6",
++      "number": 6,
++      "title": "鍚庡",
++      "background_image": "assets/M1/16_鍑哄湡鍣ㄧ墿涓庝汉楠?鍦板埜.png",
++      "description": "",
++      "start_node": "n00247",
++      "end_node": "n00308"
++    },
++    {
++      "id": "chapter_7",
++      "number": 7,
++      "title": "鏆楁牸",
++      "background_image": "assets/M1/16_鍑哄湡鍣ㄧ墿涓庝汉楠?鍦板埜.png",
++      "description": "",
++      "start_node": "n00309",
++      "end_node": "n00346"
++    },
++    {
++      "id": "finale",
++      "number": 8,
++      "title": "缁堢珷",
++      "background_image": "assets/M1/16_鍑哄湡鍣ㄧ墿涓庝汉楠?鍦板埜.png",
++      "description": "",
++      "start_node": "n00347",
++      "end_node": "n00358"
++    },
++    {
++      "id": "closure",
++      "number": 9,
++      "title": "灏佸瓨",
++      "background_image": "assets/M1/17_琛ュ厖鎬昏鍥?鍚庡鍏ュ彛鎬昏鍥?png",
++      "description": "",
++      "start_node": "n00359",
++      "end_node": "n00362"
++    }
++  ]
++}

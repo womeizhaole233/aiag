@@ -1,0 +1,68 @@
+﻿ baisha_chenyan/app.py | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+diff --git a/baisha_chenyan/app.py b/baisha_chenyan/app.py
+index 5a48e7e..cabede2 100644
+--- a/baisha_chenyan/app.py
++++ b/baisha_chenyan/app.py
+@@ -16,6 +16,33 @@ CUSTOM_NODES_KEY = '__custom_nodes__'
+ # 缁堟鑺傜偣鐨?next 鍊? TERMINAL_NEXTS = {'game_end', 'game_over'}
+ 
++# ==================== 绔犺妭閰嶇疆 ====================
++CHAPTERS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chapters.json')
++
++def load_chapters():
++    """杩斿洖绔犺妭閰嶇疆鍒楄〃"""
++    if os.path.exists(CHAPTERS_FILE):
++        try:
++            with open(CHAPTERS_FILE, 'r', encoding='utf-8') as f:
++                data = json.load(f) or {}
++            return data.get('chapters', [])
++        except Exception:
++            pass
++    return []
++
++def save_chapters(chapters):
++    """淇濆瓨绔犺妭閰嶇疆"""
++    with open(CHAPTERS_FILE, 'w', encoding='utf-8') as f:
++        json.dump({'chapters': chapters}, f, ensure_ascii=False, indent=2)
++
++def get_chapter_for_node(node_id):
++    """鏍规嵁鑺傜偣ID鏌ユ壘鎵€灞炵珷鑺?""
++    chapters = load_chapters()
++    for ch in chapters:
++        if ch.get('start_node', '') <= node_id <= ch.get('end_node', ''):
++            return ch.get('id')
++    return None
++
+ def load_overrides():
+     """杩斿洖 {node_id: {bg?, speaker?, text?}}銆傚吋瀹硅€佺増 bg_overrides.json銆?""
+     data = {}
+@@ -4326,6 +4353,7 @@ def dialogue_api():
+         'background_image': bg,
+         'portrait': portrait,
+         'puzzle': dialogue.get('puzzle'),
++        'chapter_id': get_chapter_for_node(dialogue_id),
+     })
+ 
+ @app.route('/api/dialogue/list')
+@@ -4348,6 +4376,20 @@ def reset():
+     session.clear()
+     return jsonify({'status': 'ok'})
+ 
++@app.route('/api/chapters')
++def chapters_api():
++    """杩斿洖绔犺妭閰嶇疆"""
++    chapters = load_chapters()
++    return jsonify({'chapters': chapters})
++
++@app.route('/api/chapters/save', methods=['POST'])
++def chapters_save_api():
++    """淇濆瓨绔犺妭閰嶇疆"""
++    data = request.get_json() or {}
++    chapters = data.get('chapters', [])
++    save_chapters(chapters)
++    return jsonify({'status': 'ok', 'count': len(chapters)})
++
+ 
+ # ==================== 鍚庡彴锛氬唴瀹归厤缃?====================
+ @app.route('/admin/bg')

@@ -1,13 +1,13 @@
 {
   "chapters": [
     {
-      "id": "prologue",
-      "number": 0,
-      "title": "楔子",
       "background_image": "assets/M1/01环境地图/白沙宋墓地形图.png",
       "description": "",
+      "end_node": "n00046",
+      "id": "prologue",
+      "number": 0,
       "start_node": "n00001",
-      "end_node": "n00046"
+      "title": "楔子"
     },
     {
       "id": "chapter_1",
@@ -19,76 +19,76 @@
       "end_node": "n00088"
     },
     {
-      "id": "chapter_2",
-      "number": 2,
-      "title": "墓门",
       "background_image": "assets/M1/02墓道与墓门/封门砖的组织.png",
       "description": "",
+      "end_node": "n00144",
+      "id": "chapter_2",
+      "number": 2,
       "start_node": "n00089",
-      "end_node": "n00144"
+      "title": "墓门"
     },
     {
-      "id": "chapter_3",
-      "number": 3,
-      "title": "甬道",
       "background_image": "assets/M1/03甬道/甬道顶叠胜彩画.png",
       "description": "",
+      "end_node": "n00186",
+      "id": "chapter_3",
+      "number": 3,
       "start_node": "n00145",
-      "end_node": "n00186"
+      "title": "甬道"
     },
     {
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "end_node": "n00218",
       "id": "chapter_4",
       "number": 4,
-      "title": "前室",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
       "start_node": "n00187",
-      "end_node": "n00218"
+      "title": "前室"
     },
     {
-      "id": "chapter_5",
-      "number": 5,
-      "title": "过道",
       "background_image": "assets/M1/09_过道/过道东壁壁画和纪年题记.png",
       "description": "",
+      "end_node": "n00246",
+      "id": "chapter_5",
+      "number": 5,
       "start_node": "n00219",
-      "end_node": "n00246"
+      "title": "过道"
     },
     {
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "end_node": "n00308",
       "id": "chapter_6",
       "number": 6,
-      "title": "后室",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
       "start_node": "n00247",
-      "end_node": "n00308"
+      "title": "后室"
     },
     {
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "end_node": "n00346",
       "id": "chapter_7",
       "number": 7,
-      "title": "暗格",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
       "start_node": "n00309",
-      "end_node": "n00346"
+      "title": "暗格"
     },
     {
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "end_node": "n00358",
       "id": "finale",
       "number": 8,
-      "title": "终章",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
       "start_node": "n00347",
-      "end_node": "n00358"
+      "title": "终章"
     },
     {
-      "id": "closure",
-      "number": 9,
-      "title": "封存",
       "background_image": "assets/M1/17_补充总览图/后室入口总览图.png",
       "description": "",
+      "end_node": "n00362",
+      "id": "closure",
+      "number": 9,
       "start_node": "n00359",
-      "end_node": "n00362"
+      "title": "封存"
     }
   ]
 }

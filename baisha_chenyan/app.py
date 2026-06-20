@@ -4340,7 +4340,11 @@ def dialogue_api():
         session['current_dialogue'] = choice_next
 
     dialogue_id = session.get('current_dialogue', 'n00001')
-    dialogue = get_dialogue(dialogue_id) or DIALOGUES.get('n00001', {})
+    dialogue = get_dialogue(dialogue_id)
+    if dialogue is None:
+        dialogue_id = 'n00001'
+        dialogue = DIALOGUES.get('n00001', {})
+        session['current_dialogue'] = dialogue_id
 
     speaker, text, bg, portrait, next_id = apply_overrides(dialogue_id, dialogue)
 

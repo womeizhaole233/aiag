@@ -1,0 +1,151 @@
+﻿diff --git a/baisha_chenyan/templates/game.html b/baisha_chenyan/templates/game.html
+index 37f7f32..c2a9ec8 100644
+--- a/baisha_chenyan/templates/game.html
++++ b/baisha_chenyan/templates/game.html
+@@ -253,6 +253,46 @@ body {
+     .dialogue-text { font-size: 16px; max-height: 40vh; }
+     .choice-btn { font-size: 14px; padding: 10px 16px; }
+ }
++
++/* ===== 绔犺妭鏍囬灞?===== */
++.chapter-overlay {
++    position: fixed;
++    inset: 0;
++    z-index: 1000;
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    opacity: 0;
++    pointer-events: none;
++    transition: opacity 0.8s ease-in-out;
++}
++.chapter-overlay.visible {
++    opacity: 1;
++    pointer-events: auto;
++}
++.chapter-bg {
++    position: absolute;
++    inset: 0;
++    background-size: cover;
++    background-position: center;
++    filter: brightness(0.4);
++}
++.chapter-content {
++    position: relative;
++    text-align: center;
++    color: #d4c5a9;
++}
++.chapter-number {
++    font-size: 1.2em;
++    letter-spacing: 0.3em;
++    margin-bottom: 0.5em;
++    opacity: 0.8;
++}
++.chapter-title {
++    font-size: 2.5em;
++    font-weight: bold;
++    letter-spacing: 0.2em;
++}
+ </style>
+ {% endblock %}
+ 
+@@ -311,6 +351,15 @@ body {
+             <button class="dbg-btn" id="dbgRefresh">鈫?閲嶈褰撳墠鑺傜偣</button>
+         </div>
+     </div>
++
++    <!-- 绔犺妭鏍囬灞?-->
++    <div id="chapterOverlay" class="chapter-overlay">
++        <div class="chapter-bg" id="chapterBg"></div>
++        <div class="chapter-content">
++            <div class="chapter-number" id="chapterNumber"></div>
++            <div class="chapter-title" id="chapterTitle"></div>
++        </div>
++    </div>
+ </div>
+ 
+ <script>
+@@ -323,6 +372,63 @@ let dbgCurrent = {id:'-', speaker:'-', next:'-', choices:0, puzzle:'-'};
+ let historyStack = []; // 瀵硅瘽鍘嗗彶鏍堬紙鐢ㄤ簬宸︾澶村洖閫€锛? let currentNodeId = 'start';
+ 
++// ========== 绔犺妭鏍囬灞?==========
++let currentChapter = null;
++let chaptersData = [];
++
++async function loadChapters() {
++    try {
++        const r = await fetch('/api/chapters');
++        const data = await r.json();
++        chaptersData = data.chapters || [];
++    } catch (e) {
++        console.error('Failed to load chapters:', e);
++    }
++}
++
++function getChapterDisplayInfo(chapterId) {
++    const ch = chaptersData.find(c => c.id === chapterId);
++    if (!ch) return null;
++    
++    // 鐗规畩澶勭悊锛氭瀛愩€佺粓绔犮€佸皝瀛樹笉鏄剧ず搴忓彿
++    const specialChapters = ['prologue', 'finale', 'closure'];
++    const isSpecial = specialChapters.includes(chapterId);
++    
++    return {
++        number: isSpecial ? '' : `绗?{ch.number}绔燻,
++        title: ch.title,
++        background_image: ch.background_image
++    };
++}
++
++function showChapterOverlay(chapterId) {
++    const info = getChapterDisplayInfo(chapterId);
++    if (!info) return Promise.resolve();
++    
++    return new Promise((resolve) => {
++        const overlay = document.getElementById('chapterOverlay');
++        const bg = document.getElementById('chapterBg');
++        const numberEl = document.getElementById('chapterNumber');
++        const titleEl = document.getElementById('chapterTitle');
++        
++        // 璁剧疆鍐呭
++        numberEl.textContent = info.number;
++        titleEl.textContent = info.title;
++        if (info.background_image) {
++            bg.style.backgroundImage = `url('/${info.background_image.replace(/^\/?/, '')}')`;
++        }
++        
++        // 娣″叆
++        overlay.classList.add('visible');
++        
++        // 鍋滅暀2绉掑悗娣″嚭
++        setTimeout(() => {
++            overlay.classList.remove('visible');
++            setTimeout(resolve, 800); // 绛夊緟娣″嚭鍔ㄧ敾瀹屾垚
++        }, 2000);
++    });
++}
++
+ function updateHexagon(speaker) {
+     document.getElementById('hexagonSpeaker').textContent = speaker || '鐧芥矙鎵嬭';
+ }
+@@ -421,6 +527,14 @@ async function loadDialogue(choiceNext = null) {
+         // 璁板綍褰撳墠鑺傜偣
+         currentNodeId = data.id;
+ 
++        // 妫€娴嬬珷鑺傚彉鍖?+        const newChapter = data.chapter_id;
++        if (newChapter && newChapter !== currentChapter) {
++            currentChapter = newChapter;
++            // 鏄剧ず绔犺妭鏍囬灞忥紙闈為樆濉烇級
++            showChapterOverlay(newChapter);
++        }
++
+         // 绔嬪嵆鏁存鏄剧ず锛堝垎娈甸琛岀缉杩涳紝娈甸棿鏃犵┖琛岋級
+         const paragraphs = data.text.split('\n\n')
+             .map(p => p.replace(/\n/g, '<br>'))
+@@ -550,5 +664,6 @@ document.getElementById('dbgToggle').addEventListener('click', () => {
+ 
+ loadJumpList();
+ loadDialogue();
++loadChapters();
+ </script>
+ {% endblock %}

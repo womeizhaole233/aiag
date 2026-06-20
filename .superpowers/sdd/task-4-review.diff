@@ -1,0 +1,230 @@
+﻿diff --git a/baisha_chenyan/templates/admin_bg.html b/baisha_chenyan/templates/admin_bg.html
+index 8adfd4b..f639bc2 100644
+--- a/baisha_chenyan/templates/admin_bg.html
++++ b/baisha_chenyan/templates/admin_bg.html
+@@ -87,6 +87,21 @@
+   .toast.show{opacity:1}
+   .footer{padding:8px 14px;border-top:1px solid var(--line);background:var(--panel);display:flex;gap:8px;align-items:center;}
+   .footer .grow{flex:1;color:var(--mute);font-size:12px;}
++  .tab-btn{padding:4px 12px;cursor:pointer;border-radius:4px;font-size:13px;color:var(--mute);}
++  .tab-btn.active{background:var(--accent);color:#1a1410;}
++  .tab-btn:hover:not(.active){color:var(--text);}
++  .chapter-list{flex:1;overflow:auto;}
++  .chapter-item{padding:10px 12px;border-bottom:1px solid #2a2622;cursor:pointer;display:flex;align-items:center;gap:8px;}
++  .chapter-item:hover{background:#2b2722;}
++  .chapter-item.active{background:#3a322a;}
++  .chapter-item .ch-num{font-family:Menlo,Consolas,monospace;color:var(--accent);font-size:12px;min-width:30px;}
++  .chapter-item .ch-title{flex:1;}
++  .chapter-item .ch-actions{display:flex;gap:4px;opacity:0;transition:opacity .2s;}
++  .chapter-item:hover .ch-actions{opacity:1;}
++  .chapter-item .ch-actions button{background:none;border:1px solid var(--line);color:var(--mute);padding:2px 6px;border-radius:3px;cursor:pointer;font-size:11px;}
++  .chapter-item .ch-actions button:hover{border-color:var(--accent);color:var(--text);}
++  .add-chapter-btn{margin:10px 12px;padding:8px;background:var(--panel2);border:1px dashed var(--line);border-radius:4px;text-align:center;cursor:pointer;color:var(--mute);font-size:13px;}
++  .add-chapter-btn:hover{border-color:var(--accent);color:var(--text);}
+   .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:200;}
+   .modal-bg.show{display:flex;}
+   .modal{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px 20px;width:380px;max-width:92vw;}
+@@ -102,7 +117,11 @@
+ <div class="app">
+ 
+   <div class="col">
+-    <header>鑺傜偣鍒楄〃 <span class="sub" id="stat"></span></header>
++    <header>
++      <span class="tab-btn active" data-tab="nodes">鑺傜偣鍒楄〃</span>
++      <span class="tab-btn" data-tab="chapters">绔犺妭绠＄悊</span>
++      <span class="sub" id="stat"></span>
++    </header>
+     <div class="toolbar">
+       <input id="q" type="text" placeholder="鎼滅储 id / 鏂囨湰">
+       <select id="filter">
+@@ -117,6 +136,7 @@
+       <button class="btn" id="btnNew" title="鏂板缓鑺傜偣">+</button>
+     </div>
+     <div class="node-list" id="nodeList"></div>
++    <div class="chapter-list" id="chapterList" style="display:none;"></div>
+   </div>
+ 
+   <div class="col center">
+@@ -146,6 +166,9 @@
+ </div>
+ <div class="toast" id="toast"></div>
+ <datalist id="nodeIdList"></datalist>
++<div class="modal-bg" id="modal">
++  <div class="modal" id="modalContent"></div>
++</div>
+ <div class="modal-bg" id="newModal">
+   <div class="modal">
+     <h3>鏂板缓鑺傜偣</h3>
+@@ -583,6 +606,172 @@ document.addEventListener('keydown', e=>{
+ });
+ 
+ loadData();
++
++// ========== 绔犺妭绠＄悊 ==========
++let chaptersData = [];
++let activeChapterId = null;
++
++async function loadChapters() {
++    try {
++        const r = await fetch('/api/chapters');
++        const data = await r.json();
++        chaptersData = data.chapters || [];
++        renderChapterList();
++    } catch (e) {
++        console.error('Failed to load chapters:', e);
++    }
++}
++
++function renderChapterList() {
++    const list = document.getElementById('chapterList');
++    list.innerHTML = chaptersData.map(ch => `
++        <div class="chapter-item ${ch.id === activeChapterId ? 'active' : ''}"
++             data-id="${ch.id}" onclick="selectChapter('${ch.id}')">
++            <span class="ch-num">${ch.number}</span>
++            <span class="ch-title">${ch.title}</span>
++            <span class="ch-actions">
++                <button onclick="event.stopPropagation(); editChapter('${ch.id}')">缂栬緫</button>
++                <button onclick="event.stopPropagation(); moveChapter('${ch.id}', -1)">鈫?/button>
++                <button onclick="event.stopPropagation(); moveChapter('${ch.id}', 1)">鈫?/button>
++                <button onclick="event.stopPropagation(); deleteChapter('${ch.id}')">鍒犻櫎</button>
++            </span>
++        </div>
++    `).join('') + `
++        <div class="add-chapter-btn" onclick="addChapter()">+ 鏂板绔犺妭</div>
++    `;
++}
++
++function selectChapter(id) {
++    activeChapterId = id;
++    renderChapterList();
++}
++
++async function addChapter() {
++    showChapterModal({
++        id: '',
++        number: chaptersData.length,
++        title: '',
++        background_image: '',
++        description: '',
++        start_node: '',
++        end_node: ''
++    }, true);
++}
++
++function editChapter(id) {
++    const ch = chaptersData.find(c => c.id === id);
++    if (ch) showChapterModal(ch, false);
++}
++
++async function deleteChapter(id) {
++    if (!confirm('纭畾瑕佸垹闄ゆ绔犺妭鍚楋紵')) return;
++    chaptersData = chaptersData.filter(c => c.id !== id);
++    await saveChaptersToServer();
++    renderChapterList();
++}
++
++async function moveChapter(id, direction) {
++    const idx = chaptersData.findIndex(c => c.id === id);
++    if (idx < 0) return;
++    const newIdx = idx + direction;
++    if (newIdx < 0 || newIdx >= chaptersData.length) return;
++
++    [chaptersData[idx], chaptersData[newIdx]] = [chaptersData[newIdx], chaptersData[idx]];
++    chaptersData.forEach((ch, i) => ch.number = i === 0 ? 0 : i);
++
++    await saveChaptersToServer();
++    renderChapterList();
++}
++
++async function saveChaptersToServer() {
++    try {
++        await fetch('/api/chapters/save', {
++            method: 'POST',
++            headers: {'Content-Type': 'application/json'},
++            body: JSON.stringify({chapters: chaptersData})
++        });
++        toast('绔犺妭閰嶇疆宸蹭繚瀛?);
++    } catch (e) {
++        toast('淇濆瓨澶辫触: ' + e.message);
++    }
++}
++
++function showChapterModal(chapter, isNew) {
++    const content = document.getElementById('modalContent');
++    content.innerHTML = `
++        <h3>${isNew ? '鏂板绔犺妭' : '缂栬緫绔犺妭'}</h3>
++        <label>绔犺妭搴忓彿</label>
++        <input type="number" id="chNumber" value="${chapter.number}" min="0">
++        <label>绔犺妭鏍囬</label>
++        <input type="text" id="chTitle" value="${chapter.title}" placeholder="濡傦細澧撳">
++        <label>绔犺妭ID</label>
++        <input type="text" id="chId" value="${chapter.id}" ${isNew ? '' : 'readonly'} placeholder="濡傦細chapter_1">
++        <label>鑳屾櫙鍥捐矾寰?/label>
++        <input type="text" id="chBg" value="${chapter.background_image}" placeholder="assets/M1/...">
++        <label>绠€浠?/label>
++        <textarea id="chDesc">${chapter.description || ''}</textarea>
++        <label>璧峰鑺傜偣</label>
++        <input type="text" id="chStart" value="${chapter.start_node}" placeholder="n00001">
++        <label>缁撴潫鑺傜偣</label>
++        <input type="text" id="chEnd" value="${chapter.end_node}" placeholder="n00046">
++        <div class="row">
++            <button class="btn" onclick="closeModal()">鍙栨秷</button>
++            <button class="btn primary" onclick="saveChapterModal('${chapter.id}', ${isNew})">淇濆瓨</button>
++        </div>
++    `;
++    document.getElementById('modal').classList.add('show');
++}
++
++function closeModal() {
++    document.getElementById('modal').classList.remove('show');
++}
++
++async function saveChapterModal(originalId, isNew) {
++    const ch = {
++        id: document.getElementById('chId').value.trim(),
++        number: parseInt(document.getElementById('chNumber').value) || 0,
++        title: document.getElementById('chTitle').value.trim(),
++        background_image: document.getElementById('chBg').value.trim(),
++        description: document.getElementById('chDesc').value.trim(),
++        start_node: document.getElementById('chStart').value.trim(),
++        end_node: document.getElementById('chEnd').value.trim()
++    };
++
++    if (!ch.id || !ch.title) {
++        toast('璇峰～鍐欑珷鑺侷D鍜屾爣棰?);
++        return;
++    }
++
++    if (isNew) {
++        chaptersData.push(ch);
++    } else {
++        const idx = chaptersData.findIndex(c => c.id === originalId);
++        if (idx >= 0) chaptersData[idx] = ch;
++    }
++
++    chaptersData.sort((a, b) => a.number - b.number);
++    await saveChaptersToServer();
++    renderChapterList();
++    closeModal();
++}
++
++document.getElementById('modal').addEventListener('click', e => {
++    if (e.target.id === 'modal') closeModal();
++});
++
++document.querySelectorAll('.tab-btn').forEach(btn => {
++    btn.addEventListener('click', () => {
++        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
++        btn.classList.add('active');
++
++        const tab = btn.dataset.tab;
++        document.querySelector('.node-list').style.display = tab === 'nodes' ? '' : 'none';
++        document.getElementById('chapterList').style.display = tab === 'chapters' ? '' : 'none';
++        document.querySelector('.toolbar').style.display = tab === 'nodes' ? '' : 'none';
++    });
++});
++
++loadChapters();
+ </script>
+ </body>
+ </html>
