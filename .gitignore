@@ -6,11 +6,14 @@ Thumbs.db
 .vscode/
 .trae/
 .tmp/
+node_modules/
 
 # Logs and local runtime output
 *.log
 dev-server.out.log
 dev-server.err.log
+__pycache__/
+*.pyc
 
 # Verification screenshots and temporary visual QA output
 verification-*.png

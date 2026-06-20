@@ -1,0 +1,420 @@
+{
+  "clues": {
+    "GATE-E-01": {
+      "chapter": "墓门",
+      "name": "墓门外部位置",
+      "level": "E",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "墓道尽头露出砖砌门面，门洞向内收束。这里是进入墓室前最明确的入口。"
+    },
+    "GATE-P0-01": {
+      "chapter": "墓门",
+      "name": "墓门门额",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "门洞上方压着一条横向门额，边线和两侧门框可以分开辨认。"
+    },
+    "GATE-P0-02": {
+      "chapter": "墓门",
+      "name": "门额背面彩画",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "光扫到门额背面时，彩画纹样从暗处显出来。它不在第一眼能看到的正面。"
+    },
+    "GATE-P0-03": {
+      "chapter": "墓门",
+      "name": "封门砖组织",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "门洞内有成层砖面和灰缝，砖层贴着门口收束。"
+    },
+    "GATE-P1-01": {
+      "chapter": "墓门",
+      "name": "墓门仿木构形式",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "砖面砌出门楼形态，构件像木作，却仍是砖材。"
+    },
+    "GATE-P1-02": {
+      "chapter": "墓门",
+      "name": "门前地面关系",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "封门砖下缘贴近门前地面，交界线还能分出来。"
+    },
+    "GATE-H-01": {
+      "chapter": "墓门",
+      "name": "墓门砖缝误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "砖缝里夹着细砂和灰浆，局部颜色比周围更显眼。"
+    },
+    "GATE-R-01": {
+      "chapter": "墓门",
+      "name": "墓门章节结论",
+      "level": "R",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "门额、彩画、封门砖和地面被放到同一张记录里，入口的结构关系清楚了。"
+    },
+    "COR-E-01": {
+      "chapter": "甬道",
+      "name": "甬道位置",
+      "level": "E",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "走过墓门后，空间明显变窄。墙面和顶部都离视线更近。"
+    },
+    "COR-P0-01": {
+      "chapter": "甬道",
+      "name": "甬道顶部叠胜彩画",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "顶部彩画沿窄道向前延伸，纹样贴着通道方向展开。"
+    },
+    "COR-P0-02": {
+      "chapter": "甬道",
+      "name": "东壁司阍与贡纳者",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "东壁几个人物朝向墓室深处，持物者像正在向里走。"
+    },
+    "COR-P0-03": {
+      "chapter": "甬道",
+      "name": "西壁司阍、马与捧酒者",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "西壁一侧有人物、马、黑色瓶身，题字留在人物附近。"
+    },
+    "COR-P1-01": {
+      "chapter": "甬道",
+      "name": "东西壁与顶部三面合读",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "左右两壁都有行进中的人物，顶部纹样也顺着通道延伸。"
+    },
+    "COR-P1-02": {
+      "chapter": "甬道",
+      "name": "酒瓶与题字",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "黑色瓶身被双手捧着，旁边留有墨书题字。"
+    },
+    "COR-H-01": {
+      "chapter": "甬道",
+      "name": "顶部偏移误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "顶部纹样有些地方没有完全对齐，边线也不处处一样。"
+    },
+    "COR-R-01": {
+      "chapter": "甬道",
+      "name": "甬道章节结论",
+      "level": "R",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "顶部和两壁放在一起后，窄道里的图像开始有了方向。"
+    },
+    "FRONT-E-01": {
+      "chapter": "前室",
+      "name": "前室位置",
+      "level": "E",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "甬道之后空间忽然展开，四面墙和顶部都进入视野。"
+    },
+    "FRONT-P0-01": {
+      "chapter": "前室",
+      "name": "东壁女乐",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "东壁人物成组排列，乐器和舞姿集中在卷帘下。"
+    },
+    "FRONT-P0-02": {
+      "chapter": "前室",
+      "name": "西壁男女对坐与宴饮器物",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "西壁中央两人对坐，桌上器物摆在两人之间。"
+    },
+    "FRONT-P0-03": {
+      "chapter": "前室",
+      "name": "南壁入口两侧人物",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "入口两侧人物分列，持物和站位都贴近门道。"
+    },
+    "FRONT-P0-04": {
+      "chapter": "前室",
+      "name": "前室顶部铺作",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "顶部构件层层叠出，像把木作结构砌在砖面上。"
+    },
+    "FRONT-P1-01": {
+      "chapter": "前室",
+      "name": "注子、盏与荷叶托",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "桌上有注子和小盏，托子的边缘像展开的叶形。"
+    },
+    "FRONT-P1-02": {
+      "chapter": "前室",
+      "name": "屏风、侍者与随侍器物",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "中心人物后面还有屏风、侍者和小器物。"
+    },
+    "FRONT-P1-03": {
+      "chapter": "前室",
+      "name": "北壁分区",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "北壁两侧疏密不一样，视线被分成几个区域。"
+    },
+    "FRONT-H-01": {
+      "chapter": "前室",
+      "name": "尖鞋细节误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "女乐脚下的鞋尖很明显，比衣缘更容易被注意到。"
+    },
+    "FRONT-H-02": {
+      "chapter": "前室",
+      "name": "单件器物断代误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "有些器物轮廓很突出，容易让人只盯着一件看。"
+    },
+    "FRONT-R-01": {
+      "chapter": "前室",
+      "name": "前室章节结论",
+      "level": "R",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "四壁和顶部放在一起后，前室的秩序比第一眼更清楚。"
+    },
+    "PASS-E-01": {
+      "chapter": "过道",
+      "name": "过道位置",
+      "level": "E",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "前室之后，空间再次收窄。尽头通向更深的后室。"
+    },
+    "PASS-P0-01": {
+      "chapter": "过道",
+      "name": "纪年题记",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "壁面上有墨书题记，部分字迹仍能辨认。"
+    },
+    "PASS-P0-02": {
+      "chapter": "过道",
+      "name": "破子棂窗",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "窗格斜向分开，线条在狭窄墙面上展开。"
+    },
+    "PASS-P0-03": {
+      "chapter": "过道",
+      "name": "丁字盝顶式宝盖",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "顶部沿通道中线收束，形成丁字形的顶面关系。"
+    },
+    "PASS-P1-01": {
+      "chapter": "过道",
+      "name": "题记位置与书写层",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "题记周围留有空白，墨色和壁面线条可以分开看。"
+    },
+    "PASS-P1-02": {
+      "chapter": "过道",
+      "name": "过道东壁图像",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "东壁线条顺着窄长墙面延伸，视线被带向后方。"
+    },
+    "PASS-H-01": {
+      "chapter": "过道",
+      "name": "流苏方向误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "流苏线条垂下来，有些局部方向略微偏转。"
+    },
+    "PASS-H-02": {
+      "chapter": "过道",
+      "name": "题记过度解释",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "字迹清楚的地方很吸引人，视线很容易停在题记上。"
+    },
+    "PASS-R-01": {
+      "chapter": "过道",
+      "name": "过道章节结论",
+      "level": "R",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "题记、窗格和顶部重新对在一起后，过道不再只是窄路。"
+    },
+    "HS-E-01": {
+      "chapter": "后室",
+      "name": "后室位置",
+      "level": "E",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "穿过过道后，空间明显收束。墙面、砖床和壁画都离得更近。"
+    },
+    "HS-E-02": {
+      "chapter": "后室",
+      "name": "后室多壁面",
+      "level": "E",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "手电转过几面墙：假门、入口背面和器物图像依次出现。"
+    },
+    "HS-P0-01": {
+      "chapter": "后室",
+      "name": "后室砖床",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "北壁下方铺出一片低平砖面。砖缝较整齐，边界比周围地面清楚。"
+    },
+    "HS-P0-02": {
+      "chapter": "后室",
+      "name": "人骨位置",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "骨骼集中在砖床偏北一带，没有铺满整个后室。"
+    },
+    "HS-P0-03": {
+      "chapter": "后室",
+      "name": "铁钉与葬具痕迹",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "人骨附近可见锈蚀铁钉和暗色痕迹，分布有一定范围。"
+    },
+    "HS-P0-04": {
+      "chapter": "后室",
+      "name": "地券与券盖",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "砖面上保留着朱色文字，旁边配有券盖。"
+    },
+    "HS-P0-05": {
+      "chapter": "后室",
+      "name": "妇人启门与假门",
+      "level": "P0",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "假门旁，一位妇人侧身立着，手停在门边。"
+    },
+    "HS-P1-01": {
+      "chapter": "后室",
+      "name": "镜台、盆架与杌",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "西南壁上，镜台、盆架、低矮坐具靠得很近。"
+    },
+    "HS-P1-02": {
+      "chapter": "后室",
+      "name": "南壁高几",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "南壁靠近入口背面的位置画着一件高几。"
+    },
+    "HS-P1-03": {
+      "chapter": "后室",
+      "name": "灯具图像",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "壁面上有一件小灯具，轮廓不大，却很醒目。"
+    },
+    "HS-P1-04": {
+      "chapter": "后室",
+      "name": "剪刀与熨斗",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "西北壁上画着细长的剪刀和熨斗。"
+    },
+    "HS-P1-05": {
+      "chapter": "后室",
+      "name": "白瓷碗与随葬器物",
+      "level": "P1",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "砖床附近标有瓷碗、铜钱、铁器等小件。"
+    },
+    "HS-H-01": {
+      "chapter": "后室",
+      "name": "白瓷碗特殊信号误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "这只白瓷碗出自砖床相关区域，位置很容易让人多看一眼。"
+    },
+    "HS-H-02": {
+      "chapter": "后室",
+      "name": "铁钉数量/位置误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "铁钉的数量和位置不太整齐，但仍能看出大致范围。"
+    },
+    "HS-H-03": {
+      "chapter": "后室",
+      "name": "假门密室误读",
+      "level": "H",
+      "mustCollect": false,
+      "npcCanAnswer": true,
+      "content": "门缝很醒目，妇人的手也停在门边，像还有后续空间。"
+    },
+    "HS-R-01": {
+      "chapter": "后室",
+      "name": "后室章节结论",
+      "level": "R",
+      "mustCollect": true,
+      "npcCanAnswer": true,
+      "content": "砖床、人骨、铁钉、地券和壁画器物放回同一张后室平面后，分开的发现开始互相对上。"
+    }
+  }
+}

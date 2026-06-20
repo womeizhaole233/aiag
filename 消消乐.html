@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>古墓探秘 · 消消乐挖土</title>
+    <style>
+        * {
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 30%, #1a0f0a, #0a0502);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinema', 'Segoe UI', 'Georgia', 'Times New Roman', serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        html.embedded,
+        html.embedded body {
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        html.embedded body {
+            padding: 0;
+            background: transparent;
+        }
+
+        /* 主游戏面板 - 古墓石椁风格 */
+        .tomb-panel {
+            width: 1500px;
+            height: 900px;
+            background: #2d1e12;
+            background-image: repeating-linear-gradient(45deg, #3e2a1c22 0px, #3e2a1c22 2px, #2a1a0e22 2px, #2a1a0e22 8px);
+            border-radius: 48px 28px 48px 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,215,150,0.2);
+            border: 6px solid #a67c4b;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(0px);
+        }
+
+        html.embedded .tomb-panel {
+            width: 100vw;
+            height: 100vh;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        html.embedded .game-layout {
+            gap: 18px;
+            padding: 16px;
+        }
+
+        html.embedded .match-area {
+            min-width: 0;
+            display: grid;
+            place-items: center;
+        }
+
+        html.embedded canvas {
+            width: min(100%, calc((100vh - 52px) * 1.09));
+            max-height: calc(100vh - 52px);
+        }
+
+        html.embedded .right-altar {
+            gap: 16px;
+            padding: 18px 14px;
+        }
+
+        /* 装饰性火把 / 符文 */
+        .tomb-panel::before {
+            content: "🔥";
+            font-size: 48px;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            opacity: 0.5;
+            text-shadow: 0 0 8px orange;
+            pointer-events: none;
+        }
+        .tomb-panel::after {
+            content: "🏺";
+            font-size: 52px;
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            opacity: 0.5;
+            text-shadow: 0 0 6px gold;
+            pointer-events: none;
+            transform: rotate(10deg);
+        }
+
+        /* 主布局 flex */
+        .game-layout {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            padding: 28px 24px 28px 28px;
+            gap: 30px;
+        }
+
+        /* 左侧消消乐区域 */
+        .match-area {
+            flex: 2.2;
+            background: #1e130bb3;
+            border-radius: 32px;
+            padding: 12px;
+            box-shadow: inset 0 0 20px #00000033, 0 10px 20px rgba(0,0,0,0.4);
+            border: 1px solid #cb9e6b;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #201608;
+            border-radius: 24px;
+            box-shadow: 0 0 0 4px #735c3c, 0 0 0 8px #3e2a1a;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+
+        /* 右侧 古墓祭坛风格 */
+        .right-altar {
+            flex: 1;
+            background: #281e12e6;
+            border-radius: 48px 28px 48px 28px;
+            backdrop-filter: blur(1px);
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            box-shadow: inset 0 0 15px #d9a13b22, 0 8px 18px black;
+            border-left: 3px solid #c29a6b;
+            border-right: 3px solid #7a5a3a;
+        }
+
+        /* 文物剪影圣台 */
+        .relic-shadow {
+            background: #1f1408;
+            border-radius: 60px 40px 60px 40px;
+            padding: 15px 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: inset 0 0 0 2px #dbb26b, 0 8px 12px black;
+        }
+        .relic-shadow p {
+            margin: 0 0 8px 0;
+            color: #f7e6c4;
+            font-size: 18px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0 #3a280e;
+        }
+        .shadow-icon {
+            font-size: 80px;
+            filter: drop-shadow(0 0 6px #e5b83c);
+            background: #2f200e;
+            border-radius: 50%;
+            padding: 12px;
+            display: inline-block;
+        }
+
+        /* 垂直土层进度条 (古墓岩层) */
+        .soil-meter {
+            width: 100%;
+            background: #3e2a1a;
+            border-radius: 80px;
+            padding: 12px 10px;
+            box-shadow: inset 0 0 8px #1a0f05, 0 4px 8px black;
+        }
+        .meter-label {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ebcb9c;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .vertical-progress {
+            background: #2b1d0e;
+            height: 280px;
+            width: 52px;
+            margin: 0 auto;
+            border-radius: 80px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #bc8f5a;
+            box-shadow: inset 0 0 8px #00000066;
+        }
+        .progress-fill {
+            background: linear-gradient(0deg, #9b6a3a, #dbb055);
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            height: 100%;
+            transition: height 0.8s ease;
+            border-radius: 30px;
+            box-shadow: 0 0 10px #ffcf6e;
+        }
+        .percent-text {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            color: #f7d98c;
+            text-shadow: 2px 2px 0 #532e0e;
+        }
+
+        /* 古墓按钮 */
+        .tomb-buttons {
+            display: flex;
+            gap: 25px;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+        .btn-tomb {
+            background: #3d2a18;
+            border: none;
+            font-family: inherit;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 12px 28px;
+            border-radius: 60px;
+            color: #ffefcf;
+            text-shadow: 1px 1px 0 #482008;
+            box-shadow: 0 5px 0 #221105;
+            transition: 0.07s linear;
+            cursor: pointer;
+            letter-spacing: 2px;
+            backdrop-filter: blur(2px);
+        }
+        .btn-tomb:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #221105;
+        }
+        .btn-tomb:hover {
+            background: #5f3f22;
+            color: #ffffd4;
+        }
+
+        /* 提示浮层 */
+        .toast-msg {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000000cc;
+            backdrop-filter: blur(8px);
+            color: #ffdd99;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-size: 20px;
+            border-left: 6px solid #d6a447;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 999;
+            font-family: monospace;
+        }
+
+        @media (max-width: 900px) {
+            html.embedded .tomb-panel {
+                overflow: auto;
+            }
+
+            html.embedded .game-layout {
+                min-height: 100%;
+                flex-direction: column;
+            }
+
+            html.embedded .match-area {
+                flex: 0 0 auto;
+            }
+
+            html.embedded canvas {
+                width: min(100%, calc((100vh - 230px) * 1.09));
+                max-height: calc(100vh - 230px);
+            }
+
+            html.embedded .right-altar {
+                flex: 0 0 auto;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+                border-left: 0;
+                border-right: 0;
+                border-top: 2px solid #c29a6b;
+                border-bottom: 2px solid #7a5a3a;
+            }
+
+            html.embedded .relic-shadow,
+            html.embedded .soil-meter,
+            html.embedded .tomb-buttons {
+                width: min(100%, 260px);
+            }
+
+            html.embedded .shadow-icon {
+                font-size: 42px;
+                padding: 8px;
+            }
+
+            html.embedded .vertical-progress {
+                height: 96px;
+            }
+
+            html.embedded .btn-tomb {
+                flex: 1 1 110px;
+                padding: 10px 14px;
+                font-size: 15px;
+            }
+        }
+
+        /* 主线统一视觉：底图 + 暗色玻璃面板 */
+        body {
+            color: #edf2f7;
+            font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+            background:
+                linear-gradient(180deg, rgba(5, 10, 17, 0.34), rgba(5, 10, 17, 0.78)),
+                url("assets/M1/02墓道与墓门/第一号墓墓门(彭华士摄).png") center / cover no-repeat,
+                #06090f;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at center, transparent 36%, rgba(2, 8, 14, 0.42) 100%),
+                rgba(2, 8, 14, 0.24);
+            pointer-events: none;
+        }
+
+        html.embedded body {
+            background:
+                linear-gradient(180deg, rgba(5, 10, 17, 0.2), rgba(5, 10, 17, 0.56)),
+                url("assets/M1/02墓道与墓门/第一号墓墓门(彭华士摄).png") center / cover no-repeat,
+                #06090f;
+        }
+
+        .tomb-panel {
+            width: min(1500px, calc(100vw - 32px));
+            height: min(900px, calc(100dvh - 32px));
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            background:
+                linear-gradient(180deg, rgba(17, 24, 39, 0.82), rgba(8, 13, 22, 0.9)),
+                rgba(17, 24, 39, 0.76);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42);
+            backdrop-filter: blur(18px);
+        }
+
+        html.embedded .tomb-panel {
+            width: 100vw;
+            height: 100vh;
+            background:
+                linear-gradient(180deg, rgba(17, 24, 39, 0.76), rgba(8, 13, 22, 0.88)),
+                rgba(17, 24, 39, 0.76);
+        }
+
+        .tomb-panel::before,
+        .tomb-panel::after {
+            content: none;
+        }
+
+        .game-layout {
+            gap: 16px;
+            padding: 16px;
+        }
+
+        .match-area,
+        .right-altar,
+        .relic-shadow,
+        .soil-meter {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 8px;
+            background: rgba(10, 15, 24, 0.58);
+            box-shadow: none;
+            backdrop-filter: blur(14px);
+        }
+
+        .match-area {
+            display: grid;
+            place-items: center;
+            min-width: 0;
+            padding: 12px;
+        }
+
+        canvas {
+            width: min(100%, calc((100dvh - 92px) * 1.09));
+            max-height: calc(100dvh - 92px);
+            border-radius: 8px;
+            background: #10151f;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 16px 38px rgba(0, 0, 0, 0.32);
+        }
+
+        .right-altar {
+            align-items: stretch;
+            gap: 12px;
+            padding: 14px;
+            border-left: 1px solid rgba(255, 255, 255, 0.16);
+            border-right: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .relic-shadow {
+            display: grid;
+            gap: 8px;
+            padding: 14px;
+            text-align: left;
+        }
+
+        .relic-shadow p,
+        .meter-label {
+            color: rgba(226, 232, 240, 0.82);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-shadow: none;
+            text-transform: uppercase;
+        }
+
+        .shadow-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border: 1px solid rgba(120, 168, 255, 0.36);
+            border-radius: 8px;
+            background: rgba(120, 168, 255, 0.12);
+            color: #edf2f7;
+            filter: none;
+            font-size: 28px;
+        }
+
+        .relic-name {
+            color: #edf2f7;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .soil-meter {
+            display: grid;
+            gap: 10px;
+            padding: 14px;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+        }
+
+        .vertical-progress {
+            width: 100%;
+            height: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            background: rgba(244, 247, 252, 0.12);
+            box-shadow: none;
+        }
+
+        .progress-fill {
+            right: auto;
+            bottom: auto;
+            left: 0;
+            height: 100% !important;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #78a8ff, #6dd3a0);
+            box-shadow: none;
+            transition: width 0.8s ease;
+        }
+
+        .percent-text {
+            margin: 0;
+            color: #edf2f7;
+            font-size: 32px;
+            line-height: 1;
+            text-align: left;
+            text-shadow: none;
+        }
+
+        .tomb-buttons {
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        .btn-tomb {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 0 14px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 999px;
+            background: rgba(10, 15, 24, 0.58);
+            color: #edf2f7;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-shadow: none;
+            transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+        }
+
+        .btn-tomb:hover {
+            border-color: #78a8ff;
+            background: rgba(120, 168, 255, 0.16);
+            color: #edf2f7;
+            transform: translateY(-1px);
+        }
+
+        .btn-tomb:active {
+            transform: translateY(0);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .dig-note {
+            margin-top: 0;
+            color: rgba(226, 232, 240, 0.72);
+            font-size: 13px;
+            line-height: 1.65;
+            text-align: left;
+        }
+
+        .toast-msg {
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-left: 3px solid #78a8ff;
+            border-radius: 8px;
+            background: rgba(10, 15, 24, 0.82);
+            color: #edf2f7;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.32);
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .tomb-panel,
+            html.embedded .tomb-panel {
+                overflow: auto;
+            }
+
+            .game-layout,
+            html.embedded .game-layout {
+                min-height: 100%;
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            canvas,
+            html.embedded canvas {
+                width: min(100%, calc((100dvh - 250px) * 1.09));
+                max-height: calc(100dvh - 250px);
+            }
+
+            .right-altar,
+            html.embedded .right-altar {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 10px;
+                border: 1px solid rgba(255, 255, 255, 0.16);
+            }
+
+            html.embedded .relic-shadow,
+            html.embedded .soil-meter,
+            html.embedded .tomb-buttons {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="tomb-panel">
+    <div class="game-layout">
+        <!-- 消消乐画布区域 -->
+        <div class="match-area">
+            <canvas id="gameCanvas" width="1080" height="990"></canvas>
+        </div>
+
+        <!-- 右侧祭坛 -->
+        <div class="right-altar">
+            <div class="relic-shadow">
+                <p>清理目标</p>
+                <div class="shadow-icon">罐</div>
+                <div class="relic-name">古代祭祀罐</div>
+            </div>
+
+            <div class="soil-meter">
+                <div class="meter-label">
+                    <span>剩余土层</span>
+                    <span>目标 100</span>
+                </div>
+                <div class="vertical-progress">
+                    <div id="soilFill" class="progress-fill" style="height: 100%; width: 100%;"></div>
+                </div>
+                <div class="percent-text" id="soilPercent">100%</div>
+            </div>
+
+            <div class="tomb-buttons">
+                <button class="btn-tomb" id="resetBtn">重置游戏</button>
+                <button class="btn-tomb" id="exitBtn">退出游戏</button>
+            </div>
+            <div class="dig-note">交换相邻方块，累积消除 100 块后完成墓门前清理。</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        const params = new URLSearchParams(window.location.search);
+        const isEmbedded = params.get('embed') === '1';
+        const miniGameId = params.get('miniGame') || 'mg_dig_match3';
+        const parentTargetOrigin = /^https?:/.test(window.location.origin) ? window.location.origin : '*';
+        document.documentElement.classList.toggle('embedded', isEmbedded);
+
+        function notifyParent(type) {
+            if(!isEmbedded || window.parent === window) return;
+            window.parent.postMessage({ type, puzzleId: miniGameId }, parentTargetOrigin);
+        }
+
+        // ---------------- 古墓消消乐核心配置 ----------------
+        const ROWS = 11;
+        const COLS = 12;
+        const CELL_W = 90;
+        const CELL_H = 90;
+        const TARGET_ELIMINATIONS = 100;
+
+        // 动画常量
+        const ELIMINATE_DELAY = 500;  // 消除高亮时长 0.5秒
+        const FALL_DURATION = 500;    // 下落动画时长 0.5秒
+
+        // 动画阶段
+        const ANIM_PHASE = {
+            IDLE: 0,
+            HIGHLIGHT: 1,
+            FALLING: 2
+        };
+
+        // 方块类型（6种）
+        const TYPE_SOIL   = 0; // 泥土
+        const TYPE_STONE  = 1; // 碎石
+        const TYPE_SHARD  = 2; // 残片
+        const TYPE_DUST   = 3; // 灰尘
+        const TYPE_BRICK  = 4; // 砖块
+        const TYPE_TRASH  = 5; // 垃圾
+
+        // 方块图片资源
+        const BLOCK_IMAGES = {
+            [TYPE_SOIL]:   'picture/block_soil.png',
+            [TYPE_STONE]:  'picture/block_stone.png',
+            [TYPE_SHARD]:  'picture/block_shard.png',
+            [TYPE_DUST]:   'picture/block_dust.png',
+            [TYPE_BRICK]:  'picture/block_brick.png',
+            [TYPE_TRASH]:  'picture/block_trash.png'
+        };
+
+        // 方块边框颜色
+        const BLOCK_BORDER_COLORS = {
+            [TYPE_SOIL]:   '#e74c3c', // 泥土 - 红色
+            [TYPE_STONE]:  '#3498db', // 碎石 - 蓝色
+            [TYPE_SHARD]:  '#f1c40f', // 残片 - 黄色
+            [TYPE_DUST]:   '#2ecc71', // 灰尘 - 绿色
+            [TYPE_BRICK]:  '#e67e22', // 砖块 - 橙色
+            [TYPE_TRASH]:  '#9b59b6'  // 垃圾 - 紫色
+        };
+
+        // 预加载图片
+        let loadedImages = {};
+        let imagesLoaded = 0;
+        let totalImages = 6;
+
+        function loadImages(callback) {
+            for(let type in BLOCK_IMAGES) {
+                let img = new Image();
+                img.onload = function() {
+                    imagesLoaded++;
+                    if(imagesLoaded === totalImages) {
+                        callback();
+                    }
+                };
+                img.src = BLOCK_IMAGES[type];
+                loadedImages[type] = img;
+            }
+        }
+
+        let gameGrid = [];
+        let selectedRow = -1, selectedCol = -1;
+        let currentSoilPercent = 100;
+        let totalEliminated = 0;
+        let isProcessing = false;
+        let gameActive = true;
+
+        // 动画状态
+        let currentAnimPhase = ANIM_PHASE.IDLE;
+        let eliminatingBlocks = [];
+        let fallingBlocks = [];
+        let animationFrameId = null;
+
+        // DOM 元素
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const soilFillDiv = document.getElementById('soilFill');
+        const soilPercentSpan = document.getElementById('soilPercent');
+
+        // 辅助函数: 更新UI进度条 (由 totalEliminated 驱动)
+        function updateSoilUI() {
+            let percent = Math.max(0, Math.min(100, ((TARGET_ELIMINATIONS - totalEliminated) / TARGET_ELIMINATIONS) * 100));
+            soilFillDiv.style.height = percent + "%";
+            soilFillDiv.style.width = percent + "%";
+            soilPercentSpan.innerText = Math.floor(percent) + "%";
+        }
+
+        // 随机生成新块 (6种平均分布，每种约16.7%)
+        function getRandomBlockType() {
+            return Math.floor(Math.random() * 6);
+        }
+
+        // 初始化/重置网格
+        function generateRandomGrid() {
+            let grid = Array(ROWS).fill().map(() => Array(COLS).fill(0));
+            for(let i=0; i<ROWS; i++) {
+                for(let j=0; j<COLS; j++) {
+                    grid[i][j] = getRandomBlockType();
+                }
+            }
+            return grid;
+        }
+
+        function swapGridCells(grid, r1, c1, r2, c2) {
+            let temp = grid[r1][c1];
+            grid[r1][c1] = grid[r2][c2];
+            grid[r2][c2] = temp;
+        }
+
+        // ---------- 核心匹配检测 ----------
+        function getAllMatches(grid) {
+            const matches = new Set();
+            // 水平匹配
+            for(let i=0; i<ROWS; i++) {
+                let len = 1;
+                for(let j=1; j<=COLS; j++) {
+                    if(j<COLS && grid[i][j] === grid[i][j-1] && grid[i][j] !== undefined && grid[i][j] >= 0) {
+                        len++;
+                    } else {
+                        if(len >= 3) {
+                            for(let k=j-len; k<j; k++) {
+                                matches.add(`${i},${k}`);
+                            }
+                        }
+                        len = 1;
+                    }
+                }
+            }
+            // 垂直匹配
+            for(let j=0; j<COLS; j++) {
+                let len = 1;
+                for(let i=1; i<=ROWS; i++) {
+                    if(i<ROWS && grid[i][j] === grid[i-1][j] && grid[i][j] !== undefined && grid[i][j] >= 0) {
+                        len++;
+                    } else {
+                        if(len >= 3) {
+                            for(let k=i-len; k<i; k++) {
+                                matches.add(`${k},${j}`);
+                            }
+                        }
+                        len = 1;
+                    }
+                }
+            }
+            return Array.from(matches).map(coord => {
+                let [r,c] = coord.split(',').map(Number);
+                return {row:r, col:c};
+            });
+        }
+
+        // 稳定网格 (递归消除但不扣除土层进度,用于初始化和重置) - 同步版本
+        function stabilizeGridWithoutProgress(grid) {
+            let anyMatch = true;
+            let maxLoop = 200;
+            let loopGuard = 0;
+            while(anyMatch && loopGuard++ < maxLoop) {
+                let matches = getAllMatches(grid);
+                if(matches.length === 0) break;
+                for(let m of matches) {
+                    grid[m.row][m.col] = -1;
+                }
+                for(let c=0; c<COLS; c++) {
+                    let columnVals = [];
+                    for(let r=ROWS-1; r>=0; r--) {
+                        if(grid[r][c] !== -1 && grid[r][c] !== undefined) {
+                            columnVals.unshift(grid[r][c]);
+                        }
+                    }
+                    let missing = ROWS - columnVals.length;
+                    for(let i=0; i<missing; i++) columnVals.unshift(getRandomBlockType());
+                    for(let r=0; r<ROWS; r++) grid[r][c] = columnVals[r];
+                }
+            }
+        }
+
+        function createsMatchAfterSwap(grid, r1, c1, r2, c2) {
+            if(r1<0||r1>=ROWS||c1<0||c1>=COLS||r2<0||r2>=ROWS||c2<0||c2>=COLS) return false;
+            if(grid[r1][c1] === grid[r2][c2]) return false;
+            swapGridCells(grid, r1, c1, r2, c2);
+            let hasMatch = getAllMatches(grid).length > 0;
+            swapGridCells(grid, r1, c1, r2, c2);
+            return hasMatch;
+        }
+
+        function hasAvailableMove(grid) {
+            for(let r=0; r<ROWS; r++) {
+                for(let c=0; c<COLS; c++) {
+                    if(c + 1 < COLS && createsMatchAfterSwap(grid, r, c, r, c + 1)) return true;
+                    if(r + 1 < ROWS && createsMatchAfterSwap(grid, r, c, r + 1, c)) return true;
+                }
+            }
+            return false;
+        }
+
+        function seedGuaranteedMove(grid) {
+            if(ROWS < 3 || COLS < 4) return grid;
+            grid[0][0] = TYPE_SOIL;
+            grid[0][1] = TYPE_STONE;
+            grid[0][2] = TYPE_SOIL;
+            grid[0][3] = TYPE_SHARD;
+            grid[1][0] = TYPE_SHARD;
+            grid[1][1] = TYPE_SOIL;
+            grid[1][2] = TYPE_BRICK;
+            grid[2][1] = TYPE_SHARD;
+            return grid;
+        }
+
+        function generatePlayableGrid() {
+            for(let attempt=0; attempt<300; attempt++) {
+                let grid = generateRandomGrid();
+                stabilizeGridWithoutProgress(grid);
+                if(hasAvailableMove(grid)) return grid;
+            }
+            let fallback = generateRandomGrid();
+            stabilizeGridWithoutProgress(fallback);
+            seedGuaranteedMove(fallback);
+            return fallback;
+        }
+
+        function refreshBoardIfNoMoves(showMsg = true) {
+            if(!gameActive || hasAvailableMove(gameGrid)) return false;
+            gameGrid = generatePlayableGrid();
+            selectedRow = -1;
+            selectedCol = -1;
+            drawCanvas();
+            if(showMsg) showToast("🧭 这片土层没有可清理走法，已重新拨开浮土...");
+            return true;
+        }
+
+        // 延迟函数
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // 准备下落动画数据（独立下落距离版本）
+        function prepareFallAnimation(matches) {
+            let blocks = [];
+            let affectedCols = [...new Set(matches.map(m => m.col))];
+
+            for(let c of affectedCols) {
+                // 获取该列所有消除的行
+                let eliminatedRows = matches.filter(m => m.col === c).map(m => m.row);
+                eliminatedRows.sort((a,b) => a-b);
+                let totalEliminated = eliminatedRows.length;
+
+                // 创建消除行集合，方便查找
+                let eliminatedSet = new Set(eliminatedRows);
+
+                // 计算每个保留方块的下落距离 = 下方消除的方块数量
+                for(let r = 0; r < ROWS; r++) {
+                    if(gameGrid[r][c] >= 0 && !eliminatedSet.has(r)) {
+                        // 计算该方块下方有多少个消除
+                        let dropDistance = 0;
+                        for(let er of eliminatedRows) {
+                            if(er > r) {
+                                dropDistance++;
+                            }
+                        }
+
+                        if(dropDistance > 0) {
+                            blocks.push({
+                                col: c,
+                                type: gameGrid[r][c],
+                                startRow: r,
+                                targetRow: r + dropDistance,
+                                startY: r * CELL_H,
+                                targetY: (r + dropDistance) * CELL_H,
+                                currentY: r * CELL_H
+                            });
+                        }
+                    }
+                }
+
+                // 新方块：在最上方生成，下落距离 = 总消除数量
+                for(let i = 0; i < totalEliminated; i++) {
+                    let startRow = -(totalEliminated - i);
+                    blocks.push({
+                        col: c,
+                        type: getRandomBlockType(),
+                        startRow: startRow,
+                        targetRow: startRow + totalEliminated,
+                        startY: startRow * CELL_H,
+                        targetY: (startRow + totalEliminated) * CELL_H,
+                        currentY: startRow * CELL_H
+                    });
+                }
+            }
+
+            return blocks;
+        }
+
+        // 缓动函数 - easeOutCubic，让动画先快后慢，落地更自然
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        // 执行下落动画（独立下落距离版本，总时长0.5秒）
+        function runFallAnimation() {
+            return new Promise(resolve => {
+                let startTime = null;
+
+                function step(timestamp) {
+                    if(!startTime) startTime = timestamp;
+                    let elapsed = timestamp - startTime;
+                    let progress = Math.min(elapsed / FALL_DURATION, 1);
+                    let easedProgress = easeOutCubic(progress);
+
+                    // 每个方块根据自己的下落距离独立计算位置
+                    for(let block of fallingBlocks) {
+                        let totalDistance = block.targetY - block.startY;
+                        block.currentY = block.startY + totalDistance * easedProgress;
+                    }
+
+                    drawCanvas();
+
+                    if(progress < 1) {
+                        animationFrameId = requestAnimationFrame(step);
+                    } else {
+                        // 动画结束，确保所有方块精确到达目标位置
+                        for(let block of fallingBlocks) {
+                            block.currentY = block.targetY;
+                        }
+                        drawCanvas();
+                        resolve();
+                    }
+                }
+
+                animationFrameId = requestAnimationFrame(step);
+            });
+        }
+
+        // 动画完成后更新网格
+        function updateGridAfterFall() {
+            // 清除所有下落方块的起始位置（原始位置）
+            for(let block of fallingBlocks) {
+                if(block.startRow >= 0 && block.startRow < ROWS) {
+                    gameGrid[block.startRow][block.col] = -1;
+                }
+            }
+            // 设置最终位置
+            for(let block of fallingBlocks) {
+                gameGrid[block.targetRow][block.col] = block.type;
+            }
+        }
+
+        // 执行一次消除动画
+        async function performEliminationAnimation(matches) {
+            // 阶段1：高亮显示0.5秒
+            currentAnimPhase = ANIM_PHASE.HIGHLIGHT;
+            eliminatingBlocks = matches;
+            drawCanvas();
+
+            await delay(ELIMINATE_DELAY);
+
+            // 阶段2：从网格中移除匹配的方块
+            for(let m of matches) {
+                gameGrid[m.row][m.col] = -1;
+            }
+
+            // 计算下落动画
+            fallingBlocks = prepareFallAnimation(matches);
+
+            // 清除下落方块在网格中的原始位置（避免碰撞检测时阻挡自己）
+            for(let block of fallingBlocks) {
+                if(block.startRow >= 0 && block.startRow < ROWS) {
+                    gameGrid[block.startRow][block.col] = -1;
+                }
+            }
+
+            // 阶段3：执行下落动画
+            currentAnimPhase = ANIM_PHASE.FALLING;
+            eliminatingBlocks = [];
+
+            await runFallAnimation();
+
+            // 动画完成后更新网格
+            updateGridAfterFall();
+
+            currentAnimPhase = ANIM_PHASE.IDLE;
+            fallingBlocks = [];
+            drawCanvas();
+        }
+
+        // 核心递归消除+土层扣除 (带动画)
+        async function resolveMatchesAndDrop(updateProgress = true) {
+            let anyAction = false;
+            let maxLoop = 150;
+            let loopSafe = 0;
+
+            while(loopSafe++ < maxLoop) {
+                let matches = getAllMatches(gameGrid);
+                if(matches.length === 0) break;
+
+                anyAction = true;
+                let matchCount = matches.length;
+
+                // 扣除土层进度
+                if(updateProgress && matchCount > 0) {
+                    totalEliminated += matchCount;
+                    currentSoilPercent = Math.max(0, TARGET_ELIMINATIONS - totalEliminated);
+                    updateSoilUI();
+                    if(totalEliminated >= TARGET_ELIMINATIONS) {
+                        await performEliminationAnimation(matches);
+                        winGame();
+                        return true;
+                    }
+                }
+
+                // 执行消除动画
+                await performEliminationAnimation(matches);
+            }
+
+            refreshBoardIfNoMoves(true);
+            return anyAction;
+        }
+
+        // 重置完整游戏状态
+        function resetFullGame(showMsg = false) {
+            // 取消任何正在进行的动画
+            if(animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+
+            selectedRow = -1;
+            selectedCol = -1;
+            currentSoilPercent = 100;
+            totalEliminated = 0;
+            gameActive = true;
+            isProcessing = false;
+            currentAnimPhase = ANIM_PHASE.IDLE;
+            eliminatingBlocks = [];
+            fallingBlocks = [];
+            updateSoilUI();
+
+            gameGrid = generatePlayableGrid();
+            drawCanvas();
+
+            if(showMsg) showToast("🪦 墓穴已重置，继续挖掘...");
+        }
+
+        // 胜利行为
+        function winGame() {
+            if(!gameActive) return;
+            gameActive = false;
+            showToast("✨ 圣物出土！消除100块方块，获得【古代祭祀罐】 ✨");
+            notifyParent('M1_MINIGAME_COMPLETE');
+        }
+
+        // 尝试交换两个格子
+        async function trySwapAndMatch(r1,c1, r2,c2) {
+            if(r1===r2 && c1===c2) return false;
+            if(r1<0||r1>=ROWS||c1<0||c1>=COLS||r2<0||r2>=ROWS||c2<0||c2>=COLS) return false;
+
+            // 交换
+            let temp = gameGrid[r1][c1];
+            gameGrid[r1][c1] = gameGrid[r2][c2];
+            gameGrid[r2][c2] = temp;
+
+            // 检查是否有匹配
+            let matches = getAllMatches(gameGrid);
+            if(matches.length > 0) {
+                await resolveMatchesAndDrop(true);
+                return true;
+            } else {
+                // 无效交换，换回来
+                temp = gameGrid[r1][c1];
+                gameGrid[r1][c1] = gameGrid[r2][c2];
+                gameGrid[r2][c2] = temp;
+                return false;
+            }
+        }
+
+        // 绘制单个方块
+        // 绘制单个方块
+        function drawBlockAt(x, y, type, isHighlight = false) {
+            // 绘制边框（在图片下方，形成边框效果）
+            let borderColor = BLOCK_BORDER_COLORS[type] || '#8b6914';
+            let borderWidth = 4;
+
+            // 绘制边框背景
+            ctx.fillStyle = borderColor;
+            ctx.fillRect(x, y, CELL_W, CELL_H);
+
+            // 绘制内部阴影效果
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(x + CELL_W - borderWidth, y + borderWidth, borderWidth, CELL_H - borderWidth * 2);
+            ctx.fillRect(x + borderWidth, y + CELL_H - borderWidth, CELL_W - borderWidth * 2, borderWidth);
+
+            // 绘制图片
+            let img = loadedImages[type];
+            if(img) {
+                // 图片区域：留出边框宽度
+                let imgX = x + borderWidth;
+                let imgY = y + borderWidth;
+                let imgW = CELL_W - borderWidth * 2;
+                let imgH = CELL_H - borderWidth * 2;
+                ctx.drawImage(img, imgX, imgY, imgW, imgH);
+            }
+
+            // 高亮边框（选中状态）
+            if(isHighlight) {
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = borderColor;
+                ctx.strokeRect(x + 2, y + 2, CELL_W - 4, CELL_H - 4);
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        // ---------- 绘制古墓风格画布 ----------
+        function drawCanvas() {
+            if(!ctx) return;
+
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制背景
+            ctx.fillStyle = "#201608";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 构建正在下落的方块的起始位置集合
+            let fallingStartSet = new Set();
+            if(currentAnimPhase === ANIM_PHASE.FALLING) {
+                for(let block of fallingBlocks) {
+                    if(block.startRow >= 0) {
+                        fallingStartSet.add(`${block.startRow},${block.col}`);
+                    }
+                }
+            }
+
+            // 绘制网格
+            for(let i=0; i<ROWS; i++) {
+                for(let j=0; j<COLS; j++) {
+                    let x = j * CELL_W;
+                    let y = i * CELL_H;
+                    let type = gameGrid[i][j];
+
+                    // 判断当前位置是否被某个下落方块占据
+                    let isFallingStart = currentAnimPhase === ANIM_PHASE.FALLING &&
+                        fallingStartSet.has(`${i},${j}`);
+
+                    if(isFallingStart) {
+                        // 该位置的方块正在别处下落，显示空背景
+                        ctx.fillStyle = "#1a1008";
+                        ctx.fillRect(x, y, CELL_W-1, CELL_H-1);
+                        ctx.strokeStyle = "#3a2a1a";
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(x+0.5, y+0.5, CELL_W-2, CELL_H-2);
+                    } else if(currentAnimPhase === ANIM_PHASE.HIGHLIGHT) {
+                        // 高亮阶段
+                        if(type >= 0) {
+                            let isHighlight = eliminatingBlocks.some(b => b.row === i && b.col === j);
+                            drawBlockAt(x, y, type, isHighlight);
+                        } else {
+                            // 空格子
+                            ctx.fillStyle = "#1a1008";
+                            ctx.fillRect(x, y, CELL_W-1, CELL_H-1);
+                            ctx.strokeStyle = "#3a2a1a";
+                            ctx.lineWidth = 1;
+                            ctx.strokeRect(x+0.5, y+0.5, CELL_W-2, CELL_H-2);
+                        }
+                    } else {
+                        // 正常阶段或下落阶段（非下落原始位置）
+                        if(type >= 0) {
+                            drawBlockAt(x, y, type, false);
+                        } else {
+                            // 空格子
+                            ctx.fillStyle = "#1a1008";
+                            ctx.fillRect(x, y, CELL_W-1, CELL_H-1);
+                            ctx.strokeStyle = "#3a2a1a";
+                            ctx.lineWidth = 1;
+                            ctx.strokeRect(x+0.5, y+0.5, CELL_W-2, CELL_H-2);
+                        }
+                    }
+                }
+            }
+
+            // 下落阶段绘制下落方块
+            if(currentAnimPhase === ANIM_PHASE.FALLING) {
+                for(let block of fallingBlocks) {
+                    let x = block.col * CELL_W;
+                    let y = block.currentY;
+                    drawBlockAt(x, y, block.type, false);
+                }
+            }
+
+            // 高亮选中的格子（在非下落阶段）
+            if(currentAnimPhase !== ANIM_PHASE.FALLING && selectedRow >= 0 && selectedCol >= 0) {
+                let x = selectedCol * CELL_W;
+                let y = selectedRow * CELL_H;
+                let selectedType = gameGrid[selectedRow][selectedCol];
+                let selectedBorderColor = selectedType >= 0 ? (BLOCK_BORDER_COLORS[selectedType] || '#f7d44a') : '#f7d44a';
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = selectedBorderColor;
+                ctx.strokeRect(x + 2, y + 2, CELL_W - 4, CELL_H - 4);
+                ctx.shadowBlur = 0;
+            }
+
+        }
+
+        // 显示toast
+        let toastTimeout = null;
+        function showToast(msg) {
+            let oldToast = document.querySelector('.toast-msg');
+            if(oldToast) oldToast.remove();
+            let div = document.createElement('div');
+            div.className = 'toast-msg';
+            div.innerText = msg;
+            document.body.appendChild(div);
+            if(toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { if(div) div.remove(); }, 1800);
+        }
+
+        // 处理玩家点击canvas交换逻辑
+        async function handleCanvasClick(e) {
+            if(isProcessing || !gameActive) {
+                if(!gameActive) showToast("古墓震荡，稍后再试...");
+                return;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            let mouseX = (e.clientX - rect.left) * scaleX;
+            let mouseY = (e.clientY - rect.top) * scaleY;
+            if(mouseX<0 || mouseY<0 || mouseX>canvas.width || mouseY>canvas.height) return;
+            let col = Math.floor(mouseX / CELL_W);
+            let row = Math.floor(mouseY / CELL_H);
+            if(row<0 || row>=ROWS || col<0 || col>=COLS) return;
+
+            // 没有选中任何格子 => 选中当前
+            if(selectedRow === -1 && selectedCol === -1) {
+                selectedRow = row;
+                selectedCol = col;
+                drawCanvas();
+                return;
+            }
+
+            // 已有选中的格子，尝试交换
+            let sRow = selectedRow, sCol = selectedCol;
+            let isAdjacent = (Math.abs(sRow - row) + Math.abs(sCol - col)) === 1;
+            if(!isAdjacent) {
+                selectedRow = row;
+                selectedCol = col;
+                drawCanvas();
+                return;
+            }
+
+            // 尝试交换
+            isProcessing = true;
+            let success = await trySwapAndMatch(sRow, sCol, row, col);
+            selectedRow = -1;
+            selectedCol = -1;
+            drawCanvas();
+
+            if(!success) {
+                showToast("❌ 此地无宝，无法匹配... ❌");
+            } else {
+                if(!gameActive) {
+                    isProcessing = false;
+                    return;
+                }
+                if(totalEliminated >= TARGET_ELIMINATIONS) {
+                    isProcessing = false;
+                    return;
+                }
+            }
+            isProcessing = false;
+
+            // 检查累积消除是否达到100（二次保险）
+            if(totalEliminated >= TARGET_ELIMINATIONS && gameActive) {
+                winGame();
+            }
+        }
+
+        // 重置按钮逻辑
+        function onReset() {
+            if(isProcessing) return;
+            resetFullGame(true);
+            drawCanvas();
+        }
+
+        // 退出按钮
+        function onExit() {
+            if(isProcessing) return;
+            resetFullGame(true);
+            showToast("⛏️ 离开了墓室，没有带回文物... ⛏️");
+            notifyParent('M1_MINIGAME_EXIT');
+        }
+
+        // 初始化游戏
+        function initGame() {
+            gameGrid = generatePlayableGrid();
+            currentSoilPercent = 100;
+            totalEliminated = 0;
+            gameActive = true;
+            updateSoilUI();
+            drawCanvas();
+            // 绑定事件
+            canvas.addEventListener('click', handleCanvasClick);
+            document.getElementById('resetBtn').addEventListener('click', onReset);
+            document.getElementById('exitBtn').addEventListener('click', onExit);
+        }
+
+        // 等待图片加载完成后初始化游戏
+        loadImages(function() {
+            initGame();
+        });
+    })();
+</script>
+</body>
+</html>
