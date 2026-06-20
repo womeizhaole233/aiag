@@ -360,7 +360,7 @@ button {
   position: absolute;
   left: var(--dialogue-portrait-left);
   bottom: 20px;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -380,6 +380,8 @@ button {
 
 .dialogue-portrait-layer img.is-visible {
   display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 .dialogue-layer .dialogue-box {

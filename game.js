@@ -1,7 +1,7 @@
 const { SAVE_KEY, START_SCENE_ID, SCENES, POSITION_MAP, CONCLUSION_DATA, NPC_DATA, ANALYSIS_DATA } = window.M1_GAME_DATA;
 const STORY_DATA = window.M1_STORY_DATA || {};
 const LEGACY_STORAGE_KEYS = ["m1-gate-immersive-state-v2-source-text"];
-const CURRENT_STORY_VERSION = "m1-story-vn-dialogue-types-v1";
+const CURRENT_STORY_VERSION = "m1-story-vn-dialogue-types-v2";
 const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明"]);
 const STORY_SELF_SPEAKERS = new Set(["你", "林砚秋"]);
 const DEFAULT_STORY_PORTRAITS = {
@@ -689,10 +689,11 @@ function hasExplicitStorySpeakerTag(body) {
 }
 
 function getDialoguePortrait(dialogue) {
-  if (dialogue?.storyNodeId && !shouldUseStoryPortrait(dialogue)) return "";
   const portraits = { ...DEFAULT_STORY_PORTRAITS, ...(getStoryData().speakerPortraits || {}) };
   const speaker = getDisplaySpeaker(dialogue?.speaker);
-  return normalizeStoryAssetPath(dialogue?.portrait || portraits[speaker] || portraits[dialogue?.speaker] || "");
+  const portrait = normalizeStoryAssetPath(dialogue?.portrait || portraits[speaker] || portraits[dialogue?.speaker] || "");
+  if (dialogue?.storyNodeId && !shouldUseStoryPortrait(dialogue) && !portrait) return "";
+  return portrait;
 }
 
 function getStoryAllowedNodes(eventInfo) {
@@ -1265,10 +1266,12 @@ function renderActiveDialogue() {
   if (dialoguePortrait) {
     if (portrait) {
       dialoguePortrait.src = portrait;
+      dialoguePortrait.alt = speaker ? `${speaker}立绘` : "";
       dialoguePortrait.classList.add("is-visible");
       dialogueLayer.classList.add("has-portrait");
     } else {
       dialoguePortrait.removeAttribute("src");
+      dialoguePortrait.alt = "";
       dialoguePortrait.classList.remove("is-visible");
       dialogueLayer.classList.remove("has-portrait");
     }
