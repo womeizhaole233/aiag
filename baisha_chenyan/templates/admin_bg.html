@@ -626,14 +626,14 @@ function renderChapterList() {
     const list = document.getElementById('chapterList');
     list.innerHTML = chaptersData.map(ch => `
         <div class="chapter-item ${ch.id === activeChapterId ? 'active' : ''}"
-             data-id="${ch.id}" onclick="selectChapter('${ch.id}')">
-            <span class="ch-num">${ch.number}</span>
-            <span class="ch-title">${ch.title}</span>
+             data-id="${escapeHtml(ch.id)}" onclick="selectChapter('${escapeHtml(ch.id)}')">
+            <span class="ch-num">${escapeHtml(ch.number)}</span>
+            <span class="ch-title">${escapeHtml(ch.title)}</span>
             <span class="ch-actions">
-                <button onclick="event.stopPropagation(); editChapter('${ch.id}')">编辑</button>
-                <button onclick="event.stopPropagation(); moveChapter('${ch.id}', -1)">↑</button>
-                <button onclick="event.stopPropagation(); moveChapter('${ch.id}', 1)">↓</button>
-                <button onclick="event.stopPropagation(); deleteChapter('${ch.id}')">删除</button>
+                <button onclick="event.stopPropagation(); editChapter('${escapeHtml(ch.id)}')">编辑</button>
+                <button onclick="event.stopPropagation(); moveChapter('${escapeHtml(ch.id)}', -1)">↑</button>
+                <button onclick="event.stopPropagation(); moveChapter('${escapeHtml(ch.id)}', 1)">↓</button>
+                <button onclick="event.stopPropagation(); deleteChapter('${escapeHtml(ch.id)}')">删除</button>
             </span>
         </div>
     `).join('') + `
@@ -685,11 +685,12 @@ async function moveChapter(id, direction) {
 
 async function saveChaptersToServer() {
     try {
-        await fetch('/api/chapters/save', {
+        const r = await fetch('/api/chapters/save', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({chapters: chaptersData})
         });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
         toast('章节配置已保存');
     } catch (e) {
         toast('保存失败: ' + e.message);
@@ -701,22 +702,22 @@ function showChapterModal(chapter, isNew) {
     content.innerHTML = `
         <h3>${isNew ? '新增章节' : '编辑章节'}</h3>
         <label>章节序号</label>
-        <input type="number" id="chNumber" value="${chapter.number}" min="0">
+        <input type="number" id="chNumber" value="${escapeHtml(chapter.number)}" min="0">
         <label>章节标题</label>
-        <input type="text" id="chTitle" value="${chapter.title}" placeholder="如：墓外">
+        <input type="text" id="chTitle" value="${escapeHtml(chapter.title)}" placeholder="如：墓外">
         <label>章节ID</label>
-        <input type="text" id="chId" value="${chapter.id}" ${isNew ? '' : 'readonly'} placeholder="如：chapter_1">
+        <input type="text" id="chId" value="${escapeHtml(chapter.id)}" ${isNew ? '' : 'readonly'} placeholder="如：chapter_1">
         <label>背景图路径</label>
-        <input type="text" id="chBg" value="${chapter.background_image}" placeholder="assets/M1/...">
+        <input type="text" id="chBg" value="${escapeHtml(chapter.background_image)}" placeholder="assets/M1/...">
         <label>简介</label>
-        <textarea id="chDesc">${chapter.description || ''}</textarea>
+        <textarea id="chDesc">${escapeHtml(chapter.description || '')}</textarea>
         <label>起始节点</label>
-        <input type="text" id="chStart" value="${chapter.start_node}" placeholder="n00001">
+        <input type="text" id="chStart" value="${escapeHtml(chapter.start_node)}" placeholder="n00001">
         <label>结束节点</label>
-        <input type="text" id="chEnd" value="${chapter.end_node}" placeholder="n00046">
+        <input type="text" id="chEnd" value="${escapeHtml(chapter.end_node)}" placeholder="n00046">
         <div class="row">
             <button class="btn" onclick="closeModal()">取消</button>
-            <button class="btn primary" onclick="saveChapterModal('${chapter.id}', ${isNew})">保存</button>
+            <button class="btn primary" onclick="saveChapterModal('${escapeHtml(chapter.id)}', ${isNew})">保存</button>
         </div>
     `;
     document.getElementById('modal').classList.add('show');
