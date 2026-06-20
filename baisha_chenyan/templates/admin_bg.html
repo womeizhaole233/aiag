@@ -327,10 +327,27 @@ function selectNode(id){
         <button class="btn small" data-set-next="game_over" style="font-size:11px;padding:2px 6px;border-color:#d68a3c;color:#d68a3c">→ 失败 game_over</button>
       </div>
       <div class="hint" style="margin-top:6px">默认: ${escapeHtml(n.default_next||'(无)')}${n.has_choices?' · <span style="color:var(--warn)">该节点含选项，next 仅在无选项时生效</span>':''}</div>
+    </div>
+
+    <div class="field ${(n.override_choices!=null)?'dirty':''}" id="fChoices">
+      <div class="field-head">
+        <label>选项 (choices) — 玩家可选择的分支</label>
+        ${(n.override_choices!=null)?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>'}
+        <div class="actions">
+          <button class="btn small primary" id="saveChoices">保存</button>
+          <button class="btn small" id="resetChoices" ${(n.override_choices!=null)?'':'disabled'}>重置</button>
+        </div>
+      </div>
+      <div id="choicesEditor"></div>
+      <div style="margin-top:8px">
+        <button class="btn small" id="addChoice">+ 添加选项</button>
+      </div>
+      <div class="hint" style="margin-top:6px">默认: ${(n.default_choices||[]).length>0?escapeHtml((n.default_choices||[]).map(c=>c.text).join(' | ')):'(无选项)'}</div>
     </div>`;
 
   renderBgPreview(n.effective_bg);
   renderPortraitPreview(n.effective_portrait);
+  renderChoicesEditor(n.effective_choices || []);
 
   $('#saveSpeaker').onclick = ()=>save('speaker', $('#inSpeaker').value);
   $('#resetSpeaker').onclick = ()=>save('speaker', '');
@@ -345,6 +362,19 @@ function selectNode(id){
     const btnDel = $('#btnDelete');
     if(btnDel) btnDel.onclick = ()=>deleteNode(n.id);
   }
+
+  $('#addChoice').onclick = function(){
+    const choices = n.effective_choices ? [...n.effective_choices] : [];
+    choices.push({text: '', next: ''});
+    renderChoicesEditor(choices);
+  };
+  $('#saveChoices').onclick = function(){
+    const choices = collectChoices();
+    if(choices !== null) save('choices', choices);
+  };
+  $('#resetChoices').onclick = function(){
+    save('choices', null);
+  };
 
   document.querySelectorAll('.thumb').forEach(el=>{
     el.classList.toggle('cur', el.dataset.path === n.effective_bg);
@@ -363,6 +393,46 @@ function renderPortraitPreview(path){
   if(!box) return;
   if(!path){ box.innerHTML = '<div class="empty">无立绘</div>'; return; }
   box.innerHTML = `<img src="/${path}" alt=""><div class="imgpath">${escapeHtml(path)}</div>`;
+}
+
+function renderChoicesEditor(choices){
+  const box = $('#choicesEditor');
+  if(!box) return;
+  if(!choices || choices.length === 0){
+    box.innerHTML = '<div style="color:var(--mute);font-size:12px;padding:8px 0;">当前无选项</div>';
+    return;
+  }
+  box.innerHTML = choices.map((c, i) => `
+    <div class="choice-item" style="display:flex;gap:6px;margin-bottom:6px;align-items:center;">
+      <input type="text" class="choice-text" data-idx="${i}" value="${escapeHtml(c.text||'')}" placeholder="选项文本" style="flex:1;background:#0e0d0b;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:6px 8px;font-size:13px;">
+      <input type="text" class="choice-next" data-idx="${i}" value="${escapeHtml(c.next||'')}" list="nodeIdList" placeholder="下一节点" style="width:140px;background:#0e0d0b;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:6px 8px;font-size:13px;">
+      <button class="btn small danger del-choice" data-idx="${i}" title="删除选项">×</button>
+    </div>
+  `).join('');
+
+  box.querySelectorAll('.del-choice').forEach(btn => {
+    btn.onclick = function(){
+      const idx = parseInt(this.dataset.idx);
+      choices.splice(idx, 1);
+      renderChoicesEditor(choices);
+    };
+  });
+
+  box._choices = choices;
+}
+
+function collectChoices(){
+  const box = $('#choicesEditor');
+  if(!box || !box._choices) return null;
+  const texts = box.querySelectorAll('.choice-text');
+  const nexts = box.querySelectorAll('.choice-next');
+  const choices = [];
+  texts.forEach((el, i) => {
+    const text = el.value.trim();
+    const next = nexts[i].value.trim() || null;
+    if(text) choices.push({text, next});
+  });
+  return choices.length > 0 ? choices : [];
 }
 
 function renderImages(){
@@ -399,9 +469,14 @@ async function chooseImage(path){
 
 async function save(field, value){
   if(!cur) return;
+  const body = {node_id: cur, field, value};
+  if(field === 'choices' && value === null){
+    body.reset = true;
+    body.value = '';
+  }
   const r = await fetch('/api/admin/bg/save', {
     method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({node_id: cur, field, value})
+    body: JSON.stringify(body)
   });
   const j = await r.json();
   if(j.status !== 'ok'){ toast(j.msg||'保存失败'); return; }
@@ -411,12 +486,15 @@ async function save(field, value){
   n.override_bg = j.override_bg;
   n.override_portrait = j.override_portrait;
   n.override_next = j.override_next;
+  n.override_choices = j.override_choices;
   n.effective_speaker = j.effective_speaker;
   n.effective_text = j.effective_text;
   n.effective_bg = j.effective_bg;
   n.effective_portrait = j.effective_portrait;
   n.effective_next = j.effective_next;
-  n.preview = (j.effective_text||'').replace(/\n/g,' ').slice(0,80);
+  n.effective_choices = j.effective_choices;
+  n.preview = (j.effective_text||'').replace(/\n/g,' ').slice(0,80) || ('❖ ' + (j.effective_choices||[]).map(c=>c.text).join(' | ').slice(0,60));
+  n.has_choices = (j.effective_choices||[]).length > 0;
   selectNode(cur);
   renderStats();
   toast(value === '' ? '已重置' : '已保存');

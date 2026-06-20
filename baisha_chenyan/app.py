@@ -4382,17 +4382,20 @@ def admin_bg_data():
             'default_bg': d.get('background_image'),
             'default_portrait': d.get('portrait'),
             'default_next': d.get('next'),
+            'default_choices': d.get('choices') or [],
             'override_speaker': ov.get('speaker'),
             'override_text': ov.get('text'),
             'override_bg': ov.get('bg'),
             'override_portrait': ov.get('portrait'),
             'override_next': ov.get('next'),
+            'override_choices': ov.get('choices'),
             'effective_speaker': eff_speaker,
             'effective_text': eff_text,
             'effective_bg': eff_bg,
             'effective_portrait': eff_portrait,
             'effective_next': eff_next,
-            'preview': eff_text.replace('\n', ' ')[:80],
+            'effective_choices': ov.get('choices') if ov.get('choices') is not None else (d.get('choices') or []),
+            'preview': (eff_text.replace('\n', ' ')[:80] if eff_text else '') or ('❖ ' + ' | '.join([c.get('text','') for c in (d.get('choices') or [])])[:60]),
             'has_choices': bool(d.get('choices')),
             'next': eff_next,
             'puzzle': d.get('puzzle'),
@@ -4409,18 +4412,21 @@ def admin_bg_data():
             'default_bg': None,
             'default_portrait': None,
             'default_next': None,
+            'default_choices': [],
             'override_speaker': d.get('speaker'),
             'override_text': d.get('text'),
             'override_bg': d.get('bg'),
             'override_portrait': d.get('portrait'),
             'override_next': d.get('next'),
+            'override_choices': d.get('choices'),
             'effective_speaker': d.get('speaker') or '',
             'effective_text': eff_text,
             'effective_bg': d.get('bg'),
             'effective_portrait': d.get('portrait'),
             'effective_next': d.get('next'),
-            'preview': eff_text.replace('\n', ' ')[:80],
-            'has_choices': False,
+            'effective_choices': d.get('choices') or [],
+            'preview': (eff_text.replace('\n', ' ')[:80] if eff_text else '') or ('❖ ' + ' | '.join([c.get('text','') for c in (d.get('choices') or [])])[:60]),
+            'has_choices': bool(d.get('choices')),
             'next': d.get('next'),
             'puzzle': None,
             'bg_locked': False,
@@ -4445,11 +4451,13 @@ def _node_to_dict(node_id):
             'override_bg': ov.get('bg'),
             'override_portrait': ov.get('portrait'),
             'override_next': ov.get('next'),
+            'override_choices': ov.get('choices'),
             'effective_speaker': ov.get('speaker') or d.get('speaker', ''),
             'effective_text': ov.get('text') if ov.get('text') is not None else (d.get('text') or ''),
             'effective_bg': ov.get('bg') or d.get('background_image'),
             'effective_portrait': ov.get('portrait') or d.get('portrait'),
             'effective_next': ov.get('next') if ov.get('next') is not None else d.get('next'),
+            'effective_choices': ov.get('choices') if ov.get('choices') is not None else (d.get('choices') or []),
         }
     if node_id in custom:
         d = custom[node_id]
@@ -4459,11 +4467,13 @@ def _node_to_dict(node_id):
             'override_bg': d.get('bg'),
             'override_portrait': d.get('portrait'),
             'override_next': d.get('next'),
+            'override_choices': d.get('choices'),
             'effective_speaker': d.get('speaker') or '',
             'effective_text': d.get('text') or '',
             'effective_bg': d.get('bg'),
             'effective_portrait': d.get('portrait'),
             'effective_next': d.get('next'),
+            'effective_choices': d.get('choices') or [],
         }
     return None
 
@@ -4474,7 +4484,7 @@ def admin_bg_save():
     node_id = data.get('node_id')
     field = data.get('field')
     value = data.get('value', '')
-    if field not in ('bg', 'speaker', 'text', 'portrait', 'next'):
+    if field not in ('bg', 'speaker', 'text', 'portrait', 'next', 'choices'):
         return jsonify({'status': 'error', 'msg': 'invalid field'}), 400
 
     overrides = load_overrides()
@@ -4493,19 +4503,31 @@ def admin_bg_save():
     if node_id in custom:
         # 自定义节点：直接改本体
         node = custom[node_id]
-        if value == '' or value is None:
-            node.pop(field, None)
+        if field == 'choices':
+            if value == '' or value is None or (isinstance(value, list) and len(value) == 0):
+                node.pop(field, None)
+            else:
+                node[field] = value
         else:
-            node[field] = value
+            if value == '' or value is None:
+                node.pop(field, None)
+            else:
+                node[field] = value
         custom[node_id] = node
         overrides[CUSTOM_NODES_KEY] = custom
     else:
         # 原生节点：走 overrides
         node_ov = overrides.get(node_id, {})
-        if value == '' or value is None:
-            node_ov.pop(field, None)
+        if field == 'choices':
+            if value == '' or value is None or (isinstance(value, list) and len(value) == 0):
+                node_ov.pop(field, None)
+            else:
+                node_ov[field] = value
         else:
-            node_ov[field] = value
+            if value == '' or value is None:
+                node_ov.pop(field, None)
+            else:
+                node_ov[field] = value
         if node_ov:
             overrides[node_id] = node_ov
         else:
