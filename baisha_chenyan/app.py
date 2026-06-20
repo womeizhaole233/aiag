@@ -16,6 +16,33 @@ CUSTOM_NODES_KEY = '__custom_nodes__'
 # 终止节点的 next 值
 TERMINAL_NEXTS = {'game_end', 'game_over'}
 
+# ==================== 章节配置 ====================
+CHAPTERS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chapters.json')
+
+def load_chapters():
+    """返回章节配置列表"""
+    if os.path.exists(CHAPTERS_FILE):
+        try:
+            with open(CHAPTERS_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f) or {}
+            return data.get('chapters', [])
+        except Exception:
+            pass
+    return []
+
+def save_chapters(chapters):
+    """保存章节配置"""
+    with open(CHAPTERS_FILE, 'w', encoding='utf-8') as f:
+        json.dump({'chapters': chapters}, f, ensure_ascii=False, indent=2)
+
+def get_chapter_for_node(node_id):
+    """根据节点ID查找所属章节"""
+    chapters = load_chapters()
+    for ch in chapters:
+        if ch.get('start_node', '') <= node_id <= ch.get('end_node', ''):
+            return ch.get('id')
+    return None
+
 def load_overrides():
     """返回 {node_id: {bg?, speaker?, text?}}。兼容老版 bg_overrides.json。"""
     data = {}
@@ -4326,6 +4353,7 @@ def dialogue_api():
         'background_image': bg,
         'portrait': portrait,
         'puzzle': dialogue.get('puzzle'),
+        'chapter_id': get_chapter_for_node(dialogue_id),
     })
 
 @app.route('/api/dialogue/list')
@@ -4347,6 +4375,20 @@ def dialogue_list():
 def reset():
     session.clear()
     return jsonify({'status': 'ok'})
+
+@app.route('/api/chapters')
+def chapters_api():
+    """返回章节配置"""
+    chapters = load_chapters()
+    return jsonify({'chapters': chapters})
+
+@app.route('/api/chapters/save', methods=['POST'])
+def chapters_save_api():
+    """保存章节配置"""
+    data = request.get_json() or {}
+    chapters = data.get('chapters', [])
+    save_chapters(chapters)
+    return jsonify({'status': 'ok', 'count': len(chapters)})
 
 
 # ==================== 后台：内容配置 ====================
