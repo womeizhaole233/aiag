@@ -66,9 +66,10 @@ while i < len(lines):
             events.append(('choice_prompt', '\n'.join(prompt_lines).strip()))
             i = j  # move to #### 选项
         else:
-            # Sequential node with player text
+            # Single-option choice node (player click)
             prompt_text = '\n'.join(prompt_lines).strip()
-            events.append(('speaker', '系统', prompt_text))
+            events.append(('choice_prompt', ''))
+            events.append(('choice_options', [('A', prompt_text)]))
             i = j
         continue
 
@@ -294,6 +295,11 @@ for idx, event in enumerate(events):
         nid = create_node(speaker, text)
         chain_to(nid)
         continue
+
+# ==================== Phase 2.5: Post-process single-option choices ====================
+for nid, d in nodes.items():
+    if len(d["choices"]) == 1 and d["choices"][0]["next"] is None and d["next"]:
+        d["choices"][0]["next"] = d["next"]
 
 # ==================== Phase 3: Output ====================
 with open(OUT_PATH, 'w', encoding='utf-8') as f:
