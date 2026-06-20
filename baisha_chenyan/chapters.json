@@ -1,0 +1,94 @@
+{
+  "chapters": [
+    {
+      "id": "prologue",
+      "number": 0,
+      "title": "楔子",
+      "background_image": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "description": "",
+      "start_node": "n00001",
+      "end_node": "n00046"
+    },
+    {
+      "id": "chapter_1",
+      "number": 1,
+      "title": "墓外",
+      "background_image": "assets/M1/00_墓葬全景与结构图/第一号墓后室平、剖面图.png",
+      "description": "",
+      "start_node": "n00047",
+      "end_node": "n00088"
+    },
+    {
+      "id": "chapter_2",
+      "number": 2,
+      "title": "墓门",
+      "background_image": "assets/M1/02墓道与墓门/封门砖的组织.png",
+      "description": "",
+      "start_node": "n00089",
+      "end_node": "n00144"
+    },
+    {
+      "id": "chapter_3",
+      "number": 3,
+      "title": "甬道",
+      "background_image": "assets/M1/03甬道/甬道顶叠胜彩画.png",
+      "description": "",
+      "start_node": "n00145",
+      "end_node": "n00186"
+    },
+    {
+      "id": "chapter_4",
+      "number": 4,
+      "title": "前室",
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "start_node": "n00187",
+      "end_node": "n00218"
+    },
+    {
+      "id": "chapter_5",
+      "number": 5,
+      "title": "过道",
+      "background_image": "assets/M1/09_过道/过道东壁壁画和纪年题记.png",
+      "description": "",
+      "start_node": "n00219",
+      "end_node": "n00246"
+    },
+    {
+      "id": "chapter_6",
+      "number": 6,
+      "title": "后室",
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "start_node": "n00247",
+      "end_node": "n00308"
+    },
+    {
+      "id": "chapter_7",
+      "number": 7,
+      "title": "暗格",
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "start_node": "n00309",
+      "end_node": "n00346"
+    },
+    {
+      "id": "finale",
+      "number": 8,
+      "title": "终章",
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "start_node": "n00347",
+      "end_node": "n00358"
+    },
+    {
+      "id": "closure",
+      "number": 9,
+      "title": "封存",
+      "background_image": "assets/M1/17_补充总览图/后室入口总览图.png",
+      "description": "",
+      "start_node": "n00359",
+      "end_node": "n00362"
+    }
+  ]
+}
