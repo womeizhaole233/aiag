@@ -1,28 +1,163 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Parse text new.md and generate DIALOGUES dict for app.py.
+Convert text new.md to DIALOGUES dict for app.py.
 """
-import re, json
+import re
 
 MD_PATH = r'D:\AI\aiag\baisha_chenyan\text new.md'
 
 with open(MD_PATH, 'r', encoding='utf-8') as f:
     raw = f.read()
-
-# Remove title line
 if raw.startswith('# '):
     raw = raw[raw.index('\n')+1:]
-
 text = raw.strip()
 
 # ==============================
-# 1. Split into chapters
+# Phase 1: Split by ###, then merge choice-related sections
 # ==============================
-chapter_blocks = re.split(r'\n(?=## )', text)
+chapters_raw = re.split(r'\n(?=## )', text)
+all_sections = []
 
-# Chapter config
-CHAPTER_BG = {
+for ch_block in chapters_raw:
+    ch_block = ch_block.strip()
+    if not ch_block: continue
+    lines = ch_block.split('\n')
+    if not lines[0].startswith('## '): continue
+    ch_title = lines[0][3:].strip()
+    ch_body = '\n'.join(lines[1:]).strip()
+    parts = re.split(r'\n(?=### )', ch_body)
+    for part in parts:
+        part = part.strip()
+        if not part: continue
+        plines = part.split('\n')
+        header = plines[0][4:].strip()
+        body = '\n'.join(plines[1:]).strip()
+        all_sections.append((ch_title, header, body, header == '玩家点击'))
+
+# Merge choice-related sections into click sections
+merged = []
+i = 0
+while i < len(all_sections):
+    ct, hdr, body, is_c = all_sections[i]
+    
+    if is_c:
+        click_lines = [body] if body else []
+        last_was_choice = bool(re.search(r'####\s+选[A-D][^#]*$', body, re.MULTILINE))
+        
+        j = i + 1
+        while j < len(all_sections):
+            nct, nhdr, nbody, nis_c = all_sections[j]
+            if nis_c: break
+            
+            # Check if this section continues a choice outcome
+            nlines = nbody.split('\n') if nbody else []
+            starts_with_choice = any(re.match(r'^####\s+选', l.strip()) for l in nlines[:3])
+            
+            # Check if previous content has open #### 选X (not yet followed by next #### 选Y)
+            prev_text = '\n'.join(click_lines)
+            # Count open #### 选X vs resolved ones (followed by next #### 选 or ---)
+            open_choices = bool(re.search(r'####\s+选[A-D][^#]*$', prev_text, re.MULTILINE))
+            
+            if last_was_choice or starts_with_choice or open_choices:
+                click_lines.append(f"### {nhdr}")
+                if nbody: click_lines.append(nbody)
+                
+                # Check if this section ends with a choice marker
+                last_was_choice = bool(re.search(r'####\s+选[A-D]', nbody or ''))
+                last_was_choice = last_was_choice or bool(re.search(r'####\s+选[A-D][^#]*$', '\n'.join(click_lines[-3:]), re.MULTILINE))
+                j += 1
+            else:
+                break
+        
+        merged.append((ct, hdr, '\n'.join(click_lines), True))
+        i = j
+    else:
+        merged.append((ct, hdr, body, False))
+        i += 1
+
+print(f"Sections: {len(merged)}, Click sections: {sum(1 for *_, c in merged if c)}")
+
+# ==============================
+# Phase 2: Parse choices from click sections
+# ==============================
+def clean_response_text(text):
+    """Clean ### Speaker markers from within response text"""
+    # Replace ### Speaker patterns with 【Speaker】
+    lines = text.split('\n')
+    result = []
+    for l in lines:
+        m = re.match(r'^###\s+(.+)', l)
+        if m:
+            speaker = m.group(1).strip()
+            if speaker == '系统':
+                continue  # skip plain system markers
+            result.append(f"【{speaker}】")
+        else:
+            result.append(l)
+    return '\n'.join(result).strip()
+
+def parse_click(body):
+    lines = body.split('\n')
+    options = []
+    outcome_lines = {}
+    current_outcome_letters = []
+    mode = 'idle'
+    
+    for line in lines:
+        s = line.strip()
+        
+        if re.match(r'^####\s+(?:选项|选择)', s):
+            mode = 'opts'
+            current_outcome_letters = []
+            continue
+        
+        m = re.match(r'^####\s+选(.+)', s)
+        if m:
+            mode = 'outcome'
+            cstr = m.group(1).strip().replace('：', '').replace(':', '')
+            letters = re.findall(r'[A-Da-d]', cstr.upper())
+            current_outcome_letters = letters
+            for l in letters:
+                if l not in outcome_lines:
+                    outcome_lines[l] = []
+            last_was_sep = True  # new outcome section
+            continue
+        
+        if s.startswith('---'):
+            if mode == 'outcome':
+                # separator between outcomes
+                current_outcome_letters = []
+            continue
+        
+        if mode == 'opts':
+            m_opt = re.match(r'([A-Da-d])[.．\s]\s*(.*)', s)
+            if m_opt:
+                options.append((m_opt.group(1).upper(), m_opt.group(2).strip()))
+        
+        elif mode == 'outcome' and current_outcome_letters:
+            for l in current_outcome_letters:
+                outcome_lines[l].append(line)
+    
+    # Build response text for each option
+    option_responses = {}
+    for letter, opt_text in options:
+        resp_lines = outcome_lines.get(letter, [])
+        # Clean #### 选X headers from response
+        resp_lines = [l for l in resp_lines if not re.match(r'^\s*####\s+选', l.strip())]
+        # Clean ### Speaker markers
+        resp_text_raw = '\n'.join(resp_lines).strip()
+        resp_text = clean_response_text(resp_text_raw)
+        if not resp_text:
+            resp_text = f"（选项{letter}）"
+        option_responses[letter] = (opt_text, resp_text)
+    
+    return options, option_responses
+
+# ==============================
+# Phase 3: Build DIALOGUES
+# ==============================
+BG_MAP = {
     "楔子": "assets/M1/01环境地图/白沙宋墓地形图.png",
     "第一章  墓外": "assets/M1/01环境地图/白沙宋墓地形图.png",
     "第二章  墓门": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
@@ -34,316 +169,116 @@ CHAPTER_BG = {
     "终章": "assets/M1/17_补充总览图/P0-1_甬道总交互图.png",
     "封存": "assets/M1/16_出土器物与人骨/M1出土物分布图.png",
 }
-PREFIX_MAP = {
-    "楔子": "pro", "第一章  墓外": "ch1", "第二章  墓门": "ch2",
-    "第三章 甬道": "ch3", "第四章 前室": "ch4", "第五章 过道": "ch5",
-    "第六章 后室": "ch6", "第七章  暗格": "ch7", "终章": "final", "封存": "end",
-}
 
-# ==============================
-# 2. Parse nodes from a chapter body
-# ==============================
-def parse_chapter(ch_title, ch_body):
-    """Parse a chapter body into a list of raw node dicts."""
-    bg = CHAPTER_BG.get(ch_title, "assets/M1/01环境地图/白沙宋墓地形图.png")
-    prefix = PREFIX_MAP.get(ch_title, "ch")
+DIALOGUES = {}
+all_ids = []
+cnt = [0]
+converge = []
+
+def nid():
+    cnt[0] += 1
+    return f"n{cnt[0]:05d}"
+
+for ct, hdr, body, is_c in merged:
+    bg = BG_MAP.get(ct, "assets/M1/01环境地图/白沙宋墓地形图.png")
     
-    # Split by ### headings
-    sections = re.split(r'\n(?=### )', ch_body)
-    
-    raw_nodes = []
-    click_counter = [0]
-    choice_counter = [0]
-    
-    i = 0
-    while i < len(sections):
-        sec = sections[i].strip()
-        if not sec:
-            i += 1
+    if is_c:
+        options, opt_resp = parse_click(body)
+        
+        if not options:
+            # Simple prompt without choices - treat as normal node
+            n = nid()
+            DIALOGUES[n] = {'speaker': '系统', 'text': body, 'background_image': bg, 'choices': [], 'next': None}
+            all_ids.append(n)
+            for r in converge:
+                if DIALOGUES[r].get('next') is None: DIALOGUES[r]['next'] = n
+            converge = []
             continue
         
-        lines = sec.split('\n')
-        header = lines[0].replace('### ', '').strip()
-        body = '\n'.join(lines[1:]).strip()
+        # Create choice node
+        cid = nid()
+        choices = []
+        resp_map = {}
         
-        if header == '玩家点击':
-            click_counter[0] += 1
-            # ---- Parse the click section ----
-            # Find prompt text (before #### 选项)
-            opt_marker = None
-            for m in re.finditer(r'^####\s+(?:选项|选择)\s*$', body, re.MULTILINE):
-                opt_marker = m.start()
-                break
-            
-            if opt_marker is None:
-                # No choices - treat as normal
-                raw_nodes.append({
-                    'id': f"{prefix}_{len(raw_nodes)+1:03d}",
-                    'speaker': '系统',
-                    'text': body,
-                    'bg': bg,
-                    'choices': [],
-                    'is_click': True,
-                })
-                i += 1
-                continue
-            
-            prompt = body[:opt_marker].strip()
-            rest = body[opt_marker:]
-            
-            # Parse option items (A. ..., B. ..., etc.)
-            opt_lines = rest.split('\n')
-            options = []  # [(letter, text)]
-            in_opts = False
-            for l in opt_lines:
-                s = l.strip()
-                if s.startswith('#### '):
-                    if '选项' in s or '选择' in s:
-                        in_opts = True
-                        continue
-                    else:
-                        break
-                if in_opts:
-                    m = re.match(r'[\(（]?([A-Da-d])[)）]?[.．\s]\s*(.*)', s)
-                    if m:
-                        options.append((m.group(1).upper(), m.group(2).strip()))
-                    elif s.startswith('---'):
-                        break
-            
-            # Find choice outcome headers #### 选X
-            # Split rest by #### 选
-            outcome_parts = re.split(r'\n(?=####\s*选)', rest)
-            
-            # Parse each outcome part
-            outcomes = {}  # letter -> response text
-            for op in outcome_parts:
-                op = op.strip()
-                if not op or op.startswith('#### 选项') or op.startswith('#### 选择'):
-                    continue
-                
-                op_lines = op.split('\n')
-                # Extract the header: #### 选A, #### 选A或C, #### 选B：
-                hdr = op_lines[0].replace('####', '').strip()
-                # Remove trailing punctuation
-                hdr = re.sub(r'[：:]\s*$', '', hdr).strip()
-                
-                # Extract letters
-                letter_part = hdr.replace('选', '').strip()
-                letters = re.split(r'[或&、]', letter_part)
-                letters = [l.strip() for l in letters if l.strip() in 'ABCDabcd']
-                
-                # Body of the outcome (without the #### header)
-                outcome_body = '\n'.join(op_lines[1:]).strip()
-                
-                # Parse nested ### nodes within outcome body
-                nested = re.split(r'\n(?=### )', outcome_body)
-                response_parts = []
-                for nsec in nested:
-                    nsec = nsec.strip()
-                    if not nsec:
-                        continue
-                    nlines = nsec.split('\n')
-                    nheader = nlines[0].replace('### ', '').strip()
-                    nbody = '\n'.join(nlines[1:]).strip()
-                    if nheader and nheader != '系统':
-                        response_parts.append(f"【{nheader}】\n{nbody}")
-                    else:
-                        response_parts.append(nbody)
-                
-                combined = '\n\n'.join(response_parts)
-                
-                for letter in letters:
-                    outcomes[letter] = combined
-            
-            # Build choices list
-            choices_list = []
-            response_nodes = {}  # response_id -> text
-            
-            for letter, opt_text in options:
-                resp_text = outcomes.get(letter, f"（{letter}的回应）")
-                # Find or create response node
-                resp_key = resp_text  # use text as key
-                if resp_key not in response_nodes:
-                    choice_counter[0] += 1
-                    rid = f"{prefix}_r_{choice_counter[0]:03d}"
-                    response_nodes[resp_key] = rid
-                
-                rid = response_nodes[resp_key]
-                choices_list.append({'text': opt_text, 'next': rid})
-            
-            # Create choice node
-            nid = f"{prefix}_q_{click_counter[0]:03d}"
-            raw_nodes.append({
-                'id': nid,
-                'speaker': '系统',
-                'text': prompt if prompt else '请选择：',
-                'bg': bg,
-                'choices': choices_list,
-                'is_click': True,
-            })
-            
-            # Create response nodes
-            for resp_text, rid in response_nodes.items():
-                raw_nodes.append({
-                    'id': rid,
-                    'speaker': '系统',
-                    'text': resp_text,
-                    'bg': bg,
-                    'choices': [],
-                    'is_response': True,
-                })
-            
-        else:
-            # Normal node
-            raw_nodes.append({
-                'id': f"{prefix}_{len(raw_nodes)+1:03d}",
-                'speaker': header,
-                'text': body,
-                'bg': bg,
-                'choices': [],
-            })
+        for letter, (opt_txt, resp_txt) in opt_resp.items():
+            if resp_txt not in resp_map:
+                rid = nid()
+                resp_map[resp_txt] = rid
+            choices.append({'text': opt_txt, 'next': resp_map[resp_txt]})
         
-        i += 1
-    
-    return raw_nodes
-
-
-# ==============================
-# 3. Process all chapters
-# ==============================
-all_raw = []  # list of (ch_title, raw_nodes)
-
-for block in chapter_blocks:
-    block = block.strip()
-    if not block:
-        continue
-    fl = block.split('\n')[0]
-    if not fl.startswith('## '):
-        continue
-    ch_title = fl[3:].strip()
-    ch_body = '\n'.join(block.split('\n')[1:]).strip()
-    nodes = parse_chapter(ch_title, ch_body)
-    all_raw.append((ch_title, nodes))
-
-# ==============================
-# 4. Link nodes and build DIALOGUES
-# ==============================
-DIALOGUES = {}
-all_node_ids = []  # ordered by appearance
-
-# Track response nodes that need convergence
-convergence_queue = []  # list of response node IDs
-
-for ch_title, raw_nodes in all_raw:
-    for node in raw_nodes:
-        nid = node['id']
-        DIALOGUES[nid] = {
-            'speaker': node['speaker'],
-            'text': node['text'],
-            'background_image': node['bg'],
-            'choices': node['choices'],
-            'next': None,
-        }
-        all_node_ids.append(nid)
+        DIALOGUES[cid] = {'speaker': '系统', 'text': '请选择：', 'background_image': bg, 'choices': choices, 'next': None}
+        all_ids.append(cid)
         
-        if node.get('is_response'):
-            convergence_queue.append(nid)
-        else:
-            # Link all waiting convergence targets to this node
-            for rid in convergence_queue:
-                if DIALOGUES[rid]['next'] is None and not DIALOGUES[rid]['choices']:
-                    DIALOGUES[rid]['next'] = nid
-            convergence_queue = []
+        for r in converge:
+            if DIALOGUES[r].get('next') is None: DIALOGUES[r]['next'] = cid
+        converge = []
+        
+        for resp_txt, rid in resp_map.items():
+            DIALOGUES[rid] = {'speaker': '系统', 'text': resp_txt, 'background_image': bg, 'choices': [], 'next': None}
+            all_ids.append(rid)
+            converge.append(rid)
+    else:
+        n = nid()
+        DIALOGUES[n] = {'speaker': hdr, 'text': body, 'background_image': bg, 'choices': [], 'next': None}
+        all_ids.append(n)
+        for r in converge:
+            if DIALOGUES[r].get('next') is None: DIALOGUES[r]['next'] = n
+        converge = []
 
-# Second pass: link sequential non-choice nodes
-prev_id = None
-for nid in all_node_ids:
-    node = DIALOGUES[nid]
-    if prev_id and not DIALOGUES[prev_id]['choices'] and not DIALOGUES[prev_id].get('_skip_link'):
-        if DIALOGUES[prev_id]['next'] is None:
-            DIALOGUES[prev_id]['next'] = nid
-    prev_id = nid
+# Sequential linking
+prev = None
+for n in all_ids:
+    if prev and not DIALOGUES[prev]['choices'] and DIALOGUES[prev]['next'] is None:
+        DIALOGUES[prev]['next'] = n
+    prev = n
 
-# Last node
-if all_node_ids:
-    last = all_node_ids[-1]
+if all_ids:
+    last = all_ids[-1]
     if not DIALOGUES[last]['choices'] and DIALOGUES[last]['next'] is None:
         DIALOGUES[last]['next'] = 'game_end'
 
-# Add game_end
-DIALOGUES['game_end'] = {
-    'speaker': '系统',
-    'text': '——全剧终——',
-    'background_image': 'assets/M1/17_补充总览图/P0-4_后室入口总览图.png',
-    'choices': [],
-    'next': None,
-}
-all_node_ids.append('game_end')
+DIALOGUES['game_end'] = {'speaker': '系统', 'text': '——全剧终——',
+    'background_image': 'assets/M1/17_补充总览图/P0-4_后室入口总览图.png', 'choices': [], 'next': None}
+all_ids.append('game_end')
 
 # ==============================
-# 5. Generate Python code
+# Output
 # ==============================
 def esc(s):
-    s = s.replace('\\', '\\\\').replace('"""', '\\"\\"\\"')
-    return s
+    return s.replace('\\', '\\\\').replace('"""', '\\"\\"\\"')
 
-py_lines = ['DIALOGUES = {\n']
-for nid in all_node_ids:
-    node = DIALOGUES[nid]
-    py_lines.append(f'    # ===== {nid} =====')
-    py_lines.append(f'    "{nid}": {{')
-    py_lines.append(f'        "speaker": "{esc(node["speaker"])}",')
-    py_lines.append(f'        "text": """{esc(node["text"])}""",')
-    py_lines.append(f'        "background_image": "{node["background_image"]}",')
-    
-    choices = node['choices']
-    if choices:
-        py_lines.append('        "choices": [')
-        for c in choices:
-            py_lines.append(f'            {{"text": "{esc(c["text"])}", "next": "{c["next"]}"}},')
-        py_lines.append('        ],')
+lines_out = ['DIALOGUES = {\n']
+for n in all_ids:
+    nd = DIALOGUES[n]
+    lines_out.append(f'    # ===== {n} =====')
+    lines_out.append(f'    "{n}": {{')
+    lines_out.append(f'        "speaker": "{esc(nd["speaker"])}",')
+    lines_out.append(f'        "text": """{esc(nd["text"])}""",')
+    lines_out.append(f'        "background_image": "{nd["background_image"]}",')
+    if nd['choices']:
+        lines_out.append('        "choices": [')
+        for c in nd['choices']:
+            lines_out.append(f'            {{"text": "{esc(c["text"])}", "next": "{c["next"]}"}},')
+        lines_out.append('        ],')
     else:
-        py_lines.append('        "choices": [],')
-    
-    nxt = node['next']
-    py_lines.append(f'        "next": "{nxt}"' if nxt else '        "next": None')
-    py_lines.append('    },')
-    py_lines.append('')
-
-py_lines.append('}\n')
+        lines_out.append('        "choices": [],')
+    lines_out.append(f'        "next": "{nd["next"]}"' if nd['next'] else '        "next": None')
+    lines_out.append('    },\n')
+lines_out.append('}\n')
 
 with open(r'D:\AI\aiag\baisha_chenyan\generated_dialogues.py', 'w', encoding='utf-8') as f:
-    f.write('\n'.join(py_lines))
+    f.write('\n'.join(lines_out))
 
-# Stats
-choice_nodes = sum(1 for nid in all_node_ids if DIALOGUES[nid]['choices'])
-response_nodes = sum(1 for nid in all_node_ids if DIALOGUES[nid].get('_is_response'))
-print(f"Total nodes: {len(all_node_ids)}")
-print(f"Choice nodes: {choice_nodes}")
-print(f"Game end node: {'game_end' in DIALOGUES}")
+print(f"\nDone: {len(all_ids)} nodes, {sum(1 for n in all_ids if DIALOGUES[n]['choices'])} choice nodes")
 
-# Print sample nodes
+# Verify a few choice nodes
 print("\n=== Sample choice nodes ===")
-for nid in all_node_ids:
-    if DIALOGUES[nid]['choices']:
-        print(f"  {nid}: {len(DIALOGUES[nid]['choices'])} choices")
-        print(f"    text: {DIALOGUES[nid]['text'][:60]}")
-        for c in DIALOGUES[nid]['choices'][:3]:
-            print(f"    -> {c['text'][:40]} -> {c['next']}")
-        if len(all_node_ids) > 10:
+for n in all_ids:
+    if DIALOGUES[n]['choices']:
+        print(f"\nNode {n}: {len(DIALOGUES[n]['choices'])} choices")
+        print(f"  Choices:")
+        for c in DIALOGUES[n]['choices'][:3]:
+            r = DIALOGUES.get(c['next'], {})
+            print(f"    [{c['text'][:40]}] -> {c['next']}: {r.get('text','')[:50]}")
+        if len(all_ids) > 20:
             break
-
-print("\n=== Sample response nodes ===")
-count = 0
-for nid in all_node_ids:
-    node = DIALOGUES[nid]
-    if node['choices']:
-        for c in node['choices']:
-            cn = DIALOGUES.get(c['next'], {})
-            if cn:
-                print(f"  {c['next']}: text={cn.get('text','')[:60]}..., next={cn.get('next')}")
-                count += 1
-                if count >= 5:
-                    break
-    if count >= 5:
-        break
