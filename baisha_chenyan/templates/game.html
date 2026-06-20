@@ -371,6 +371,7 @@ let dbgHistory = [];
 let dbgCurrent = {id:'-', speaker:'-', next:'-', choices:0, puzzle:'-'};
 let historyStack = []; // 对话历史栈（用于左箭头回退）
 let currentNodeId = 'start';
+let isGoingBack = false; // Flag for back navigation
 
 // ========== 章节标题屏 ==========
 let currentChapter = null;
@@ -531,9 +532,12 @@ async function loadDialogue(choiceNext = null) {
         const newChapter = data.chapter_id;
         if (newChapter && newChapter !== currentChapter) {
             currentChapter = newChapter;
-            // 显示章节标题屏（非阻塞）
-            showChapterOverlay(newChapter);
+            // 显示章节标题屏（非阻塞），回退时不显示
+            if (!isGoingBack) {
+                showChapterOverlay(newChapter);
+            }
         }
+        isGoingBack = false;
 
         // 立即整段显示（分段首行缩进，段间无空行）
         const paragraphs = data.text.split('\n\n')
@@ -582,7 +586,8 @@ async function resetGame() {
 function goBack() {
     if (historyStack.length === 0) return;
     const prevId = historyStack.pop();
-    loadDialogue(prevId, true);
+    isGoingBack = true;
+    loadDialogue(prevId);
 }
 
 document.addEventListener('keydown', (e) => {
@@ -663,7 +668,6 @@ document.getElementById('dbgToggle').addEventListener('click', () => {
 });
 
 loadJumpList();
-loadDialogue();
-loadChapters();
+loadChapters().then(() => loadDialogue());
 </script>
 {% endblock %}
