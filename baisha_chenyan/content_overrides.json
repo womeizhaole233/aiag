@@ -50,7 +50,9 @@
     "next": "n00041"
   },
   "n00018": {
-    "text": "她歪着头，想了一下，略带疑惑地说："
+    "text": "她歪着头，想了一下，略带疑惑地说：",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+    "portrait": "static/images/立绘去背景/ChatGPT Image Jun 21, 2026, 02_19_44 AM.png"
   },
   "n00055": {
     "text": "棚子最里面亮着一盏小灯，一个戴圆框眼镜的年轻人正伏在矮桌边。圆脸，皮肤很白，手指细长。桌上摊着几块用纱布包好的骨骼标本。他正用游标卡尺量一块髋骨碎片。"
@@ -156,5 +158,26 @@
   },
   "n00016": {
     "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 02_00_51 AM.png"
+  },
+  "n00017": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 02_00_51 AM.png"
+  },
+  "n00019": {
+    "portrait": "static/images/立绘去背景/ChatGPT Image Jun 21, 2026, 02_19_44 AM.png",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png"
+  },
+  "n00020": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png"
+  },
+  "n00021": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+    "portrait": "static/images/立绘去背景/ChatGPT Image Jun 21, 2026, 02_19_44 AM.png"
+  },
+  "n00022": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+    "portrait": "static/images/立绘去背景/周淼.png"
+  },
+  "n00023": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 02_35_19 AM.png"
   }
 }

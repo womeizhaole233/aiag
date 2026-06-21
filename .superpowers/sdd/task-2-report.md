@@ -1,45 +1,27 @@
-## Task 2: Add Chapter API Endpoints to app.py
+# Task 2 Report: Redesign Choice Buttons to Bookmark Style
 
-### Status: DONE
+## What I Implemented
 
-### What I Implemented
+Replaced the capsule/pill-shaped choice buttons with a bookmark/scroll style using a gold left accent line. Changes are CSS-only within `{% block extra_css %}`.
 
-Added chapter API endpoints to `app.py` per the task brief:
+### Changes Made
 
-1. **Chapter loading functions** (lines 19-44):
-   - `CHAPTERS_FILE` path constant
-   - `load_chapters()` - reads chapters.json, returns list
-   - `save_chapters(chapters)` - writes chapters.json
-   - `get_chapter_for_node(node_id)` - finds chapter_id for a node via string comparison
+1. **`.choices-area`** — Reduced gap from 10px to 8px, margin-top from 14px to 10px, removed auto margins (changed to `max-width: 100%`).
+2. **`.choice-btn`** — Changed from capsule style (border-radius: 26px, thick border) to bookmark style (border-radius: 0 4px 4px 0, 3px gold left accent). Updated background to `rgba(45, 28, 12, 0.7)`, reduced padding and font-size slightly.
+3. **`.choice-btn:hover/.choice-btn.focused`** — Added gold left border thickening (3px → 4px), added left glow `box-shadow: -2px 0 8px rgba(201, 157, 87, 0.4)`.
 
-2. **Chapter API endpoints** (lines 4379-4391):
-   - `GET /api/chapters` - returns all chapters as JSON
-   - `POST /api/chapters/save` - saves chapters from request body
+## Files Changed
 
-3. **Modified dialogue API** (line 4356):
-   - Added `'chapter_id': get_chapter_for_node(dialogue_id)` to the return payload
+- `baisha_chenyan/templates/game.html` — CSS only (lines 144–170)
 
-### What I Tested
+## Self-Review Findings
 
-- `GET /api/chapters` returns 200 with 10 chapters
-- `POST /api/chapters/save` saves and returns status ok with count
-- `POST /api/dialogue` returns chapter_id:
-  - n00001 → "prologue"
-  - n00047 → "chapter_1"
-  - n00089 → "chapter_2"
-  - n99999 → None (unknown node)
+- No issues found. All three steps from the brief were applied exactly.
+- No HTML or JavaScript was modified.
+- Font family remains `"STKaiti", "KaiTi", serif`.
+- Hexagon nameplate design untouched.
+- Responsive media query at line 256 (`@media (max-width: 768px)`) still applies correctly to `.choice-btn`.
 
-### Files Changed
+## Commits
 
-- `baisha_chenyan/app.py` (42 insertions)
-
-### Self-Review
-
-- **Completeness**: All 5 steps from the task brief implemented and verified.
-- **Quality**: Code follows existing patterns (json.load/save, jsonify, similar function signatures).
-- **Discipline**: No overbuilding. Only what was specified was added. No comments added.
-- **Potential concern**: The `get_chapter_for_node` function performs a linear scan of chapters for every dialogue request. With only 10 chapters this is negligible, but could be optimized with a node→chapter index if performance matters. This matches the task brief exactly.
-
-### Commit
-
-`3b0efd3` - feat: add chapter API endpoints and chapter_id to dialogue response
+- `1f9201b` — style: redesign choice buttons to bookmark/scroll style

@@ -1,118 +1,86 @@
-## Task 1: Create chapters.json
+# Task 1: Compress Dialogue Box Dimensions
 
-**Files:**
-- Create: `chapters.json`
+## Task Description
 
-**Interfaces:**
-- Produces: JSON file with `chapters` array, each chapter has `id`, `number`, `title`, `background_image`, `description`, `start_node`, `end_node`
+Modify CSS in `templates/game.html` to compress the dialogue box height and update its background.
 
-- [ ] **Step 1: Create the chapters.json file**
+## Files
 
-```json
-{
-  "chapters": [
-    {
-      "id": "prologue",
-      "number": 0,
-      "title": "楔子",
-      "background_image": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "description": "",
-      "start_node": "n00001",
-      "end_node": "n00046"
-    },
-    {
-      "id": "chapter_1",
-      "number": 1,
-      "title": "墓外",
-      "background_image": "assets/M1/00_墓葬全景与结构图/第一号墓后室平、剖面图.png",
-      "description": "",
-      "start_node": "n00047",
-      "end_node": "n00088"
-    },
-    {
-      "id": "chapter_2",
-      "number": 2,
-      "title": "墓门",
-      "background_image": "assets/M1/02墓道与墓门/封门砖的组织.png",
-      "description": "",
-      "start_node": "n00089",
-      "end_node": "n00144"
-    },
-    {
-      "id": "chapter_3",
-      "number": 3,
-      "title": "甬道",
-      "background_image": "assets/M1/03甬道/甬道顶叠胜彩画.png",
-      "description": "",
-      "start_node": "n00145",
-      "end_node": "n00186"
-    },
-    {
-      "id": "chapter_4",
-      "number": 4,
-      "title": "前室",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
-      "start_node": "n00187",
-      "end_node": "n00218"
-    },
-    {
-      "id": "chapter_5",
-      "number": 5,
-      "title": "过道",
-      "background_image": "assets/M1/09_过道/过道东壁壁画和纪年题记.png",
-      "description": "",
-      "start_node": "n00219",
-      "end_node": "n00246"
-    },
-    {
-      "id": "chapter_6",
-      "number": 6,
-      "title": "后室",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
-      "start_node": "n00247",
-      "end_node": "n00308"
-    },
-    {
-      "id": "chapter_7",
-      "number": 7,
-      "title": "暗格",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
-      "start_node": "n00309",
-      "end_node": "n00346"
-    },
-    {
-      "id": "finale",
-      "number": 8,
-      "title": "终章",
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
-      "start_node": "n00347",
-      "end_node": "n00358"
-    },
-    {
-      "id": "closure",
-      "number": 9,
-      "title": "封存",
-      "background_image": "assets/M1/17_补充总览图/后室入口总览图.png",
-      "description": "",
-      "start_node": "n00359",
-      "end_node": "n00362"
-    }
-  ]
+- Modify: `templates/game.html` (CSS within `{% block extra_css %}`)
+
+## Steps
+
+### Step 1: Update `.dialogue-body` padding and dimensions
+
+Find the `.dialogue-body` rule and change these properties:
+
+```css
+/* BEFORE */
+.dialogue-body {
+    position: relative;
+    background: rgba(8, 4, 2, 0.78);
+    backdrop-filter: blur(8px);
+    border-top: 3px solid #c99d57;
+    border-bottom: 2px solid #5a3a14;
+    box-shadow: 0 -10px 36px rgba(0,0,0,0.6);
+    padding: 26px 56px 22px 56px;
+    pointer-events: auto;
+}
+
+/* AFTER */
+.dialogue-body {
+    position: relative;
+    background: rgba(30, 18, 8, 0.82);
+    backdrop-filter: blur(4px);
+    border-top: 2px solid #c99d57;
+    border-bottom: 1px solid #5a3a14;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.4);
+    padding: 14px 40px 12px 40px;
+    border-radius: 4px 4px 0 0;
+    pointer-events: auto;
 }
 ```
 
-- [ ] **Step 2: Verify file is valid JSON**
+### Step 2: Update `.dialogue-text` min-height and max-height
 
-Run: `python -c "import json; json.load(open('chapters.json', encoding='utf-8')); print('Valid JSON')"`
-Expected: `Valid JSON`
+Find the `.dialogue-text` rule and change:
 
-- [ ] **Step 3: Commit**
+```css
+/* BEFORE */
+.dialogue-text {
+    font-size: 22px; line-height: 1.75;
+    color: #f5ecd8;
+    min-height: 110px;
+    max-height: 26vh;
+    overflow-y: auto;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    letter-spacing: 1px;
+}
+
+/* AFTER */
+.dialogue-text {
+    font-size: 20px; line-height: 1.65;
+    color: #f5ecd8;
+    min-height: 44px;
+    max-height: 12vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    letter-spacing: 1px;
+}
+```
+
+### Step 3: Commit
 
 ```bash
-git add chapters.json
-git commit -m "feat: add chapters.json configuration file"
+git add templates/game.html
+git commit -m "style: compress dialogue box dimensions and update background texture"
 ```
+
+## Global Constraints
+
+- Only modify CSS within `{% block extra_css %}`
+- Do NOT change HTML structure
+- Do NOT change JavaScript logic
+- Do NOT change the hexagon nameplate design
+- Font family must remain `"STKaiti", "KaiTi", serif`

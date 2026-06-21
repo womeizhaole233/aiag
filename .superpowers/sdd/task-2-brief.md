@@ -1,110 +1,97 @@
-## Task 2: Add Chapter API Endpoints to app.py
+# Task 2: Redesign Choice Buttons to Bookmark Style
 
-**Files:**
-- Modify: `app.py` (add new routes after existing routes)
+## Task Description
 
-**Interfaces:**
-- Consumes: `chapters.json` file
-- Produces: `GET /api/chapters` returns chapter list, `POST /api/chapters/save` saves chapters, `GET /api/dialogue` now includes `chapter_id`
+Modify CSS in `templates/game.html` to change choice buttons from capsule style to bookmark/scroll style with a gold left accent line.
 
-- [ ] **Step 1: Add chapters.json loading functions**
+## Files
 
-Add after line 17 (after `TERMINAL_NEXTS` definition):
+- Modify: `templates/game.html` (CSS within `{% block extra_css %}`)
 
-```python
-# ==================== 章节配置 ====================
-CHAPTERS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chapters.json')
+## Steps
 
-def load_chapters():
-    """返回章节配置列表"""
-    if os.path.exists(CHAPTERS_FILE):
-        try:
-            with open(CHAPTERS_FILE, 'r', encoding='utf-8') as f:
-                data = json.load(f) or {}
-            return data.get('chapters', [])
-        except Exception:
-            pass
-    return []
+### Step 1: Update `.choices-area` spacing
 
-def save_chapters(chapters):
-    """保存章节配置"""
-    with open(CHAPTERS_FILE, 'w', encoding='utf-8') as f:
-        json.dump({'chapters': chapters}, f, ensure_ascii=False, indent=2)
+Find the `.choices-area` rule and change:
 
-def get_chapter_for_node(node_id):
-    """根据节点ID查找所属章节"""
-    chapters = load_chapters()
-    for ch in chapters:
-        if ch.get('start_node', '') <= node_id <= ch.get('end_node', ''):
-            return ch.get('id')
-    return None
+```css
+/* BEFORE */
+.choices-area {
+    display: flex; flex-direction: column;
+    gap: 10px; margin-top: 14px;
+    max-width: 880px;
+    margin-left: auto; margin-right: auto;
+}
+
+/* AFTER */
+.choices-area {
+    display: flex; flex-direction: column;
+    gap: 8px; margin-top: 10px;
+    max-width: 100%;
+}
 ```
 
-- [ ] **Step 2: Add chapter API endpoints**
+### Step 2: Redesign `.choice-btn` to bookmark style
 
-Add after the `/api/reset` route (around line 3450):
+Find the `.choice-btn` rule and replace entirely:
 
-```python
-@app.route('/api/chapters')
-def chapters_api():
-    """返回章节配置"""
-    chapters = load_chapters()
-    return jsonify({'chapters': chapters})
+```css
+/* BEFORE */
+.choice-btn {
+    background: rgba(0, 0, 0, 0.55);
+    border: 1.5px solid #8b6914;
+    color: #f5ecd8;
+    padding: 12px 22px;
+    cursor: pointer;
+    border-radius: 26px;
+    font-size: 16px;
+    font-family: "STKaiti", "KaiTi", serif;
+    text-align: left;
+    transition: all 0.15s;
+}
+.choice-btn:hover, .choice-btn.focused {
+    background: #c99d57; color: #1a1a0a;
+    border-color: #c99d57;
+    outline: none;
+    transform: translateX(-4px);
+}
 
-@app.route('/api/chapters/save', methods=['POST'])
-def chapters_save_api():
-    """保存章节配置"""
-    data = request.get_json() or {}
-    chapters = data.get('chapters', [])
-    save_chapters(chapters)
-    return jsonify({'status': 'ok', 'count': len(chapters)})
+/* AFTER */
+.choice-btn {
+    background: rgba(45, 28, 12, 0.7);
+    border: 1px solid #8b6914;
+    border-left: 3px solid #c99d57;
+    border-radius: 0 4px 4px 0;
+    color: #f5ecd8;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: "STKaiti", "KaiTi", serif;
+    text-align: left;
+    transition: all 0.15s;
+}
+.choice-btn:hover, .choice-btn.focused {
+    background: #c99d57;
+    color: #1a1a0a;
+    border-color: #c99d57;
+    border-left: 4px solid #c99d57;
+    box-shadow: -2px 0 8px rgba(201, 157, 87, 0.4);
+    outline: none;
+    transform: translateX(-4px);
+}
 ```
 
-- [ ] **Step 3: Modify dialogue API to include chapter_id**
-
-Find the `dialogue_api` function (around line 4307) and modify the return statement to include `chapter_id`:
-
-```python
-@app.route('/api/dialogue', methods=['POST'])
-def dialogue_api():
-    """一次性返回当前对话内容（不再流式打字）"""
-    data = request.get_json() or {}
-    choice_next = data.get('choice_next')
-    if choice_next:
-        session['current_dialogue'] = choice_next
-
-    dialogue_id = session.get('current_dialogue', 'n00001')
-    dialogue = get_dialogue(dialogue_id) or DIALOGUES.get('n00001', {})
-
-    speaker, text, bg, portrait, next_id = apply_overrides(dialogue_id, dialogue)
-
-    return jsonify({
-        'id': dialogue_id,
-        'speaker': speaker,
-        'text': text,
-        'choices': dialogue.get('choices', []),
-        'next': next_id,
-        'background_image': bg,
-        'portrait': portrait,
-        'puzzle': dialogue.get('puzzle'),
-        'chapter_id': get_chapter_for_node(dialogue_id),  # 新增
-    })
-```
-
-- [ ] **Step 4: Test the API endpoints**
-
-Run the Flask app and test:
-```bash
-python app.py
-```
-
-Test in browser or curl:
-- `GET /api/chapters` should return chapter list
-- `POST /api/dialogue` should include `chapter_id` field
-
-- [ ] **Step 5: Commit**
+### Step 3: Commit
 
 ```bash
-git add app.py
-git commit -m "feat: add chapter API endpoints and chapter_id to dialogue response"
+git add templates/game.html
+git commit -m "style: redesign choice buttons to bookmark/scroll style"
 ```
+
+## Global Constraints
+
+- Only modify CSS within `{% block extra_css %}`
+- Do NOT change HTML structure
+- Do NOT change JavaScript logic
+- Do NOT change the hexagon nameplate design
+- Font family must remain `"STKaiti", "KaiTi", serif`
