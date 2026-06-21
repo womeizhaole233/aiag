@@ -64,12 +64,13 @@ body {
 
 .dialogue-body {
     position: relative;
-    background: rgba(8, 4, 2, 0.78);
-    backdrop-filter: blur(8px);
-    border-top: 3px solid #c99d57;
-    border-bottom: 2px solid #5a3a14;
-    box-shadow: 0 -10px 36px rgba(0,0,0,0.6);
-    padding: 26px 56px 22px 56px;
+    background: rgba(30, 18, 8, 0.82);
+    backdrop-filter: blur(4px);
+    border-top: 2px solid #c99d57;
+    border-bottom: 1px solid #5a3a14;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.4);
+    padding: 14px 40px 12px 40px;
+    border-radius: 4px 4px 0 0;
     pointer-events: auto;
 }
 .dialogue-body::before {
@@ -107,11 +108,12 @@ body {
 }
 
 .dialogue-text {
-    font-size: 22px; line-height: 1.75;
+    font-size: 20px; line-height: 1.65;
     color: #f5ecd8;
-    min-height: 110px;
-    max-height: 26vh;
+    min-height: 44px;
+    max-height: 12vh;
     overflow-y: auto;
+    scrollbar-width: thin;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
     letter-spacing: 1px;
 }
