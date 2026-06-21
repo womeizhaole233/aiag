@@ -78,16 +78,6 @@ def save_overrides(data):
     with open(OVERRIDES_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-# 人物立绘映射（speaker -> 图片路径）
-SPEAKER_PORTRAITS = {
-    '周淼': 'static/images/portraits/周淼.png',
-    '林砚秋': 'static/images/portraits/林砚秋.png',
-    '粟柏年': 'static/images/portraits/粟柏年.png',
-    '苏池': 'static/images/portraits/苏池.png',
-    '赵老倔': 'static/images/portraits/赵老倔.png',
-    '陈怀远': 'static/images/portraits/陈怀远.png',
-}
-
 def apply_overrides(node_id, dialogue):
     """返回叠加覆盖后的 (speaker, text, bg, portrait, next_id)。portrait 可为 None。"""
     overrides = load_overrides().get(node_id, {})
@@ -95,9 +85,6 @@ def apply_overrides(node_id, dialogue):
     text = overrides.get('text') if overrides.get('text') is not None else dialogue.get('text', '')
     bg = overrides.get('bg') or dialogue.get('background_image')
     portrait = overrides.get('portrait') or dialogue.get('portrait')
-    # 如果对话数据中没有指定 portrait，按 speaker 自动匹配立绘
-    if not portrait:
-        portrait = SPEAKER_PORTRAITS.get(speaker)
     next_id = overrides.get('next') if overrides.get('next') is not None else dialogue.get('next')
     return speaker, text, bg, portrait, next_id
 
