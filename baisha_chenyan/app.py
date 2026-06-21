@@ -4310,7 +4310,8 @@ def game():
         session['current_dialogue'] = 'n00001'
         session['inventory'] = []
         session['flags'] = {}
-    return render_template('game.html')
+    debug_mode = request.args.get('debug') == '1'
+    return render_template('game.html', debug_mode=debug_mode)
 
 ASSETS_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets'))
 

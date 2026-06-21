@@ -258,6 +258,144 @@ body {
 }
 .debug-panel.collapsed .body { display: none; }
 
+/* ===== 玩家菜单按钮 ===== */
+.player-menu-btn {
+    position: absolute;
+    right: 16px; top: 16px;
+    z-index: 30;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid #c99d57;
+    color: #c99d57;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+.player-menu-btn:hover { background: rgba(201,157,87,0.3); }
+
+/* ===== 玩家菜单面板 ===== */
+.player-panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    display: none;
+    align-items: center; justify-content: center;
+}
+.player-panel-overlay.visible { display: flex; }
+
+.player-panel {
+    background: rgba(15,10,5,0.95);
+    border: 1px solid #c99d57;
+    border-radius: 8px;
+    width: 420px; max-width: 90vw;
+    max-height: 80vh;
+    display: flex; flex-direction: column;
+    color: #f4ead6;
+    font-family: "STKaiti", "KaiTi", serif;
+}
+.player-panel-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(201,157,87,0.3);
+}
+.player-panel-header h3 {
+    color: #c99d57; font-size: 16px; letter-spacing: 2px; margin: 0;
+}
+.player-panel-close {
+    background: none; border: none; color: #c99d57;
+    cursor: pointer; font-size: 18px; padding: 4px 8px;
+}
+.player-panel-close:hover { color: #ffe9a8; }
+
+.player-tabs {
+    display: flex; border-bottom: 1px solid rgba(201,157,87,0.3);
+}
+.player-tab {
+    flex: 1; padding: 10px 0; text-align: center;
+    background: none; border: none; color: #8a7a5a;
+    cursor: pointer; font-family: inherit; font-size: 14px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+.player-tab:hover { color: #c99d57; }
+.player-tab.active {
+    color: #c99d57; border-bottom-color: #c99d57;
+}
+
+.player-tab-content {
+    flex: 1; overflow-y: auto; padding: 16px;
+}
+.player-tab-content::-webkit-scrollbar { width: 4px; }
+.player-tab-content::-webkit-scrollbar-thumb { background: #5a3a14; border-radius: 2px; }
+
+/* 章节列表 */
+.chapter-list-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; margin-bottom: 6px;
+    border: 1px solid rgba(201,157,87,0.2);
+    border-radius: 4px; cursor: pointer;
+    transition: background 0.2s;
+}
+.chapter-list-item:hover { background: rgba(201,157,87,0.15); }
+.chapter-list-item.locked {
+    opacity: 0.4; cursor: not-allowed; pointer-events: none;
+}
+.chapter-list-item .ch-icon { color: #c99d57; font-size: 14px; }
+.chapter-list-item.locked .ch-icon { color: #5a3a14; }
+.chapter-list-item .ch-title { flex: 1; font-size: 14px; }
+.chapter-list-item .ch-desc { font-size: 11px; color: #8a7a5a; }
+
+/* 存档槽位 */
+.save-slot {
+    border: 1px solid rgba(201,157,87,0.2);
+    border-radius: 4px; padding: 12px; margin-bottom: 10px;
+}
+.save-slot-title { color: #c99d57; font-size: 13px; margin-bottom: 6px; }
+.save-slot-info { font-size: 12px; color: #8a7a5a; margin-bottom: 8px; }
+.save-slot-btns { display: flex; gap: 8px; }
+.slot-btn {
+    padding: 5px 14px; border: 1px solid #c99d57;
+    background: rgba(90,58,20,0.5); color: #f4ead6;
+    cursor: pointer; font-family: inherit; font-size: 12px;
+    border-radius: 3px; transition: background 0.2s;
+}
+.slot-btn:hover { background: #c99d57; color: #1a1a0a; }
+.slot-btn.danger { border-color: #a04040; }
+.slot-btn.danger:hover { background: #a04040; }
+
+/* 剧情回看 */
+.history-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 8px 0; border-bottom: 1px solid rgba(201,157,87,0.1);
+    cursor: pointer; font-size: 13px; line-height: 1.5;
+}
+.history-item:hover { background: rgba(201,157,87,0.1); }
+.history-item.current { color: #c99d57; }
+.history-dot {
+    width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+}
+.history-item.current .history-dot { background: #c99d57; }
+.history-item:not(.current) .history-dot {
+    border: 1px solid #5a3a14; background: transparent;
+}
+
+/* 重播 */
+.replay-info {
+    text-align: center; padding: 20px 0;
+}
+.replay-info p { margin: 8px 0; font-size: 14px; }
+.replay-confirm {
+    margin-top: 16px; padding: 8px 24px;
+    background: rgba(90,58,20,0.5); border: 1px solid #c99d57;
+    color: #f4ead6; cursor: pointer; font-family: inherit;
+    font-size: 14px; border-radius: 4px; transition: background 0.2s;
+}
+.replay-confirm:hover { background: #c99d57; color: #1a1a0a; }
+
+.player-empty { text-align: center; color: #5a3a14; padding: 30px 0; font-size: 14px; }
+
 @media (max-width: 768px) {
     .dialogue-body { padding: 12px 16px 10px 16px; }
     .dialogue-header { left: 14px; top: -20px; }
@@ -344,6 +482,7 @@ body {
         <button class="ctrl-btn" onclick="resetGame()">🔄 重来</button>
     </div>
 
+    {% if debug_mode %}
     <div class="debug-panel" id="debugPanel">
         <h4>
             <span>🔍 DEBUG</span>
@@ -364,6 +503,24 @@ body {
             <button class="dbg-btn" id="dbgRefresh">↻ 重读当前节点</button>
         </div>
     </div>
+    {% else %}
+    <button class="player-menu-btn" id="playerMenuBtn" title="菜单">☰</button>
+    <div class="player-panel-overlay" id="playerPanelOverlay">
+        <div class="player-panel">
+            <div class="player-panel-header">
+                <h3>☰ 白沙沉言</h3>
+                <button class="player-panel-close" id="playerPanelClose">✕</button>
+            </div>
+            <div class="player-tabs">
+                <button class="player-tab active" data-tab="chapters">章节</button>
+                <button class="player-tab" data-tab="saves">存档</button>
+                <button class="player-tab" data-tab="history">回看</button>
+                <button class="player-tab" data-tab="replay">重播</button>
+            </div>
+            <div class="player-tab-content" id="playerTabContent"></div>
+        </div>
+    </div>
+    {% endif %}
 
     <!-- 章节标题屏 -->
     <div id="chapterOverlay" class="chapter-overlay">
@@ -376,6 +533,8 @@ body {
 </div>
 
 <script>
+const DEBUG_MODE = {{ debug_mode|lower }};
+
 let pendingNext = null;
 let pendingChoices = null;
 let focusIndex = 0; // 当前键盘焦点索引（用于 choices）
@@ -385,6 +544,15 @@ let dbgCurrent = {id:'-', speaker:'-', next:'-', choices:0, puzzle:'-'};
 let historyStack = []; // 对话历史栈（用于左箭头回退）
 let currentNodeId = 'start';
 let isGoingBack = false; // Flag for back navigation
+
+// ========== 玩家菜单 localStorage 辅助 ==========
+function getPlayerData(key, defaultVal) {
+    try { return JSON.parse(localStorage.getItem(key)) || defaultVal; }
+    catch { return defaultVal; }
+}
+function setPlayerData(key, val) {
+    localStorage.setItem(key, JSON.stringify(val));
+}
 
 // ========== 章节标题屏 ==========
 let currentChapter = null;
@@ -536,10 +704,26 @@ async function loadDialogue(choiceNext = null) {
             dbgHistory.push(data.id);
             if (dbgHistory.length > 20) dbgHistory.shift();
         }
-        refreshDebug();
+        if (DEBUG_MODE) refreshDebug();
 
         // 记录当前节点
         currentNodeId = data.id;
+
+        // 追踪已访问章节
+        if (data.chapter_id) {
+            let visited = getPlayerData('visited_chapters', []);
+            if (!visited.includes(data.chapter_id)) {
+                visited.push(data.chapter_id);
+                setPlayerData('visited_chapters', visited);
+            }
+        }
+        // 追踪剧情历史
+        let storyHistory = getPlayerData('story_history', []);
+        if (storyHistory[storyHistory.length-1] !== data.id) {
+            storyHistory.push(data.id);
+            if (storyHistory.length > 100) storyHistory.shift();
+            setPlayerData('story_history', storyHistory);
+        }
 
         // 检测章节变化
         const newChapter = data.chapter_id;
@@ -581,7 +765,7 @@ async function loadDialogue(choiceNext = null) {
             mode = 'continue';
             refreshFocus();
         }
-        refreshDebug();
+        if (DEBUG_MODE) refreshDebug();
     } catch (e) {
         console.error(e);
         document.getElementById('dialogueText').innerHTML = '<p>岁月模糊了字迹，请刷新重试……</p>';
@@ -668,19 +852,174 @@ async function loadJumpList() {
     } catch (e) { console.error(e); }
 }
 
-document.getElementById('dbgJumpBtn').addEventListener('click', () => {
-    const id = document.getElementById('dbgJumpSelect').value;
-    if (id) loadDialogue(id);
-});
-document.getElementById('dbgRefresh').addEventListener('click', () => loadDialogue());
-document.getElementById('dbgToggle').addEventListener('click', () => {
-    const p = document.getElementById('debugPanel');
-    p.classList.toggle('collapsed');
-    document.getElementById('dbgToggle').textContent =
-        p.classList.contains('collapsed') ? '[展开]' : '[折叠]';
-});
+if (DEBUG_MODE) {
+    document.getElementById('dbgJumpBtn').addEventListener('click', () => {
+        const id = document.getElementById('dbgJumpSelect').value;
+        if (id) loadDialogue(id);
+    });
+    document.getElementById('dbgRefresh').addEventListener('click', () => loadDialogue());
+    document.getElementById('dbgToggle').addEventListener('click', () => {
+        const p = document.getElementById('debugPanel');
+        p.classList.toggle('collapsed');
+        document.getElementById('dbgToggle').textContent =
+            p.classList.contains('collapsed') ? '[展开]' : '[折叠]';
+    });
+    loadJumpList();
+}
 
-loadJumpList();
+// ========== 玩家菜单 ==========
+if (!DEBUG_MODE) {
+    const overlay = document.getElementById('playerPanelOverlay');
+    const closeBtn = document.getElementById('playerPanelClose');
+    const menuBtn = document.getElementById('playerMenuBtn');
+    const tabs = document.querySelectorAll('.player-tab');
+    const content = document.getElementById('playerTabContent');
+    let activeTab = 'chapters';
+
+    function openPanel() { overlay.classList.add('visible'); renderTab(activeTab); }
+    function closePanel() { overlay.classList.remove('visible'); }
+
+    menuBtn.addEventListener('click', openPanel);
+    closeBtn.addEventListener('click', closePanel);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closePanel(); });
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            activeTab = tab.dataset.tab;
+            renderTab(activeTab);
+        });
+    });
+
+    function renderTab(name) {
+        if (name === 'chapters') renderChapterTab();
+        else if (name === 'saves') renderSavesTab();
+        else if (name === 'history') renderHistoryTab();
+        else if (name === 'replay') renderReplayTab();
+    }
+
+    function renderChapterTab() {
+        const visited = getPlayerData('visited_chapters', []);
+        const html = chaptersData.map(ch => {
+            const locked = !visited.includes(ch.id);
+            const specialChapters = ['prologue', 'finale', 'closure'];
+            const isSpecial = specialChapters.includes(ch.id);
+            const label = isSpecial ? ch.title : `第${ch.number}章 · ${ch.title}`;
+            return `<div class="chapter-list-item ${locked ? 'locked' : ''}"
+                         ${locked ? '' : `onclick="jumpToChapter('${ch.id}')"`}>
+                <span class="ch-icon">${locked ? '○' : '◆'}</span>
+                <span class="ch-title">${label}</span>
+            </div>`;
+        }).join('');
+        content.innerHTML = html || '<div class="player-empty">暂无章节数据</div>';
+    }
+
+    function jumpToChapter(chapterId) {
+        const ch = chaptersData.find(c => c.id === chapterId);
+        if (!ch || !ch.start_node) return;
+        closePanel();
+        historyStack.push(currentNodeId);
+        loadDialogue(ch.start_node);
+    }
+
+    function renderSavesTab() {
+        const slots = [1, 2, 3];
+        const html = slots.map(id => {
+            const data = getPlayerData(`save_slot_${id}`, null);
+            if (data) {
+                return `<div class="save-slot">
+                    <div class="save-slot-title">槽位 ${id}：${data.chapter_name}</div>
+                    <div class="save-slot-info">进度：${data.node_id} · ${data.timestamp}</div>
+                    <div class="save-slot-btns">
+                        <button class="slot-btn" onclick="loadSaveSlot(${id})">读取</button>
+                        <button class="slot-btn danger" onclick="deleteSaveSlot(${id})">删除</button>
+                    </div>
+                </div>`;
+            } else {
+                return `<div class="save-slot">
+                    <div class="save-slot-title">槽位 ${id}：（空）</div>
+                    <div class="save-slot-btns">
+                        <button class="slot-btn" onclick="saveToSlot(${id})">保存</button>
+                    </div>
+                </div>`;
+            }
+        }).join('');
+        content.innerHTML = html;
+    }
+
+    function saveToSlot(slotId) {
+        const existing = getPlayerData(`save_slot_${slotId}`, null);
+        if (existing && !confirm(`槽位 ${slotId} 已有存档，确定覆盖？`)) return;
+        const ch = chaptersData.find(c => c.id === currentChapter);
+        const saveData = {
+            node_id: currentNodeId,
+            chapter: currentChapter || '',
+            chapter_name: ch ? ch.title : '未知',
+            timestamp: new Date().toLocaleString('zh-CN'),
+            visited_chapters: getPlayerData('visited_chapters', []),
+            history: getPlayerData('story_history', [])
+        };
+        setPlayerData(`save_slot_${slotId}`, saveData);
+        renderSavesTab();
+    }
+
+    function loadSaveSlot(slotId) {
+        const data = getPlayerData(`save_slot_${slotId}`, null);
+        if (!data) return;
+        if (!confirm(`读取存档：${data.chapter_name} (${data.node_id})？`)) return;
+        setPlayerData('visited_chapters', data.visited_chapters || []);
+        setPlayerData('story_history', data.history || []);
+        closePanel();
+        loadDialogue(data.node_id);
+    }
+
+    function deleteSaveSlot(slotId) {
+        if (!confirm('确定删除此存档？')) return;
+        localStorage.removeItem(`save_slot_${slotId}`);
+        renderSavesTab();
+    }
+
+    function renderHistoryTab() {
+        const history = getPlayerData('story_history', []);
+        if (history.length === 0) {
+            content.innerHTML = '<div class="player-empty">暂无剧情记录</div>';
+            return;
+        }
+        const reversed = [...history].reverse().slice(0, 50);
+        const html = reversed.map((nodeId, i) => {
+            const isCurrent = (i === 0);
+            return `<div class="history-item ${isCurrent ? 'current' : ''}"
+                         onclick="jumpToNode('${nodeId}')">
+                <div class="history-dot"></div>
+                <span>${nodeId}</span>
+            </div>`;
+        }).join('');
+        content.innerHTML = html;
+    }
+
+    function jumpToNode(nodeId) {
+        if (!confirm(`跳转到节点 ${nodeId}？`)) return;
+        historyStack.push(currentNodeId);
+        closePanel();
+        loadDialogue(nodeId);
+    }
+
+    function renderReplayTab() {
+        content.innerHTML = `<div class="replay-info">
+            <p>重播当前场景</p>
+            <p>当前节点：${currentNodeId}</p>
+            <p>说话人：${document.getElementById('hexagonSpeaker').textContent}</p>
+            <button class="replay-confirm" onclick="replayCurrent()">确认重播</button>
+        </div>`;
+    }
+
+    function replayCurrent() {
+        closePanel();
+        loadDialogue();
+    }
+}
+
 loadChapters().then(() => loadDialogue());
 </script>
 {% endblock %}
