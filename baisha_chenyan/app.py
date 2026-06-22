@@ -104,7 +104,7 @@ def all_node_ids():
     return list(DIALOGUES.keys()) + list(get_custom_nodes().keys())
 
 def list_image_assets():
-    """扫描 static/images 和 assets 下的所有图片，按目录分组返回"""
+    """扫描 static/images 下的所有图片，按目录分组返回"""
     groups = {}
     exts = {'.png', '.jpg', '.jpeg', '.webp'}
     app_dir = os.path.dirname(os.path.abspath(__file__))
@@ -118,17 +118,6 @@ def list_image_assets():
                 full = os.path.join(root, fn)
                 rel = os.path.relpath(full, app_dir).replace(os.sep, '/')
                 group = os.path.relpath(root, base).replace(os.sep, '/') or '(root)'
-                groups.setdefault(group, []).append(rel)
-    # 扫描 assets (M1 图片)
-    assets_base = os.path.join(app_dir, '..', 'assets')
-    if os.path.exists(assets_base):
-        for root, _, files in os.walk(assets_base):
-            for fn in files:
-                if os.path.splitext(fn)[1].lower() not in exts:
-                    continue
-                full = os.path.join(root, fn)
-                rel = os.path.relpath(full, os.path.join(app_dir, '..')).replace(os.sep, '/')
-                group = os.path.relpath(root, assets_base).replace(os.sep, '/') or '(root)'
                 groups.setdefault(group, []).append(rel)
     for g in groups:
         groups[g].sort()
