@@ -66,6 +66,7 @@
   .btn.primary{background:var(--accent);color:#1a1410;border-color:var(--accent);}
   .btn.danger{border-color:var(--lock);color:#e0a0a0}
   .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.pos-btn.active{background:var(--accent);color:#1a1410;border-color:var(--accent);}
 
   .lib{display:flex;flex-direction:column;}
   .lib-toolbar{padding:8px 10px;border-bottom:1px solid var(--line);background:var(--panel);}
@@ -217,7 +218,7 @@ function renderStats(){
   $('#libSub').textContent = `${totalImgs} 张`;
 }
 
-function nodeIsOverridden(n){ return n.override_bg || n.override_speaker || n.override_text != null || n.override_next != null || n.override_portrait; }
+function nodeIsOverridden(n){ return n.override_bg || n.override_speaker || n.override_text != null || n.override_next != null || n.override_portrait || n.override_portrait_position; }
 const TERM_NEXTS = ['game_end', 'game_over'];
 function isTerminal(n){ return TERM_NEXTS.includes(n.effective_next); }
 
@@ -320,16 +321,23 @@ function selectNode(id){
       <div class="hint" style="margin-top:6px">默认: ${escapeHtml(n.default_bg||'(无)')}</div>
     </div>
 
-    <div class="field ${(n.override_portrait!=null)?'dirty':''}" id="fPortrait">
+    <div class="field ${(n.override_portrait!=null||n.override_portrait_position!=null)?'dirty':''}" id="fPortrait">
       <div class="field-head">
         <label>人物立绘 (portrait)</label>
-        ${(n.override_portrait!=null)?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>'}
+        ${(n.override_portrait!=null||n.override_portrait_position!=null)?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>'}
         <div class="actions">
           <button class="btn small" id="resetPortrait" ${(n.override_portrait!=null)?'':'disabled'}>清空/重置</button>
         </div>
       </div>
       <div class="bg-preview" id="portraitPreview"></div>
-      <div class="hint">选中右栏“→立绘”后点击图片即保存。可为空。</div>
+      <div class="portrait-pos-row" style="margin-top:8px;display:flex;align-items:center;gap:6px;">
+        <label style="font-size:12px;color:#aaa;">位置：</label>
+        <button class="btn small pos-btn ${(n.effective_portrait_position==='left')?'active':''}" data-pos="left">左</button>
+        <button class="btn small pos-btn ${(n.effective_portrait_position==='center')?'active':''}" data-pos="center">中</button>
+        <button class="btn small pos-btn ${(n.effective_portrait_position==='right')?'active':''}" data-pos="right">右</button>
+        <button class="btn small" id="resetPortraitPos" ${(n.override_portrait_position!=null)?'':'disabled'}>重置</button>
+      </div>
+      <div class="hint">选中右栏"→立绘"后点击图片即保存。可为空。位置必须设置才能显示立绘。</div>
       <div class="hint" style="margin-top:6px">默认: ${escapeHtml(n.default_portrait||'(无)')}</div>
     </div>
 
@@ -378,6 +386,10 @@ function selectNode(id){
   $('#resetText').onclick = ()=>save('text', '');
   if(!n.bg_locked) $('#resetBg').onclick = ()=>save('bg', '');
   $('#resetPortrait').onclick = ()=>save('portrait', '');
+  document.querySelectorAll('.pos-btn').forEach(b=>b.onclick = ()=>{
+    save('portrait_position', b.dataset.pos);
+  });
+  $('#resetPortraitPos').onclick = ()=>save('portrait_position', '');
   $('#saveNext').onclick = ()=>save('next', $('#inNext').value.trim());
   $('#resetNext').onclick = ()=>save('next', '');
   document.querySelectorAll('[data-set-next]').forEach(b=>b.onclick = ()=>save('next', b.dataset.setNext));
@@ -508,12 +520,14 @@ async function save(field, value){
   n.override_text = j.override_text;
   n.override_bg = j.override_bg;
   n.override_portrait = j.override_portrait;
+  n.override_portrait_position = j.override_portrait_position;
   n.override_next = j.override_next;
   n.override_choices = j.override_choices;
   n.effective_speaker = j.effective_speaker;
   n.effective_text = j.effective_text;
   n.effective_bg = j.effective_bg;
   n.effective_portrait = j.effective_portrait;
+  n.effective_portrait_position = j.effective_portrait_position;
   n.effective_next = j.effective_next;
   n.effective_choices = j.effective_choices;
   n.preview = (j.effective_text||'').replace(/\n/g,' ').slice(0,80) || ('❖ ' + (j.effective_choices||[]).map(c=>c.text).join(' | ').slice(0,60));

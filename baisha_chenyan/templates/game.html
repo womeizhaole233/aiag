@@ -34,10 +34,14 @@ body {
     pointer-events: none;
     display: flex;
     align-items: flex-end;
-    justify-content: flex-start; /* 靠左 */
+    justify-content: flex-start; /* 默认靠左 */
     padding-bottom: 0; /* 紧贴底部，让对话框遮挡下半身 */
     padding-left: 3vw;
+    padding-right: 0;
 }
+.portrait-layer.pos-left    { justify-content: flex-start; padding-left: 3vw; padding-right: 0; }
+.portrait-layer.pos-center  { justify-content: center; padding-left: 0; padding-right: 0; }
+.portrait-layer.pos-right   { justify-content: flex-end; padding-left: 0; padding-right: 3vw; }
 .portrait-layer img {
     max-height: 82vh;
     max-width: 42vw;
@@ -49,6 +53,9 @@ body {
 .portrait-layer img.visible { opacity: 1; }
 @media (max-width: 768px) {
     .portrait-layer { padding-bottom: 0; padding-left: 2vw; }
+    .portrait-layer.pos-left    { padding-left: 2vw; padding-right: 0; }
+    .portrait-layer.pos-center  { padding-left: 0; padding-right: 0; }
+    .portrait-layer.pos-right   { padding-left: 0; padding-right: 2vw; }
     .portrait-layer img { max-width: 70vw; max-height: 78vh; }
 }
 
@@ -624,11 +631,14 @@ function setBackground(img) {
     }
 }
 
-function setPortrait(img) {
+function setPortrait(img, position) {
     const el = document.getElementById('portraitImg');
-    if (img) {
+    const layer = document.querySelector('.portrait-layer');
+    layer.classList.remove('pos-left', 'pos-center', 'pos-right');
+    if (img && position) {
         el.src = `/${img.replace(/^\/?/, '')}`;
         el.classList.add('visible');
+        layer.classList.add('pos-' + position);
     } else {
         el.classList.remove('visible');
         el.removeAttribute('src');
@@ -745,7 +755,7 @@ async function loadDialogue(choiceNext = null) {
         document.getElementById('dialogueText').innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
         updateHexagon(data.speaker);
         if (data.background_image) setBackground(data.background_image);
-        setPortrait(data.portrait);
+        setPortrait(data.portrait, data.portrait_position);
 
         if (data.choices && data.choices.length > 0) {
             pendingChoices = data.choices;
