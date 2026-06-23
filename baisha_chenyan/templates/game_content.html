@@ -1,4 +1,14 @@
 <div id="app-content">
+<script>
+(function(){
+    if (!document.querySelector('link[href="/static/css/game.css"]')) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/static/css/game.css';
+        document.head.appendChild(link);
+    }
+})();
+</script>
 <div class="game-container">
     <div class="background-layer">
         <div class="scene-background" id="sceneBgA"></div>
