@@ -1,0 +1,896 @@
+{
+  "arrive": {
+    "bg": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png"
+  },
+  "meet_su": {
+    "bg": "assets/M1/05_前室_西壁/. 第一号墓前室西壁壁画(原色版，彭华士摄).png"
+  },
+  "n00014": {
+    "text": "一个扎两根麻花辫的姑娘朝你快步走来，圆脸上有浅浅的雀斑，杏仁眼很灵动，眼尾略微下垂。她穿一件藏蓝色列宁装女式改良版，收腰设计，领口别着一枚小小的梅花胸针。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png"
+  },
+  "n00002": {
+    "text": "你坐了六个小时的卡车，又在驴车上颠了两个钟头，才在一片铅灰色的冬日天空下，望见了几棵老槐树掩映的土房。河南，禹县，白沙镇。一个在地图上几乎找不到名字的地方，可你的外祖父来过。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 10, 2026, 09_05_37 PM.png",
+    "background_position": "bottom"
+  },
+  "n00004": {
+    "text": "十二月的华北平原，风裹着干燥的尘土扑面而来。你紧了紧灰蓝列宁装的领口，手指碰到一根细细的皮绳。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png"
+  },
+  "n00005": {
+    "text": "皮绳上系着一枚银怀表链扣，圆形，比铜钱略大，银质表面布满细密裂纹。那是外祖父的遗物，从你记事起就挂在颈间，没摘下来过一天。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_48_33 AM.png"
+  },
+  "n00024": {
+    "text": "你们穿过村子，爬上一道缓坡。坡顶上，那片隆起的高地出现在暮色里。一个瘦高的身影蹲在土台边上，手电光在暮色中晃动。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00043": {
+    "text": "他领着你往工地里面走了一段。探方边上支着几盏马灯，一个中年人正坐在帆布棚下伏案绘图，国字脸，花白的头发浓密。外罩一件军绿色帆布工装马甲，上面插满了比例尺、铅笔和手电筒。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 09_33_03 PM.png"
+  },
+  "n00046": {
+    "text": "棚子另一角蹲着个壮实的村民，宽肩膀，罗圈腿，一身黑色粗布对襟短褂敞着扣子。头上系着一条白毛巾，额头三道很深的抬头纹。他正用磨刀石磨着铁锹刃。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_31_18 AM.png",
+    "background_position": "top"
+  },
+  "n00037": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png",
+    "choices": [
+      {
+        "text": "东北—西南",
+        "next": "n00038"
+      },
+      {
+        "text": "西北—东南",
+        "next": "n00040"
+      },
+      {
+        "text": "东南—西北",
+        "next": "n00038"
+      }
+    ]
+  },
+  "n00039": {
+    "next": "n00041",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+    "portrait": "static/images/portraits/粟柏年1.png",
+    "portrait_position": "center"
+  },
+  "n00018": {
+    "text": "她歪着头，想了一下，略带疑惑地说：",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+    "portrait": "static/images/portraits/周淼2.png",
+    "portrait_position": "center"
+  },
+  "n00055": {
+    "text": "棚子最里面亮着一盏小灯，一个戴圆框眼镜的年轻人正伏在矮桌边。圆脸，皮肤很白，手指细长。桌上摊着几块用纱布包好的骨骼标本。他正用游标卡尺量一块髋骨碎片。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 09_09_21 PM.png"
+  },
+  "n00060": {
+    "text": "天还没亮透，风从华北平原的枯槁田野上刮过来，像一把钝锯子在骨头缝里来回拉。你跟着粟柏年爬上缓坡，工地在晨色里显出轮廓：几片探方，几盏马灯，帆布棚子被风吹得哗哗响。",
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_51_45 AM.png"
+  },
+  "n00061": {
+    "text": "粟柏年停在高地边缘，从口袋里掏出一张折叠整齐的坐标纸，在晨雾里抖开。纸上是白沙宋墓群的平面草图，M1在最南端，靠近水库取土区的边缘。",
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_58_55 AM.png"
+  },
+  "n00063": {
+    "text": "他把草图摊在一块平整的夯土断面上，用两块碎砖压住边角。图纸右上角印着一行小字：“白沙附近图”，标出了白沙镇、禹县、颖水的相对位置，水库工程取土区用斜线阴影标出，M1就在那片阴影的边缘。",
+    "bg": "static/images/第一章  墓外/2f4027d2-3723-4793-bd40-2d60b4f4a864.png"
+  },
+  "n00064": {
+    "text": "白沙镇在这个位置。墓群坐落在这道南北向土岗的东坡，海拔比周围农田高出约十五米。东南高，西北低。土岗北侧那条干涸的河道——西北到东南走向。",
+    "bg": "static/images/第一章  墓外/2f4027d2-3723-4793-bd40-2d60b4f4a864.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00069": {
+    "text": "待会儿你要进的是一座完整的墓，是一个从外到内的空间系统。每走一步，前面的发现都会重新被后面的证据检验。",
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 02_21_14 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00073": {
+    "text": "赵老倔扛着铁锹走上来，走到坡顶忽然停下脚步，用锹柄敲了敲脚下的地面，又侧耳听了听。",
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_06_18 AM.png"
+  },
+  "n00080": {
+    "text": "墓道口在土岗东坡的断层上切出一道规整的开口。粟柏年已经蹲在那儿了，手电光在晨雾里切出一道白柱，照在阶梯夯土的断面上。墓道北偏东十五度，现存长度将近六米，阶梯现存十一级，平坦部分将近两米。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_16_52 AM.png"
+  },
+  "n00082": {
+    "text": "白光沿着夯土断面缓缓移动。一层，又一层，颜色几乎一样，却又有细微区别。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_22_16 AM.png"
+  },
+  "n00109": {
+    "text": "如果是年号，后面应该能和题记、地券互证。现在还不能下结论。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00125": {
+    "text": "他把撬棍插进下一块砖缝里，忽然又停了一下。你透过刚取下的一块菱角牙子留下的砖孔往里看了一眼。"
+  },
+  "n00112": {
+    "text": "封门砖从外层开始逐块拆除。陈怀远负责绘制封门砖的正视图，鼻梁上架着老花镜，一手按着坐标纸，运笔极稳。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_22_16 AM.png"
+  },
+  "n00113": {
+    "text": "他忽然极低地哼了一句什么，调门起得很高，又陡然拐了个弯。赵老倔手里撬棍一顿，头也不抬。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png"
+  },
+  "n00139": {
+    "text": "赵老倔扛着木料过来，扎稳马步，双手托着立柱往上一顶，腮帮子鼓起，脖子上青筋跳了一下。立柱架好之后，裂缝没有扩大。"
+  },
+  "n00187": {
+    "text": "东壁是女乐图，卷帘下，女乐十一人分左右两组。右侧五人击鼓、击拍板、击腰鼓、吹横笛、吹觱篥。左侧五人吹箫、吹笙、吹排箫、弹琵琶。四排乐人之间，一人戴硬脚花额幞头，欠身扬袖作舞。"
+  },
+  "n00232": {
+    "text": "头骨并列安放，枕骨朝下，面朝西偏北。身体其余部分的骨骼混堆在头骨东侧，小骨片散乱重叠，像被时间打翻的一盒棋子。"
+  },
+  "n00244": {
+    "text": "头骨并列，其余骨骼混堆。你觉得最可能是什么情况？"
+  },
+  "n00255": {
+    "text": "地券为砖质朱书，十六行、倒写，券盖无字，并有“合同”背书。第一行可辨认：“大宋元符二年九月十□日赵……”"
+  },
+  "n00311": {
+    "text": "李公曰：府库之粮，皆在簿册——最后一个字残缺。水渍刚好浸掉了最关键的那个字。"
+  },
+  "n00316": {
+    "text": "你继续往下读：若李公不知，便是小人自取，三千石算在小人头上。李公沉吟良久，终曰……此处又一处水渍，模糊了后半句。"
+  },
+  "n00323": {
+    "text": "最后一处又有残损。你把绢帛拿到灯下，侧光极斜地照过去。几个字的结体从水渍里浮出来。第一个字，笔画中有“矢”部。"
+  },
+  "n00351": {
+    "text": "一号墓全部测绘和记录工作于12月31日中午完成。陈怀远把最后一张测绘图从坐标纸上揭下来，对着光看了一遍，点了点头，卷好放进图筒。"
+  },
+  "n00356": {
+    "text": "收工前，你最后一次走进后室。手电光照在北壁假门上。那个砖雕女子，垂双髻，右手作启门状。门微启，左扇永远停在推开的角度上。她在黑暗里站了九百多年。"
+  },
+  "n00001": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 05_40_44 PM.png"
+  },
+  "n00003": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 02_09_46 AM.png",
+    "text": "后来外祖父再也没有提起过这里。只留下几张发黄的调查记录、一枚断开的银扣，以及一句谁也听不懂的话——“地下的东西，有时候比活人记性更好”。"
+  },
+  "n00006": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png"
+  },
+  "n00007": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png"
+  },
+  "n00008": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png"
+  },
+  "n00009": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png"
+  },
+  "n00010": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png"
+  },
+  "n00011": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 01_48_33 AM.png"
+  },
+  "n00012": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png"
+  },
+  "n00013": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png"
+  },
+  "n00015": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png",
+    "portrait_position": "center"
+  },
+  "n00016": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+    "text": "我是周淼，负责图画测绘。粟老师在镇上供销社给你留了饭，让你今晚好好歇着，明天——",
+    "portrait": "static/images/portraits/周淼3.png",
+    "portrait_position": "center"
+  },
+  "n00017": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png"
+  },
+  "n00019": {
+    "portrait": "static/images/portraits/周淼2.png",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+    "portrait_position": "center"
+  },
+  "n00020": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png"
+  },
+  "n00021": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+    "portrait": "static/images/portraits/周淼3.png",
+    "portrait_position": "center"
+  },
+  "n00022": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png"
+  },
+  "n00023": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 21, 2026, 02_35_19 AM.png"
+  },
+  "n00034": {
+    "text": "粟柏年站起身，面朝你，他脸略长，颧骨略高，皮肤偏黑，眼窝微凹，嘴角自然下垂。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png"
+  },
+  "n00027": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00044": {
+    "portrait_position": "right",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 09_33_03 PM.png"
+  },
+  "n00045": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_06_36 AM.png",
+    "background_position": "top"
+  },
+  "n00025": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00026": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
+    "portrait": "static/images/portraits/周淼3.png",
+    "portrait_position": "left"
+  },
+  "n00028": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00029": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00030": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00031": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00032": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00033": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
+  },
+  "n00035": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png"
+  },
+  "n00036": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+    "portrait": "static/images/portraits/粟柏年.png",
+    "portrait_position": "center"
+  },
+  "n00038": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+    "portrait": "static/images/portraits/粟柏年1.png",
+    "portrait_position": "center"
+  },
+  "n00040": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "center"
+  },
+  "n00041": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png"
+  },
+  "n00042": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png"
+  },
+  "n00047": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_31_18 AM.png",
+    "portrait_position": "right",
+    "background_position": "top"
+  },
+  "n00048": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_31_18 AM.png",
+    "background_position": "top"
+  },
+  "n00049": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_33_34 AM.png",
+    "background_position": "top"
+  },
+  "n00050": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 08_06_56 PM.png",
+    "portrait": "static/images/portraits/赵老倔.png",
+    "portrait_position": "right"
+  },
+  "n00051": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_33_34 AM.png",
+    "background_position": "top"
+  },
+  "n00052": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 08_06_56 PM.png",
+    "portrait": "static/images/portraits/赵老倔.png",
+    "portrait_position": "right"
+  },
+  "n00053": {
+    "portrait": "static/images/portraits/赵老倔.png",
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 08_06_56 PM.png",
+    "portrait_position": "right"
+  },
+  "n00054": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_33_34 AM.png",
+    "background_position": "top"
+  },
+  "n00056": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 09_09_21 PM.png",
+    "portrait_position": "left"
+  },
+  "n00057": {
+    "text": "苏池对你露出笑容。",
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_38_55 AM.png"
+  },
+  "n00058": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_38_55 AM.png"
+  },
+  "n00059": {
+    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 08_37_29 PM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "center"
+  },
+  "n00062": {
+    "bg": "static/images/第一章  墓外/2f4027d2-3723-4793-bd40-2d60b4f4a864.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00065": {
+    "bg": "static/images/第一章  墓外/2f4027d2-3723-4793-bd40-2d60b4f4a864.png"
+  },
+  "n00066": {
+    "bg": "static/images/第一章  墓外/2f4027d2-3723-4793-bd40-2d60b4f4a864.png"
+  },
+  "n00067": {
+    "bg": "static/images/第一章  墓外/2f4027d2-3723-4793-bd40-2d60b4f4a864.png",
+    "portrait": "static/images/portraits/粟柏年2.png"
+  },
+  "n00068": {
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 01_54_22 AM.png"
+  },
+  "n00070": {
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 02_26_56 AM.png"
+  },
+  "n00071": {
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 02_26_56 AM.png"
+  },
+  "n00072": {
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_28_44 AM.png"
+  },
+  "n00074": {
+    "text": "他蹲下去，抓起一把土在掌心搓了搓：“这一片夯过。土色发黏，有石灰。下面三尺，应该是墓道的填土。”",
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_36_06 AM.png"
+  },
+  "n00081": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_58_46 AM.png"
+  },
+  "n00083": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png",
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "portrait_position": "right"
+  },
+  "n00084": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png"
+  },
+  "n00085": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png"
+  },
+  "n00075": {
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_39_01 AM.png"
+  },
+  "n00076": {
+    "portrait": "static/images/portraits/赵老倔3.png",
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_39_01 AM.png",
+    "portrait_position": "right"
+  },
+  "n00077": {
+    "portrait": "static/images/portraits/赵老倔3.png",
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_39_01 AM.png",
+    "portrait_position": "right"
+  },
+  "n00078": {
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_39_01 AM.png"
+  },
+  "n00079": {
+    "bg": "static/images/第一章  墓外/ChatGPT Image Jun 23, 2026, 03_39_01 AM.png",
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "portrait_position": "left"
+  },
+  "n00086": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png"
+  },
+  "n00087": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png"
+  },
+  "n00088": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00089": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_59_32 AM.png"
+  },
+  "n00090": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_59_32 AM.png"
+  },
+  "n00091": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png",
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "portrait_position": "right"
+  },
+  "n00092": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 03_22_14 AM.png",
+    "portrait": "static/images/portraits/赵老倔2.png",
+    "portrait_position": "right"
+  },
+  "n00093": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_41 AM.png"
+  },
+  "n00094": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png"
+  },
+  "n00095": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png",
+    "choices": [
+      {
+        "text": "从外层开始拆",
+        "next": "n00096"
+      },
+      {
+        "text": "从中层开始拆",
+        "next": "n00098"
+      },
+      {
+        "text": "从内层开始拆",
+        "next": "n00100"
+      }
+    ]
+  },
+  "n00096": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png"
+  },
+  "n00097": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left",
+    "next": "n00102"
+  },
+  "n00098": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png",
+    "speaker": "粟柏年",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00099": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left",
+    "next": "n00102"
+  },
+  "n00100": {
+    "speaker": "粟柏年",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png"
+  },
+  "n00101": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00102": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png",
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "portrait_position": "left"
+  },
+  "n00103": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_01_45 AM.png"
+  },
+  "n00104": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_11_38 AM.png"
+  },
+  "n00105": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png"
+  },
+  "n00106": {
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png"
+  },
+  "n00107": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png"
+  },
+  "n00108": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00110": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00111": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00114": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png"
+  },
+  "n00115": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png"
+  },
+  "__custom_nodes__": {},
+  "__node_order__": [
+    "n00001",
+    "n00002",
+    "n00003",
+    "n00004",
+    "n00005",
+    "n00006",
+    "n00007",
+    "n00008",
+    "n00009",
+    "n00010",
+    "n00011",
+    "n00012",
+    "n00013",
+    "n00014",
+    "n00015",
+    "n00016",
+    "n00017",
+    "n00018",
+    "n00019",
+    "n00020",
+    "n00021",
+    "n00022",
+    "n00023",
+    "n00024",
+    "n00025",
+    "n00026",
+    "n00027",
+    "n00028",
+    "n00029",
+    "n00030",
+    "n00031",
+    "n00032",
+    "n00033",
+    "n00034",
+    "n00035",
+    "n00036",
+    "n00037",
+    "n00038",
+    "n00039",
+    "n00040",
+    "n00041",
+    "n00042",
+    "n00043",
+    "n00044",
+    "n00045",
+    "n00046",
+    "n00047",
+    "n00048",
+    "n00049",
+    "n00050",
+    "n00051",
+    "n00052",
+    "n00053",
+    "n00054",
+    "n00055",
+    "n00056",
+    "n00057",
+    "n00058",
+    "n00059",
+    "n00060",
+    "n00061",
+    "n00062",
+    "n00063",
+    "n00064",
+    "n00065",
+    "n00066",
+    "n00067",
+    "n00068",
+    "n00069",
+    "n00070",
+    "n00071",
+    "n00072",
+    "n00073",
+    "n00074",
+    "n00075",
+    "n00076",
+    "n00077",
+    "n00078",
+    "n00079",
+    "n00080",
+    "n00081",
+    "n00082",
+    "n00083",
+    "n00084",
+    "n00085",
+    "n00086",
+    "n00087",
+    "n00088",
+    "n00089",
+    "n00090",
+    "n00091",
+    "n00092",
+    "n00093",
+    "n00094",
+    "n00095",
+    "n00096",
+    "n00097",
+    "n00098",
+    "n00099",
+    "n00100",
+    "n00101",
+    "n00102",
+    "n00103",
+    "n00104",
+    "n00105",
+    "n00106",
+    "n00107",
+    "n00108",
+    "n00109",
+    "n00110",
+    "n00111",
+    "n00112",
+    "n00113",
+    "n00114",
+    "n00115",
+    "n00116",
+    "n00117",
+    "n00118",
+    "n00119",
+    "n00120",
+    "n00121",
+    "n00122",
+    "n00123",
+    "n00124",
+    "n00125",
+    "n00126",
+    "n00127",
+    "n00128",
+    "n00129",
+    "n00130",
+    "n00131",
+    "n00132",
+    "n00133",
+    "n00134",
+    "n00135",
+    "n00136",
+    "n00137",
+    "n00138",
+    "n00139",
+    "n00140",
+    "n00141",
+    "n00142",
+    "n00143",
+    "n00144",
+    "n00145",
+    "n00146",
+    "n00147",
+    "n00148",
+    "n00149",
+    "n00150",
+    "n00151",
+    "n00152",
+    "n00153",
+    "n00154",
+    "n00155",
+    "n00156",
+    "n00157",
+    "n00158",
+    "n00159",
+    "n00160",
+    "n00161",
+    "n00162",
+    "n00163",
+    "n00164",
+    "n00165",
+    "n00166",
+    "n00167",
+    "n00168",
+    "n00169",
+    "n00170",
+    "n00171",
+    "n00172",
+    "n00173",
+    "n00174",
+    "n00175",
+    "n00176",
+    "n00177",
+    "n00178",
+    "n00179",
+    "n00180",
+    "n00181",
+    "n00182",
+    "n00183",
+    "n00184",
+    "n00185",
+    "n00186",
+    "n00187",
+    "n00188",
+    "n00189",
+    "n00190",
+    "n00191",
+    "n00192",
+    "n00193",
+    "n00194",
+    "n00195",
+    "n00196",
+    "n00197",
+    "n00198",
+    "n00199",
+    "n00200",
+    "n00201",
+    "n00202",
+    "n00203",
+    "n00204",
+    "n00205",
+    "n00206",
+    "n00207",
+    "n00208",
+    "n00209",
+    "n00210",
+    "n00211",
+    "n00212",
+    "n00213",
+    "n00214",
+    "n00215",
+    "n00216",
+    "n00217",
+    "n00218",
+    "n00219",
+    "n00220",
+    "n00221",
+    "n00222",
+    "n00223",
+    "n00224",
+    "n00225",
+    "n00226",
+    "n00227",
+    "n00228",
+    "n00229",
+    "n00230",
+    "n00231",
+    "n00232",
+    "n00233",
+    "n00234",
+    "n00235",
+    "n00236",
+    "n00237",
+    "n00238",
+    "n00239",
+    "n00240",
+    "n00241",
+    "n00242",
+    "n00243",
+    "n00244",
+    "n00245",
+    "n00246",
+    "n00247",
+    "n00248",
+    "n00249",
+    "n00250",
+    "n00251",
+    "n00252",
+    "n00253",
+    "n00254",
+    "n00255",
+    "n00256",
+    "n00257",
+    "n00258",
+    "n00259",
+    "n00260",
+    "n00261",
+    "n00262",
+    "n00263",
+    "n00264",
+    "n00265",
+    "n00266",
+    "n00267",
+    "n00268",
+    "n00269",
+    "n00270",
+    "n00271",
+    "n00272",
+    "n00273",
+    "n00274",
+    "n00275",
+    "n00276",
+    "n00277",
+    "n00278",
+    "n00279",
+    "n00280",
+    "n00281",
+    "n00282",
+    "n00283",
+    "n00284",
+    "n00285",
+    "n00286",
+    "n00287",
+    "n00288",
+    "n00289",
+    "n00290",
+    "n00291",
+    "n00292",
+    "n00293",
+    "n00294",
+    "n00295",
+    "n00296",
+    "n00297",
+    "n00298",
+    "n00299",
+    "n00300",
+    "n00301",
+    "n00302",
+    "n00303",
+    "n00304",
+    "n00305",
+    "n00306",
+    "n00307",
+    "n00308",
+    "n00309",
+    "n00310",
+    "n00311",
+    "n00312",
+    "n00313",
+    "n00314",
+    "n00315",
+    "n00316",
+    "n00317",
+    "n00318",
+    "n00319",
+    "n00320",
+    "n00321",
+    "n00322",
+    "n00323",
+    "n00324",
+    "n00325",
+    "n00326",
+    "n00327",
+    "n00328",
+    "n00329",
+    "n00330",
+    "n00331",
+    "n00332",
+    "n00333",
+    "n00334",
+    "n00335",
+    "n00336",
+    "n00337",
+    "n00338",
+    "n00339",
+    "n00340",
+    "n00341",
+    "n00342",
+    "n00343",
+    "n00344",
+    "n00345",
+    "n00346",
+    "n00347",
+    "n00348",
+    "n00349",
+    "n00350",
+    "n00351",
+    "n00352",
+    "n00353",
+    "n00354",
+    "n00355",
+    "n00356",
+    "n00357",
+    "n00358",
+    "n00359",
+    "n00360",
+    "n00361",
+    "n00362"
+  ],
+  "n00150": {
+    "text": "手电光扫过顶部叠胜、东壁人物、西壁马匹。"
+  },
+  "n00116": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_26_42 AM.png",
+    "background_position": "bottom"
+  }
+}

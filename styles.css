@@ -464,6 +464,36 @@ button {
   background: linear-gradient(180deg, rgba(31, 28, 23, 0.04) 0%, rgba(31, 28, 23, 0.22) 48%, rgba(31, 28, 23, 0.5) 100%);
 }
 
+.dialogue-layer.has-background {
+  background: linear-gradient(180deg, rgba(21, 18, 14, 0.12) 0%, rgba(21, 18, 14, 0.36) 52%, rgba(21, 18, 14, 0.72) 100%);
+}
+
+.dialogue-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  pointer-events: none;
+  transform: scale(1.02);
+  transition: opacity 180ms ease;
+}
+
+.dialogue-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 244, 218, 0.08), rgba(34, 25, 17, 0.36) 62%),
+    linear-gradient(180deg, rgba(18, 15, 12, 0.08) 0%, rgba(18, 15, 12, 0.58) 100%);
+}
+
+.dialogue-layer.has-background .dialogue-background {
+  opacity: 1;
+}
+
 .dialogue-portrait-layer {
   position: absolute;
   left: var(--dialogue-portrait-left);

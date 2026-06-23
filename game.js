@@ -1,8 +1,8 @@
 const { SAVE_KEY, START_SCENE_ID, SCENES, POSITION_MAP, CONCLUSION_DATA, NPC_DATA, ANALYSIS_DATA } = window.M1_GAME_DATA;
 const STORY_DATA = window.M1_STORY_DATA || {};
 const LEGACY_STORAGE_KEYS = ["m1-gate-immersive-state-v2-source-text"];
-const CURRENT_STORY_VERSION = "m1-story-text-new-20260621";
-const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明"]);
+const CURRENT_STORY_VERSION = "m1-story-initial-chapter-1-20260623";
+const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明", "白沙手记"]);
 const STORY_SELF_SPEAKERS = new Set(["你", "林砚秋"]);
 const DEFAULT_STORY_PORTRAITS = {
   "你": "assets/story/portraits/林砚秋.png",
@@ -127,6 +127,7 @@ const dialogueKicker = document.querySelector("#dialogueKicker");
 const dialogueSpeaker = document.querySelector("#dialogueSpeaker");
 const dialogueTitle = document.querySelector("#dialogueTitle");
 const dialogueBody = document.querySelector("#dialogueBody");
+const dialogueBackground = document.querySelector("#dialogueBackground");
 const dialoguePortrait = document.querySelector("#dialoguePortrait");
 const dialogueChoices = document.querySelector("#dialogueChoices");
 const dialogueClose = document.querySelector("#dialogueClose");
@@ -756,6 +757,23 @@ function buildStoryDialogue(nodeId, eventId) {
   };
 }
 
+function clearDialogueBackground() {
+  dialogueLayer.classList.remove("has-background");
+  if (dialogueBackground) {
+    dialogueBackground.style.backgroundImage = "";
+  }
+}
+
+function setDialogueBackground(imagePath) {
+  const backgroundImage = normalizeStoryAssetPath(imagePath);
+  if (!dialogueBackground || !backgroundImage) {
+    clearDialogueBackground();
+    return;
+  }
+  dialogueBackground.style.backgroundImage = `url("${backgroundImage.replace(/"/g, '\\"')}")`;
+  dialogueLayer.classList.add("has-background");
+}
+
 function queueStoryEvent(eventId, key = eventId) {
   const eventInfo = getStoryEvent(eventId);
   if (!eventInfo?.start) return false;
@@ -1262,6 +1280,7 @@ function renderActiveDialogue() {
   if (!activeDialogue) {
     dialogueLayer.classList.add("hidden");
     dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc");
+    clearDialogueBackground();
     dialoguePortrait?.classList.remove("is-visible");
     if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
     return;
@@ -1279,6 +1298,7 @@ function renderActiveDialogue() {
   dialogueTitle.style.display = activeDialogue.title ? "block" : "none";
   dialogueBody.textContent = activeDialogue.body || "";
   dialogueClose.textContent = activeDialogue.closeLabel || "继续";
+  setDialogueBackground(activeDialogue.backgroundImage);
 
   const portrait = getDialoguePortrait(activeDialogue);
   if (dialoguePortrait) {
@@ -1328,6 +1348,7 @@ function closeDialogue(options = {}) {
   }
   dialogueLayer.classList.add("hidden");
   dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc");
+  clearDialogueBackground();
   dialoguePortrait?.classList.remove("is-visible");
   if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
   if (dialogueChoices) {

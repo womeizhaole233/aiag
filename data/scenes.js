@@ -382,15 +382,15 @@ const SCENES = {
             label: "封门砖缝",
             shape: "rect",
             rect: [0.28, 0.39, 0.43, 0.76],
-            title: "封门砖缝",
-            body: "墓门外层封门砖的灰缝中嵌着几粒石英砂，在手电下闪着细小的光点。\n石英砂粒径约半分，与本地夯土中常见的石英砂一致。\n石英砂与石灰浆的胶结状态与周围灰缝一致。",
-            record: "封门砖灰缝中可见石英砂光点，粒径约半分；其与石灰浆胶结状态和周围灰缝一致。",
+            title: "查看封门砖缝",
+            body: "你蹲在墓门前，仔细观察被封门砖封闭的入口。\n这些砖并非随意堆砌，而是有着严密的组织方式。\n外层由横砖与菱角牙子相混砌起。中层全部用横砖。\n内层全部用卧丁砖。",
+            record: "封门砖外层横砖与菱角牙子相混砌起。中层全部用横砖。内层全部用卧丁砖。",
             sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
             sourceClueId: "H01",
             viewTransition: {
               targetViewId: "tomb_gate_brick_structure",
               title: "查看封门砖组织",
-              body: "封门砖组织图可以帮助复核砖缝和封堵方式。",
+              body: "三层封门砖：外层“横砖与菱角牙子相混”，中层“全部用横砖”，内层“全部用卧丁砖”。",
               closeLabel: "查看"
             }
           },
@@ -401,15 +401,15 @@ const SCENES = {
             shape: "rect",
             rect: [0.44, 0.36, 0.56, 0.8],
             title: "门洞深处",
-            body: "墓门前还压着浮土、碎砖和杂物。\n门洞内侧光线较暗，通道向墓室深处收窄。\n先清理入口，再复核门额、门框与甬道侧壁的衔接关系。",
-            record: "墓门后部与甬道相接，门额、门框与甬道侧壁在此处衔接。",
+            body: "这是甬道通往前室的入口处。入口内为扁方形砖地面",
+            record: "墓门后部与甬道相接，入口内为扁方形砖地面",
             sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
             sourceClueId: "S02-TRANSITION",
             transition: {
               targetSceneId: "corridor",
               targetViewId: "corridor_overview",
               title: "进入甬道",
-              body: "墓门的几处信息已经记录。\n门洞之后，甬道顶部压低。\n光线沿砖缝向内收窄，前方可以继续观察。",
+              body: "门洞之后，甬道顶部压低。\n光线沿砖缝向内收窄，前方可以继续观察。",
               closeLabel: "进入",
               lockedBody: "门洞深处光线较暗。\n入口记录尚未整理完整。",
               missingRecords: [
@@ -421,7 +421,7 @@ const SCENES = {
           },
           {
             id: "left_wall",
-            label: "左侧墙面",
+            label: "甬道西壁",
             shape: "rect",
             rect: [0.05, 0.28, 0.25, 0.72],
             title: "墓道墙面",
