@@ -1,9 +1,9 @@
 {
   "chapters": [
     {
-      "background_image": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "background_image": "D:\\AI\\aiag\\baisha_chenyan\\static\\images\\楔子\\白沙.png",
       "description": "",
-      "end_node": "n00046",
+      "end_node": "n00059",
       "id": "prologue",
       "number": 0,
       "start_node": "n00001",
@@ -15,17 +15,17 @@
       "title": "墓外",
       "background_image": "assets/M1/00_墓葬全景与结构图/第一号墓后室平、剖面图.png",
       "description": "",
-      "start_node": "n00047",
-      "end_node": "n00088"
+      "start_node": "n00060",
+      "end_node": "n00092"
     },
     {
-      "background_image": "assets/M1/02墓道与墓门/封门砖的组织.png",
-      "description": "",
-      "end_node": "n00144",
       "id": "chapter_2",
       "number": 2,
-      "start_node": "n00089",
-      "title": "墓门"
+      "title": "墓门",
+      "background_image": "assets/M1/02墓道与墓门/封门砖的组织.png",
+      "description": "",
+      "start_node": "n00093",
+      "end_node": "n00144"
     },
     {
       "background_image": "assets/M1/03甬道/甬道顶叠胜彩画.png",

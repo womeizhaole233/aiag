@@ -79,7 +79,7 @@ def save_overrides(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def apply_overrides(node_id, dialogue):
-    """返回叠加覆盖后的 (speaker, text, bg, portrait, portrait_position, next_id)。"""
+    """返回叠加覆盖后的 (speaker, text, bg, portrait, portrait_position, next_id, choices)。"""
     overrides = load_overrides().get(node_id, {})
     speaker = overrides.get('speaker') or dialogue.get('speaker', '')
     text = overrides.get('text') if overrides.get('text') is not None else dialogue.get('text', '')
@@ -87,7 +87,8 @@ def apply_overrides(node_id, dialogue):
     portrait = overrides.get('portrait') or dialogue.get('portrait')
     portrait_position = overrides.get('portrait_position') or dialogue.get('portrait_position')
     next_id = overrides.get('next') if overrides.get('next') is not None else dialogue.get('next')
-    return speaker, text, bg, portrait, portrait_position, next_id
+    choices = overrides.get('choices') if overrides.get('choices') is not None else dialogue.get('choices', [])
+    return speaker, text, bg, portrait, portrait_position, next_id, choices
 
 def get_custom_nodes():
     """返回自定义节点字典 {id: {speaker, text, next, bg?, portrait?}}。"""
@@ -4324,13 +4325,13 @@ def dialogue_api():
         dialogue = DIALOGUES.get('n00001', {})
         session['current_dialogue'] = dialogue_id
 
-    speaker, text, bg, portrait, portrait_position, next_id = apply_overrides(dialogue_id, dialogue)
+    speaker, text, bg, portrait, portrait_position, next_id, choices = apply_overrides(dialogue_id, dialogue)
 
     return jsonify({
         'id': dialogue_id,
         'speaker': speaker,
         'text': text,
-        'choices': dialogue.get('choices', []),
+        'choices': choices,
         'next': next_id,
         'background_image': bg,
         'portrait': portrait,
