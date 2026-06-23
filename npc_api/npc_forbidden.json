@@ -2,8 +2,8 @@
   "forbiddenRuleList": [
     {
       "type": "剧透未解锁内容",
-      "matchKeywords": ["墓外", "环境", "终章", "最后一章"],
-      "forbidReason": "墓外、终章为未解锁占位内容，禁止提前剧透",
+      "matchKeywords": ["终章", "最后一章"],
+      "forbidReason": "终章为未解锁占位内容，禁止提前剧透",
       "defaultReply": "该区域暂未开放，请先完成当前章节的探索。"
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "type": "游戏开发/技术类提问",
-      "matchKeywords": "怎么做,代码,线索编号,游戏制作,后台",
+      "matchKeywords": "代码,线索编号,游戏制作,后台",
       "forbidReason": "属于开发内部内容，不对外解答",
       "defaultReply": "我仅能解答墓葬考古相关问题。"
     },

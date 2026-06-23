@@ -12,6 +12,7 @@ node_modules/
 *.log
 dev-server.out.log
 dev-server.err.log
+npc_api/local_api_key.txt
 __pycache__/
 *.pyc
 

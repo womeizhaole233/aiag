@@ -3,10 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>白沙宋墓 M1</title>
-    <link rel="stylesheet" href="styles.css?v=portraits-20260621" />
+    <title>白沙寻踪——AI考古解密向小游戏</title>
+    <link rel="stylesheet" href="styles.css?v=title-screen-20260622" />
   </head>
-  <body>
+  <body class="title-screen-active">
+    <section id="titleScreen" class="title-screen" aria-labelledby="titleScreenTitle">
+      <div class="title-screen-content">
+        <p class="title-kicker">白沙宋墓 M1</p>
+        <h1 id="titleScreenTitle">白沙寻踪</h1>
+        <p class="title-subtitle">AI考古解密向小游戏</p>
+        <button id="titleStart" class="title-start-button" type="button" autofocus>开始寻踪</button>
+      </div>
+    </section>
+
     <main class="scene" aria-label="第一号墓墓门">
       <div class="scene-toolbar" aria-label="界面导航">
         <div class="scene-toolbar-group">
@@ -379,7 +388,7 @@
     </div>
 
     <script src="data/scenes.js?v=portraits-20260621"></script>
-    <script src="data/story-vn.js?v=portraits-20260621"></script>
-    <script src="game.js?v=portraits-20260621"></script>
+    <script src="data/story-vn.js?v=player-portrait-20260622"></script>
+    <script src="game.js?v=title-screen-20260622"></script>
   </body>
 </html>

@@ -1,10 +1,12 @@
 const { SAVE_KEY, START_SCENE_ID, SCENES, POSITION_MAP, CONCLUSION_DATA, NPC_DATA, ANALYSIS_DATA } = window.M1_GAME_DATA;
 const STORY_DATA = window.M1_STORY_DATA || {};
 const LEGACY_STORAGE_KEYS = ["m1-gate-immersive-state-v2-source-text"];
-const CURRENT_STORY_VERSION = "m1-story-vn-dialogue-types-v2";
+const CURRENT_STORY_VERSION = "m1-story-text-new-20260621";
 const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明"]);
 const STORY_SELF_SPEAKERS = new Set(["你", "林砚秋"]);
 const DEFAULT_STORY_PORTRAITS = {
+  "你": "assets/story/portraits/林砚秋.png",
+  "林砚秋": "assets/story/portraits/林砚秋.png",
   "来人": "assets/story/portraits/周淼.png",
   "周淼": "assets/story/portraits/周淼.png",
   "苏池": "assets/story/portraits/苏池.png",
@@ -42,6 +44,7 @@ const state = {
   selectedConclusionId: null,
   shownDialogueKeys: [],
   storyVersion: CURRENT_STORY_VERSION,
+  leaderChatTriggered: false,
   pendingNavigation: null,
   pendingStoryNavigation: null,
   pendingStoryMiniGame: null,
@@ -49,6 +52,15 @@ const state = {
 };
 
 let storyUpgradePending = false;
+
+function enterGameFromTitle() {
+  if (!titleScreen) return;
+  titleScreen.classList.add("is-hidden");
+  titleScreen.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("title-screen-active");
+  sceneRoot?.removeAttribute("aria-hidden");
+  flushDialogueQueue();
+}
 
 const MAX_SCENE_IMAGE_SCALE = 3;
 const MIN_SCENE_FRAME_WIDTH = 220;
@@ -88,6 +100,8 @@ const DEFAULT_CLASSIFICATION_OPTIONS = [
 const REVIEW_READY_CLASSIFICATION_IDS = ["fact", "evidence", "doubt"];
 
 const sceneRoot = document.querySelector(".scene");
+const titleScreen = document.querySelector("#titleScreen");
+const titleStart = document.querySelector("#titleStart");
 const sceneStage = document.querySelector(".scene-stage");
 const sceneToolbar = document.querySelector(".scene-toolbar");
 const sceneHeading = document.querySelector("#sceneHeading");
@@ -477,18 +491,22 @@ function getView(sceneId, viewId) {
 
 function getNpcChatChapter() {
   const sceneToChapter = {
-    environment: "墓门",
+    environment: "墓外",
     tomb_gate: "墓门",
     corridor: "甬道",
     front_chamber: "前室",
     passage: "过道",
     rear_chamber: "后室"
   };
-  return sceneToChapter[state.currentSceneId] || "墓门";
+  return sceneToChapter[state.currentSceneId] || "墓外";
 }
 
-function openNpcChatPage() {
-  const params = new URLSearchParams({ chapter: getNpcChatChapter() });
+function openNpcChatPage(options = {}) {
+  const params = new URLSearchParams({
+    chapter: options.chapter || getNpcChatChapter(),
+    npcId: options.npcId || "leader_01"
+  });
+  if (options.source) params.set("source", options.source);
   window.location.href = `npc_api/demo_chat.html?${params.toString()}`;
 }
 
@@ -621,7 +639,7 @@ function getStorySpeakerKind(speaker) {
 
 function shouldUseStoryPortrait(dialogue) {
   const kind = dialogue?.speakerKind || getStorySpeakerKind(dialogue?.speaker);
-  return kind === "npc";
+  return kind === "npc" || kind === "self";
 }
 
 function normalizeSpeakerTag(value) {
@@ -1317,16 +1335,24 @@ function closeDialogue(options = {}) {
     dialogueChoices.classList.remove("is-visible");
   }
   activeDialogue = null;
+  if (
+    dialogue?.storyEventId === "opening" &&
+    !dialogue.storyNext &&
+    !state.leaderChatTriggered
+  ) {
+    state.leaderChatTriggered = true;
+    save();
+    openNpcChatPage({ chapter: "墓外", npcId: "leader_01", source: "opening_complete" });
+    return;
+  }
   flushDialogueQueue();
   runPendingStoryNavigation();
   runPendingStoryMiniGame();
 }
 
 function queueOpeningDialogues() {
-  if (state.records.length || state.completedSceneIds.length || state.currentSceneId !== START_SCENE_ID) return;
-  if (!queueStoryEvent("opening", "opening")) {
-    queueDialogueList(getNpcData().opening, "opening");
-  }
+  if (state.records.length || state.completedSceneIds.length || state.currentSceneId !== START_SCENE_ID) return false;
+  return queueStoryEvent("opening", "opening") || queueDialogueList(getNpcData().opening, "opening");
 }
 
 function queueSceneEntryDialogue(sceneId) {
@@ -1531,6 +1557,7 @@ function load() {
     state.workbench = normalizeWorkbench(data.workbench);
     state.selectedConclusionId = typeof data.selectedConclusionId === "string" ? data.selectedConclusionId : null;
     state.shownDialogueKeys = Array.isArray(data.shownDialogueKeys) ? data.shownDialogueKeys : [];
+    state.leaderChatTriggered = Boolean(data.leaderChatTriggered);
     storyUpgradePending =
       data.storyVersion !== CURRENT_STORY_VERSION &&
       (state.records.length > 0 || state.completedSceneIds.length > 0 || state.completedPuzzleIds.length > 0);
@@ -3419,7 +3446,7 @@ function renderScene() {
   hotspotLayer.setAttribute("aria-label", `${view.title || scene.title}可点击线索区域`);
   if (sceneHeading) sceneHeading.textContent = scene.title || "当前场景";
   if (sceneSubheading) sceneSubheading.textContent = getCurrentPositionLabel();
-  document.title = `白沙宋墓 M1 - ${getCurrentPositionLabel()}`;
+  document.title = `白沙寻踪 - ${getCurrentPositionLabel()}`;
   updateSceneSafeArea();
   updateSceneStageMetrics(view);
   renderHotspots(view);
@@ -4782,6 +4809,13 @@ function renderWorkbenchClues() {
   `;
 }
 
+if (titleScreen && titleStart) {
+  sceneRoot?.setAttribute("aria-hidden", "true");
+  titleStart.addEventListener("click", enterGameFromTitle);
+} else {
+  document.body.classList.remove("title-screen-active");
+}
+
 journalToggle.addEventListener("click", () => setJournal(!state.journalOpen));
 journalClose.addEventListener("click", () => setJournal(false));
 journalList.addEventListener("click", (event) => {
@@ -5045,9 +5079,9 @@ renderScene();
 renderJournal();
 renderConclusions();
 renderWorkbench();
-queueOpeningDialogues();
+const openingQueued = queueOpeningDialogues();
 queueStoryUpgradeDialogues();
-queueSceneEntryDialogue(state.currentSceneId);
+if (!openingQueued) queueSceneEntryDialogue(state.currentSceneId);
 flushDialogueQueue();
 runPendingStoryNavigation();
 runPendingStoryMiniGame();

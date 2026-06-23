@@ -323,6 +323,35 @@
             opacity: 1;
         }
 
+        .model-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            color: var(--text-faint);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .model-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #a0aec0;
+            box-shadow: 0 0 0 3px rgba(160, 174, 192, 0.12);
+        }
+
+        .model-status.is-ready::before {
+            background: #68d391;
+            box-shadow: 0 0 0 3px rgba(104, 211, 145, 0.16);
+        }
+
+        .model-status.is-error::before {
+            background: #fc8181;
+            box-shadow: 0 0 0 3px rgba(252, 129, 129, 0.16);
+        }
+
         .chat-messages {
             height: auto;
             min-height: 0;
@@ -354,6 +383,30 @@
             background: rgba(120, 168, 255, 0.18);
             color: var(--text);
             border-color: rgba(120, 168, 255, 0.34);
+        }
+
+        .message-content {
+            display: grid;
+            gap: 5px;
+            max-width: 75%;
+        }
+
+        .message-content .message-bubble {
+            max-width: none;
+        }
+
+        .message-meta {
+            color: var(--text-faint);
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .npc-message .message-meta {
+            padding-left: 2px;
+        }
+
+        .user-message .message-meta {
+            text-align: right;
         }
 
         .chat-controls {
@@ -463,6 +516,10 @@
             #send-btn {
                 width: 100%;
             }
+
+            .message-content {
+                max-width: 86%;
+            }
         }
     </style>
 </head>
@@ -476,6 +533,7 @@
             <div class="header-text">
                 <h1>白沙宋墓 · 考古领队对话系统</h1>
                 <p>与资深考古学者的现场交流</p>
+                <span id="modelStatus" class="model-status">大模型连接检测中</span>
             </div>
         </div>
 
@@ -512,43 +570,52 @@
         const chapterSelect = document.getElementById('chapter-select');
         const questionInput = document.getElementById('question-input');
         const sendBtn = document.getElementById('send-btn');
-        const startupChapter = new URLSearchParams(window.location.search).get('chapter');
+        const modelStatus = document.getElementById('modelStatus');
+        const startupParams = new URLSearchParams(window.location.search);
+        const startupChapter = startupParams.get('chapter');
+        const activeNpcId = startupParams.get('npcId') || 'leader_01';
+        const conversationHistory = [];
+        const MAX_HISTORY_TURNS = 8;
         if (startupChapter && [...chapterSelect.options].some((option) => option.value === startupChapter)) {
             chapterSelect.value = startupChapter;
         }
 
-        const staticReplies = {
-            "墓门": {
-                focus: "墓门阶段要先确认门洞、门额、封门砖和地面交界，再判断哪些痕迹属于入口结构，哪些只是保存或施工细节。",
-                action: "建议先从门洞外缘开始点选核心线索，完成墓门前清理小游戏后，再回到记录夹生成本章结论。"
-            },
-            "甬道": {
-                focus: "甬道是墓门与前室之间的过渡空间，重点看顶部彩画、东西壁人物和空间收束关系。",
-                action: "按顶部、东壁、西壁的顺序检查，收齐核心线索后用记录夹汇总，就能推进到前室。"
-            },
-            "前室": {
-                focus: "前室的关键是南北东西四壁的壁画题材、家具器物和人物动作，它们共同说明墓室的生活化陈设。",
-                action: "优先记录入口方向、壁画主体和可互动物件，再完成本章结论。"
-            },
-            "过道": {
-                focus: "过道连接前后室，最重要的是纪年题记、窗形结构和通向后室的轴线关系。",
-                action: "先定位题记，再检查两壁结构和后室入口，完成识读后即可继续深入。"
-            },
-            "后室": {
-                focus: "后室集中呈现墓主生活空间、砖床、人骨和随葬器物位置，是最终判断身份和年代的关键区域。",
-                action: "按南壁、西南壁、东北/西北壁、顶部、出土物的顺序检查，最后整理终章报告。"
-            }
-        };
+        function setModelStatus(text, state = '') {
+            modelStatus.textContent = text;
+            modelStatus.classList.toggle('is-ready', state === 'ready');
+            modelStatus.classList.toggle('is-error', state === 'error');
+        }
 
-        function getStaticReply(question, chapter) {
-            const info = staticReplies[chapter] || staticReplies["墓门"];
-            if (/怎么|如何|通关|下一步|推进|操作|点击/.test(question)) {
-                return info.action;
+        function rememberTurn(role, content) {
+            conversationHistory.push({ role, content });
+            while (conversationHistory.length > MAX_HISTORY_TURNS) {
+                conversationHistory.shift();
             }
-            if (/线索|重点|看什么|观察|判断|证据/.test(question)) {
-                return info.focus;
+        }
+
+        function formatModelMeta(data) {
+            const tokens = data.usage?.total_tokens ? ` · ${data.usage.total_tokens} tokens` : '';
+            const responseId = data.modelResponseId ? ` · ${data.modelResponseId}` : '';
+            const skillFiles = Array.isArray(data.referencedKnowledgeFiles) && data.referencedKnowledgeFiles.length
+                ? ` · 技能库 ${new Set(data.referencedKnowledgeFiles).size}`
+                : '';
+            const mode = data.mode ? ` · ${data.mode}` : '';
+            return `大模型响应 · ${data.model || 'model'}${mode}${skillFiles}${tokens}${responseId}`;
+        }
+
+        async function refreshModelStatus() {
+            try {
+                const response = await fetch('/api/npc/status');
+                if (!response.ok) throw new Error(`status-${response.status}`);
+                const data = await response.json();
+                if (!data.forceModelCall || !data.hasApiKey) {
+                    setModelStatus(`大模型未配置 · ${data.model || 'model'}`, 'error');
+                    return;
+                }
+                setModelStatus(`大模型已配置 · ${data.model} · ${data.apiHost}`, 'ready');
+            } catch (error) {
+                setModelStatus(`大模型状态不可用 · ${error.message}`, 'error');
             }
-            return `${info.focus} ${info.action}`;
         }
 
         // 发送问题函数
@@ -557,6 +624,8 @@
             const chapter = chapterSelect.value;
 
             if (!question) return;
+            sendBtn.disabled = true;
+            sendBtn.textContent = '模型思考中';
 
             // 添加用户消息
             addMessage(question, 'user');
@@ -568,28 +637,45 @@
             try {
                 const canUseLocalApi = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
                 if (!canUseLocalApi) {
-                    throw new Error("static-pages-fallback");
+                    throw new Error("请通过本地开发服务打开主线，再进入队长对话。");
                 }
 
                 // 调用后端接口
-                const response = await fetch("http://localhost:3000/api/ask", {
+                const response = await fetch("/api/ask", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
+                        npcId: activeNpcId,
                         currentChapter: chapter,
-                        question: question
+                        question: question,
+                        history: conversationHistory.slice(-MAX_HISTORY_TURNS)
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(data.error || `api-${response.status}`);
+                }
+
+                if (!data.reply || data.source !== "llm" || !data.model) {
+                    throw new Error(data.error || "api-not-llm");
+                }
 
                 // 移除加载状态，添加NPC回复
                 removeMessage(loadingId);
-                addMessage(data.reply, 'npc');
+                const npcMessage = addMessage(data.reply, 'npc');
+                setMessageMeta(npcMessage, formatModelMeta(data));
+                setModelStatus(`大模型已响应 · ${data.model}`, 'ready');
+                rememberTurn('user', question);
+                rememberTurn('assistant', data.reply);
 
             } catch (error) {
                 removeMessage(loadingId);
-                addMessage(getStaticReply(question, chapter), 'npc');
+                setModelStatus('大模型调用失败', 'error');
+                addMessage(`大模型未连接：${error.message || "请检查 API 配置和网络后重试。"}`, 'npc');
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = '发送提问';
             }
         }
 
@@ -602,11 +688,17 @@
             if (type === 'npc') {
                 html = `
                     <img src="avatar.png" alt="领队头像" class="avatar">
-                    <div class="message-bubble"></div>
+                    <div class="message-content">
+                        <div class="message-bubble"></div>
+                        <div class="message-meta"></div>
+                    </div>
                 `;
             } else {
                 html = `
-                    <div class="message-bubble"></div>
+                    <div class="message-content">
+                        <div class="message-bubble"></div>
+                        <div class="message-meta"></div>
+                    </div>
                 `;
             }
 
@@ -615,6 +707,12 @@
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
             return messageDiv;
+        }
+
+        function setMessageMeta(messageElement, text) {
+            const meta = messageElement?.querySelector('.message-meta');
+            if (!meta) return;
+            meta.textContent = text || '';
         }
 
         // 移除消息（用于加载状态）
@@ -629,6 +727,7 @@
         questionInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendQuestion();
         });
+        refreshModelStatus();
     </script>
 </body>
 </html>

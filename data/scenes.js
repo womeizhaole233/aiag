@@ -125,30 +125,30 @@ const SCENES = {
         hotspots: [
           {
             id: "baisha_location",
-            label: "白沙位置",
+            label: "白沙宋墓地图",
             shape: "rect",
             rect: [0.12, 0.18, 0.54, 0.62],
-            title: "白沙宋墓位置",
-            body: "地形图先把墓葬放回白沙区域。\n墓址不是孤立的室内谜题，而是嵌在地貌、村落和墓群关系中的考古对象。",
-            record: "白沙宋墓的位置需要先从区域地形中确认，墓葬空间与外部地貌、村落关系有关。",
+            title: "一张泛黄的地图",
+            body: "地图画面虽已模糊，但仍能清晰看到，\n墓葬位于河南省禹县（今禹州市）白沙镇北的一片谷地中，三面环山，前临颍水，乃上吉之地。",
+            record: "墓葬位于河南省禹县白沙镇北的一片谷地中，\n三面环山，前临颍水，乃上吉之地。\n北宋时这里属于西京洛阳管辖。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓外环境线索精修版_v1.0.md",
             sourceClueId: "ENV-E-02"
           },
           {
             id: "m1_sequence_map",
             label: "M1空间序列",
-            navLabel: "查看平剖面",
+            navLabel: "好像还有一张图....?",
             shape: "rect",
             rect: [0.58, 0.18, 0.95, 0.72],
-            title: "M1空间序列",
-            body: "进入墓门之前，先把墓外、墓门、甬道、前室、过道、后室的顺序建立起来。",
-            record: "M1的观察顺序应从墓外环境开始，沿墓门、甬道、前室、过道进入后室。",
+            title: "平剖面线索",
+            body: "M1是前后双室墓，由墓门、甬道、前室、过道、后室五部分组成",
+            record: "前后双室墓葬，可以沿墓门、甬道、前室、过道进入后室。",
             sourceFile: "docs/handoff/线索交付文档/05_剧情体验交付/M1场景线索体验节奏表_v1.0.md",
             sourceClueId: "ENV-P0-01",
             viewTransition: {
               targetViewId: "environment_sequence",
-              title: "查看M1空间序列",
-              body: "平剖面图可以先建立各章节的位置关系。",
+              title: "查看新的手稿图",
+              body: "这似乎是一张墓葬剖面图，可以带来怎样的信息呢....?",
               closeLabel: "查看"
             }
           },
@@ -169,7 +169,7 @@ const SCENES = {
               unlocked: true,
               completesSceneId: "environment",
               title: "前往墓门",
-              body: "你离开地形图视角，转到第一号墓墓门前。",
+              body: "你放下地图，转到第一号墓墓门前。",
               closeLabel: "前往",
               lockedBody: "进入墓门前，先把墓外位置和 M1 空间序列确认下来。",
               missingRecords: [
@@ -192,12 +192,12 @@ const SCENES = {
         hotspots: [
           {
             id: "six_part_sequence",
-            label: "六段空间",
+            label: "似乎是一张手绘稿",
             shape: "rect",
             rect: [0.18, 0.2, 0.82, 0.76],
-            title: "六段空间顺序",
-            body: "平剖面图把第一号墓的空间压缩成一条可读的轴线。\n墙面、题记、器物和葬具线索，都可以沿这条轴线定位。",
-            record: "第一号墓可按墓外、墓门、甬道、前室、过道、后室的顺序建立空间轴线。",
+            title: "绘图手稿",
+            body: "你找到一张绘图手稿，上面精确勾勒出一个砖砌的拱形门廊结构。\n左侧是完整的拱门立面，可见砖砌的拱券、木质门楣和双扇木门；\n右侧剖开的墙体则露出了内部的阶梯状承重结构。",
+            record: "绘图手稿，呈现出砖砌拱形墓门与周围土层的空间关系。左侧是完整的拱门立面，可见砖砌的拱券、木质门楣和双扇木门；\n右侧剖开的墙体则露出了内部的阶梯状承重结构。",
             sourceFile: "docs/handoff/线索交付文档/05_剧情体验交付/M1场景线索体验节奏表_v1.0.md",
             sourceClueId: "ENV-P0-01"
           },
@@ -208,14 +208,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.04, 0.7, 0.28, 0.98],
             title: "墓门外围",
-            body: "从平剖面返回到墓门外部，可以观察进入墓门前的空间关系。",
-            record: "墓门外围图可补足从墓外环境进入墓门前的空间关系。",
+            body: "从墓室外看墓门，可以清晰地看到墓门外层封门砖由横砖和菱角牙子混砌。",
+            record: "墓门外层封门砖由横砖和菱角牙子混砌",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
             sourceClueId: "GATE-E-01",
             viewTransition: {
               targetViewId: "environment_outer_gate",
               title: "查看墓门外围",
-              body: "视角转到第一号墓外围。",
+              body: "来到一号墓外围。",
               closeLabel: "查看"
             }
           },
@@ -251,12 +251,12 @@ const SCENES = {
         hotspots: [
           {
             id: "outer_gate_relation",
-            label: "墓门外围关系",
+            label: "墓门外围",
             shape: "rect",
             rect: [0.16, 0.12, 0.84, 0.78],
-            title: "第一号墓外围",
-            body: "外围照片让墓门不再只是单独的正面图。\n玩家可以先看到入口与周围空间的关系，再进入墓门细节。",
-            record: "第一号墓外围图补充了墓门与外部空间的关系。",
+            title: "对墓室外进行观测",
+            body: "墓门外侧有一片平坦区域，其北端直抵墓门基座。\n墓道两侧壁并非完全平行，而是愈北愈宽。",
+            record: "墓门外的平坦区域北抵墓门基座，墓道两边侧壁愈北愈宽。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
             sourceClueId: "GATE-E-01"
           },
@@ -267,7 +267,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.34, 0.68, 0.68, 0.98],
             title: "进入墓门",
-            body: "从外围进入第一号墓墓门主视角。",
+            body: "从外围进入墓门",
             record: "从外围进入第一号墓墓门。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
@@ -277,9 +277,9 @@ const SCENES = {
               unlocked: true,
               completesSceneId: "environment",
               title: "进入墓门",
-              body: "墓门正面进入视野，门额、封门砖和门洞都可以细看。",
+              body: "墓门正面进入视野，可仔细观察门额、封门砖和门洞",
               closeLabel: "进入",
-              lockedBody: "进入墓门前，先把墓外位置和 M1 空间序列确认下来。",
+              lockedBody: "进入墓门前，先确认好墓外位置和 墓葬空间序列。",
               missingRecords: [
                 { id: "environment:baisha_location", label: "白沙宋墓位置" },
                 { anyOf: ["environment:m1_sequence_map", "environment:six_part_sequence"], label: "M1 空间序列" }
@@ -288,19 +288,19 @@ const SCENES = {
           },
           {
             id: "return_sequence_from_outer",
-            label: "返回平剖面",
-            navLabel: "返回平剖面",
+            label: "查看手稿图",
+            navLabel: "查看手稿图",
             shape: "rect",
             rect: [0, 0.82, 0.24, 1],
-            title: "返回平剖面",
+            title: "查看手稿图",
             body: "回到空间序列图，重新确认墓门在整体轴线中的位置。",
             record: "返回M1空间序列图。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
             viewTransition: {
               targetViewId: "environment_sequence",
-              title: "返回平剖面",
-              body: "视角回到第一号墓平剖面。",
+              title: "查看手稿图",
+              body: "M1是前后双室墓，由墓门、甬道、前室、过道、后室五部分组成。",
               closeLabel: "返回"
             }
           }
@@ -330,7 +330,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.02, 0.78, 0.24, 0.98],
             title: "返回墓外环境",
-            body: "返回墓外环境，可以重新查看白沙位置和M1空间序列。",
+            body: "返回墓外环境，重新确认墓外环境和位置信息。",
             record: "返回墓外环境复查。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
@@ -339,7 +339,7 @@ const SCENES = {
               targetViewId: "environment_outer_gate",
               unlocked: true,
               title: "返回墓外",
-              body: "视角退回第一号墓外围。",
+              body: "来到墓外。",
               closeLabel: "返回"
             }
           },
@@ -349,7 +349,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.37, 0.14, 0.63, 0.31],
             title: "墓门门额",
-            body: "墓门门额正面题有墓主信息。\n门额背面可见一幅完整的卷草纹彩画。\n正面为题字，背面为彩画，质地与图像均不相同。",
+            body: "你将目光投向墓门最上方，那块横跨门洞的门额。砖上满刷白土，上绘彩画，但因被填土所掩，刷洗后大部漫漶。门额背面两端墨画流云、双禽，中绘牡丹。",
             record: "墓门门额正面题有墓主信息，背面可见完整卷草纹彩画。",
             sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
             sourceClueId: "L07",
@@ -5946,8 +5946,8 @@ const NPC_DATA = {
         id: "complete_tomb_gate_structure",
         kicker: "章节剧情",
         speaker: "陈怀远",
-        title: "正面是规矩，背面是自由",
-        body: "墓门的正面、背面和封门方式已经拆开看过。背面彩画说明：这里不是只靠一眼看穿的入口，背面也在留下信息。"
+        title: "前后两面分开标",
+        body: "墓门正面、背面和封门方式已经拆开。背面彩画的位置先标在图上，别和正面题字混成一条。"
       },
       {
         id: "complete_tomb_gate_next",
@@ -5961,64 +5961,64 @@ const NPC_DATA = {
       {
         id: "complete_corridor_three_faces",
         kicker: "章节剧情",
-        speaker: "陈怀远",
-        title: "考古观察不是看画",
-        body: "甬道的顶部、两壁和中段气味已经被放到同一组。这里不是装饰走廊，而是用三面信息组织通行方向。"
+        speaker: "粟柏年",
+        title: "三面合读",
+        body: "顶部、两壁放在一组。不要只看装饰。方向关系先记清楚。"
       },
       {
         id: "complete_corridor_next",
         kicker: "章节完成",
-        speaker: "考古领队",
+        speaker: "粟柏年",
         title: "前室开放",
-        body: "甬道阶段判断完成。前室会把这种引导推向更完整的礼仪展示。"
+        body: "甬道判断成立。进前室。先看整体，不急着追单点。"
       }
     ],
     front_chamber: [
       {
         id: "complete_front_chamber_order",
         kicker: "章节剧情",
-        speaker: "陈怀远",
-        title: "前室不能只看最漂亮的图",
-        body: "女乐、器物、入口分区和顶部结构都已经进入复查。前室成立的不是单幅图像，而是一套被组织过的礼仪空间。"
+        speaker: "粟柏年",
+        title: "前室先合看",
+        body: "女乐、器物、入口分区和顶部结构都已进入复查。单幅图像不能替你完成判断。"
       },
       {
         id: "complete_front_chamber_next",
         kicker: "章节完成",
-        speaker: "考古领队",
+        speaker: "粟柏年",
         title: "转入过道",
-        body: "前室章节判断完成。接下来的过道会把空间转换和时间文字压到同一个狭窄节点里。"
+        body: "前室判断成立。进过道。题记要看，结构也要看。"
       }
     ],
     passage: [
       {
         id: "complete_passage_anchor",
         kicker: "章节剧情",
-        speaker: "陈怀远",
+        speaker: "粟柏年",
         title: "题记是锚点，不是终点",
-        body: "赵大翁称谓和元符二年提供了时间与称谓线索，但题记本身不能替代后室文书和遗存。它是锚点，不是最终身份结论。"
+        body: "赵大翁和元符二年先作时间、称谓锚点。不能替代后室文书和遗存。"
       },
       {
         id: "complete_passage_next",
         kicker: "章节完成",
-        speaker: "考古领队",
+        speaker: "粟柏年",
         title: "进入后室",
-        body: "过道判断完成。后室会把图像、地券、葬具和日常器物一起摆到桌面上。"
+        body: "过道判断成立。进后室。图像、地券、葬具和日常器物分栏。"
       }
     ],
     rear_chamber: [
       {
         id: "complete_rear_chamber_home",
         kicker: "章节剧情",
-        speaker: "陈怀远",
+        speaker: "粟柏年",
         title: "后室像一间地下居室",
-        body: "假门、妇人启门、地券、人骨、铁钉和日常器物已经互相牵连。后室不像只属于死亡，也像被画成一间地下居室。"
+        body: "假门、妇人启门、地券、人骨、铁钉和日常器物已经互相牵连。可以这样想，但先分栏。"
       },
       {
         id: "complete_rear_chamber_boundary",
         kicker: "章节完成",
-        speaker: "考古领队",
+        speaker: "粟柏年",
         title: "保留存疑边界",
-        body: "手部断口和铁钉数量已经降级为辅助记录。现在可以进入终章，把确定、可推测和仍存疑分开放。"
+        body: "手部断口和铁钉数量降级为辅助记录。进终章前，把确定、可推测和仍存疑分开放。"
       },
       {
         id: "complete_rear_chamber_f_line",
@@ -6032,16 +6032,16 @@ const NPC_DATA = {
       {
         id: "complete_final_report",
         kicker: "终章汇总",
-        speaker: "陈怀远",
+        speaker: "粟柏年",
         title: "三栏报告成立",
-        body: "墓门、甬道、前室、过道和后室已经收束。赵怀诚线可以作为情感回收和可推测线索，但不能反向改写 P0 证据结论。"
+        body: "墓门、甬道、前室、过道和后室已经收束。赵怀诚线可以暂存，不能反向改写 P0 证据。"
       },
       {
         id: "complete_archive",
         kicker: "封存",
-        speaker: "考古领队",
+        speaker: "粟柏年",
         title: "阶段性研究判断",
-        body: "M1 的意义不来自单一异常，而来自空间、图像、文字和遗物之间的多层对应。报告可以封存，疑问继续保留。"
+        body: "M1 的判断不来自单一异常。空间、图像、文字和遗物要合看。报告可以封存，疑问继续保留。"
       }
     ]
   }
