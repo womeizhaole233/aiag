@@ -79,16 +79,17 @@ def save_overrides(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def apply_overrides(node_id, dialogue):
-    """返回叠加覆盖后的 (speaker, text, bg, portrait, portrait_position, next_id, choices)。"""
+    """返回叠加覆盖后的 (speaker, text, bg, background_position, portrait, portrait_position, next_id, choices)。"""
     overrides = load_overrides().get(node_id, {})
     speaker = overrides.get('speaker') or dialogue.get('speaker', '')
     text = overrides.get('text') if overrides.get('text') is not None else dialogue.get('text', '')
     bg = overrides.get('bg') or dialogue.get('background_image')
+    background_position = overrides.get('background_position') or dialogue.get('background_position')
     portrait = overrides.get('portrait') or dialogue.get('portrait')
     portrait_position = overrides.get('portrait_position') or dialogue.get('portrait_position')
     next_id = overrides.get('next') if overrides.get('next') is not None else dialogue.get('next')
     choices = overrides.get('choices') if overrides.get('choices') is not None else dialogue.get('choices', [])
-    return speaker, text, bg, portrait, portrait_position, next_id, choices
+    return speaker, text, bg, background_position, portrait, portrait_position, next_id, choices
 
 def get_custom_nodes():
     """返回自定义节点字典 {id: {speaker, text, next, bg?, portrait?}}。"""
@@ -4325,7 +4326,7 @@ def dialogue_api():
         dialogue = DIALOGUES.get('n00001', {})
         session['current_dialogue'] = dialogue_id
 
-    speaker, text, bg, portrait, portrait_position, next_id, choices = apply_overrides(dialogue_id, dialogue)
+    speaker, text, bg, background_position, portrait, portrait_position, next_id, choices = apply_overrides(dialogue_id, dialogue)
 
     return jsonify({
         'id': dialogue_id,
@@ -4334,6 +4335,7 @@ def dialogue_api():
         'choices': choices,
         'next': next_id,
         'background_image': bg,
+        'background_position': background_position,
         'portrait': portrait,
         'portrait_position': portrait_position,
         'puzzle': dialogue.get('puzzle'),
@@ -4476,6 +4478,7 @@ def _node_to_dict(node_id):
             'override_speaker': ov.get('speaker'),
             'override_text': ov.get('text'),
             'override_bg': ov.get('bg'),
+            'override_background_position': ov.get('background_position'),
             'override_portrait': ov.get('portrait'),
             'override_portrait_position': ov.get('portrait_position'),
             'override_next': ov.get('next'),
@@ -4483,10 +4486,12 @@ def _node_to_dict(node_id):
             'effective_speaker': ov.get('speaker') or d.get('speaker', ''),
             'effective_text': ov.get('text') if ov.get('text') is not None else (d.get('text') or ''),
             'effective_bg': ov.get('bg') or d.get('background_image'),
+            'effective_background_position': ov.get('background_position') or d.get('background_position'),
             'effective_portrait': ov.get('portrait') or d.get('portrait'),
             'effective_portrait_position': ov.get('portrait_position') or d.get('portrait_position'),
             'effective_next': ov.get('next') if ov.get('next') is not None else d.get('next'),
             'effective_choices': ov.get('choices') if ov.get('choices') is not None else (d.get('choices') or []),
+            'default_bg_position': d.get('background_position', 'center'),
         }
     if node_id in custom:
         d = custom[node_id]
@@ -4494,6 +4499,7 @@ def _node_to_dict(node_id):
             'override_speaker': d.get('speaker'),
             'override_text': d.get('text'),
             'override_bg': d.get('bg'),
+            'override_background_position': d.get('background_position'),
             'override_portrait': d.get('portrait'),
             'override_portrait_position': d.get('portrait_position'),
             'override_next': d.get('next'),
@@ -4501,10 +4507,12 @@ def _node_to_dict(node_id):
             'effective_speaker': d.get('speaker') or '',
             'effective_text': d.get('text') or '',
             'effective_bg': d.get('bg'),
+            'effective_background_position': d.get('background_position'),
             'effective_portrait': d.get('portrait'),
             'effective_portrait_position': d.get('portrait_position'),
             'effective_next': d.get('next'),
             'effective_choices': d.get('choices') or [],
+            'default_bg_position': 'center',
         }
     return None
 
@@ -4515,7 +4523,7 @@ def admin_bg_save():
     node_id = data.get('node_id')
     field = data.get('field')
     value = data.get('value', '')
-    if field not in ('bg', 'speaker', 'text', 'portrait', 'portrait_position', 'next', 'choices'):
+    if field not in ('bg', 'speaker', 'text', 'portrait', 'portrait_position', 'background_position', 'next', 'choices'):
         return jsonify({'status': 'error', 'msg': 'invalid field'}), 400
 
     overrides = load_overrides()

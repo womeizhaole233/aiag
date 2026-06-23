@@ -624,10 +624,11 @@ function updateHexagon(speaker) {
     document.getElementById('hexagonSpeaker').textContent = speaker || '白沙手记';
 }
 
-function setBackground(img) {
+function setBackground(img, position) {
     const bg = document.getElementById('sceneBackground');
     if (img) {
         bg.style.backgroundImage = `url('/${img.replace(/^\/?/, '')}')`;
+        bg.style.backgroundPosition = position || 'center';
     }
 }
 
@@ -754,7 +755,7 @@ async function loadDialogue(choiceNext = null) {
             .filter(p => p.trim() !== '');
         document.getElementById('dialogueText').innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
         updateHexagon(data.speaker);
-        if (data.background_image) setBackground(data.background_image);
+        if (data.background_image) setBackground(data.background_image, data.background_position);
         setPortrait(data.portrait, data.portrait_position);
 
         if (data.choices && data.choices.length > 0) {
