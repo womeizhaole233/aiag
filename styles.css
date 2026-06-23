@@ -498,7 +498,7 @@ button {
   position: absolute;
   left: var(--dialogue-portrait-left);
   bottom: 20px;
-  z-index: 3;
+  z-index: 2;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -510,6 +510,24 @@ button {
 .dialogue-layer.is-self .dialogue-portrait-layer {
   right: var(--dialogue-portrait-right);
   left: auto;
+}
+
+.dialogue-layer.portrait-left .dialogue-portrait-layer {
+  left: var(--dialogue-portrait-left);
+  right: auto;
+  transform: none;
+}
+
+.dialogue-layer.portrait-center .dialogue-portrait-layer {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+.dialogue-layer.portrait-right .dialogue-portrait-layer {
+  left: auto;
+  right: var(--dialogue-portrait-right);
+  transform: none;
 }
 
 .dialogue-portrait-layer img {
@@ -529,7 +547,7 @@ button {
 
 .dialogue-layer .dialogue-box {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: var(--dialogue-box-width);
   max-height: min(46dvh, 390px);
   padding: 22px 28px 20px;
@@ -549,6 +567,16 @@ button {
 .dialogue-layer.has-portrait.is-self .dialogue-box {
   padding-right: var(--dialogue-portrait-slot);
   padding-left: 28px;
+}
+
+.dialogue-layer.has-portrait.portrait-right .dialogue-box {
+  padding-right: var(--dialogue-portrait-slot);
+  padding-left: 28px;
+}
+
+.dialogue-layer.has-portrait.portrait-center .dialogue-box {
+  padding-left: 28px;
+  padding-right: 28px;
 }
 
 .dialogue-layer .dialogue-box::before {

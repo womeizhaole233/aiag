@@ -3,22 +3,22 @@
   "version": "story-vn-initial-chapter-1-20260623",
   "sourceDocument": "docs/design/text new.md",
   "speakerPortraits": {
-    "你": "assets/story/portraits/林砚秋.png",
-    "林砚秋": "assets/story/portraits/林砚秋.png",
-    "来人": "assets/story/portraits/周淼.png",
-    "？？？": "assets/story/portraits/周淼.png",
-    "周淼": "assets/story/portraits/周淼.png",
-    "苏池": "assets/story/portraits/苏池.png",
-    "粟柏年": "assets/story/portraits/粟柏年.png",
-    "陈怀远": "assets/story/portraits/陈怀远.png",
-    "赵老倔": "assets/story/portraits/赵老倔.png",
-    "赵广田": "assets/story/portraits/赵老倔.png",
-    "民工老张": "assets/story/portraits/赵老倔.png",
-    "常福来": "assets/story/portraits/赵老倔.png",
-    "考古领队": "assets/story/portraits/粟柏年.png",
-    "记录员": "assets/story/portraits/周淼.png",
-    "考古队员": "assets/story/portraits/周淼.png",
-    "考古技工": "assets/story/portraits/陈怀远.png"
+    "你": "assets/story/portraits/initial/林砚秋.png",
+    "林砚秋": "assets/story/portraits/initial/林砚秋.png",
+    "来人": "assets/story/portraits/initial/周淼.png",
+    "？？？": "assets/story/portraits/initial/周淼.png",
+    "周淼": "assets/story/portraits/initial/周淼.png",
+    "苏池": "assets/story/portraits/initial/苏池.png",
+    "粟柏年": "assets/story/portraits/initial/粟柏年2.png",
+    "陈怀远": "assets/story/portraits/initial/陈怀远.png",
+    "赵老倔": "assets/story/portraits/initial/赵老倔.png",
+    "赵广田": "assets/story/portraits/initial/赵老倔.png",
+    "民工老张": "assets/story/portraits/initial/赵老倔.png",
+    "常福来": "assets/story/portraits/initial/赵老倔.png",
+    "考古领队": "assets/story/portraits/initial/粟柏年2.png",
+    "记录员": "assets/story/portraits/initial/周淼.png",
+    "考古队员": "assets/story/portraits/initial/周淼.png",
+    "考古技工": "assets/story/portraits/initial/陈怀远.png"
   },
   "events": {
     "opening": {
@@ -516,7 +516,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "这是你第一次见到白沙。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 05_40_44 PM.png",
       "portrait": null,
       "choices": [],
       "next": "op_001",
@@ -526,19 +526,20 @@
       "id": "op_001",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "你坐了六个小时的卡车，又在驴车上颠了两个钟头，才在一片铅灰色的冬日天空下，望见了几棵老槐树掩映的土房。\n\n河南，禹县，白沙镇。一个在地图上几乎找不到名字的地方，可你的外祖父来过。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "你坐了六个小时的卡车，又在驴车上颠了两个钟头，才在一片铅灰色的冬日天空下，望见了几棵老槐树掩映的土房。河南，禹县，白沙镇。一个在地图上几乎找不到名字的地方，可你的外祖父来过。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 10, 2026, 09_05_37 PM.png",
       "portrait": null,
       "choices": [],
       "next": "op_002",
-      "puzzle": null
+      "puzzle": null,
+      "backgroundPosition": "bottom"
     },
     "op_002": {
       "id": "op_002",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "后来他再也没有提起过这里。只留下几张发黄的调查记录、一枚断开的银扣，以及一句谁也听不懂的话——“地下的东西，有时候比活人记性更好”。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "后来外祖父再也没有提起过这里。只留下几张发黄的调查记录、一枚断开的银扣，以及一句谁也听不懂的话——“地下的东西，有时候比活人记性更好”。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 02_09_46 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_003",
@@ -548,8 +549,8 @@
       "id": "op_003",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "十二月的华北平原，风裹着干燥的尘土扑面而来。\n\n你紧了紧灰蓝列宁装的领口，手指碰到一根细细的皮绳。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "十二月的华北平原，风裹着干燥的尘土扑面而来。你紧了紧灰蓝列宁装的领口，手指碰到一根细细的皮绳。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_004",
@@ -559,8 +560,8 @@
       "id": "op_004",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "皮绳上系着一枚银怀表链扣，圆形，比铜钱略大，银质表面布满细密裂纹。\n\n那是外祖父的遗物，从你记事起就挂在颈间，没摘下来过一天。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "皮绳上系着一枚银怀表链扣，圆形，比铜钱略大，银质表面布满细密裂纹。那是外祖父的遗物，从你记事起就挂在颈间，没摘下来过一天。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_48_33 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_005",
@@ -571,7 +572,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "小时候，你不止一次问过母亲，为什么外祖父把这样一枚旧银扣看得那么重。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_006",
@@ -582,7 +583,7 @@
       "kicker": "楔子",
       "speaker": "你",
       "body": "请选择回应。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png",
       "portrait": null,
       "choices": [
         {
@@ -606,7 +607,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "母亲笑着说：“旧东西罢了。”可她说这句话的时候，并没有看你的眼睛。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_010",
@@ -617,7 +618,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "母亲沉默了很久。最后只说：“有些东西对别人不值钱，对他却很重要。”",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_010",
@@ -628,7 +629,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "母亲收起银扣，很久都没有说话，从那以后，你再也没问过。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_010",
@@ -639,7 +640,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "无论是哪一种回答，你都始终不知道，外祖父为什么一直留着它。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_48_33 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_011",
@@ -650,8 +651,8 @@
       "kicker": "楔子",
       "speaker": "？？？",
       "body": "林同志！",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "op_012",
       "puzzle": null
@@ -661,7 +662,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "你回过神来。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_013",
@@ -671,8 +672,8 @@
       "id": "op_013",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "一个扎两根麻花辫的姑娘朝你快步走来，圆脸上有浅浅的雀斑，杏仁眼很灵动，眼尾略微下垂。\n\n她穿一件藏蓝色列宁装女式改良版，收腰设计，领口别着一枚小小的梅花胸针。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "一个扎两根麻花辫的姑娘朝你快步走来，圆脸上有浅浅的雀斑，杏仁眼很灵动，眼尾略微下垂。她穿一件藏蓝色列宁装女式改良版，收腰设计，领口别着一枚小小的梅花胸针。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_014",
@@ -683,29 +684,31 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "她接过你手里的帆布包，笑着说：",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_015",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_015": {
       "id": "op_015",
       "kicker": "楔子",
       "speaker": "周淼",
-      "body": "我是周淼，负责壁画与纹饰测绘。粟老师在镇上供销社给你留了饭，让你今晚好好歇着，明天——",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "body": "我是周淼，负责图画测绘。粟老师在镇上供销社给你留了饭，让你今晚好好歇着，明天——",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+      "portrait": "assets/story/portraits/initial/周淼3.png",
       "choices": [],
       "next": "op_016",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_016": {
       "id": "op_016",
       "kicker": "楔子",
       "speaker": "你",
       "body": "明天什么时候开工？",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_017",
@@ -715,30 +718,32 @@
       "id": "op_017",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "她歪着头，想了一下，略带疑惑的说：",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": null,
+      "body": "她歪着头，想了一下，略带疑惑地说：",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+      "portrait": "assets/story/portraits/initial/周淼2.png",
       "choices": [],
       "next": "op_018",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_018": {
       "id": "op_018",
       "kicker": "楔子",
       "speaker": "周淼",
       "body": "五点半。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+      "portrait": "assets/story/portraits/initial/周淼2.png",
       "choices": [],
       "next": "op_019",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_019": {
       "id": "op_019",
       "kicker": "楔子",
       "speaker": "你",
       "body": "请选择回应。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png",
       "portrait": null,
       "choices": [
         {
@@ -758,18 +763,19 @@
       "kicker": "楔子",
       "speaker": "周淼",
       "body": "只是有点好奇，粟老师每天五点半到现场，我们六点。你是第一个被要求五点半到的人。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 01_49_19 AM.png",
+      "portrait": "assets/story/portraits/initial/周淼3.png",
       "choices": [],
       "next": "op_022",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_021": {
       "id": "op_021",
       "kicker": "楔子",
       "speaker": "系统",
       "body": "周淼也笑了笑，但那笑容里带着一点好奇。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_022",
@@ -780,7 +786,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "她转身给你带路，你注意到她的裤腿用皮筋扎紧，脚上一双黑色圆头布鞋，鞋面沾着洗不掉的红褐色铁锈痕。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 02_35_19 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_023",
@@ -790,8 +796,8 @@
       "id": "op_023",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "你们穿过村子，爬上一道缓坡。坡顶上，那片隆起的高地出现在暮色里。\n\n一个瘦高的身影蹲在土台边上，手电光在暮色中晃动。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "你们穿过村子，爬上一道缓坡。坡顶上，那片隆起的高地出现在暮色里。一个瘦高的身影蹲在土台边上，手电光在暮色中晃动。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_024",
@@ -802,7 +808,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "他穿了一身洗得发白的深灰色列宁装，背对着你，用放大镜一寸一寸地看着什么。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_025",
@@ -813,18 +819,19 @@
       "kicker": "楔子",
       "speaker": "周淼",
       "body": "粟老师，林助教到了。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
+      "portrait": "assets/story/portraits/initial/周淼3.png",
       "choices": [],
       "next": "op_026",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "left"
     },
     "op_026": {
       "id": "op_026",
       "kicker": "楔子",
       "speaker": "系统",
       "body": "你们靠近的时候，那人始终没有回头，手电光在地面缓慢移动，像是在寻找什么。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_027",
@@ -835,7 +842,7 @@
       "kicker": "楔子",
       "speaker": "你",
       "body": "请选择回应。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [
         {
@@ -859,7 +866,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "手电停留的位置，恰好是一道颜色略深的土层分界。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_031",
@@ -870,7 +877,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "附近几乎没有植物，只有冬天枯死的杂草。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_031",
@@ -881,7 +888,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "你看不出来，但他的动作不像是在寻找遗失物。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_031",
@@ -892,7 +899,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "就在这时，那人开口了。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_032",
@@ -903,8 +910,8 @@
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "路上看见那条干河道了吗？",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "op_033",
       "puzzle": null
@@ -913,8 +920,8 @@
       "id": "op_033",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "粟柏年朝你的方向推了推鼻梁上的黑框圆眼镜。他脸略长，颧骨略高，皮肤偏黑，眼窝微凹，嘴角自然下垂，语气平和。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "粟柏年站起身，面朝你，他脸略长，颧骨略高，皮肤偏黑，眼窝微凹，嘴角自然下垂。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_034",
@@ -925,7 +932,7 @@
       "kicker": "楔子",
       "speaker": "你",
       "body": "看见了。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_035",
@@ -936,18 +943,19 @@
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "什么走向？",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "op_036",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_036": {
       "id": "op_036",
       "kicker": "楔子",
       "speaker": "你",
       "body": "请选择回应。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png",
       "portrait": null,
       "choices": [
         {
@@ -971,40 +979,43 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "粟柏年微不可见地皱了下眉头。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": null,
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年1.png",
       "choices": [],
       "next": "op_038",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_038": {
       "id": "op_038",
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "地形勘测在考古过程中也是很重要的一步。那条干河道是西北到东南走向。下次路过的时候，多看一眼。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年1.png",
       "choices": [],
       "next": "op_040",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_039": {
       "id": "op_039",
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "嗯。观察得很仔细。明天早上五点半，在这个位置，先看墓道。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 07_32_40 PM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "op_040",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "op_040": {
       "id": "op_040",
       "kicker": "楔子",
       "speaker": "系统",
       "body": "他站起来，身体重心微微前移，像随时准备往前走、往下看。深灰色列宁装的领口磨得起了毛边，袖口打着细致的手缝补丁。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_041",
@@ -1015,7 +1026,7 @@
       "kicker": "楔子",
       "speaker": "系统",
       "body": "粟柏年，29岁，北大考古专业青年教师，也是你接下来的领队老师。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_042",
@@ -1025,8 +1036,8 @@
       "id": "op_042",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "他领着你往工地里面走了一段。\n\n探方边上支着几盏马灯，一个中年人正坐在帆布棚下伏案绘图，国字脸，花白的头发浓密。\n\n外罩一件军绿色帆布工装马甲，上面插满了比例尺、铅笔和手电筒。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "他领着你往工地里面走了一段。探方边上支着几盏马灯，一个中年人正坐在帆布棚下伏案绘图，国字脸，花白的头发浓密。外罩一件军绿色帆布工装马甲，上面插满了比例尺、铅笔和手电筒。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 09_33_03 PM.png",
       "portrait": null,
       "choices": [],
       "next": "op_043",
@@ -1037,84 +1048,92 @@
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "陈怀远，陈工。负责建筑结构测绘。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 09_33_03 PM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "op_044",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "op_044": {
       "id": "op_044",
       "kicker": "楔子",
       "speaker": "系统",
       "body": "陈怀远从老花镜上方看了你一眼，温和地对你笑了笑，又继续画图。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_06_36 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_045",
-      "puzzle": null
+      "puzzle": null,
+      "backgroundPosition": "top"
     },
     "op_045": {
       "id": "op_045",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "棚子另一角蹲着个壮实的村民，宽肩膀，罗圈腿，一身黑色粗布对襟短褂敞着扣子。\n\n头上系着一条白毛巾，额头三道很深的抬头纹。他正用磨刀石磨着铁锹刃。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "棚子另一角蹲着个壮实的村民，宽肩膀，罗圈腿，一身黑色粗布对襟短褂敞着扣子。头上系着一条白毛巾，额头三道很深的抬头纹。他正用磨刀石磨着铁锹刃。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_31_18 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_046",
-      "puzzle": null
+      "puzzle": null,
+      "backgroundPosition": "top"
     },
     "op_046": {
       "id": "op_046",
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "赵广田师傅，负责发掘。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_31_18 AM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "op_047",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right",
+      "backgroundPosition": "top"
     },
     "op_047": {
       "id": "op_047",
       "kicker": "楔子",
       "speaker": "赵广田",
       "body": "叫我赵老倔就成。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_31_18 AM.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "op_048",
-      "puzzle": null
+      "puzzle": null,
+      "backgroundPosition": "top"
     },
     "op_048": {
       "id": "op_048",
       "kicker": "楔子",
       "speaker": "系统",
       "body": "赵老倔眯着眼看了你一眼，把你从头到脚打量了一遍，然后“哼”了一声。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_33_34 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_049",
-      "puzzle": null
+      "puzzle": null,
+      "backgroundPosition": "top"
     },
     "op_049": {
       "id": "op_049",
       "kicker": "楔子",
       "speaker": "赵老倔",
       "body": "又是个读书的。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 08_06_56 PM.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "op_050",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "op_050": {
       "id": "op_050",
       "kicker": "楔子",
       "speaker": "你",
       "body": "请选择回应。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_33_34 AM.png",
       "portrait": null,
       "choices": [
         {
@@ -1131,47 +1150,51 @@
         }
       ],
       "next": null,
-      "puzzle": null
+      "puzzle": null,
+      "backgroundPosition": "top"
     },
     "op_051": {
       "id": "op_051",
       "kicker": "楔子",
       "speaker": "赵老倔",
       "body": "“没说不好。就是多数待不长。”",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 08_06_56 PM.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "op_054",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "op_052": {
       "id": "op_052",
       "kicker": "楔子",
       "speaker": "赵老倔",
       "body": "“见过。”有些人鞋还没沾泥，就想写报告。”",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 08_06_56 PM.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "op_054",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "op_053": {
       "id": "op_053",
       "kicker": "楔子",
       "speaker": "系统",
       "body": "赵老倔看了你一眼，继续磨铁锹，像是在等以后再下判断。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_33_34 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_054",
-      "puzzle": null
+      "puzzle": null,
+      "backgroundPosition": "top"
     },
     "op_054": {
       "id": "op_054",
       "kicker": "楔子",
       "speaker": "系统",
-      "body": "棚子最里面亮着一盏小灯，一个戴圆框眼镜的年轻人正伏在矮桌边。圆脸，皮肤很白，手指细长。\n\n桌上摊着几块用纱布包好的骨骼标本。他正用游标卡尺量一块髋骨碎片。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "body": "棚子最里面亮着一盏小灯，一个戴圆框眼镜的年轻人正伏在矮桌边。圆脸，皮肤很白，手指细长。桌上摊着几块用纱布包好的骨骼标本。他正用游标卡尺量一块髋骨碎片。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 09_09_21 PM.png",
       "portrait": null,
       "choices": [],
       "next": "op_055",
@@ -1182,19 +1205,20 @@
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "苏池，体质人类学专业的。他负责骨骼鉴定。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 09_09_21 PM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "op_056",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "left"
     },
     "op_056": {
       "id": "op_056",
       "kicker": "楔子",
       "speaker": "苏池",
-      "body": "你好。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "body": "苏池对你露出笑容。",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_38_55 AM.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "op_057",
       "puzzle": null
@@ -1204,7 +1228,7 @@
       "kicker": "楔子",
       "speaker": "你",
       "body": "你好。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_38_55 AM.png",
       "portrait": null,
       "choices": [],
       "next": "op_058",
@@ -1215,11 +1239,12 @@
       "kicker": "楔子",
       "speaker": "粟柏年",
       "body": "大家今天先休息吧，明天会很累。",
-      "backgroundImage": "assets/M1/01环境地图/白沙宋墓地形图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "backgroundImage": "assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 08_37_29 PM.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "center"
     },
     "env_entry_000": {
       "id": "env_entry_000",
@@ -1252,7 +1277,8 @@
       "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "env_entry_003",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "left"
     },
     "env_entry_003": {
       "id": "env_entry_003",
@@ -1274,7 +1300,8 @@
       "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "env_entry_005",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "left"
     },
     "env_entry_005": {
       "id": "env_entry_005",
@@ -1334,7 +1361,8 @@
       "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "env_entry_010",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "left"
     },
     "env_entry_010": {
       "id": "env_entry_010",
@@ -1424,7 +1452,8 @@
       "portrait": "assets/story/portraits/initial/赵老倔3.png",
       "choices": [],
       "next": "env_close_007",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "env_close_005": {
       "id": "env_close_005",
@@ -1435,7 +1464,8 @@
       "portrait": "assets/story/portraits/initial/赵老倔3.png",
       "choices": [],
       "next": "env_close_007",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "env_close_006": {
       "id": "env_close_006",
@@ -1457,7 +1487,8 @@
       "portrait": "assets/story/portraits/initial/粟柏年3.png",
       "choices": [],
       "next": null,
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "left"
     },
     "gate_entry_000": {
       "id": "gate_entry_000",
@@ -1501,7 +1532,8 @@
       "portrait": "assets/story/portraits/initial/粟柏年3.png",
       "choices": [],
       "next": "gate_entry_004",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "gate_entry_004": {
       "id": "gate_entry_004",
@@ -1569,7 +1601,8 @@
       "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_entry_009",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "left"
     },
     "gate_entry_009": {
       "id": "gate_entry_009",
@@ -1602,7 +1635,8 @@
       "portrait": "assets/story/portraits/initial/粟柏年3.png",
       "choices": [],
       "next": "gate_entry_012",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "gate_entry_012": {
       "id": "gate_entry_012",
@@ -1613,7 +1647,8 @@
       "portrait": "assets/story/portraits/initial/赵老倔2.png",
       "choices": [],
       "next": "gate_entry_013",
-      "puzzle": null
+      "puzzle": null,
+      "portraitPosition": "right"
     },
     "gate_entry_013": {
       "id": "gate_entry_013",
@@ -1632,7 +1667,7 @@
       "speaker": "粟柏年",
       "body": "外层横砖加菱角牙子混砌，中层全部横砖，内层全部卧丁砖。你看这三层，拆的顺序应该是什么？",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_entry_015",
       "puzzle": null
@@ -1678,7 +1713,7 @@
       "speaker": "粟柏年",
       "body": "正确，反过来就不行。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -1700,7 +1735,7 @@
       "speaker": "粟柏年",
       "body": "先别急，从外层开始。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -1722,7 +1757,7 @@
       "speaker": "粟柏年",
       "body": "不行，先保住里面。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -1733,7 +1768,7 @@
       "speaker": "粟柏年",
       "body": "拆之前，先把最正中那块砖拓下来。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_001",
       "puzzle": null
@@ -1777,7 +1812,7 @@
       "speaker": "粟柏年",
       "body": "永安。你觉得是什么？",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_005",
       "puzzle": null
@@ -1816,7 +1851,7 @@
       "speaker": "粟柏年",
       "body": "名字不能只凭两个字定。\n\n先放一放。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_010",
       "puzzle": null
@@ -1827,7 +1862,7 @@
       "speaker": "粟柏年",
       "body": "如果是年号，后面应该能和题记、地券互证。\n\n现在还不能下结论。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_010",
       "puzzle": null
@@ -1838,7 +1873,7 @@
       "speaker": "粟柏年",
       "body": "有可能。很多墓砖上确实会出现吉语。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_010",
       "puzzle": null
@@ -1849,7 +1884,7 @@
       "speaker": "粟柏年",
       "body": "很好。答案也许在里面，也许永远没有答案。现在唯一确定的是——砖上有这两个字，先记为存疑。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_010",
       "puzzle": null
@@ -1882,7 +1917,7 @@
       "speaker": "赵老倔",
       "body": "老陈，你这嗓子，半夜能叫魂。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "gate_crack_013",
       "puzzle": null
@@ -1915,7 +1950,7 @@
       "speaker": "赵老倔",
       "body": "这砖烧得透，火候足。烧一窑这样的砖，得废多少柴火。你说这人啊，活着的时候住砖房，死了还要住砖房，图啥呢？",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "gate_crack_016",
       "puzzle": null
@@ -1961,7 +1996,7 @@
       "speaker": "赵老倔",
       "body": "俺家是土坯砖，自己打的，哪用得起烧窑砖。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "gate_crack_023",
       "puzzle": null
@@ -1983,7 +2018,7 @@
       "speaker": "赵老倔",
       "body": "九百年了，烧你的人早没了，你还在这儿。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "gate_crack_023",
       "puzzle": null
@@ -2005,7 +2040,7 @@
       "speaker": "赵老倔",
       "body": "你这丫头，说话跟俺村东头算命的老王头似的。不过你说得对，烧它的人早没了，它还在这儿。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "gate_crack_023",
       "puzzle": null
@@ -2060,7 +2095,7 @@
       "speaker": "粟柏年",
       "body": "你觉得接下来怎么做？",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_028",
       "puzzle": null
@@ -2106,7 +2141,7 @@
       "speaker": "粟柏年",
       "body": "裂缝的宽度不到一毫米。但它在内层卧丁砖上，这块砖直接承受墓室内部的压力。墓道填土清掉以后，外侧土压力会消失。如果墓室内部有局部坍塌，内层承担的力已经不均匀了。继续拆外层，这条裂缝会往哪个方向走？",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_031",
       "puzzle": null
@@ -2128,7 +2163,7 @@
       "speaker": "粟柏年",
       "body": "好。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_034",
       "puzzle": null
@@ -2139,7 +2174,7 @@
       "speaker": "粟柏年",
       "body": "可以。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "gate_crack_034",
       "puzzle": null
@@ -2161,7 +2196,7 @@
       "speaker": "陈怀远",
       "body": "架撑。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "gate_crack_036",
       "puzzle": null
@@ -2205,7 +2240,7 @@
       "speaker": "陈怀远",
       "body": "稳了。",
       "backgroundImage": "assets/M1/02墓道与墓门/插图三 第一号墓墓门外层封门砖的组织.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "gate_crack_040",
       "puzzle": null
@@ -2416,7 +2451,7 @@
       "speaker": "周淼",
       "body": "这个叠胜和《营造法式》里的罗纹叠胜比起来简化了不少，颜色保存得真好。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "corr_entry_011",
       "puzzle": null
@@ -2438,7 +2473,7 @@
       "speaker": "陈怀远",
       "body": "三面叠涩，横砖收顶。八层。内收弧度比正常的缓。最下面两层叠涩的砖角磨得比上面圆，可能是下葬时抬棺，棺底蹭的。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "corr_entry_013",
       "puzzle": null
@@ -2460,7 +2495,7 @@
       "speaker": "粟柏年",
       "body": "《营造法式》里叫断砌门，不用地栿，门砧直接卧在砖地面上。北宋中期以后才流行起来。砚秋，记一下。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -2506,7 +2541,7 @@
       "speaker": "粟柏年",
       "body": "这是最基础的作用。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "corr_roof_005",
       "puzzle": null
@@ -2517,7 +2552,7 @@
       "speaker": "粟柏年",
       "body": "确实有这方面的作用。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "corr_roof_005",
       "puzzle": null
@@ -2528,7 +2563,7 @@
       "speaker": "粟柏年",
       "body": "接近了，但先别急着下结论。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "corr_roof_005",
       "puzzle": null
@@ -2550,7 +2585,7 @@
       "speaker": "粟柏年",
       "body": "要三面合读。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "corr_roof_007",
       "puzzle": null
@@ -2585,7 +2620,7 @@
       "speaker": "粟柏年",
       "body": "主题和对照都不是重点。重点是方法：进到一个封闭空间，先定位置，再看顶部，然后扫两侧壁。三面信息合起来，才能判断这个空间在整座墓里承担什么功能。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -2596,7 +2631,7 @@
       "speaker": "粟柏年",
       "body": "对。考古观察不是看画，是读空间。顶部给你方向，侧壁给你内容。三面合读，才能判断甬道是单纯的通道，还是在引导你进入前室。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -2607,7 +2642,7 @@
       "speaker": "周淼",
       "body": "如果让你画这条甬道，你会先画哪里？",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "corr_puzzle_001",
       "puzzle": null
@@ -2642,7 +2677,7 @@
       "speaker": "周淼",
       "body": "我也是，空间关系先定下来，人物可以后补。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "corr_puzzle_005",
       "puzzle": null
@@ -2653,7 +2688,7 @@
       "speaker": "周淼",
       "body": "人物好看。但容易丢掉空间感。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "corr_puzzle_005",
       "puzzle": null
@@ -2664,7 +2699,7 @@
       "speaker": "周淼",
       "body": "马确实最显眼，不过最显眼的不一定最重要。",
       "backgroundImage": "assets/M1/03甬道/第一号墓甬道顶(彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "corr_puzzle_005",
       "puzzle": null
@@ -2730,7 +2765,7 @@
       "speaker": "陈怀远",
       "body": "四角起翘的弧度不一样。西北角比东南角缓了半寸。不是匠人失手，是地基沉降。九百年，土往下走了。",
       "backgroundImage": "assets/M1/06_前室_南壁/第一号墓前室南壁壁画.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "front_entry_004",
       "puzzle": null
@@ -2820,7 +2855,7 @@
       "speaker": "粟柏年",
       "body": "砖浮雕的立体感让墓主人夫妇浮出壁面，被固定在中心位置，不容忽视。侍者和背景退到平面里，是陪衬。这种主次关系，就是宋人墓葬装饰的逻辑。",
       "backgroundImage": "assets/M1/04_前室_东壁/第一号墓前室东壁壁画(原色版，彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "front_clue_004",
       "puzzle": null
@@ -2853,7 +2888,7 @@
       "speaker": "周淼",
       "body": "等等。",
       "backgroundImage": "assets/M1/04_前室_东壁/第一号墓前室东壁壁画(原色版，彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "front_clue_006",
       "puzzle": null
@@ -2897,7 +2932,7 @@
       "speaker": "周淼",
       "body": "这一段不像山石皴法，倒像是后来补上去的线。",
       "backgroundImage": "assets/M1/04_前室_东壁/第一号墓前室东壁壁画(原色版，彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "front_clue_010",
       "puzzle": null
@@ -2919,7 +2954,7 @@
       "speaker": "陈怀远",
       "body": "后补的？",
       "backgroundImage": "assets/M1/04_前室_东壁/第一号墓前室东壁壁画(原色版，彭华士摄).png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "front_clue_012",
       "puzzle": null
@@ -2930,7 +2965,7 @@
       "speaker": "周淼",
       "body": "像，但我不确定。",
       "backgroundImage": "assets/M1/04_前室_东壁/第一号墓前室东壁壁画(原色版，彭华士摄).png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -2952,7 +2987,7 @@
       "speaker": "粟柏年",
       "body": "先完成壁面记录，不要让一个细节带着你跑。",
       "backgroundImage": "assets/M1/06_前室_南壁/第一号墓前室南壁壁画.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -2996,7 +3031,7 @@
       "speaker": "粟柏年",
       "body": "你来读。",
       "backgroundImage": "assets/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "pass_entry_004",
       "puzzle": null
@@ -3029,7 +3064,7 @@
       "speaker": "粟柏年",
       "body": "这行题记告诉我们什么？",
       "backgroundImage": "assets/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "pass_ins_002",
       "puzzle": null
@@ -3064,7 +3099,7 @@
       "speaker": "粟柏年",
       "body": "元符二年，公元1099年。墓的年代定了。墓主姓赵，称大翁，没有官职。",
       "backgroundImage": "assets/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3075,7 +3110,7 @@
       "speaker": "粟柏年",
       "body": "这笔墨是建墓的时候写的，不是后来加的。”大翁“是当时对没有官职的老年男子的尊称。这是墓主的称号，不是工匠的名字。",
       "backgroundImage": "assets/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3097,7 +3132,7 @@
       "speaker": "陈怀远",
       "body": "你看这窗，第一眼像什么？",
       "backgroundImage": "assets/M1/09_过道/插图九 第一号墓过道两壁的破子棂窗.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "pass_puzzle_002",
       "puzzle": null
@@ -3132,7 +3167,7 @@
       "speaker": "陈怀远",
       "body": "差不多。",
       "backgroundImage": "assets/M1/09_过道/插图九 第一号墓过道两壁的破子棂窗.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3143,7 +3178,7 @@
       "speaker": "陈怀远",
       "body": "对，棂条旋转四十五度，所以会有这种感觉。",
       "backgroundImage": "assets/M1/09_过道/插图九 第一号墓过道两壁的破子棂窗.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3154,7 +3189,7 @@
       "speaker": "陈怀远",
       "body": "不是门。九枚破子棂，斜向分开。《营造法式》里叫‘破子棂窗’，棂条断面是正方形旋转四十五度，像菱形。宋人做窗，不只为透光，也为看出去的时候，把外面的景切成碎片。",
       "backgroundImage": "assets/M1/09_过道/插图九 第一号墓过道两壁的破子棂窗.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3165,7 +3200,7 @@
       "speaker": "陈怀远",
       "body": "这窗是假的，外面没有景。但做法和真窗一样。",
       "backgroundImage": "assets/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3231,7 +3266,7 @@
       "speaker": "粟柏年",
       "body": "妇人启门是宋代墓葬常见图像母题，表示门后还有庭院、厅堂，墓室至此未到尽头。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3264,7 +3299,7 @@
       "speaker": "苏池",
       "body": "砚秋，你来拉这头。拉到南沿，别斜。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_003",
       "puzzle": null
@@ -3286,7 +3321,7 @@
       "speaker": "苏池",
       "body": "一百八十六厘米。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_005",
       "puzzle": null
@@ -3319,7 +3354,7 @@
       "speaker": "苏池",
       "body": "你觉得这两具的性别是？",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_008",
       "puzzle": null
@@ -3376,7 +3411,7 @@
       "speaker": "苏池",
       "body": "很好，“不知道”也是一种判断。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_012",
       "puzzle": null
@@ -3398,7 +3433,7 @@
       "speaker": "苏池",
       "body": "看盆骨。这具男，这具女。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_014",
       "puzzle": null
@@ -3409,7 +3444,7 @@
       "speaker": "苏池",
       "body": "也可以看牙齿磨耗。男的臼齿磨耗到牙本质了，四十五到五十五岁。女的磨耗浅一些，大概年轻十岁。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_015",
       "puzzle": null
@@ -3431,7 +3466,7 @@
       "speaker": "苏池",
       "body": "髋骨也能佐证。你看这个坐骨大切迹——\"他用镊子尖轻轻拨开一块碎骨，露出下面的弧形边缘，\"窄而深，是男性。女性通常宽而浅。\"他把镊子柄递到你手里，\"你自己碰一下。感觉一下这个弧度。不要猜，用手记。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_017",
       "puzzle": null
@@ -3453,7 +3488,7 @@
       "speaker": "苏池",
       "body": "头骨并列。\n\n其余骨骼混堆。\n\n你觉得最可能是什么情况？",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_bones_019",
       "puzzle": null
@@ -3488,7 +3523,7 @@
       "speaker": "苏池",
       "body": "如果原葬，骨骼不会只剩头部保持位置。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3499,7 +3534,7 @@
       "speaker": "苏池",
       "body": "接近了。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3510,7 +3545,7 @@
       "speaker": "苏池",
       "body": "盗扰会留下其他痕迹，目前还没看到。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3554,7 +3589,7 @@
       "speaker": "苏池",
       "body": "钉头截面不是方形，是梯形。棺材不是整板，是薄板拼的。下葬的时候，板子已经劈好了，钉子是现砸的。砸得急，有几枚歪了。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "rear_puzzle_004",
       "puzzle": null
@@ -3565,7 +3600,7 @@
       "speaker": "粟柏年",
       "body": "对。铁钉首先是葬具复原线索。十九枚，围出约98厘米乘88厘米的范围。这能帮我们想象棺材的大小和位置。至于为什么分布不匀——木材腐朽、铁钉锈蚀、地层压力，都可能。不要把不规整直接解释为事件。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "rear_puzzle_005",
       "puzzle": null
@@ -3598,7 +3633,7 @@
       "speaker": "粟柏年",
       "body": "砖质朱书，十六行，倒写。券盖无字，背面有‘合同’二字背书。这是宋代买地券的标准形制。‘合同’是阴阳两界的契约凭证。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "rear_puzzle_008",
       "puzzle": null
@@ -3631,7 +3666,7 @@
       "speaker": "粟柏年",
       "body": "对。地券是建墓时埋的，题记也是建墓时写的。1099年是这座墓的时间锚点。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "rear_puzzle_011",
       "puzzle": null
@@ -3653,7 +3688,7 @@
       "speaker": "周淼",
       "body": "后室看起来很有生活感呀。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/人骨和部分铁钉.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": null,
       "puzzle": null
@@ -3686,7 +3721,7 @@
       "speaker": "赵老倔",
       "body": "慢着。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "hidden_003",
       "puzzle": null
@@ -3719,7 +3754,7 @@
       "speaker": "赵老倔",
       "body": "这筒子封了九百年。开之前，让地下的魂知道有人来了。俺爷爷那辈儿传下来的规矩，进人家的门，先递根烟。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "hidden_006",
       "puzzle": null
@@ -3741,7 +3776,7 @@
       "speaker": "赵老倔",
       "body": "行了。开吧。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "hidden_008",
       "puzzle": null
@@ -3763,7 +3798,7 @@
       "speaker": "陈怀远",
       "body": "蜡封是蜂蜡混了松香，九百年没透气。里面要是写了字，墨不会氧化得太厉害。这筒子做得讲究，比地券的券盖还严实。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "hidden_010",
       "puzzle": null
@@ -3807,7 +3842,7 @@
       "speaker": "粟柏年",
       "body": "这是反切注音法。取上一个字的声母，加下一个字的韵母和声调。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "hidden_014",
       "puzzle": null
@@ -3829,7 +3864,7 @@
       "speaker": "周淼",
       "body": "治小……是赵吗？",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "hidden_016",
       "puzzle": null
@@ -3875,7 +3910,7 @@
       "speaker": "苏池",
       "body": "我也觉得是赵。颖东墓区的地券，知见人基本都是墓主同姓的族人。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/苏池.png",
+      "portrait": "assets/story/portraits/initial/苏池.png",
       "choices": [],
       "next": "hidden_026",
       "puzzle": null
@@ -3897,7 +3932,7 @@
       "speaker": "粟柏年",
       "body": "这个切法用的是《广韵》音系。中古音和今天普通话之间差了一千多年的语音演变，有几条规律。他把自己的笔记本推到你面前。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "hidden_021",
       "puzzle": null
@@ -3974,7 +4009,7 @@
       "speaker": "陈怀远",
       "body": "是征切，书券人。这个切法拼出来是什么？",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "hidden_028",
       "puzzle": null
@@ -3985,7 +4020,7 @@
       "speaker": "粟柏年",
       "body": "是征切拼出的是‘诚’。上字‘是’属禅母仄声，清化后读不送气sh-。下字‘征’韵母为-ēng。切出的读音shēng，对应到‘诚’这个字上。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "hidden_029",
       "puzzle": null
@@ -4007,7 +4042,7 @@
       "speaker": "粟柏年",
       "body": "见证人，赵。书券人，诚。正文第一字，怀。合在一起——赵怀诚。他把全名拆成三份，藏在这只铜筒里。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "hidden_031",
       "puzzle": null
@@ -4040,7 +4075,7 @@
       "speaker": "周淼",
       "body": "等等，这块绢不太像墓里原配的东西。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "hidden_034",
       "puzzle": null
@@ -4062,7 +4097,7 @@
       "speaker": "周淼",
       "body": "经纬密度太高。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "hidden_036",
       "puzzle": null
@@ -4084,7 +4119,7 @@
       "speaker": "周淼",
       "body": "这种绢比地券用料好得多，更像专门保存的文书。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "hidden_038",
       "puzzle": null
@@ -4106,7 +4141,7 @@
       "speaker": "陈怀远",
       "body": "我更在意这个。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "hidden_040",
       "puzzle": null
@@ -4117,7 +4152,7 @@
       "speaker": "周淼",
       "body": "暗格？",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "hidden_041",
       "puzzle": null
@@ -4128,7 +4163,7 @@
       "speaker": "陈怀远",
       "body": "嗯，这里不承担受力。砖缝切口也和周围不太一样。我怀疑它未必和墓同时修建。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/陈怀远.png",
+      "portrait": "assets/story/portraits/initial/陈怀远.png",
       "choices": [],
       "next": "hidden_042",
       "puzzle": null
@@ -4150,7 +4185,7 @@
       "speaker": "赵老倔",
       "body": "俺不识字，可一个人把名字拆三份藏起来。准有事瞒着人。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "hidden_044",
       "puzzle": null
@@ -4172,7 +4207,7 @@
       "speaker": "粟柏年",
       "body": "目前我们只有两个证据。1099年，题记和地券。1106年，绢帛落款。至于中间发生过什么，暂时不知道。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "hidden_046",
       "puzzle": null
@@ -4431,7 +4466,7 @@
       "speaker": "周淼",
       "body": "我觉得像是知。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "hidden_066",
       "puzzle": null
@@ -4453,7 +4488,7 @@
       "speaker": "周淼",
       "body": "这些字被水泡过……他写的时候是不是在哭。",
       "backgroundImage": "assets/M1/11_后室_南壁/第一号墓后室南壁一一后室入口背面.png",
-      "portrait": "assets/story/portraits/周淼.png",
+      "portrait": "assets/story/portraits/initial/周淼.png",
       "choices": [],
       "next": "hidden_068",
       "puzzle": null
@@ -4497,7 +4532,7 @@
       "speaker": "粟柏年",
       "body": "现在，把你这一路记下的所有线索，按三种颜色分类。红——可判断。蓝——可推测。黑——仍存疑。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "final_report_003",
       "puzzle": null
@@ -4631,7 +4666,7 @@
       "speaker": "粟柏年",
       "body": "现在，回答我一个问题。赵怀诚线是不是最终真相？",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "final_report_008",
       "puzzle": null
@@ -4666,7 +4701,7 @@
       "speaker": "粟柏年",
       "body": "错。动人的故事，不等于最终结论。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "final_report_012",
       "puzzle": null
@@ -4677,7 +4712,7 @@
       "speaker": "粟柏年",
       "body": "对。赵怀诚线可以解释一些事情，但解释不能反过来改写证据。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "final_report_012",
       "puzzle": null
@@ -4688,7 +4723,7 @@
       "speaker": "粟柏年",
       "body": "还差一步。\n\n我们不是不知道。\n\n而是知道哪些东西能够证明，哪些东西不能。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "final_report_012",
       "puzzle": null
@@ -4710,7 +4745,7 @@
       "speaker": "粟柏年",
       "body": "这份报告，红栏是骨架，蓝栏是血肉，黑栏是留白。没有留白的画，不是好画。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "final_report_014",
       "puzzle": null
@@ -4765,7 +4800,7 @@
       "speaker": "赵老倔",
       "body": "这么有钱的人，陪葬就这么点东西？",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/赵老倔.png",
+      "portrait": "assets/story/portraits/initial/赵老倔.png",
       "choices": [],
       "next": "archive_004",
       "puzzle": null
@@ -4776,7 +4811,7 @@
       "speaker": "粟柏年",
       "body": "对。宋人烧纸明器，用纸扎的东西代替实物，在坟前烧掉。墓室里画满壁画，画上的金银铤、钱贯、家具、仆役就是陪葬。实物不需要放太多。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "archive_005",
       "puzzle": null
@@ -4875,7 +4910,7 @@
       "speaker": "粟柏年",
       "body": "第一号墓发掘工作至此全部结束。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "archive_014",
       "puzzle": null
@@ -4897,7 +4932,7 @@
       "speaker": "粟柏年",
       "body": "明天。二号墓。",
       "backgroundImage": "assets/M1/00_墓葬全景与结构图/一号墓平剖面图.png",
-      "portrait": "assets/story/portraits/粟柏年.png",
+      "portrait": "assets/story/portraits/initial/粟柏年2.png",
       "choices": [],
       "next": "archive_016",
       "puzzle": null
@@ -4918,8 +4953,8 @@
     "sourceBranch": "origin/初始版本",
     "sourceCommit": "d57cf4ddb35ae464b6cd66b8b63d72d8484c704e",
     "importedOn": "2026-06-23",
-    "scope": "n00060-n00079 merged as chapter 1; n00080-n00092 merged as tomb-gate preface",
-    "rule": "Initial-version story text, choices, backgrounds, and portraits take precedence within this scope.",
+    "scope": "n00001-n00059 prologue visuals; n00060-n00079 chapter 1; n00080-n00092 tomb-gate preface",
+    "rule": "Initial-version story text, choices, backgrounds, portraits, and visual positioning take precedence within this scope.",
     "mapping": [
       "n00060->env_entry_000",
       "n00061->env_entry_001",
@@ -4954,7 +4989,8 @@
       "n00090->gate_entry_010",
       "n00091->gate_entry_011",
       "n00092->gate_entry_012"
-    ]
+    ],
+    "visualOverridesAppliedOn": "2026-06-23"
   }
 };
 })();

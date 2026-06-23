@@ -129,6 +129,7 @@ const dialogueTitle = document.querySelector("#dialogueTitle");
 const dialogueBody = document.querySelector("#dialogueBody");
 const dialogueBackground = document.querySelector("#dialogueBackground");
 const dialoguePortrait = document.querySelector("#dialoguePortrait");
+const dialoguePortraitLayer = document.querySelector(".dialogue-portrait-layer");
 const dialogueChoices = document.querySelector("#dialogueChoices");
 const dialogueClose = document.querySelector("#dialogueClose");
 const workbenchToggle = document.querySelector("#workbenchToggle");
@@ -612,6 +613,29 @@ function normalizeStoryAssetPath(path) {
   return String(path).replace(/\\/g, "/");
 }
 
+function normalizeStoryVisualPosition(value, allowed, fallback = "") {
+  const position = String(value || "").trim().toLowerCase();
+  return allowed.includes(position) ? position : fallback;
+}
+
+function getStoryBackgroundPosition(value) {
+  const position = normalizeStoryVisualPosition(value, ["top", "center", "bottom", "left", "right"], "center");
+  const positions = {
+    top: "center top",
+    center: "center",
+    bottom: "center bottom",
+    left: "left center",
+    right: "right center"
+  };
+  return positions[position] || "center";
+}
+
+function getStoryPortraitPosition(dialogue, speakerKind) {
+  const explicit = normalizeStoryVisualPosition(dialogue?.portraitPosition, ["left", "center", "right"]);
+  if (explicit) return explicit;
+  return speakerKind === "self" ? "right" : "left";
+}
+
 function isPlaceholderText(value) {
   const text = String(value || "").trim();
   return Boolean(text && (/^[?？\s]+$/.test(text) || /\?{3,}|？{3,}/.test(text)));
@@ -749,7 +773,9 @@ function buildStoryDialogue(nodeId, eventId) {
     title: node.title || "",
     body: speakerKind === "npc" ? extractedSpeech || rawBody : rawBody,
     portrait: node.portrait || "",
+    portraitPosition: node.portraitPosition || "",
     backgroundImage: node.backgroundImage || "",
+    backgroundPosition: node.backgroundPosition || "",
     choices,
     storyEventId: eventId,
     storyNodeId: node.id,
@@ -761,16 +787,18 @@ function clearDialogueBackground() {
   dialogueLayer.classList.remove("has-background");
   if (dialogueBackground) {
     dialogueBackground.style.backgroundImage = "";
+    dialogueBackground.style.backgroundPosition = "";
   }
 }
 
-function setDialogueBackground(imagePath) {
+function setDialogueBackground(imagePath, position) {
   const backgroundImage = normalizeStoryAssetPath(imagePath);
   if (!dialogueBackground || !backgroundImage) {
     clearDialogueBackground();
     return;
   }
   dialogueBackground.style.backgroundImage = `url("${backgroundImage.replace(/"/g, '\\"')}")`;
+  dialogueBackground.style.backgroundPosition = getStoryBackgroundPosition(position);
   dialogueLayer.classList.add("has-background");
 }
 
@@ -1279,7 +1307,7 @@ function navigateAfterStory(navigation) {
 function renderActiveDialogue() {
   if (!activeDialogue) {
     dialogueLayer.classList.add("hidden");
-    dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc");
+    dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc", "portrait-left", "portrait-center", "portrait-right");
     clearDialogueBackground();
     dialoguePortrait?.classList.remove("is-visible");
     if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
@@ -1292,26 +1320,31 @@ function renderActiveDialogue() {
   dialogueLayer.classList.toggle("is-narration", speakerKind === "narration");
   dialogueLayer.classList.toggle("is-self", speakerKind === "self");
   dialogueLayer.classList.toggle("is-npc", speakerKind === "npc");
+  dialogueLayer.classList.remove("portrait-left", "portrait-center", "portrait-right");
   dialogueSpeaker.textContent = speaker;
   dialogueSpeaker.style.display = speaker && (!activeDialogue.storyNodeId || speakerKind === "npc") ? "inline-flex" : "none";
   dialogueTitle.textContent = activeDialogue.title || "";
   dialogueTitle.style.display = activeDialogue.title ? "block" : "none";
   dialogueBody.textContent = activeDialogue.body || "";
   dialogueClose.textContent = activeDialogue.closeLabel || "继续";
-  setDialogueBackground(activeDialogue.backgroundImage);
+  setDialogueBackground(activeDialogue.backgroundImage, activeDialogue.backgroundPosition);
 
   const portrait = getDialoguePortrait(activeDialogue);
   if (dialoguePortrait) {
     if (portrait) {
+      const portraitPosition = getStoryPortraitPosition(activeDialogue, speakerKind);
       dialoguePortrait.src = portrait;
       dialoguePortrait.alt = speaker ? `${speaker}立绘` : "";
       dialoguePortrait.classList.add("is-visible");
       dialogueLayer.classList.add("has-portrait");
+      dialogueLayer.classList.add(`portrait-${portraitPosition}`);
+      if (dialoguePortraitLayer) dialoguePortraitLayer.dataset.position = portraitPosition;
     } else {
       dialoguePortrait.removeAttribute("src");
       dialoguePortrait.alt = "";
       dialoguePortrait.classList.remove("is-visible");
       dialogueLayer.classList.remove("has-portrait");
+      if (dialoguePortraitLayer) delete dialoguePortraitLayer.dataset.position;
     }
   }
 
@@ -1347,10 +1380,11 @@ function closeDialogue(options = {}) {
     queueStoryContinuation(dialogue.storyNext, dialogue);
   }
   dialogueLayer.classList.add("hidden");
-  dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc");
+  dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc", "portrait-left", "portrait-center", "portrait-right");
   clearDialogueBackground();
   dialoguePortrait?.classList.remove("is-visible");
   if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
+  if (dialoguePortraitLayer) delete dialoguePortraitLayer.dataset.position;
   if (dialogueChoices) {
     dialogueChoices.innerHTML = "";
     dialogueChoices.classList.remove("is-visible");
