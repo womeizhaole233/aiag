@@ -125,7 +125,9 @@
     "background_position": "top"
   },
   "n00139": {
-    "text": "赵老倔扛着木料过来，扎稳马步，双手托着立柱往上一顶，腮帮子鼓起，脖子上青筋跳了一下。立柱架好之后，裂缝没有扩大。"
+    "text": "赵老倔扛着木料过来，扎稳马步，双手托着立柱往上一顶，腮帮子鼓起，脖子上青筋跳了一下。立柱架好之后，裂缝没有扩大。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_37_52 PM.png",
+    "background_position": "top"
   },
   "n00187": {
     "text": "东壁是女乐图，卷帘下，女乐十一人分左右两组。右侧五人击鼓、击拍板、击腰鼓、吹横笛、吹觱篥。左侧五人吹箫、吹笙、吹排箫、弹琵琶。四排乐人之间，一人戴硬脚花额幞头，欠身扬袖作舞。"
@@ -902,7 +904,9 @@
     "background_position": "top"
   },
   "n00136": {
-    "text": "陈怀远放下绘图板走过来，蹲在砖孔前看了看。他眯着眼看了很久。站起来，只说了两个字。"
+    "text": "陈怀远放下绘图板走过来，蹲在砖孔前看了看。他眯着眼看了很久。站起来，只说了两个字。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_09_31 PM.png",
+    "background_position": "top"
   },
   "n00117": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_58_22 PM.png",
@@ -1003,7 +1007,8 @@
   "n00132": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 13, 2026, 09_53_11 PM - 副本 (2).png",
     "portrait": "static/images/portraits/粟柏年1.png",
-    "portrait_position": "left"
+    "portrait_position": "left",
+    "next": "n00136"
   },
   "n00133": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 12_59_21 PM.png",
@@ -1018,5 +1023,30 @@
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 13, 2026, 09_53_11 PM - 副本 (2).png",
     "portrait": "static/images/portraits/粟柏年3.png",
     "portrait_position": "left"
+  },
+  "n00137": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 13, 2026, 09_53_11 PM - 副本 (2).png",
+    "portrait": "static/images/portraits/陈怀远.png",
+    "portrait_position": "left"
+  },
+  "n00138": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_25_24 PM.png",
+    "background_position": "top"
+  },
+  "n00140": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_49_53 PM.png",
+    "background_position": "top"
+  },
+  "n00141": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_49_53 PM.png"
+  },
+  "n00142": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_49_53 PM.png"
+  },
+  "n00143": {
+    "text": "取下那块卧丁砖以后，你翻过来看。裂缝已经深入砖厚的一半。它被外层和中层压住，压了九百年。"
+  },
+  "n00144": {
+    "text": "封门砖全部拆除，墓门后露出一片完整的黑暗，是被封存了九百年的黑暗。粟柏年举起手电，光柱射入墓门，像一枚细长的楔子，缓慢地钉进时间深处。他没有立刻进去，大家也都没有说话，连赵老倔都把旱烟袋从嘴边拿了下来。"
   }
 }
