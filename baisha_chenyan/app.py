@@ -4356,6 +4356,23 @@ def game():
     debug_mode = request.args.get('debug') == '1'
     return render_template('game.html', debug_mode=debug_mode)
 
+@app.route('/api/page/<page_name>')
+def page_content(page_name):
+    """返回页面内容片段，用于AJAX加载"""
+    if page_name == 'index':
+        return render_template('index_content.html')
+    elif page_name == 'game':
+        # resume=1 表示从墓门解密返回，保持 session
+        if request.args.get('resume') != '1':
+            session.clear()
+            session['current_dialogue'] = 'n00001'
+            session['inventory'] = []
+            session['flags'] = {}
+        debug_mode = request.args.get('debug') == '1'
+        return render_template('game_content.html', debug_mode=debug_mode)
+    else:
+        return jsonify({'error': 'Page not found'}), 404
+
 ASSETS_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets'))
 
 @app.route('/assets/<path:filename>')
