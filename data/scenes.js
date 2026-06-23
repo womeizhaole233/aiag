@@ -393,7 +393,7 @@ const SCENES = {
               body: "封门砖组织图可以帮助复核砖缝和封堵方式。",
               closeLabel: "查看"
             }
-          }
+          },
           {
             id: "door_opening",
             label: "门洞深处",
