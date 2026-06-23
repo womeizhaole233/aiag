@@ -17,19 +17,6 @@
             min-height: 100vh;
             color: #2c2418;
         }
-        
-        /* 复古纸张纹理 */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path d="M20 20 L180 20 M20 40 L180 40 M20 60 L180 60 M20 80 L180 80 M20 100 L180 100 M20 120 L180 120 M20 140 L180 140 M20 160 L180 160 M20 180 L180 180 M40 20 L40 180 M60 20 L60 180 M80 20 L80 180 M100 20 L100 180 M120 20 L120 180 M140 20 L140 180 M160 20 L160 180" stroke="%23654a2e" stroke-width="0.5" fill="none"/></svg>');
-            pointer-events: none;
-        }
-        
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -163,11 +150,14 @@
         </div>
         <div class="scroll-decoration"></div>
         <nav>
-            <a href="/">🏠 首页</a>
-            <a href="/game">🎭 进入白沙</a>
+            <a href="javascript:void(0)" onclick="loadPage('index')">🏠 首页</a>
+            <a href="javascript:void(0)" onclick="loadPage('game')">🎭 进入白沙</a>
         </nav>
-        {% block content %}{% endblock %}
+        <div id="app-content" style="transition: opacity 0.3s ease;">
+            {% block content %}{% endblock %}
+        </div>
     </div>
+    <script src="/static/js/content-loader.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
