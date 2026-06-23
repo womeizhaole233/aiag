@@ -14,8 +14,9 @@
   header .sub{color:var(--mute);font-weight:400;font-size:12px;margin-left:auto;}
   .toolbar{padding:8px 10px;border-bottom:1px solid var(--line);display:flex;gap:6px;align-items:center;background:var(--panel);}
   .toolbar input[type=text]{flex:1;background:#1a1815;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:6px 8px;}
-  .toolbar select,.toolbar button{background:#1a1815;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:5px 8px;cursor:pointer;}
-  .toolbar button:hover{border-color:var(--accent)}
+  .toolbar select{background:#1a1815;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:5px 8px;cursor:pointer;}
+  .center header button#btnNew{background:var(--accent);color:#1a1410;border:1px solid var(--accent);border-radius:4px;font-weight:bold;font-size:13px;padding:4px 14px;cursor:pointer;margin-left:auto;}
+  .center header button#btnNew:hover{background:#d4b07a;border-color:#d4b07a}
 
   .node-list{flex:1;overflow:auto;}
   .node{padding:8px 12px;border-bottom:1px solid #2a2622;cursor:pointer;display:flex;align-items:center;gap:8px;}
@@ -134,14 +135,15 @@
         <option value="custom">新增节点</option>
         <option value="term">终止节点</option>
       </select>
-      <button class="btn" id="btnNew" title="新建节点">+</button>
     </div>
     <div class="node-list" id="nodeList"></div>
     <div class="chapter-list" id="chapterList" style="display:none;"></div>
   </div>
 
   <div class="col center">
-    <header>节点详情 <span class="sub" id="centerSub"></span></header>
+    <header>节点详情 <span class="sub" id="centerSub"></span>
+      <button class="btn" id="btnNew" title="新建节点">+ 新建节点</button>
+    </header>
     <div class="meta" id="meta"><span class="lbl">未选择节点</span></div>
     <div class="editor" id="editor">
       <div style="color:var(--mute);text-align:center;padding:30px;">点击左栏节点开始编辑</div>
@@ -181,6 +183,10 @@
     <textarea id="newText" placeholder="该节点显示的文本..."></textarea>
     <label>下一节点 next (可选)</label>
     <input type="text" id="newNext" list="nodeIdList" placeholder="留空表示流程在此暂停">
+    <label>插入位置</label>
+    <select id="newPosition">
+      <option value="">末尾</option>
+    </select>
     <div class="err" id="newErr"></div>
     <div class="row">
       <button class="btn" id="newCancel">取消</button>
@@ -272,10 +278,9 @@ function selectNode(id){
       ${n.puzzle ? '<span class="badge">puzzle: '+escapeHtml(n.puzzle)+'</span>' : ''}
       ${n.has_choices ? '<span class="badge">含选项</span>' : ''}
       ${isTerminal(n) ? `<span class="badge" style="color:#d68a3c;border-color:#d68a3c">${n.effective_next==='game_end'?'结局':'失败结局'}</span>` : ''}
+      ${n.is_custom ? '<button class="btn danger" id="btnDelete" style="margin-left:auto;font-size:12px;padding:3px 12px">删除节点</button>' : ''}
     </div>
-    <div class="row"><span class="lbl">下一节点</span><span class="nid">${escapeHtml(n.effective_next||'(无)')}</span>
-      ${n.is_custom ? '<button class="btn small danger" id="btnDelete" style="margin-left:8px;font-size:11px;padding:2px 8px">删除节点</button>' : ''}
-    </div>`;
+    <div class="row"><span class="lbl">下一节点</span><span class="nid">${escapeHtml(n.effective_next||'(无)')}</span></div>`;
 
   const dirtySpeaker = n.override_speaker != null;
   const dirtyText = n.override_text != null;
@@ -568,6 +573,17 @@ function openNewModal(){
   $('#newId').value = ''; $('#newSpeaker').value = '';
   $('#newText').value = ''; $('#newNext').value = '';
   $('#newErr').textContent = '';
+  // 填充插入位置下拉
+  const sel = $('#newPosition');
+  sel.innerHTML = '<option value="">末尾</option>';
+  DATA.nodes.forEach(n => {
+    const opt = document.createElement('option');
+    opt.value = n.id;
+    opt.textContent = `在 ${n.id} 之后`;
+    sel.appendChild(opt);
+  });
+  // 默认选中当前节点
+  if(cur) sel.value = cur;
   $('#newModal').classList.add('show');
   setTimeout(()=>$('#newId').focus(), 50);
 }
@@ -588,6 +604,7 @@ $('#newOk').onclick = async ()=>{
     speaker: $('#newSpeaker').value,
     text: $('#newText').value,
     next: $('#newNext').value.trim(),
+    after_node_id: $('#newPosition').value || undefined,
   };
   const r = await fetch('/api/admin/bg/create', {
     method:'POST', headers:{'Content-Type':'application/json'},

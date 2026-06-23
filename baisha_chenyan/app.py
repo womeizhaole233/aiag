@@ -13,6 +13,7 @@ LEGACY_BG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'bg_ov
 BG_LOCKED_NODES = set()
 # overrides 保留键
 CUSTOM_NODES_KEY = '__custom_nodes__'
+NODE_ORDER_KEY = '__node_order__'
 # 终止节点的 next 值
 TERMINAL_NEXTS = {'game_end', 'game_over'}
 
@@ -68,6 +69,8 @@ def load_overrides():
     for k, v in data.items():
         if k == CUSTOM_NODES_KEY:
             cleaned[k] = v if isinstance(v, dict) else {}
+        elif k == NODE_ORDER_KEY:
+            cleaned[k] = v if isinstance(v, list) else []
         elif isinstance(v, str):
             cleaned[k] = {'bg': v}
         elif isinstance(v, dict):
@@ -105,6 +108,54 @@ def get_dialogue(node_id):
 def all_node_ids():
     """返回原生 + 自定义节点的所有 id。"""
     return list(DIALOGUES.keys()) + list(get_custom_nodes().keys())
+
+def get_node_order():
+    """返回节点顺序列表。若不存在则自动初始化。"""
+    overrides = load_overrides()
+    order = overrides.get(NODE_ORDER_KEY)
+    if order is None or not isinstance(order, list):
+        # 初始化：原生节点按 DIALOGUES 顺序 + 自定义节点追加到末尾
+        order = list(DIALOGUES.keys())
+        custom = overrides.get(CUSTOM_NODES_KEY, {}) or {}
+        for nid in custom:
+            if nid not in order:
+                order.append(nid)
+        overrides[NODE_ORDER_KEY] = order
+        save_overrides(overrides)
+    else:
+        # 仅过滤无效 ID，不自动补充（由 insert_node_order 负责插入）
+        all_ids = set(DIALOGUES.keys()) | set((overrides.get(CUSTOM_NODES_KEY, {}) or {}).keys())
+        cleaned = [nid for nid in order if nid in all_ids]
+        if cleaned != order:
+            overrides[NODE_ORDER_KEY] = cleaned
+            save_overrides(overrides)
+        order = cleaned
+    return order
+
+def save_node_order(order):
+    """保存节点顺序列表。"""
+    overrides = load_overrides()
+    overrides[NODE_ORDER_KEY] = order
+    save_overrides(overrides)
+
+def insert_node_order(nid, after_node_id=None):
+    """将节点 ID 插入顺序列表。after_node_id 为 None 时追加到末尾。"""
+    order = get_node_order()
+    if nid in order:
+        return
+    if after_node_id and after_node_id in order:
+        idx = order.index(after_node_id)
+        order.insert(idx + 1, nid)
+    else:
+        order.append(nid)
+    save_node_order(order)
+
+def remove_node_order(nid):
+    """从顺序列表中移除节点 ID。"""
+    order = get_node_order()
+    if nid in order:
+        order.remove(nid)
+        save_node_order(order)
 
 def list_image_assets():
     """扫描 static/images 下的所有图片，按目录分组返回"""
@@ -4384,10 +4435,10 @@ def admin_bg():
 
 @app.route('/api/admin/bg/data')
 def admin_bg_data():
-    """返回节点列表、默认值、覆盖值、生效值、可选图片。"""
+    """返回节点列表、默认值、覆盖值、生效值、可选图片。按 __node_order__ 排序。"""
     overrides = load_overrides()
     custom = overrides.get(CUSTOM_NODES_KEY, {}) or {}
-    nodes = []
+    nodes_dict = {}
     # 原生节点
     for nid, d in DIALOGUES.items():
         ov = overrides.get(nid, {})
@@ -4397,7 +4448,7 @@ def admin_bg_data():
         eff_portrait = ov.get('portrait') or d.get('portrait')
         eff_portrait_position = ov.get('portrait_position') or d.get('portrait_position')
         eff_next = ov.get('next') if ov.get('next') is not None else d.get('next')
-        nodes.append({
+        nodes_dict[nid] = {
             'id': nid,
             'is_custom': False,
             'default_speaker': d.get('speaker', ''),
@@ -4426,11 +4477,11 @@ def admin_bg_data():
             'next': eff_next,
             'puzzle': d.get('puzzle'),
             'bg_locked': nid in BG_LOCKED_NODES,
-        })
+        }
     # 自定义节点
     for nid, d in custom.items():
         eff_text = d.get('text') or ''
-        nodes.append({
+        nodes_dict[nid] = {
             'id': nid,
             'is_custom': True,
             'default_speaker': '',
@@ -4459,7 +4510,14 @@ def admin_bg_data():
             'next': d.get('next'),
             'puzzle': None,
             'bg_locked': False,
-        })
+        }
+    # 按 __node_order__ 排序，缺失的节点追加到末尾
+    order = get_node_order()
+    nodes = [nodes_dict[nid] for nid in order if nid in nodes_dict]
+    # 追加不在顺序列表中的节点（兜底）
+    for nid in nodes_dict:
+        if nid not in order:
+            nodes.append(nodes_dict[nid])
     return jsonify({
         'nodes': nodes,
         'images': list_image_assets(),
@@ -4579,7 +4637,7 @@ def admin_bg_save():
 
 @app.route('/api/admin/bg/create', methods=['POST'])
 def admin_bg_create():
-    """新建自定义节点。请求体：{node_id, speaker?, text?, next?}。"""
+    """新建自定义节点。请求体：{node_id, speaker?, text?, next?, after_node_id?}。"""
     data = request.get_json() or {}
     nid = (data.get('node_id') or '').strip()
     if not nid:
@@ -4604,6 +4662,9 @@ def admin_bg_create():
     custom[nid] = new_node
     overrides[CUSTOM_NODES_KEY] = custom
     save_overrides(overrides)
+    # 插入到节点顺序列表
+    after_node_id = data.get('after_node_id')
+    insert_node_order(nid, after_node_id)
     return jsonify({'status': 'ok', 'node_id': nid})
 
 @app.route('/api/admin/bg/delete', methods=['POST'])
@@ -4636,6 +4697,8 @@ def admin_bg_delete():
     custom.pop(nid, None)
     overrides[CUSTOM_NODES_KEY] = custom
     save_overrides(overrides)
+    # 从节点顺序列表中移除
+    remove_node_order(nid)
     return jsonify({'status': 'ok'})
 
 @app.route('/api/admin/bg/export')
