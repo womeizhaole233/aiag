@@ -4445,6 +4445,7 @@ def admin_bg_data():
         eff_speaker = ov.get('speaker') or d.get('speaker', '')
         eff_text = ov.get('text') if ov.get('text') is not None else (d.get('text') or '')
         eff_bg = ov.get('bg') or d.get('background_image')
+        eff_bg_position = ov.get('background_position') or d.get('background_position')
         eff_portrait = ov.get('portrait') or d.get('portrait')
         eff_portrait_position = ov.get('portrait_position') or d.get('portrait_position')
         eff_next = ov.get('next') if ov.get('next') is not None else d.get('next')
@@ -4454,6 +4455,7 @@ def admin_bg_data():
             'default_speaker': d.get('speaker', ''),
             'default_text': d.get('text') or '',
             'default_bg': d.get('background_image'),
+            'default_bg_position': d.get('background_position', 'center'),
             'default_portrait': d.get('portrait'),
             'default_portrait_position': d.get('portrait_position'),
             'default_next': d.get('next'),
@@ -4461,6 +4463,7 @@ def admin_bg_data():
             'override_speaker': ov.get('speaker'),
             'override_text': ov.get('text'),
             'override_bg': ov.get('bg'),
+            'override_background_position': ov.get('background_position'),
             'override_portrait': ov.get('portrait'),
             'override_portrait_position': ov.get('portrait_position'),
             'override_next': ov.get('next'),
@@ -4468,6 +4471,7 @@ def admin_bg_data():
             'effective_speaker': eff_speaker,
             'effective_text': eff_text,
             'effective_bg': eff_bg,
+            'effective_bg_position': eff_bg_position,
             'effective_portrait': eff_portrait,
             'effective_portrait_position': eff_portrait_position,
             'effective_next': eff_next,
@@ -4487,6 +4491,7 @@ def admin_bg_data():
             'default_speaker': '',
             'default_text': '',
             'default_bg': None,
+            'default_bg_position': None,
             'default_portrait': None,
             'default_portrait_position': None,
             'default_next': None,
@@ -4494,6 +4499,7 @@ def admin_bg_data():
             'override_speaker': d.get('speaker'),
             'override_text': d.get('text'),
             'override_bg': d.get('bg'),
+            'override_background_position': d.get('background_position'),
             'override_portrait': d.get('portrait'),
             'override_portrait_position': d.get('portrait_position'),
             'override_next': d.get('next'),
@@ -4501,6 +4507,7 @@ def admin_bg_data():
             'effective_speaker': d.get('speaker') or '',
             'effective_text': eff_text,
             'effective_bg': d.get('bg'),
+            'effective_bg_position': d.get('background_position'),
             'effective_portrait': d.get('portrait'),
             'effective_portrait_position': d.get('portrait_position'),
             'effective_next': d.get('next'),
@@ -4536,7 +4543,7 @@ def _node_to_dict(node_id):
             'override_speaker': ov.get('speaker'),
             'override_text': ov.get('text'),
             'override_bg': ov.get('bg'),
-            'override_background_position': ov.get('background_position'),
+            'override_bg_position': ov.get('background_position'),
             'override_portrait': ov.get('portrait'),
             'override_portrait_position': ov.get('portrait_position'),
             'override_next': ov.get('next'),
@@ -4544,7 +4551,7 @@ def _node_to_dict(node_id):
             'effective_speaker': ov.get('speaker') or d.get('speaker', ''),
             'effective_text': ov.get('text') if ov.get('text') is not None else (d.get('text') or ''),
             'effective_bg': ov.get('bg') or d.get('background_image'),
-            'effective_background_position': ov.get('background_position') or d.get('background_position'),
+            'effective_bg_position': ov.get('background_position') or d.get('background_position'),
             'effective_portrait': ov.get('portrait') or d.get('portrait'),
             'effective_portrait_position': ov.get('portrait_position') or d.get('portrait_position'),
             'effective_next': ov.get('next') if ov.get('next') is not None else d.get('next'),
@@ -4557,7 +4564,7 @@ def _node_to_dict(node_id):
             'override_speaker': d.get('speaker'),
             'override_text': d.get('text'),
             'override_bg': d.get('bg'),
-            'override_background_position': d.get('background_position'),
+            'override_bg_position': d.get('background_position'),
             'override_portrait': d.get('portrait'),
             'override_portrait_position': d.get('portrait_position'),
             'override_next': d.get('next'),
@@ -4565,7 +4572,7 @@ def _node_to_dict(node_id):
             'effective_speaker': d.get('speaker') or '',
             'effective_text': d.get('text') or '',
             'effective_bg': d.get('bg'),
-            'effective_background_position': d.get('background_position'),
+            'effective_bg_position': d.get('background_position'),
             'effective_portrait': d.get('portrait'),
             'effective_portrait_position': d.get('portrait_position'),
             'effective_next': d.get('next'),

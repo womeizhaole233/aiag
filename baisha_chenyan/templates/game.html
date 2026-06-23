@@ -22,8 +22,10 @@ body {
     background: linear-gradient(135deg, #3d2a1a 0%, #1a0a00 100%);
     background-size: cover;
     background-position: center;
-    transition: background-image 0.5s ease;
+    opacity: 0;
+    transition: opacity 0.6s ease;
 }
+#sceneBgA { opacity: 1; }
 
 /* 人物立绘（可选，背景之上、对话框之下） */
 .portrait-layer {
@@ -459,7 +461,8 @@ body {
 {% block content %}
 <div class="game-container">
     <div class="background-layer">
-        <div class="scene-background" id="sceneBackground"></div>
+        <div class="scene-background" id="sceneBgA"></div>
+        <div class="scene-background" id="sceneBgB"></div>
     </div>
 
     <div class="portrait-layer">
@@ -624,12 +627,23 @@ function updateHexagon(speaker) {
     document.getElementById('hexagonSpeaker').textContent = speaker || '白沙手记';
 }
 
+let activeBg = 'A';
 function setBackground(img, position) {
-    const bg = document.getElementById('sceneBackground');
-    if (img) {
-        bg.style.backgroundImage = `url('/${img.replace(/^\/?/, '')}')`;
-        bg.style.backgroundPosition = position || 'center';
-    }
+    if (!img) return;
+    const url = `/${img.replace(/^\/?/, '')}`;
+    const fromId = activeBg === 'A' ? 'sceneBgA' : 'sceneBgB';
+    const toId = activeBg === 'A' ? 'sceneBgB' : 'sceneBgA';
+    const from = document.getElementById(fromId);
+    const to = document.getElementById(toId);
+    const preload = new Image();
+    preload.onload = () => {
+        to.style.backgroundImage = `url('${url}')`;
+        to.style.backgroundPosition = position || 'center';
+        to.style.opacity = '1';
+        from.style.opacity = '0';
+        activeBg = activeBg === 'A' ? 'B' : 'A';
+    };
+    preload.src = url;
 }
 
 function setPortrait(img, position) {
@@ -788,7 +802,11 @@ async function loadDialogue(choiceNext = null) {
 async function resetGame() {
     if (!confirm('确定要重翻旧卷吗？当前进度将会遗失。')) return;
     await fetch('/api/reset', {method: 'POST'});
-    document.getElementById('sceneBackground').style.backgroundImage = '';
+    document.getElementById('sceneBgA').style.backgroundImage = '';
+    document.getElementById('sceneBgB').style.backgroundImage = '';
+    document.getElementById('sceneBgA').style.opacity = '1';
+    document.getElementById('sceneBgB').style.opacity = '0';
+    activeBg = 'A';
     loadDialogue('start');
 }
 

@@ -224,7 +224,7 @@ function renderStats(){
   $('#libSub').textContent = `${totalImgs} 张`;
 }
 
-function nodeIsOverridden(n){ return n.override_bg || n.override_speaker || n.override_text != null || n.override_next != null || n.override_portrait || n.override_portrait_position || n.override_background_position; }
+function nodeIsOverridden(n){ return n.override_bg || n.override_speaker || n.override_text != null || n.override_next != null || n.override_portrait || n.override_portrait_position || n.override_bg_position; }
 const TERM_NEXTS = ['game_end', 'game_over'];
 function isTerminal(n){ return TERM_NEXTS.includes(n.effective_next); }
 
@@ -313,10 +313,10 @@ function selectNode(id){
       <div class="hint">支持换行；改动后点保存生效。</div>
     </div>
 
-    <div class="field ${(dirtyBg||n.override_background_position!=null)?'dirty':''} ${n.bg_locked?'locked':''}" id="fBg">
+    <div class="field ${(dirtyBg||n.override_bg_position!=null)?'dirty':''} ${n.bg_locked?'locked':''}" id="fBg">
       <div class="field-head">
         <label>背景图 (background_image)</label>
-        ${n.bg_locked ? '<span class="badge lock">锁定</span>' : ((dirtyBg||n.override_background_position!=null)?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>')}
+        ${n.bg_locked ? '<span class="badge lock">锁定</span>' : ((dirtyBg||n.override_bg_position!=null)?'<span class="badge over">已改</span>':'<span class="badge def">默认</span>')}
         <div class="actions">
           <button class="btn small" id="resetBg" ${(dirtyBg && !n.bg_locked)?'':'disabled'}>重置</button>
         </div>
@@ -325,12 +325,12 @@ function selectNode(id){
       ${n.bg_locked?'<div class="lockmsg">该节点参与交互式墓门解密，背景图不可修改。</div>':'<div class="hint">选中右栏"→背景"后点击图片即保存。</div>'}
       <div class="bg-pos-row" style="margin-top:8px;display:flex;align-items:center;gap:6px;">
         <label style="font-size:12px;color:#aaa;">裁切位置：</label>
-        <button class="btn small pos-btn bg-pos ${(n.effective_background_position==='top')?'active':''}" data-pos="top">上</button>
-        <button class="btn small pos-btn bg-pos ${(n.effective_background_position==='center'||!n.effective_background_position)?'active':''}" data-pos="center">中</button>
-        <button class="btn small pos-btn bg-pos ${(n.effective_background_position==='bottom')?'active':''}" data-pos="bottom">下</button>
-        <button class="btn small pos-btn bg-pos ${(n.effective_background_position==='left')?'active':''}" data-pos="left">左</button>
-        <button class="btn small pos-btn bg-pos ${(n.effective_background_position==='right')?'active':''}" data-pos="right">右</button>
-        <button class="btn small" id="resetBgPos" ${(n.override_background_position!=null)?'':'disabled'}>重置</button>
+        <button class="btn small pos-btn bg-pos ${(n.effective_bg_position==='top')?'active':''}" data-pos="top">上</button>
+        <button class="btn small pos-btn bg-pos ${(n.effective_bg_position==='center'||!n.effective_bg_position)?'active':''}" data-pos="center">中</button>
+        <button class="btn small pos-btn bg-pos ${(n.effective_bg_position==='bottom')?'active':''}" data-pos="bottom">下</button>
+        <button class="btn small pos-btn bg-pos ${(n.effective_bg_position==='left')?'active':''}" data-pos="left">左</button>
+        <button class="btn small pos-btn bg-pos ${(n.effective_bg_position==='right')?'active':''}" data-pos="right">右</button>
+        <button class="btn small" id="resetBgPos" ${(n.override_bg_position!=null)?'':'disabled'}>重置</button>
       </div>
       <div class="hint" style="margin-top:6px">默认: ${escapeHtml(n.default_bg_position||'(center)')}</div>
     </div>
@@ -537,7 +537,7 @@ async function save(field, value){
   n.override_speaker = j.override_speaker;
   n.override_text = j.override_text;
   n.override_bg = j.override_bg;
-  n.override_background_position = j.override_background_position;
+  n.override_bg_position = j.override_bg_position;
   n.override_portrait = j.override_portrait;
   n.override_portrait_position = j.override_portrait_position;
   n.override_next = j.override_next;
@@ -545,7 +545,7 @@ async function save(field, value){
   n.effective_speaker = j.effective_speaker;
   n.effective_text = j.effective_text;
   n.effective_bg = j.effective_bg;
-  n.effective_background_position = j.effective_background_position;
+  n.effective_bg_position = j.effective_bg_position;
   n.effective_portrait = j.effective_portrait;
   n.effective_portrait_position = j.effective_portrait_position;
   n.effective_next = j.effective_next;

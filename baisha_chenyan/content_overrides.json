@@ -28,7 +28,7 @@
   },
   "n00043": {
     "text": "他领着你往工地里面走了一段。探方边上支着几盏马灯，一个中年人正坐在帆布棚下伏案绘图，国字脸，花白的头发浓密。外罩一件军绿色帆布工装马甲，上面插满了比例尺、铅笔和手电筒。",
-    "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 09_33_03 PM.png"
+    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 06_42_34 PM.png"
   },
   "n00046": {
     "text": "棚子另一角蹲着个壮实的村民，宽肩膀，罗圈腿，一身黑色粗布对襟短褂敞着扣子。头上系着一条白毛巾，额头三道很深的抬头纹。他正用磨刀石磨着铁锹刃。",
@@ -111,15 +111,18 @@
     "portrait_position": "left"
   },
   "n00125": {
-    "text": "他把撬棍插进下一块砖缝里，忽然又停了一下。你透过刚取下的一块菱角牙子留下的砖孔往里看了一眼。"
+    "text": "他把撬棍插进下一块砖缝里，忽然又停了一下。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 24, 2026, 12_05_37 AM.png"
   },
   "n00112": {
     "text": "封门砖从外层开始逐块拆除。陈怀远负责绘制封门砖的正视图，鼻梁上架着老花镜，一手按着坐标纸，运笔极稳。",
-    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_22_16 AM.png"
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_22_16 AM.png",
+    "background_position": "top"
   },
   "n00113": {
     "text": "他忽然极低地哼了一句什么，调门起得很高，又陡然拐了个弯。赵老倔手里撬棍一顿，头也不抬。",
-    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png"
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png",
+    "background_position": "top"
   },
   "n00139": {
     "text": "赵老倔扛着木料过来，扎稳马步，双手托着立柱往上一顶，腮帮子鼓起，脖子上青筋跳了一下。立柱架好之后，裂缝没有扩大。"
@@ -226,8 +229,9 @@
     "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 09_33_03 PM.png"
   },
   "n00045": {
-    "bg": "static/images/楔子/ChatGPT Image Jun 23, 2026, 01_06_36 AM.png",
-    "background_position": "top"
+    "bg": "static/images/第四章 前室/ChatGPT Image Jun 23, 2026, 02_55_12 PM.png",
+    "background_position": "top",
+    "text": "陈怀远看了你一眼，温和地对你笑了笑，又继续画图。"
   },
   "n00025": {
     "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png"
@@ -470,13 +474,13 @@
   },
   "n00100": {
     "speaker": "粟柏年",
-    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait": "static/images/portraits/粟柏年1.png",
     "portrait_position": "left",
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png"
   },
   "n00101": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_59_51 AM.png",
-    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait": "static/images/portraits/粟柏年1.png",
     "portrait_position": "left"
   },
   "n00102": {
@@ -503,7 +507,8 @@
   "n00108": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png",
     "portrait": "static/images/portraits/粟柏年2.png",
-    "portrait_position": "left"
+    "portrait_position": "left",
+    "text": "名字不能只凭两个字定。先放一放。"
   },
   "n00110": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_13_55 AM.png",
@@ -516,10 +521,13 @@
     "portrait_position": "left"
   },
   "n00114": {
-    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png"
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png",
+    "background_position": "top"
   },
   "n00115": {
-    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png"
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png",
+    "background_position": "top",
+    "text": "陈怀远没接话，老花镜后面的嘴角动了动，铅笔没停。周淼悄悄跟你使了个眼色，陈工高兴的时候才哼半句。"
   },
   "__custom_nodes__": {},
   "__node_order__": [
@@ -891,6 +899,124 @@
   },
   "n00116": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_26_42 AM.png",
-    "background_position": "bottom"
+    "background_position": "top"
+  },
+  "n00136": {
+    "text": "陈怀远放下绘图板走过来，蹲在砖孔前看了看。他眯着眼看了很久。站起来，只说了两个字。"
+  },
+  "n00117": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_58_22 PM.png",
+    "background_position": "top",
+    "portrait": "static/images/portraits/赵老倔3.png",
+    "portrait_position": "left"
+  },
+  "n00118": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_01_17 PM.png",
+    "background_position": "top",
+    "choices": [
+      {
+        "text": "“赵师傅，你家用的什么砖？”",
+        "next": "n00119"
+      },
+      {
+        "text": "笑笑不说话，继续低头编号。",
+        "next": "n00121"
+      },
+      {
+        "text": "“九百年了，烧它的人早没了，它还在。”",
+        "next": "n00123"
+      }
+    ]
+  },
+  "n00119": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 12_25_02 PM.png",
+    "background_position": "top",
+    "text": "赵老倔放下撬棍。"
+  },
+  "n00120": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_58_22 PM.png",
+    "background_position": "top",
+    "next": "n00125",
+    "portrait": "static/images/portraits/赵老倔3.png",
+    "portrait_position": "left"
+  },
+  "n00121": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_58_22 PM.png",
+    "background_position": "top"
+  },
+  "n00122": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_58_22 PM.png",
+    "background_position": "top",
+    "next": "n00125",
+    "portrait": "static/images/portraits/赵老倔3.png",
+    "portrait_position": "left"
+  },
+  "n00123": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_01_17 PM.png",
+    "background_position": "top",
+    "portrait_position": "left",
+    "text": "赵老倔愣了一下，然后“嘿”了一声。"
+  },
+  "n00124": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 02_58_22 PM.png",
+    "background_position": "top",
+    "portrait": "static/images/portraits/赵老倔2.png",
+    "portrait_position": "left"
+  },
+  "n00126": {
+    "text": "你透过刚取下的一块菱角牙子留下的砖孔往里看了一眼。手电光穿过中层横砖的灰缝，照到最内层卧丁砖的砖面上——一道细细的阴影从砖的右上角延伸到左下角，周围还有几道细小的分支纹路。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 12_51_10 PM.png",
+    "background_position": "top"
+  },
+  "n00127": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 13, 2026, 09_53_11 PM - 副本 (2).png"
+  },
+  "n00128": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 12_59_21 PM.png",
+    "background_position": "top"
+  },
+  "n00129": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 12_59_21 PM.png"
+  },
+  "n00130": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 12_59_21 PM.png",
+    "background_position": "top",
+    "choices": [
+      {
+        "text": "“继续拆吧。裂缝不大，应该不会有大问题。”",
+        "next": "n00131"
+      },
+      {
+        "text": "“停。先架支撑。”",
+        "next": "n00133"
+      },
+      {
+        "text": "“我去叫陈工来看看，他经验丰富。”",
+        "next": "n00135"
+      }
+    ]
+  },
+  "n00131": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_03_10 PM.png",
+    "background_position": "top"
+  },
+  "n00132": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 13, 2026, 09_53_11 PM - 副本 (2).png",
+    "portrait": "static/images/portraits/粟柏年1.png",
+    "portrait_position": "left"
+  },
+  "n00133": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 12_59_21 PM.png",
+    "background_position": "top"
+  },
+  "n00134": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 13, 2026, 09_53_11 PM - 副本 (2).png",
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "portrait_position": "left"
+  },
+  "n00135": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 13, 2026, 09_53_11 PM - 副本 (2).png",
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "portrait_position": "left"
   }
 }
