@@ -317,8 +317,8 @@ const SCENES = {
         id: "tomb_gate_main",
         title: "第一号墓墓门",
         image: {
-          src: "assets/M1/02墓道与墓门/第一号墓墓门(彭华士摄).png",
-          alt: "第一号墓墓门",
+          src: "assets/M1/02墓道与墓门/第一号墓墓门_关闭门扇.png",
+          alt: "第一号墓墓门关闭状态",
           width: 4693,
           height: 3520
         },
@@ -362,11 +362,11 @@ const SCENES = {
           },
           {
             id: "lintel_back",
-            label: "门额上沿阴影",
+            label: "门额上方建筑",
             shape: "rect",
             rect: [0.39, 0.07, 0.61, 0.17],
-            title: "门额背面彩画",
-            body: "门额背面的彩画是一幅完整的横幅构图，中部为花卉，两侧点缀云鸟。整体用色以赭、青、白为主。",
+            title: "门额上方建筑",
+            body: "仿木门楼上方飞檐椽之上是列砖制的瓯瓦，共十三陇。瓦下端并附雕素面圆瓦当。瓯瓦、瓯瓦上端叠涩五层横砖作门脊，是为墓门的最上部。",
             record: "门额背面两端墨画流云、双禽，中绘牡丹。",
             sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
             sourceClueId: "L07",
@@ -396,24 +396,24 @@ const SCENES = {
           },
           {
             id: "door_opening",
-            label: "门洞深处",
-            navLabel: "进入甬道",
+            label: "关闭墓门",
+            navLabel: "打开墓门",
             shape: "rect",
             rect: [0.44, 0.36, 0.56, 0.8],
-            title: "门洞深处",
-            body: "这是甬道通往前室的入口处。入口内为扁方形砖地面",
-            record: "墓门后部与甬道相接，入口内为扁方形砖地面",
+            title: "关闭的墓门",
+            body: "中间门框内仍闭合着赭色门扇，门钉和门环提示它是一道真正可开启的门，而不是已经通开的门洞。\n进入甬道前，墓门必须先被打开。",
+            record: "墓门正面有门框与闭合门扇；进入前不可直接看到甬道内部。",
             sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
             sourceClueId: "S02-TRANSITION",
             transition: {
               targetSceneId: "corridor",
               targetViewId: "corridor_overview",
-              title: "进入甬道",
-              body: "门洞之后，甬道顶部压低。\n光线沿砖缝向内收窄，前方可以继续观察。",
+              title: "打开墓门，进入甬道",
+              body: "墓门打开后，甬道顶部压低。\n光线沿砖缝向内收窄，前方可以继续观察。",
               closeLabel: "进入",
-              lockedBody: "门洞深处光线较暗。\n入口记录尚未整理完整。",
+              lockedBody: "墓门仍然闭合。\n入口记录尚未整理完整。",
               missingRecords: [
-                { puzzleId: "mg_dig_match3", label: "墓门前清理", missingText: "点击门洞先完成挖土消消乐，移开浮土、碎砖和杂物。" },
+                { puzzleId: "mg_dig_match3", label: "墓门前清理", missingText: "点击关闭的墓门先完成挖土消消乐，移开门前浮土、碎砖和杂物。" },
                 { id: "tomb_gate:lintel_back", label: "门额背面彩画" },
                 { sceneId: "tomb_gate", minCount: 3, label: "墓门区域至少三条观察记录" }
               ]
@@ -424,9 +424,9 @@ const SCENES = {
             label: "甬道西壁",
             shape: "rect",
             rect: [0.05, 0.28, 0.25, 0.72],
-            title: "墓道墙面",
-            body: "手电光扫过墓道壁面时，某些砖缝渗出的水珠在手电玻璃罩上凝成一层细雾。\n越靠近墓门，雾越浓。\n水汽无固定来源，不同砖缝渗出量不一致。",
-            record: "墓道砖缝渗出的水珠可在手电玻璃罩上凝成细雾；越靠近墓门，雾越浓。",
+            title: "左侧土墙",
+            body: "你站在墓门外，面朝封门砖，左手边（东侧）是墓道的侧壁。生土壁，未经砖砌或粉刷，保留了下葬时挖掘的原始土面。",
+            record: "墓门前的生土壁，未经砖砌或粉刷，保留了下葬时挖掘的原始土面。",
             sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
             sourceClueId: "E01"
           },
@@ -436,14 +436,14 @@ const SCENES = {
             shape: "rect",
             rect: [0.32, 0.79, 0.68, 0.96],
             title: "门前地面",
-            body: "门前地面位于墓道与墓门之间。\n地面色泽较暗，尘土沿门洞前缘沉积。\n封门砖下缘与地面交界处仍可辨认。",
-            record: "门前地面位于墓道与墓门之间，封门砖下缘与地面交界处可辨认。",
+            body: "近墓门北端右侧有18片灰胎白瓷碗碎片，南端左侧有一个白瓷碗。\n两处白瓷碗呈对角线分布、一碎一全。",
+            record: "近墓门北端右侧有18片灰胎白瓷碗碎片，南端左侧有一个白瓷碗。\n两处白瓷碗呈对角线分布、一碎一全。。",
             sourceFile: "M1/02墓道与墓门/02墓道与墓门-线索映射-v1.0.md",
             sourceClueId: "ENV-S02",
             viewTransition: {
               targetViewId: "tomb_gate_outer",
-              title: "查看墓门外围",
-              body: "门前地面和外围环境需要放在一起理解。",
+              title: "查看墓门外环境",
+              body: "墓门前的遗迹现象与墓门外是否有所联系？",
               closeLabel: "查看"
             }
           }
@@ -465,7 +465,7 @@ const SCENES = {
             shape: "rect",
             rect: [0.12, 0.12, 0.88, 0.78],
             title: "外围与门前关系",
-            body: "外围图补足墓门正面照片看不到的进入关系。\n它更适合作为墓外环境与墓门主视图之间的过渡。",
+            body: "你站在墓穴外围，俯瞰整座第一号墓的布局。\n墓道、墓门前平坦部分和墓门三者之间，构成了一条清晰的“入口轴线”。",
             record: "第一号墓外围图显示墓外环境与墓门入口之间的过渡关系。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
             sourceClueId: "GATE-E-01"
@@ -502,12 +502,12 @@ const SCENES = {
         hotspots: [
           {
             id: "lintel_back_painting_detail",
-            label: "卷草纹彩画",
+            label: "门额背面花纹",
             shape: "rect",
             rect: [0.08, 0.24, 0.92, 0.74],
-            title: "门额背面卷草纹",
-            body: "背面彩画把墓门线索从正面题字扩展到背面装饰。\n卷草纹与门额背面位置共同提示，墓门需要正背面合读。",
-            record: "门额背面卷草纹彩画可作为墓门结构与装饰关系的重点图像线索。",
+            title: "门额背面花纹",
+            body: "门额背面是背面唯一保留彩画的位置，横幅构图，朝向墓室内部。两端墨画流云、双禽，中央绘牡丹。",
+            record: "门额背面是背面唯一保留彩画的位置，横幅构图，朝向墓室内部。两端墨画流云、双禽，中央绘牡丹",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
             sourceClueId: "GATE-P0-02"
           },
@@ -591,21 +591,20 @@ const SCENES = {
         hotspots: [
           {
             id: "return_tomb_gate",
-            label: "返回墓门",
-            navLabel: "返回墓门",
+            label: "回望墓门",
+            navLabel: "回望墓门",
             shape: "rect",
             rect: [0.02, 0.78, 0.26, 0.98],
-            title: "返回墓门",
-            body: "身后的墓门仍在暗处。\n已经进入过的区域可以回去复查。",
-            record: "返回墓门复查。",
+            title: "回望墓门",
+            body: "你已经进入甬道。回头看时，墓门已经打开，赭色门扇贴在门框一侧，身后入口重新变成可以被观察的空间关系。",
+            record: "进入甬道后回望，可见已经打开的墓门与甬道入口关系。",
             sourceFile: "game-navigation",
             sourceClueId: "NAV",
-            transition: {
-              targetSceneId: "tomb_gate",
-              unlocked: true,
-              title: "返回墓门",
-              body: "你退回墓门前。\n门额、砖缝和门洞仍可继续复查。",
-              closeLabel: "返回"
+            viewTransition: {
+              targetViewId: "corridor_gate_back_view",
+              title: "回望墓门",
+              body: "你在甬道内回头，已打开的墓门进入视线。",
+              closeLabel: "查看"
             }
           },
           {
@@ -615,8 +614,8 @@ const SCENES = {
             shape: "rect",
             rect: [0.18, 0.02, 0.82, 0.26],
             title: "甬道顶部",
-            body: "甬道顶部，叠胜彩画以朱红为底，青绿绘出菱形单元。\n菱形单元在正中线上方本应交错对接。\n实测东侧第三个单元的尖角与西侧偏移约两寸。",
-            record: "甬道顶部叠胜彩画以朱红为底、青绿绘菱形单元；东侧第三个单元与西侧偏移约两寸。",
+            body: "甬道顶部系用横砖自东、西二壁叠涩内收作顶，并非平顶或券顶，除彩画部分外通刷赭色",
+            record: "甬道顶部系用横砖自东、西二壁叠涩内收作顶，除彩画部分外通刷赭色。",
             sourceFile: "M1/03甬道/03甬道-线索映射-v1.0.md",
             sourceClueId: "L06",
             viewTransition: {
@@ -662,12 +661,12 @@ const SCENES = {
           },
           {
             id: "corridor_mid",
-            label: "甬道中段",
+            label: "顶部结构",
             shape: "rect",
             rect: [0.30, 0.62, 0.70, 0.88],
-            title: "甬道中段",
-            body: "甬道内有一股淡淡的苦杏仁味，不是泥土气，也不是朽木气。\n停留片刻就散了，换个位置再嗅，又出现，再散。\n气味没有固定来源，且只在甬道中段可闻。",
-            record: "甬道中段可闻淡淡苦杏仁味；气味非泥土气、非朽木气，无固定来源。",
+            title: "顶部结构",
+            body: "甬道顶部两侧用横砖砌平，使外部轮廓整齐。\n在东、西二壁上用横砖叠涩内收，逐层收进形成顶面。",
+            record: "甬道顶部两侧用横砖砌平，使外部轮廓整齐。\n在东、西二壁上用横砖叠涩内收，逐层收进形成顶面。",
             sourceFile: "M1/03甬道/03甬道-线索映射-v1.0.md",
             sourceClueId: "E04"
           },
@@ -721,12 +720,12 @@ const SCENES = {
         hotspots: [
       {
         id: "corridor_mid",
-        label: "甬道中段",
+        label: "甬道地面",
         shape: "rect",
         rect: [0.24, 0.66, 0.76, 0.88],
-        title: "甬道中段",
-        body: "甬道内有一股淡淡的苦杏仁味，不是泥土气，也不是朽木气。\n停留片刻就散了，换个位置再嗅，又出现，再散。\n气味没有固定来源，且只在甬道中段可闻。",
-        record: "甬道中段可闻淡淡苦杏仁味；气味非泥土气、非朽木气，无固定来源。",
+        title: "甬道地面",
+        body: "甬道砖地的北部（即与前室入口相接处）低下二层砖，形成高度差，\n使甬道地面与前室砖床之间有一个明显的错台。",
+        record: "甬道砖地的北部（即与前室入口相接处）低下二层砖，形成高度差，\n使甬道地面与前室砖床之间有一个明显的错台。",
         sourceFile: "M1/03甬道/03甬道-线索映射-v1.0.md",
         sourceClueId: "E04"
       },
@@ -747,14 +746,14 @@ const SCENES = {
         shape: "rect",
         rect: [0.32, 0.36, 0.68, 0.64],
         title: "叠胜彩画",
-        body: "偏移处砖缝有一道刀刮痕，长约三寸。\n刀刮痕将原有菱形边界刮除后重绘。\n刮痕下方白灰层颜色较周围略黄，叠胜纹南端为六瓣花芯，北端变为四瓣。",
-        record: "叠胜彩画偏移处有约三寸刀刮痕，原有菱形边界被刮除后重绘；刮痕下方白灰层略黄。",
+        body: "甬道顶心绘有赭、黄二色叠胜。《营造法式》的“罗纹叠胜”与此类似。《营造法式》还记载，“柱头及脚并刷朱，用雌黄画方胜”，正与此相符。",
+        record: "甬道顶心（即叠涩顶部正中）绘有赭、黄二色叠胜。“柱头及脚并刷朱，用雌黄画方胜”",
         sourceFile: "M1/03甬道/03甬道-线索映射-v1.0.md",
         sourceClueId: "L06",
         viewTransition: {
           targetViewId: "corridor_roof_pattern_closeup",
           title: "查看叠胜彩画近景",
-          body: "叠胜彩画可以用独立图片复看纹样和偏移关系。",
+          body: "叠胜彩画是一种一种菱形交叠的几何纹样",
           closeLabel: "查看"
         }
       },
@@ -764,28 +763,27 @@ const SCENES = {
         shape: "rect",
         rect: [0.18, 0.23, 0.82, 0.34],
         title: "甬道顶线",
-        body: "甬道顶部起拱线比前室低三寸。\n行走时头部距顶约两尺。\n顶部彩画因此压近视线。",
-        record: "甬道顶部起拱线比前室低三寸，行走时头部距顶约两尺。",
+        body: " 叠涩部分通刷赭色；顶心处绘有赭、黄二色的叠胜，其线条组合将甬道顶部图案进行分隔，如同顶心分界线。",
+        record: "叠涩部分通刷赭色；顶心处绘有赭、黄二色的叠胜，其线条组合即为顶心分界线。",
         sourceFile: "M1/03甬道/03甬道-线索映射-v1.0.md",
         sourceClueId: "L06"
       },
       {
         id: "return_tomb_gate",
-        label: "返回墓门",
-        navLabel: "返回墓门",
+        label: "回望墓门",
+        navLabel: "回望墓门",
         shape: "rect",
         rect: [0.02, 0.82, 0.26, 0.98],
-        title: "返回墓门",
-        body: "身后的墓门仍在暗处。\n已经进入过的区域可以回去复查。",
-        record: "返回墓门复查。",
+        title: "回望墓门",
+        body: "你已经进入甬道。回头看时，墓门已经打开，赭色门扇贴在门框一侧，身后入口重新变成可以被观察的空间关系。",
+        record: "进入甬道后回望，可见已经打开的墓门与甬道入口关系。",
         sourceFile: "game-navigation",
         sourceClueId: "NAV",
-        transition: {
-          targetSceneId: "tomb_gate",
-          unlocked: true,
-          title: "返回墓门",
-          body: "你退回墓门前。\n门额、砖缝和门洞仍可继续复查。",
-          closeLabel: "返回"
+        viewTransition: {
+          targetViewId: "corridor_gate_back_view",
+          title: "回望墓门",
+          body: "你在甬道内回头，已打开的墓门进入视线。",
+          closeLabel: "查看"
         }
       },
       {
@@ -865,8 +863,8 @@ const SCENES = {
             shape: "rect",
             rect: [0.16, 0.14, 0.84, 0.78],
             title: "叠胜纹样细部",
-            body: "甬道顶部叠胜彩画在近景中被单独观察。\n纹样偏移、边线差异和局部色差可以在近景中对照。",
-            record: "甬道顶叠胜彩画近景可用于复查纹样、偏移点和顶部彩画层次。",
+            body: "“叠胜”是当时流行的锦绫纹饰名称，始见于唐代，宋代沿用。纹样为菱形交错的几何图案。",
+            record: "“叠胜”是当时流行的锦绫纹饰名称，始见于唐代，宋代沿用。纹样为菱形交错的几何图案。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
             sourceClueId: "COR-P0-01"
           },
@@ -902,12 +900,12 @@ const SCENES = {
         hotspots: [
           {
             id: "east_wall_direction",
-            label: "人物与器物朝向",
+            label: "东壁人物",
             shape: "rect",
             rect: [0.06, 0.2, 0.44, 0.78],
-            title: "东壁人物与器物朝向",
-            body: "甬道东壁壁画沿通道展开。\n人物衣褶与器物朝向大体向墓室深处收束。\n对应题字位置留白较宽，可与西壁题字区域对照。",
-            record: "甬道东壁壁画沿通道展开，人物衣褶与器物朝向大体向墓室深处收束；对应题字位置留白较宽。",
+            title: "东壁人物",
+            body: "右侧一老者，露半身于砖砌门扇之右，头系蓝巾，着圆领窄袖浅蓝衫，面西，作启门状。\n其左二人：前者头系皂巾，着圆领窄袖四䙆浅蓝衫，衫下襟吊起系于腰间，露出窄腿浅蓝裤和草鞋，\n面北，双手持一束札上端涂有绛、蓝二色的筒囊，作自门外急趋室内状。\n后者头系白巾，左肩负钱贯，衣着动作同前者，亦面北。",
+            record: "右侧一老者，露半身于砖砌门扇之右，作启门状。\n其左二人：前者头系皂巾，露出窄腿浅蓝裤和草鞋，\n面北，双手持一束札上端涂有绛、蓝二色的筒囊，作自门外急趋室内状。\n后者头系白巾，左肩负钱贯，衣着动作同前者，亦面北。",
             sourceFile: "M1/03甬道/03甬道-热点坐标映射-v1.2.md",
             sourceClueId: "HS-L10-01"
           },
@@ -942,12 +940,12 @@ const SCENES = {
         hotspots: [
           {
             id: "west_wall_inscription",
-            label: "题字区域",
+            label: "西壁人物图",
             shape: "rect",
             rect: [0.56, 0.2, 0.94, 0.78],
-            title: "西壁题字区域",
-            body: "甬道西壁题字位于窗下较低处。\n题字更接近人物手部高度，周围留白较宽。\n两壁题字区中心高度相差约二寸。",
-            record: "甬道西壁题字位于窗下较低位置，更接近人物手部高度；两壁题字区中心高度相差约二寸。",
+            title: "西壁人物图",
+            body: "左侧一人头系蓝巾，着圆领窄袖短蓝衫、窄腿蓝裤，隐半身于砖砌门扇之内，面北。\n中间一马，黑鬃黑尾的浅黄色马，配有绛色马鞍、浅蓝色鞯，缰上系一浅色缨。 \n右侧二人： 前者头系皂巾，着圆领窄袖浅赭衫、窄腿白裤、草鞋，右手执一竿形物，面东。\n 后者头系蓝巾，巾上系一卷，卷面墨书“画上崔大郎酒”六字，双手捧一黑色酒瓶",
+            record: "左侧一人头系蓝巾，着圆领窄袖短蓝衫、窄腿蓝裤，隐半身于砖砌门扇之内，面北。\n中间一马，黑鬃黑尾的浅黄色马，配有绛色马鞍、浅蓝色鞯，缰上系一浅色缨。 \n右侧二人： 前者头系皂巾，着圆领窄袖浅赭衫、窄腿白裤、草鞋，右手执一竿形物，面东。\n 后者头系蓝巾，巾上系一卷，卷面墨书“画上崔大郎酒”六字，双手捧一黑色酒瓶",
             sourceFile: "M1/03甬道/03甬道-热点坐标映射-v1.2.md",
             sourceClueId: "HS-L10-02"
           },
@@ -4176,7 +4174,7 @@ const addSceneHotspot = (sceneId, viewId, hotspot) => {
 Object.assign(POSITION_MAP.viewLabels, {
   environment_baisha_context: "墓外 / 白沙附近图",
   tomb_gate_structure_diagram: "墓门 / 结构复原图",
-  tomb_gate_back_corridor: "墓门 / 后部与甬道关系",
+  corridor_gate_back_view: "甬道 / 回望墓门",
   front_east_lotus_crown_closeup: "前室 / 女乐莲花冠近景",
   rear_false_door_diagram: "后室 / 北壁假门结构图",
   rear_north_lower_closeup: "后室 / 北壁下部近景",
@@ -4250,41 +4248,23 @@ addSceneView("environment", "environment_baisha_context", {
 
 addSceneHotspot("tomb_gate", "tomb_gate_main", {
   id: "gate_structure_diagram_link",
-  label: "墓门结构图",
-  navLabel: "结构图",
+  label: "墓门手稿图",
+  navLabel: "墓门手稿图",
   shape: "rect",
   rect: [0.62, 0.12, 0.94, 0.42],
-  title: "墓门结构复原图",
-  body: "墓门复原图能帮助玩家理解门额、门框、封门砖和门洞的组成关系。",
-  record: "墓门结构复原图用于对照门额、门框、封门砖和门洞的组成关系。",
+  title: "墓门手稿图",
+  body: "一张墓门手稿图，从中清晰看出，墓门由门脊、十三陇瓯瓦、檐椽飞椽及单抄单昂五铺作等砖仿木构件构成。\n表面施以叠胜、柿蒂、卷草等彩画，其中铺作昂形制为批竹昂，与琴面昂并存，是出现最早的假昂实例。\n全部构件均为砖制。",
+  record: "墓门由门脊、十三陇瓯瓦、檐椽飞椽及单抄单昂五铺作等砖仿木构件构成。表面施以叠胜、柿蒂、卷草等彩画。",
   sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
   sourceClueId: "GATE-P1-01",
   viewTransition: {
     targetViewId: "tomb_gate_structure_diagram",
-    title: "查看墓门结构图",
-    body: "墓门结构复原图被单独打开。",
-    closeLabel: "查看"
+    title: "墓门手稿图",
+    body: "打开墓门手稿图。",
+    closeLabel: "打开"
   }
 });
 
-addSceneHotspot("tomb_gate", "tomb_gate_main", {
-  id: "gate_back_corridor_link",
-  label: "门后与甬道",
-  navLabel: "门后关系",
-  shape: "rect",
-  rect: [0.62, 0.44, 0.94, 0.78],
-  title: "墓门后部与甬道关系",
-  body: "这张图把墓门后部和甬道东壁放在同一张图里，适合做墓门到甬道的空间过渡。",
-  record: "墓门后部与甬道东壁图补充了墓门到甬道的空间过渡。",
-  sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
-  sourceClueId: "GATE-P1-02",
-  viewTransition: {
-    targetViewId: "tomb_gate_back_corridor",
-    title: "查看门后与甬道",
-    body: "墓门后部与甬道关系近景进入视线。",
-    closeLabel: "查看"
-  }
-});
 
 addSceneView("tomb_gate", "tomb_gate_structure_diagram", {
   id: "tomb_gate_structure_diagram",
@@ -4328,48 +4308,67 @@ addSceneView("tomb_gate", "tomb_gate_structure_diagram", {
   ]
 });
 
-addSceneView("tomb_gate", "tomb_gate_back_corridor", {
-  id: "tomb_gate_back_corridor",
-  title: "墓门后部与甬道东壁",
+addSceneView("corridor", "corridor_gate_back_view", {
+  id: "corridor_gate_back_view",
+  title: "回望已打开的墓门",
   image: {
     src: "assets/M1/02墓道与墓门/Ⅱ 第一号墓墓门后部、甬道东壁.png",
-    alt: "第一号墓墓门后部、甬道东壁",
+    alt: "进入甬道后回望已打开的第一号墓墓门",
     width: 3520,
     height: 4693
   },
   hotspots: [
     {
-      id: "gate_back_corridor_relation",
-      label: "门后通道关系",
+      id: "gate_back_from_corridor",
+      label: "回望墓门",
       shape: "rect",
-      rect: [0.16, 0.12, 0.84, 0.82],
-      title: "门后通道关系",
-      body: "门后与甬道东壁同图出现，可以让墓门章节和甬道章节的过渡更连续。",
-      record: "门后与甬道东壁同图出现，补充墓门到甬道的连续空间关系。",
+      rect: [0.16, 0.10, 0.84, 0.80],
+      title: "回望已打开的墓门",
+      body: "你站在甬道里回望。赭色门扇已经打开，门框、门额背面和甬道墙面在同一视线里接合起来。",
+      record: "进入甬道后回望，可见已打开墓门与甬道入口之间的空间关系。",
       sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
       sourceClueId: "GATE-P1-02"
     },
     {
-      id: "return_tomb_gate_from_back_corridor",
-      label: "返回墓门",
-      navLabel: "返回墓门",
+      id: "return_corridor_from_gate_back",
+      label: "继续甬道",
+      navLabel: "继续甬道",
       shape: "rect",
-      rect: [0, 0.84, 1, 1],
-      title: "返回墓门",
-      body: "返回墓门主视图。",
-      record: "返回墓门主视图。",
+      rect: [0.52, 0.84, 1, 1],
+      title: "继续甬道",
+      body: "视线从身后的墓门收回，继续观察甬道内部。",
+      record: "回到甬道继续观察。",
       sourceFile: "game-navigation",
       sourceClueId: "NAV",
       viewTransition: {
+        targetViewId: "corridor_overview",
+        title: "继续甬道",
+        body: "视角回到甬道总览。",
+        closeLabel: "继续"
+      }
+    },
+    {
+      id: "step_back_tomb_gate_from_corridor",
+      label: "退回墓门前",
+      navLabel: "退回墓门",
+      shape: "rect",
+      rect: [0, 0.84, 0.48, 1],
+      title: "退回墓门前",
+      body: "你沿甬道退回已打开的墓门外侧，墓门正面仍可复查。",
+      record: "从甬道退回墓门前复查。",
+      sourceFile: "game-navigation",
+      sourceClueId: "NAV",
+      transition: {
+        targetSceneId: "tomb_gate",
         targetViewId: "tomb_gate_main",
-        title: "返回墓门",
-        body: "视角回到墓门主图。",
+        unlocked: true,
+        title: "退回墓门前",
+        body: "你退回墓门前。\n门额、砖缝和墓门正面结构仍可继续复查。",
         closeLabel: "返回"
       }
     }
   ]
 });
-
 addSceneHotspot("corridor", "corridor_west_wall", {
   id: "west_wall_wine_bottle",
   label: "酒瓶细节",
@@ -4377,14 +4376,14 @@ addSceneHotspot("corridor", "corridor_west_wall", {
   shape: "rect",
   rect: [0.18, 0.54, 0.52, 0.90],
   title: "甬道西壁酒瓶",
-  body: "甬道西壁酒瓶属于礼仪与宴饮物象的补充细节。",
-  record: "甬道西壁酒瓶可作为礼仪与宴饮物象的补充细节。",
+  body: "黑色高瓶，由“画上崔大郎酒”持瓶人双手捧持，疑似向墓主人进酒。\n该高瓶形制（小颈、环口、修腹）与文献中记载的“经瓶”或“酒京”相符，\n是当时河南、河北、山西、内蒙古一带民间使用的酒具，瓷胎者俗称梅瓶或花瓶，缸胎者俗称鸡腿坛。",
+  record: "该高瓶小颈、环口、修腹,是当时北方民间盛行的盛酒具，瓷胎者俗称梅瓶或花瓶，缸胎者俗称鸡腿坛。",
   sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1甬道线索精修版_v1.0.md",
   sourceClueId: "COR-P1-02",
   detailImage: {
     src: "assets/M1/17_其他细节与特写/第一号墓甬道西壁壁画中的酒瓶.png",
     alt: "第一号墓甬道西壁壁画中的酒瓶",
-    caption: "局部放大图：酒瓶尺寸较小，作为甬道西壁的补充细节显示，不再作为整屏背景。"
+    caption: "局部放大图"
   }
 });
 
