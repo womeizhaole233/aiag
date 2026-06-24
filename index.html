@@ -3,56 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>白沙宋墓 M1</title>
+    <title>未启之墓：墓门</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="scene" aria-label="第一号墓墓门">
-      <div class="scene-toolbar" aria-label="界面导航">
-        <div class="scene-toolbar-group">
-          <button id="conclusionToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="conclusionPanel">
-            结论
-          </button>
-          <button id="journalToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="journalPanel">
-            记录
-          </button>
-          <button id="workbenchToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="workbenchLayer">
-            工作台
-          </button>
-        </div>
-      </div>
+      <img class="scene-image" src="assets/door.png" alt="第一号墓墓门" />
+      <svg id="hotspotLayer" class="hotspot-layer" viewBox="0 0 4693 3520" preserveAspectRatio="xMidYMid meet" aria-label="可点击线索区域"></svg>
 
-      <div class="scene-stage">
-        <div class="scene-underlay" aria-hidden="true"></div>
-        <img class="scene-image" src="assets/door.png" alt="第一号墓墓门" />
-        <svg id="hotspotLayer" class="hotspot-layer" viewBox="0 0 4693 3520" preserveAspectRatio="xMidYMid meet" aria-label="可点击线索区域"></svg>
-      </div>
+      <button id="journalToggle" class="journal-toggle" type="button" aria-expanded="false" aria-controls="journalPanel">
+        记录
+      </button>
 
       <aside id="journalPanel" class="journal-panel hidden" aria-label="信息收集栏">
         <header>
-          <p class="eyebrow">分析记录夹</p>
+          <p class="eyebrow">信息收集</p>
           <button id="journalClose" class="plain-button" type="button">关闭</button>
         </header>
         <div id="journalList" class="journal-list"></div>
       </aside>
-
-      <aside id="conclusionPanel" class="conclusion-panel hidden" aria-label="结论卡与线索墙">
-        <header>
-          <p class="eyebrow">结论卡与线索墙</p>
-          <button id="conclusionClose" class="plain-button" type="button">关闭</button>
-        </header>
-        <div class="conclusion-layout">
-          <section class="conclusion-column" aria-label="结论卡列表">
-            <p class="eyebrow">结论卡</p>
-            <div id="conclusionList" class="conclusion-list"></div>
-          </section>
-          <section class="conclusion-column" aria-label="线索墙详情">
-            <p class="eyebrow">线索墙</p>
-            <div id="conclusionDetail" class="conclusion-detail"></div>
-          </section>
-        </div>
-      </aside>
-
     </main>
 
     <div id="messageLayer" class="message-layer hidden" role="dialog" aria-modal="true" aria-labelledby="messageTitle">
@@ -64,39 +33,277 @@
       </article>
     </div>
 
-    <div id="dialogueLayer" class="dialogue-layer hidden" role="dialog" aria-modal="true" aria-labelledby="dialogueTitle">
-      <article class="dialogue-box">
-        <p id="dialogueKicker" class="eyebrow">章节提示</p>
-        <p id="dialogueSpeaker" class="dialogue-speaker"></p>
-        <h1 id="dialogueTitle"></h1>
-        <p id="dialogueBody"></p>
-        <button id="dialogueClose" class="primary-button" type="button">继续</button>
+    <div id="runePuzzleLayer" class="puzzle-layer hidden" role="dialog" aria-modal="true" aria-labelledby="runePuzzleTitle">
+      <article class="puzzle-box">
+        <header class="puzzle-header">
+          <p class="eyebrow">墓门验证</p>
+          <button id="runePuzzleClose" class="plain-button" type="button">稍后</button>
+        </header>
+        <h1 id="runePuzzleTitle">整理记录，验证墓门</h1>
+        <p class="puzzle-copy">
+          门洞后的通道仍被封门意象压住。按记录夹中的空间线索，由外到内点亮四枚符记。
+        </p>
+        <div id="runeSequence" class="rune-sequence" aria-label="当前验证顺序">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="rune-options" aria-label="墓门符记">
+          <button class="rune-option" data-rune="额" type="button">
+            <strong>额</strong>
+            <span>门额背画</span>
+          </button>
+          <button class="rune-option" data-rune="砂" type="button">
+            <strong>砂</strong>
+            <span>砖缝石英</span>
+          </button>
+          <button class="rune-option" data-rune="雾" type="button">
+            <strong>雾</strong>
+            <span>墙面水汽</span>
+          </button>
+          <button class="rune-option" data-rune="门" type="button">
+            <strong>门</strong>
+            <span>门洞深处</span>
+          </button>
+        </div>
+        <p id="runePuzzleFeedback" class="puzzle-feedback">提示：从门额、封门砖缝、墓道环境到门洞深处。</p>
       </article>
     </div>
 
-    <div id="workbenchLayer" class="workbench-layer hidden" role="dialog" aria-label="推理工作台">
-      <article class="workbench-box">
-        <header class="workbench-header">
-          <p class="eyebrow">推理工作台</p>
-          <nav id="workbenchTabs" class="workbench-tabs" role="tablist" aria-label="推理工作台标签">
-            <button class="workbench-tab is-active" type="button" role="tab" aria-selected="true" data-workbench-tab="clues">
-              线索卡
-            </button>
-            <button class="workbench-tab" type="button" role="tab" aria-selected="false" data-workbench-tab="graph">
-              关系图
-            </button>
-          </nav>
-          <button id="workbenchClose" class="plain-button" type="button">关闭</button>
+    <div id="patternPuzzleLayer" class="puzzle-layer hidden" role="dialog" aria-modal="true" aria-labelledby="patternPuzzleTitle">
+      <article class="puzzle-box pattern-puzzle-box">
+        <header class="puzzle-header">
+          <p class="eyebrow">甬道校准</p>
+          <button id="patternPuzzleClose" class="plain-button" type="button">稍后</button>
         </header>
-        <div id="workbenchContent" class="workbench-content"></div>
+        <h1 id="patternPuzzleTitle">校准叠胜彩画</h1>
+        <p class="puzzle-copy">
+          东西两侧叠胜纹样被拆成九块残片。点击每一块在候选位置间移动；当九块都显示“归位”时，边缘会严丝合缝地合成一张完整菱形图纹。
+        </p>
+        <div class="pattern-board" aria-label="叠胜纹样校准板">
+          <button class="pattern-piece" data-index="0" type="button" aria-label="叠胜纹残片一">
+            <span class="pattern-fragment fragment-nw" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="1" type="button" aria-label="叠胜纹残片二">
+            <span class="pattern-fragment fragment-n" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="2" type="button" aria-label="叠胜纹残片三">
+            <span class="pattern-fragment fragment-ne" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="3" type="button" aria-label="叠胜纹残片四">
+            <span class="pattern-fragment fragment-w" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="4" type="button" aria-label="叠胜纹残片五">
+            <span class="pattern-fragment fragment-center" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="5" type="button" aria-label="叠胜纹残片六">
+            <span class="pattern-fragment fragment-e" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="6" type="button" aria-label="叠胜纹残片七">
+            <span class="pattern-fragment fragment-sw" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="7" type="button" aria-label="叠胜纹残片八">
+            <span class="pattern-fragment fragment-s" aria-hidden="true"></span>
+            <em></em>
+          </button>
+          <button class="pattern-piece" data-index="8" type="button" aria-label="叠胜纹残片九">
+            <span class="pattern-fragment fragment-se" aria-hidden="true"></span>
+            <em></em>
+          </button>
+        </div>
+        <p id="patternPuzzleFeedback" class="puzzle-feedback">提示：每块残片都会在几个候选位置间移动。让所有残片回到中线，完整菱形才会闭合。</p>
       </article>
     </div>
-      <div class="sr-only" aria-live="polite">
-        <span id="sceneHeading">当前场景</span>
-        <span id="sceneSubheading">当前位置</span>
-      </div>
+
+    <div id="inscriptionPuzzleLayer" class="puzzle-layer hidden" role="dialog" aria-modal="true" aria-labelledby="inscriptionPuzzleTitle">
+      <article class="puzzle-box inscription-puzzle-box">
+        <header class="puzzle-header">
+          <p class="eyebrow">题记辨读</p>
+          <button id="inscriptionPuzzleClose" class="plain-button" type="button">稍后</button>
+        </header>
+        <h1 id="inscriptionPuzzleTitle">辨读过道纪年题记</h1>
+        <p class="puzzle-copy">
+          第一步：根据残字拓片读出纪年。第二步：继续在题记里找出“赵大翁”。第三步：帮考古实习生改掉报告里的过度推断。
+        </p>
+        <div class="inscription-layout">
+          <div class="inscription-image-frame">
+            <img src="assets/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).png" alt="第一号墓过道东壁下部壁画和纪年题记" />
+            <div class="inscription-lens" aria-hidden="true"></div>
+            <button class="inscription-glyph fragment-year" data-char="年" data-fragment="D" type="button" style="left:34%;top:48%" aria-label="残字 D"><i></i><b></b><em>D</em></button>
+            <button class="inscription-glyph fragment-two" data-char="二" data-fragment="C" type="button" style="left:45%;top:45%" aria-label="残字 C"><i></i><b></b><em>C</em></button>
+            <button class="inscription-glyph fragment-fu" data-char="符" data-fragment="B" type="button" style="left:57%;top:49%" aria-label="残字 B"><i></i><b></b><em>B</em></button>
+            <button class="inscription-glyph fragment-yuan" data-char="元" data-fragment="A" type="button" style="left:69%;top:46%" aria-label="残字 A"><i></i><b></b><em>A</em></button>
+            <button class="inscription-name-glyph name-zhao" data-name-char="赵" type="button" style="left:73%;top:44%" aria-label="称谓字 赵">赵</button>
+            <button class="inscription-name-glyph name-da" data-name-char="大" type="button" style="left:78%;top:49%" aria-label="称谓字 大">大</button>
+            <button class="inscription-name-glyph name-weng" data-name-char="翁" type="button" style="left:84%;top:54%" aria-label="称谓字 翁">翁</button>
+          </div>
+          <div class="inscription-controls">
+            <div class="inscription-clue-strip">
+              <span>墨色边缘</span>
+              <span>年号结构</span>
+              <span>残字轮廓</span>
+            </div>
+            <div id="inscriptionFragments" class="inscription-fragments" aria-label="已发现残字拓片">
+              <div class="inscription-fragment" data-fragment="A">
+                <strong>拓片 A</strong>
+                <span>未显影</span>
+              </div>
+              <div class="inscription-fragment" data-fragment="B">
+                <strong>拓片 B</strong>
+                <span>未显影</span>
+              </div>
+              <div class="inscription-fragment" data-fragment="C">
+                <strong>拓片 C</strong>
+                <span>未显影</span>
+              </div>
+              <div class="inscription-fragment" data-fragment="D">
+                <strong>拓片 D</strong>
+                <span>未显影</span>
+              </div>
+            </div>
+            <div id="inscriptionSequence" class="inscription-sequence" aria-label="当前辨读结果">
+              <span data-slot="0"></span>
+              <span data-slot="1"></span>
+              <span data-slot="2"></span>
+              <span data-slot="3"></span>
+            </div>
+            <div class="inscription-options" aria-label="可选题记文字">
+              <button class="inscription-option" data-char="元" type="button">元</button>
+              <button class="inscription-option" data-char="符" type="button">符</button>
+              <button class="inscription-option" data-char="二" type="button">二</button>
+              <button class="inscription-option" data-char="年" type="button">年</button>
+              <button class="inscription-option" data-char="崇" type="button">崇</button>
+              <button class="inscription-option" data-char="宁" type="button">宁</button>
+            </div>
+            <section id="inscriptionNameHunt" class="inscription-name-hunt hidden" aria-label="赵大翁称谓查找">
+              <div class="inscription-name-head">
+                <strong>第二步：找出称谓“赵大翁”</strong>
+                <span>年号提供时间，称谓只作为身份追问入口</span>
+              </div>
+              <div class="inscription-transcript">
+                <span>已读出：元符二年</span>
+                <span>继续找：赵 大 翁</span>
+              </div>
+              <div id="inscriptionNameSlots" class="inscription-name-slots" aria-label="称谓查找进度">
+                <span data-name-slot="赵">赵</span>
+                <span data-name-slot="大">大</span>
+                <span data-name-slot="翁">翁</span>
+              </div>
+              <p class="inscription-name-note">
+                找齐后记录为“赵大翁”称谓线索；它会引出身份疑问，但不能直接确定墓主身份。
+              </p>
+            </section>
+            <section id="inscriptionReportReview" class="inscription-report-review hidden" aria-label="考古实习生报告改错">
+              <div class="inscription-name-head">
+                <strong>第三步：帮考古实习生改错报告</strong>
+                <span>点出初稿里过度推断的句子</span>
+              </div>
+              <p class="inscription-draft">
+                过道题记写有“元符二年赵大翁布”，因此可以确认 1099 年这个时间锚点。
+                <button class="inscription-error-line" data-error="owner" type="button">赵大翁就是墓主。</button>
+                <button class="inscription-error-line" data-error="whole" type="button">这条题记已经解释了整座墓的身份问题。</button>
+              </p>
+              <div id="inscriptionCorrections" class="inscription-corrections" aria-label="已改正的问题">
+                <span data-error-slot="owner">墓主身份：待复查</span>
+                <span data-error-slot="whole">整墓结论：不能单证推出</span>
+              </div>
+              <p class="inscription-name-note">
+                正确记录应保留“1099 年时间锚点”和“赵大翁称谓”，但把身份判断留给后续材料。
+              </p>
+            </section>
+            <div class="inscription-actions">
+              <button id="inscriptionClear" class="plain-button" type="button">清空</button>
+              <button id="inscriptionSubmit" class="primary-button" type="button">确认辨读</button>
+            </div>
+          </div>
+        </div>
+        <p id="inscriptionPuzzleFeedback" class="puzzle-feedback">提示：图中发光处是残字拓片，不一定能直接读出完整字。先辨笔画，再排读序。</p>
+      </article>
+    </div>
+
+    <div id="relicPuzzleLayer" class="puzzle-layer hidden" role="dialog" aria-modal="true" aria-labelledby="relicPuzzleTitle">
+      <article class="puzzle-box relic-puzzle-box">
+        <header class="puzzle-header">
+          <p class="eyebrow">遗物定位</p>
+          <button id="relicPuzzleClose" class="plain-button" type="button">稍后</button>
+        </header>
+        <h1 id="relicPuzzleTitle">展开图册寻宝</h1>
+        <p class="puzzle-copy">
+          在展开地图中进入不同图纸，用放大镜自由搜查宝物痕迹；底部轮廓可以随时查看线索。
+        </p>
+        <div class="relic-layout">
+          <div id="relicPageTabs" class="relic-album-tabs" aria-label="M1资料图册"></div>
+          <div id="relicMap" class="relic-map" aria-label="后室出土物分布图">
+            <img id="relicMapImage" src="assets/M1/16_出土器物与人骨/M1出土物分布图.png" alt="第一号墓出土物分布图" />
+            <div id="relicOverview" class="relic-overview" aria-label="M1展开地图"></div>
+            <div class="relic-scan" aria-hidden="true"></div>
+            <div id="relicLens" class="relic-lens" aria-hidden="true">
+              <span></span>
+            </div>
+            <div id="relicMarkerLayer" class="relic-marker-layer" aria-hidden="true"></div>
+            <div id="relicHotspotLayer" class="relic-hotspot-layer"></div>
+          </div>
+          <div id="relicCollection" class="relic-collection" aria-label="遗物收集箱"></div>
+        </div>
+        <p id="relicPuzzleFeedback" class="puzzle-feedback">先在展开地图选择位置，也可以点底部任意宝物查看线索。找到哪个就先收录哪个。</p>
+      </article>
+    </div>
+
+    <div id="pipePuzzleLayer" class="puzzle-layer pipe-demo-layer hidden" role="dialog" aria-modal="true" aria-labelledby="pipePuzzleTitle">
+      <article class="puzzle-box pipe-puzzle-box">
+        <header class="puzzle-header">
+          <p class="eyebrow">砖缝导流</p>
+          <button id="pipePuzzleClose" class="plain-button" type="button">稍后</button>
+        </header>
+        <h1 id="pipePuzzleTitle">连通墓门暗线</h1>
+        <p class="puzzle-copy">
+          点击砖缝方块旋转，让左侧的水汽痕迹沿暗线通向右上的残片位置。
+        </p>
+        <section class="pipe-instructions" aria-label="砖缝导流玩法说明">
+          <strong>玩法说明</strong>
+          <ol>
+            <li>点击未锁定的砖缝方块，每点一次旋转 90 度。</li>
+            <li>从左侧水汽起点开始，亮起的砖缝表示已经连通。</li>
+            <li>把亮线接到右侧残片终点，即可通关并收录线索。</li>
+          </ol>
+        </section>
+        <div class="pipe-game">
+          <div id="pipeBoard" class="pipe-board" aria-label="砖缝导流棋盘"></div>
+        </div>
+        <p id="pipePuzzleFeedback" class="puzzle-feedback">提示：亮起的砖缝表示已经从起点连通。</p>
+        <div id="pipeSuccessLayer" class="pipe-success-layer hidden" aria-live="polite">
+          <div class="pipe-particles" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="pipe-success-card">
+            <p class="eyebrow">通关成功</p>
+            <h2 id="pipeSuccessTitle">线索已显现</h2>
+            <div class="clue-image-frame">
+              <img id="pipeClueImage" src="assets/M1/16_出土器物与人骨/地券.png" alt="通关获得的线索图片" />
+            </div>
+            <p id="pipeSuccessText">暗线连通后，一件可疑文物线索被照亮。</p>
+            <button id="pipeReplayButton" class="primary-button pipe-replay-button" type="button">再玩一次</button>
+          </div>
+        </div>
+      </article>
+    </div>
 
     <script src="data/scenes.js?v=source-text-20260520-clean"></script>
-    <script src="game.js?v=source-text-20260520-clean"></script>
+    <script src="game.js?v=inscription-report-edit-20260611"></script>
   </body>
 </html>
