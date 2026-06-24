@@ -112,7 +112,8 @@
   },
   "n00125": {
     "text": "他把撬棍插进下一块砖缝里，忽然又停了一下。",
-    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 24, 2026, 12_05_37 AM.png"
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 24, 2026, 12_05_37 AM.png",
+    "background_position": "top"
   },
   "n00112": {
     "text": "封门砖从外层开始逐块拆除。陈怀远负责绘制封门砖的正视图，鼻梁上架着老花镜，一手按着坐标纸，运笔极稳。",
@@ -897,7 +898,8 @@
     "n00362"
   ],
   "n00150": {
-    "text": "手电光扫过顶部叠胜、东壁人物、西壁马匹。"
+    "text": "手电光扫过顶部叠胜、东壁人物、西壁马匹。",
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 12_59_40 PM.png"
   },
   "n00116": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_26_42 AM.png",
@@ -1038,15 +1040,158 @@
     "background_position": "top"
   },
   "n00141": {
-    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_49_53 PM.png"
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_49_53 PM.png",
+    "background_position": "top"
   },
   "n00142": {
-    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 01_49_53 PM.png"
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 24, 2026, 01_00_43 AM.png"
   },
   "n00143": {
-    "text": "取下那块卧丁砖以后，你翻过来看。裂缝已经深入砖厚的一半。它被外层和中层压住，压了九百年。"
+    "text": "取下那块卧丁砖以后，你翻过来看。裂缝已经深入砖厚的一半。它被外层和中层压住，压了九百年。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 24, 2026, 01_00_43 AM.png"
   },
   "n00144": {
-    "text": "封门砖全部拆除，墓门后露出一片完整的黑暗，是被封存了九百年的黑暗。粟柏年举起手电，光柱射入墓门，像一枚细长的楔子，缓慢地钉进时间深处。他没有立刻进去，大家也都没有说话，连赵老倔都把旱烟袋从嘴边拿了下来。"
+    "text": "封门砖全部拆除，墓门后露出一片完整的黑暗，是被封存了九百年的黑暗。粟柏年举起手电，光柱射入墓门，像一枚细长的楔子，缓慢地钉进时间深处。他没有立刻进去，大家也都没有说话。",
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_17_15 AM.png"
+  },
+  "n00145": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_17_15 AM.png"
+  },
+  "n00146": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_17_15 AM.png"
+  },
+  "n00147": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_17_15 AM.png"
+  },
+  "n00148": {
+    "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 11_27_36 AM.png"
+  },
+  "n00181": {
+    "background_position": "top"
+  },
+  "n00149": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 12_41_22 PM.png"
+  },
+  "n00151": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_01_29 PM.png",
+    "text": "那些人物从砖壁上浮现出来的时候，你甚至产生了一瞬间错觉，仿佛他们还未离去。"
+  },
+  "n00152": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 12_41_22 PM.png"
+  },
+  "n00153": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png"
+  },
+  "n00154": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png"
+  },
+  "n00155": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 12_41_22 PM.png",
+    "background_position": "top"
+  },
+  "n00156": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 12_59_40 PM.png"
+  },
+  "n00157": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_01_29 PM.png"
+  },
+  "n00158": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "background_position": "top"
+  },
+  "n00159": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/周淼3.png",
+    "portrait_position": "left"
+  },
+  "n00160": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_10_23 PM.png",
+    "background_position": "center"
+  },
+  "n00161": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/陈怀远.png",
+    "portrait_position": "left"
+  },
+  "n00162": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_26_43 PM.png"
+  },
+  "n00163": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_26_43 PM.png"
+  },
+  "n00164": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00165": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png"
+  },
+  "n00166": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/粟柏年1.png",
+    "portrait_position": "left"
+  },
+  "n00167": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
+  },
+  "n00168": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/粟柏年3.png",
+    "portrait_position": "left"
+  },
+  "n00171": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "text": "因为三面壁画合在一起才能看懂甬道的整体装饰主题。\n",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left",
+    "speaker": "粟柏年",
+    "next": "n00172"
+  },
+  "n00172": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left",
+    "next": "n00173"
+  },
+  "n00173": {
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait_position": "left",
+    "text": "考古观察不是看画，是读空间。顶部给你方向，侧壁给你内容。三面合读，才能判断甬道是单纯的通道，还是在引导你进入前室。"
+  },
+  "n00174": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/周淼2.png",
+    "portrait_position": "left"
+  },
+  "n00175": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png"
+  },
+  "n00176": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 12_41_22 PM.png"
+  },
+  "n00177": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 12_59_40 PM.png"
+  },
+  "n00178": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_01_29 PM.png"
+  },
+  "n00179": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_38_27 PM.png",
+    "background_position": "center"
+  },
+  "n00180": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png"
+  },
+  "n00169": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png"
+  },
+  "n00170": {
+    "bg": "static/images/第三章  甬道/ChatGPT Image Jun 23, 2026, 01_31_41 PM.png",
+    "portrait": "static/images/portraits/粟柏年2.png",
+    "portrait_position": "left"
   }
 }

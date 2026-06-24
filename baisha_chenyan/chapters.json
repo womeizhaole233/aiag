@@ -25,16 +25,16 @@
       "background_image": "assets/M1/02墓道与墓门/封门砖的组织.png",
       "description": "",
       "start_node": "n00093",
-      "end_node": "n00144"
+      "end_node": "n00148"
     },
     {
-      "background_image": "assets/M1/03甬道/甬道顶叠胜彩画.png",
-      "description": "",
-      "end_node": "n00186",
       "id": "chapter_3",
       "number": 3,
-      "start_node": "n00145",
-      "title": "甬道"
+      "title": "甬道",
+      "background_image": "assets/M1/03甬道/甬道顶叠胜彩画.png",
+      "description": "",
+      "start_node": "n00149",
+      "end_node": "n00180"
     },
     {
       "background_image": "assets/M1/16_出土器物与人骨/地券.png",

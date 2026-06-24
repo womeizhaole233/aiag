@@ -15,8 +15,8 @@
      * @param {Object} params - URL参数对象
      */
     async function loadPage(pageName, params = {}) {
-        // 显示加载动画
-        showLoading();
+        // 显示全屏遮罩（防止切换闪烁）
+        showOverlay();
 
         // 构建请求URL
         const url = `/api/page/${pageName}` +
@@ -44,30 +44,29 @@
                 throw new Error('当前页面无内容容器');
             }
 
-            // 带过渡动画替换内容
-            container.style.transition = 'opacity 0.3s ease';
+            // 瞬间隐藏内容（无过渡）
+            container.style.transition = 'none';
             container.style.opacity = '0';
+            container.offsetHeight; // 强制重排，让 opacity:0 立即生效
 
-            setTimeout(() => {
-                // 替换内容
-                container.innerHTML = newContent.innerHTML;
+            // 替换内容
+            container.innerHTML = newContent.innerHTML;
+            executePageScripts(container);
 
-                // 执行新页面的JavaScript
-                executePageScripts(container);
+            // 恢复显示
+            container.offsetHeight; // 再次强制重排
+            container.style.transition = 'opacity 0.3s ease';
+            container.style.opacity = '1';
 
-                // 恢复显示
-                container.style.opacity = '1';
+            // 更新浏览器历史记录
+            history.pushState({ page: pageName }, '', `/${pageName}`);
 
-                // 隐藏加载动画
-                hideLoading();
-
-                // 更新浏览器历史记录
-                history.pushState({ page: pageName }, '', `/${pageName}`);
-            }, 300);
+            // 延迟移除遮罩（确保内容先可见）
+            setTimeout(() => hideOverlay(), 500);
 
         } catch (error) {
             console.error('页面加载失败:', error);
-            hideLoading();
+            hideOverlay();
             showError('加载失败，请重试');
         }
     }
@@ -75,33 +74,27 @@
     // ==================== 加载动画控制 ====================
 
     /**
-     * 显示加载动画
+     * 显示全屏遮罩（防止切换闪烁）
      */
-    function showLoading() {
-        let loader = document.getElementById('page-loader');
-        if (!loader) {
-            loader = document.createElement('div');
-            loader.id = 'page-loader';
-            loader.innerHTML = `
-                <div style="position:fixed;inset:0;background:rgba(0,0,0,0.7);
-                            display:flex;align-items:center;justify-content:center;z-index:9999;">
-                    <div style="color:#c99d57;font-size:20px;font-family:'STKaiti','KaiTi',serif;">
-                        📜 加载中...
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(loader);
+    function showOverlay() {
+        let overlay = document.getElementById('page-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'page-overlay';
+            overlay.style.cssText = 'position:fixed;inset:0;background:#c4b896;z-index:9999;';
+            document.body.appendChild(overlay);
         }
-        loader.style.display = 'flex';
+        overlay.style.opacity = '1';
+        overlay.style.display = 'block';
     }
 
     /**
-     * 隐藏加载动画
+     * 移除全屏遮罩
      */
-    function hideLoading() {
-        const loader = document.getElementById('page-loader');
-        if (loader) {
-            loader.style.display = 'none';
+    function hideOverlay() {
+        const overlay = document.getElementById('page-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
         }
     }
 
@@ -195,8 +188,8 @@
 
     // 暴露全局函数
     window.loadPage = loadPage;
-    window.showLoading = showLoading;
-    window.hideLoading = hideLoading;
+    window.showOverlay = showOverlay;
+    window.hideOverlay = hideOverlay;
     window.showError = showError;
 
     // DOM加载完成后初始化
