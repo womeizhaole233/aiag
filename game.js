@@ -631,9 +631,7 @@ function getStoryBackgroundPosition(value) {
 }
 
 function getStoryPortraitPosition(dialogue, speakerKind) {
-  const explicit = normalizeStoryVisualPosition(dialogue?.portraitPosition, ["left", "center", "right"]);
-  if (explicit) return explicit;
-  return speakerKind === "self" ? "right" : "left";
+  return "left";
 }
 
 function isPlaceholderText(value) {
