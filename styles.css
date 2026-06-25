@@ -498,7 +498,7 @@ button {
   position: absolute;
   left: var(--dialogue-portrait-left);
   bottom: 20px;
-  z-index: 2;
+  z-index: 4;
   display: flex;
   align-items: flex-end;
   justify-content: center;
