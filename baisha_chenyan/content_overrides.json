@@ -132,7 +132,7 @@
   },
   "n00187": {
     "text": "二人皆侧身面东，观看东壁的乐舞。",
-    "bg": "static/images/第四章 前室/ChatGPT Image Jun 26, 2026, 12_11_12 AM.png"
+    "bg": "static/images/第四章 前室/ChatGPT Image Jun 26, 2026, 01_17_50 AM.png"
   },
   "n00232": {
     "text": "头骨并列安放，枕骨朝下，面朝西偏北。身体其余部分的骨骼混堆在头骨东侧，小骨片散乱重叠，像被时间打翻的一盒棋子。",
@@ -140,28 +140,34 @@
   },
   "n00244": {
     "text": "头骨并列，其余骨骼混堆。你觉得最可能是什么情况？",
-    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 09_32_46 PM.png"
+    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 09_32_46 PM.png",
+    "background_position": "top"
   },
   "n00255": {
     "text": "地券为砖质朱书，十六行、倒写，券盖无字，并有“合同”背书。第一行可辨认：“大宋元符二年九月十□日赵……”",
     "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 09_41_44 PM.png"
   },
   "n00311": {
-    "text": "李公曰：府库之粮，皆在簿册——最后一个字残缺。水渍刚好浸掉了最关键的那个字。"
+    "text": "李公曰：府库之粮，皆在簿册——最后一个字残缺。水渍刚好浸掉了最关键的那个字。",
+    "bg": "static/images/第七章  暗格/9-1.png"
   },
   "n00316": {
-    "text": "你继续往下读：若李公不知，便是小人自取，三千石算在小人头上。李公沉吟良久，终曰……此处又一处水渍，模糊了后半句。"
+    "text": "你继续往下读：若李公不知，便是小人自取，三千石算在小人头上。李公沉吟良久，终曰……此处又一处水渍，模糊了后半句。",
+    "bg": "static/images/第七章  暗格/9-1.png"
   },
   "n00323": {
-    "text": "最后一处又有残损。你把绢帛拿到灯下，侧光极斜地照过去。几个字的结体从水渍里浮出来。第一个字，笔画中有“矢”部。"
+    "text": "最后一处又有残损。你把绢帛拿到灯下，侧光极斜地照过去。几个字的结体从水渍里浮出来。第一个字，笔画中有“矢”部。",
+    "bg": "static/images/第七章  暗格/8-5.png"
   },
   "n00351": {
     "text": "一号墓全部测绘和记录工作于12月31日中午完成。陈怀远把最后一张测绘图从坐标纸上揭下来，对着光看了一遍，点了点头，卷好放进图筒。",
-    "bg": "static/images/终章/13-1.png"
+    "bg": "static/images/终章/13-1.png",
+    "background_position": "top"
   },
   "n00356": {
     "text": "收工前，你最后一次走进后室。手电光照在北壁假门上。那个砖雕女子，垂双髻，右手作启门状。门微启，左扇永远停在推开的角度上。她在黑暗里站了九百多年。",
-    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 08_56_35 PM.png"
+    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 08_56_35 PM.png",
+    "background_position": "center"
   },
   "n00001": {
     "bg": "static/images/楔子/ChatGPT Image Jun 22, 2026, 05_40_44 PM.png"
@@ -1215,7 +1221,7 @@
   },
   "n00186": {
     "text": "西壁是夫妇对坐图。男子面容饱满，蓄须，戴幞头，穿圆领袍。女子梳高髻，着对襟褙子。两人袖手而坐，身后各有一扇屏风，桌上有酒注、注碗、台盏、经瓶。",
-    "bg": "static/images/第四章 前室/ChatGPT Image Jun 26, 2026, 12_11_12 AM.png"
+    "bg": "static/images/第四章 前室/ChatGPT Image Jun 26, 2026, 01_17_50 AM.png"
   },
   "n00188": {
     "text": "东壁是女乐图，卷帘下，女乐十一人分左右两组。右侧五人击鼓、击拍板、击腰鼓、吹横笛、吹觱篥。左侧五人吹箫、吹笙、吹排箫、弹琵琶。四排乐人之间，一人戴硬脚花额幞头，欠身扬袖作舞。",
@@ -1229,13 +1235,16 @@
   },
   "n00358": {
     "bg": "static/images/终章/13-9.png",
-    "text": "他翻开记录本，在当天日志末尾写了一行字。"
+    "text": "他翻开记录本，在当天日志末尾写了一行字。",
+    "background_position": "top"
   },
   "n00359": {
-    "bg": "static/images/终章/13-9.png"
+    "bg": "static/images/终章/13-9.png",
+    "background_position": "top"
   },
   "n00360": {
-    "bg": "static/images/终章/13-9.png"
+    "bg": "static/images/终章/13-9.png",
+    "background_position": "top"
   },
   "n00192": {
     "text": "粟柏年摇了摇头。桌椅的浮雕和侍者的壁画在风格上是统一的，同一个人设计的。至于省钱，砖浮雕的工费不比画工低。",
@@ -1380,7 +1389,7 @@
   "n00219": {
     "bg": "static/images/第五章  过道/ChatGPT Image Jun 26, 2026, 03_58_57 PM.png",
     "portrait": "static/images/portraits/陈怀远.png",
-    "portrait_position": "center"
+    "portrait_position": "left"
   },
   "n00221": {
     "bg": "static/images/第六章  后室/1-2.png",
@@ -1393,20 +1402,25 @@
     "bg": "static/images/第六章  后室/1-1.png"
   },
   "n00226": {
-    "bg": "static/images/jq生图/4-1.png",
-    "text": "粟柏年从假门前退开，手电光下落到地面。一片低平的砖面铺展在地面上，是砖床。"
+    "bg": "static/images/第六章  后室/4-1.png",
+    "text": "粟柏年从假门前退开，手电光下落到地面。一片低平的砖面铺展在地面上，是砖床。",
+    "background_position": "top"
   },
   "n00227": {
-    "bg": "static/images/第六章  后室/3-2.png"
+    "bg": "static/images/第六章  后室/3-2.png",
+    "background_position": "top"
   },
   "n00228": {
-    "bg": "static/images/第六章  后室/3-2.png"
+    "bg": "static/images/第六章  后室/3-2.png",
+    "background_position": "top"
   },
   "n00229": {
-    "bg": "static/images/第六章  后室/3-2.png"
+    "bg": "static/images/第六章  后室/3-2.png",
+    "background_position": "top"
   },
   "n00230": {
-    "bg": "static/images/第六章  后室/3-2.png"
+    "bg": "static/images/第六章  后室/3-2.png",
+    "background_position": "top"
   },
   "n00231": {
     "bg": "static/images/第六章  后室/4-2.png"
@@ -1420,7 +1434,8 @@
     "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 08_55_28 PM.png"
   },
   "n00224": {
-    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 08_56_35 PM.png"
+    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 08_56_35 PM.png",
+    "text": "版门两扇，左扇向北微启。砖雕女子立于门外，垂双髻，着窄袖衫和长裙，右手作启门状，脸微偏向门缝。"
   },
   "n00225": {
     "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 08_56_35 PM.png",
@@ -1440,26 +1455,32 @@
     "bg": "static/images/第六章  后室/4-2.png"
   },
   "n00238": {
-    "bg": "static/images/第六章  后室/5-1.png"
+    "bg": "static/images/第六章  后室/5-1.png",
+    "background_position": "top"
   },
   "n00239": {
-    "bg": "static/images/第六章  后室/5-1.png"
+    "bg": "static/images/第六章  后室/5-1.png",
+    "background_position": "top"
   },
   "n00240": {
     "bg": "static/images/第六章  后室/5-1.png",
-    "text": "也可以看牙齿磨耗。男的臼齿磨耗到牙本质了，四十五到五十五岁。"
+    "text": "也可以看牙齿磨耗。男的臼齿磨耗到牙本质了，四十五到五十五岁。",
+    "background_position": "top"
   },
   "n00241": {
     "text": "女的磨耗浅一些，大概年轻十岁。",
-    "bg": "static/images/第六章  后室/5-1.png"
+    "bg": "static/images/第六章  后室/5-1.png",
+    "background_position": "top"
   },
   "n00242": {
     "bg": "static/images/第六章  后室/5-1.png",
-    "text": "髋骨也能佐证。你看这个坐骨大切迹——\"他用镊子尖轻轻拨开一块碎骨，露出下面的弧形边缘，\"窄而深，是男性。女性通常宽而浅。\""
+    "text": "髋骨也能佐证。你看这个坐骨大切迹——\"他用镊子尖轻轻拨开一块碎骨，露出下面的弧形边缘，\"窄而深，是男性。女性通常宽而浅。\"",
+    "background_position": "top"
   },
   "n00243": {
     "text": "他把镊子柄递到你手里，\"你自己碰一下。感觉一下这个弧度。不要猜，用手记。",
-    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 09_32_46 PM.png"
+    "bg": "static/images/第六章  后室/ChatGPT Image Jun 26, 2026, 09_32_46 PM.png",
+    "background_position": "top"
   },
   "n00245": {
     "bg": "static/images/第六章  后室/4-2.png"
@@ -1480,16 +1501,19 @@
     "portrait_position": "left"
   },
   "n00250": {
-    "bg": "static/images/第六章  后室/6-2.png"
+    "bg": "static/images/第六章  后室/6-2.png",
+    "background_position": "top"
   },
   "n00249": {
     "bg": "static/images/第六章  后室/6-1.png"
   },
   "n00251": {
-    "bg": "static/images/第六章  后室/6-2.png"
+    "bg": "static/images/第六章  后室/6-2.png",
+    "background_position": "top"
   },
   "n00252": {
-    "bg": "static/images/第六章  后室/6-2.png"
+    "bg": "static/images/第六章  后室/6-2.png",
+    "background_position": "top"
   },
   "n00253": {
     "bg": "static/images/第六章  后室/6-1.png",
@@ -1522,38 +1546,48 @@
     "bg": "static/images/第六章  后室/7-2.png"
   },
   "n00262": {
-    "bg": "static/images/第七章  暗格/2.png"
+    "bg": "static/images/第七章  暗格/2.png",
+    "background_position": "top"
   },
   "n00263": {
     "bg": "static/images/第七章  暗格/2-3.png"
   },
   "n00264": {
-    "bg": "static/images/第七章  暗格/2-4.png"
+    "bg": "static/images/第七章  暗格/2-4.png",
+    "background_position": "top"
   },
   "n00265": {
-    "bg": "static/images/第七章  暗格/2-6.png"
+    "bg": "static/images/第七章  暗格/2-4.png",
+    "background_position": "top"
   },
   "n00266": {
-    "bg": "static/images/第七章  暗格/2-6.png"
+    "bg": "static/images/第七章  暗格/2-6.png",
+    "background_position": "top"
   },
   "n00267": {
-    "bg": "static/images/第七章  暗格/2-6.png"
+    "bg": "static/images/第七章  暗格/2-6.png",
+    "background_position": "top"
   },
   "n00268": {
-    "bg": "static/images/第七章  暗格/2-6.png"
+    "bg": "static/images/第七章  暗格/2-6.png",
+    "background_position": "top"
   },
   "n00269": {
-    "bg": "static/images/第七章  暗格/2-6.png"
+    "bg": "static/images/第七章  暗格/2-6.png",
+    "background_position": "top"
   },
   "n00270": {
-    "bg": "static/images/第七章  暗格/2-7.png"
+    "bg": "static/images/第七章  暗格/2-7.png",
+    "background_position": "top"
   },
   "n00271": {
-    "bg": "static/images/第七章  暗格/2-7.png"
+    "bg": "static/images/第七章  暗格/2-7.png",
+    "background_position": "top"
   },
   "n00272": {
     "bg": "static/images/第七章  暗格/2-8.png",
-    "text": "粟柏年戴上眼镜，等那三支烟燃尽了，旋开筒盖。里面有两样东西：一卷绢帛，一方折叠整齐的素帛。"
+    "text": "粟柏年戴上眼镜，等那三支烟燃尽了，旋开筒盖。里面有两样东西：一卷绢帛，一方折叠整齐的素帛。",
+    "background_position": "top"
   },
   "n00273": {
     "bg": "static/images/第七章  暗格/2-9.png"
@@ -1567,10 +1601,12 @@
     "portrait_position": "left"
   },
   "n00276": {
-    "bg": "static/images/第七章  暗格/8-1.png"
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 26, 2026, 11_09_24 PM (1).png",
+    "background_position": "top"
   },
   "n00277": {
-    "bg": "static/images/第七章  暗格/8-1.png"
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 26, 2026, 11_09_24 PM (1).png",
+    "background_position": "top"
   },
   "n00278": {
     "bg": "static/images/第七章  暗格/2-9.png"
@@ -1593,31 +1629,39 @@
     "bg": "static/images/第七章  暗格/2-9.png"
   },
   "n00361": {
-    "bg": "static/images/终章/13-9.png"
+    "bg": "static/images/终章/13-5.png",
+    "background_position": "top"
   },
   "n00357": {
-    "bg": "static/images/终章/13-7.png"
+    "bg": "static/images/终章/13-7.png",
+    "background_position": "top"
   },
   "n00355": {
-    "bg": "static/images/终章/13-5.png"
+    "bg": "static/images/终章/13-5.png",
+    "background_position": "top"
   },
   "n00354": {
-    "bg": "static/images/终章/13-4.png"
+    "bg": "static/images/终章/13-4.png",
+    "background_position": "top"
   },
   "n00353": {
-    "bg": "static/images/终章/13-3.png"
+    "bg": "static/images/终章/13-3.png",
+    "background_position": "top"
   },
   "n00352": {
-    "bg": "static/images/终章/13-2.png"
+    "bg": "static/images/终章/13-2.png",
+    "background_position": "top"
   },
   "n00348": {
     "bg": "static/images/终章/4-3.png"
   },
   "n00349": {
-    "bg": "static/images/终章/4-3.png"
+    "bg": "static/images/终章/4-3.png",
+    "background_position": "top"
   },
   "n00350": {
-    "bg": "static/images/终章/4-3.png"
+    "bg": "static/images/终章/4-3.png",
+    "background_position": "top"
   },
   "n00347": {
     "bg": "static/images/终章/5.png"
@@ -1626,17 +1670,239 @@
     "bg": "static/images/终章/4.png"
   },
   "n00345": {
-    "text": "而你终于明白，这座墓真正教会你的，不是谁埋在这里，而是该怎样面对一座墓。\n"
+    "text": "而你终于明白，这座墓真正教会你的，不是谁埋在这里，而是该怎样面对一座墓。\n",
+    "bg": "static/images/终章/12-1.png"
   },
   "n00331": {
     "bg": "static/images/第二章  墓门/ChatGPT Image Jun 23, 2026, 10_45_03 AM.png",
-    "text": "一号墓的全部测绘和记录工作接近尾声。"
+    "text": "一号墓的全部测绘和记录工作接近尾声。",
+    "background_position": "center"
   },
   "n00332": {
     "bg": "static/images/终章/11-1.png",
-    "text": "粟柏年在帆布棚下铺开一张大白纸，六个方框从左到右排开，像一条被拉直的墓道轴线。\n"
+    "text": "粟柏年在帆布棚下铺开一张大白纸，六个方框从左到右排开，像一条被拉直的墓道轴线。\n",
+    "background_position": "top"
   },
   "n00333": {
-    "bg": "static/images/终章/11-2.png"
+    "bg": "static/images/终章/11-2.png",
+    "background_position": "top"
+  },
+  "n00280": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 26, 2026, 10_59_24 PM.png",
+    "background_position": "top"
+  },
+  "n00281": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 26, 2026, 11_29_37 PM.png",
+    "background_position": "top",
+    "text": "粟柏年看着素帛，眉头微微皱起。"
+  },
+  "n00282": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 26, 2026, 11_29_37 PM.png",
+    "background_position": "top"
+  },
+  "n00283": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 26, 2026, 11_51_21 PM.png",
+    "background_position": "top"
+  },
+  "n00284": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_44_30 AM.png",
+    "background_position": "top"
+  },
+  "n00285": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_44_30 AM.png",
+    "background_position": "top"
+  },
+  "n00286": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_44_30 AM.png",
+    "background_position": "top"
+  },
+  "n00287": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_44_30 AM.png",
+    "background_position": "top"
+  },
+  "n00288": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_36_25 AM.png",
+    "background_position": "top"
+  },
+  "n00289": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_36_25 AM.png",
+    "background_position": "top"
+  },
+  "n00290": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00291": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00292": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00293": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00294": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00295": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00296": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_44_30 AM.png",
+    "background_position": "top"
+  },
+  "n00297": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00298": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00299": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_48_02 AM.png",
+    "background_position": "top"
+  },
+  "n00300": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_54_47 AM.png",
+    "background_position": "top"
+  },
+  "n00301": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_54_47 AM.png",
+    "background_position": "top"
+  },
+  "n00302": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_54_47 AM.png",
+    "background_position": "top"
+  },
+  "n00303": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_54_47 AM.png",
+    "background_position": "top"
+  },
+  "n00304": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_58_23 AM.png",
+    "background_position": "top"
+  },
+  "n00305": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_58_23 AM.png",
+    "background_position": "top"
+  },
+  "n00306": {
+    "bg": "static/images/第七章  暗格/ChatGPT Image Jun 27, 2026, 12_58_23 AM.png"
+  },
+  "n00307": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00308": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00309": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00310": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00312": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00313": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00314": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00315": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00317": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00318": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00319": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00320": {
+    "bg": "static/images/第七章  暗格/9-1.png"
+  },
+  "n00321": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00322": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00324": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00325": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00326": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00327": {
+    "bg": "static/images/第七章  暗格/8-5.png",
+    "portrait": "static/images/portraits/周淼2.png",
+    "portrait_position": "left"
+  },
+  "n00328": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00329": {
+    "bg": "static/images/第七章  暗格/8-5.png",
+    "portrait": "static/images/portraits/周淼3.png"
+  },
+  "n00330": {
+    "bg": "static/images/第七章  暗格/8-5.png"
+  },
+  "n00334": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 01_12_20 AM.png",
+    "background_position": "top"
+  },
+  "n00335": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 01_12_20 AM.png",
+    "background_position": "top"
+  },
+  "n00336": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 01_12_20 AM.png",
+    "background_position": "top"
+  },
+  "n00337": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 12_58_19 AM.png",
+    "background_position": "top"
+  },
+  "n00338": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 12_58_19 AM.png",
+    "background_position": "top"
+  },
+  "n00339": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 12_58_19 AM.png",
+    "background_position": "top"
+  },
+  "n00340": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 12_58_19 AM.png",
+    "background_position": "top"
+  },
+  "n00341": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 12_58_19 AM.png"
+  },
+  "n00342": {
+    "bg": "static/images/终章/ChatGPT Image Jun 27, 2026, 12_58_19 AM.png"
+  },
+  "n00343": {
+    "bg": "static/images/终章/12-1.png"
+  },
+  "n00344": {
+    "bg": "static/images/终章/12-1.png"
+  },
+  "n00362": {
+    "bg": "static/images/终章/13-5.png",
+    "background_position": "top"
   }
 }

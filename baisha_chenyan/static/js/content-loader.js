@@ -15,8 +15,8 @@
      * @param {Object} params - URL参数对象
      */
     async function loadPage(pageName, params = {}) {
-        // 显示全屏遮罩（防止切换闪烁）
-        showOverlay();
+        // 显示全屏遮罩（使用目标页面背景色，防止切换闪烁）
+        showOverlay(pageName);
 
         // 构建请求URL
         const url = `/api/page/${pageName}` +
@@ -61,8 +61,8 @@
             // 更新浏览器历史记录
             history.pushState({ page: pageName }, '', `/${pageName}`);
 
-            // 延迟移除遮罩（确保内容先可见）
-            setTimeout(() => hideOverlay(), 500);
+            // 内容准备好后立即隐藏遮罩
+            hideOverlay();
 
         } catch (error) {
             console.error('页面加载失败:', error);
@@ -74,17 +74,29 @@
     // ==================== 加载动画控制 ====================
 
     /**
-     * 显示全屏遮罩（防止切换闪烁）
+     * 获取目标页面的背景色
+     * @param {string} pageName - 页面名称
      */
-    function showOverlay() {
+    function getPageBackground(pageName) {
+        const backgrounds = {
+            'index': 'linear-gradient(135deg, #d4c5a9 0%, #c4b896 50%, #b8a87a 100%)',
+            'game': 'linear-gradient(135deg, #3d2a1a 0%, #1a0a00 100%)'
+        };
+        return backgrounds[pageName] || backgrounds['index'];
+    }
+
+    /**
+     * 显示全屏遮罩（防止切换闪烁）
+     * @param {string} pageName - 目标页面名称，用于匹配背景色
+     */
+    function showOverlay(pageName) {
         let overlay = document.getElementById('page-overlay');
         if (!overlay) {
             overlay = document.createElement('div');
             overlay.id = 'page-overlay';
-            overlay.style.cssText = 'position:fixed;inset:0;background:#c4b896;z-index:9999;';
             document.body.appendChild(overlay);
         }
-        overlay.style.opacity = '1';
+        overlay.style.cssText = `position:fixed;inset:0;z-index:9999;background:${getPageBackground(pageName)};`;
         overlay.style.display = 'block';
     }
 
