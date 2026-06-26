@@ -15,7 +15,7 @@ window.M1_OPTIMIZED_ASSETS = Object.freeze({
   "assets/M1/03甬道/第一号墓甬道顶叠胜彩画.png": "assets/optimized/M1/03甬道/第一号墓甬道顶叠胜彩画.webp",
   "assets/M1/04_前室_东壁/插图一七 第一号墓前室东壁壁画中女乐所着的尖鞋.png": "assets/optimized/M1/04_前室_东壁/插图一七 第一号墓前室东壁壁画中女乐所着的尖鞋.webp",
   "assets/M1/04_前室_东壁/第一号墓前室东壁壁画(原色版，彭华士摄).png": "assets/optimized/M1/04_前室_东壁/第一号墓前室东壁壁画(原色版，彭华士摄).webp",
-  "assets/M1/05_前室_西壁/. 第一号墓前室西壁壁画(原色版，彭华士摄).png": "assets/optimized/M1/05_前室_西壁/. 第一号墓前室西壁壁画(原色版，彭华士摄).webp",
+  "assets/M1/05_前室_西壁/. 第一号墓前室西壁壁画(原色版，彭华士摄).png": "assets/optimized/M1/05_前室_西壁/第一号墓前室西壁壁画(原色版，彭华士摄).webp",
   "assets/M1/06_前室_南壁/第一号墓前室南壁东部壁函画(彭华士摄).png": "assets/optimized/M1/06_前室_南壁/第一号墓前室南壁东部壁函画(彭华士摄).webp",
   "assets/M1/06_前室_南壁/第一号墓前室南壁倚柱彩画.png": "assets/optimized/M1/06_前室_南壁/第一号墓前室南壁倚柱彩画.webp",
   "assets/M1/06_前室_南壁/第一号墓前室南壁壁画.png": "assets/optimized/M1/06_前室_南壁/第一号墓前室南壁壁画.webp",
