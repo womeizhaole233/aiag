@@ -8,6 +8,7 @@ const CONCLUSION_CARD_DATA = window.M1_CONCLUSION_CARD_DATA || {
   docClueRecordMap: {},
   referenceOnlyDocIds: []
 };
+const OPTIMIZED_ASSET_MAP = window.M1_OPTIMIZED_ASSETS || {};
 const LEGACY_STORAGE_KEYS = ["m1-gate-immersive-state-v2-source-text"];
 const CURRENT_STORY_VERSION = "m1-story-initial-chapter-1-20260623";
 const LEGACY_WORKBENCH_ACTIONS_ENABLED = false;
@@ -820,6 +821,11 @@ function normalizeStoryAssetPath(path) {
   return String(path).replace(/\\/g, "/");
 }
 
+function getOptimizedAssetSrc(path) {
+  const normalized = normalizeStoryAssetPath(path);
+  return OPTIMIZED_ASSET_MAP[normalized] || normalized;
+}
+
 function normalizeStoryVisualPosition(value, allowed, fallback = "") {
   const position = String(value || "").trim().toLowerCase();
   return allowed.includes(position) ? position : fallback;
@@ -941,7 +947,7 @@ function getDialoguePortrait(dialogue) {
   const speaker = getDisplaySpeaker(dialogue?.speaker);
   const portrait = normalizeStoryAssetPath(dialogue?.portrait || portraits[speaker] || portraits[dialogue?.speaker] || "");
   if (dialogue?.storyNodeId && !shouldUseStoryPortrait(dialogue) && !portrait) return "";
-  return portrait;
+  return getOptimizedAssetSrc(portrait);
 }
 
 function getStoryAllowedNodes(eventInfo) {
@@ -997,7 +1003,7 @@ function clearDialogueBackground() {
 }
 
 function setDialogueBackground(imagePath, position) {
-  const backgroundImage = normalizeStoryAssetPath(imagePath);
+  const backgroundImage = getOptimizedAssetSrc(imagePath);
   if (!dialogueBackground || !backgroundImage) {
     clearDialogueBackground();
     return;
@@ -1936,7 +1942,7 @@ function renderMessageBody(bodyText, detailImage) {
   messageBody.innerHTML = `
     <p class="message-text">${escapeHtml(text)}</p>
     <figure class="message-detail-figure">
-      <img src="${escapeHtml(detailImage.src)}" alt="${escapeHtml(alt)}" loading="lazy" />
+      <img src="${escapeHtml(getOptimizedAssetSrc(detailImage.src))}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" />
       ${caption}
     </figure>
   `;
@@ -2407,7 +2413,7 @@ function switchRelicPage(page) {
 
 function renderRelicPage() {
   const page = RELIC_PAGES[currentRelicPage] || RELIC_PAGES.atlas;
-  relicMapImage.src = page.image;
+  relicMapImage.src = getOptimizedAssetSrc(page.image);
   relicMapImage.alt = page.alt;
   relicMap.classList.toggle("overview-mode", page.type === "overview");
   relicMarkerLayer.innerHTML = "";
@@ -2835,7 +2841,7 @@ function showPipeSuccess(level) {
   const reward = level.reward || {};
   pipeSuccessTitle.textContent = reward.title || "线索已显现";
   pipeSuccessText.textContent = reward.successText || reward.text || "暗线连通后，一件线索被照亮。";
-  pipeClueImage.src = reward.image || "assets/M1/16_出土器物与人骨/地券.png";
+  pipeClueImage.src = getOptimizedAssetSrc(reward.image || "assets/M1/16_出土器物与人骨/地券.png");
   pipeClueImage.alt = reward.title || "通关获得的线索图片";
   pipeSuccessLayer.classList.remove("hidden");
 }
@@ -2974,7 +2980,7 @@ function ensurePositionMapLayer() {
   });
 
   const image = document.createElement("img");
-  image.src = POSITION_MAP.image.src;
+  image.src = getOptimizedAssetSrc(POSITION_MAP.image.src);
   image.alt = POSITION_MAP.image.alt;
   Object.assign(image.style, {
     display: "block",
@@ -3740,14 +3746,15 @@ function renderScene() {
   const scene = getCurrentScene();
   const view = getCurrentView();
   const { image } = view;
+  const imageSrc = getOptimizedAssetSrc(image.src);
   markVisited(scene.id, view.id);
   save();
 
   sceneRoot.setAttribute("aria-label", view.title || scene.title);
   sceneRoot.dataset.sceneId = scene.id;
-  sceneImage.src = image.src;
+  sceneImage.src = imageSrc;
   sceneImage.alt = image.alt;
-  sceneStage.style.setProperty("--scene-stage-backdrop", `url("${image.src}")`);
+  sceneStage.style.setProperty("--scene-stage-backdrop", `url("${imageSrc.replace(/"/g, '\\"')}")`);
   hotspotLayer.setAttribute("viewBox", `0 0 ${image.width} ${image.height}`);
   hotspotLayer.setAttribute("aria-label", `${view.title || scene.title}可点击线索区域`);
   if (sceneHeading) sceneHeading.textContent = scene.title || "当前场景";

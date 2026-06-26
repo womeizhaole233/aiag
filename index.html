@@ -33,7 +33,7 @@
 
       <div class="scene-stage">
         <div class="scene-underlay" aria-hidden="true"></div>
-        <img class="scene-image" src="assets/door.png" alt="第一号墓墓门" />
+        <img class="scene-image" src="assets/optimized/door.webp" alt="第一号墓墓门" decoding="async" fetchpriority="high" />
         <svg id="hotspotLayer" class="hotspot-layer" viewBox="0 0 4693 3520" preserveAspectRatio="xMidYMid meet" aria-label="可点击线索区域"></svg>
       </div>
 
@@ -204,7 +204,7 @@
         </p>
         <div class="inscription-layout">
           <div class="inscription-image-frame">
-            <img src="assets/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).png" alt="第一号墓过道东壁下部壁画和纪年题记" />
+            <img src="assets/optimized/M1/09_过道/第一号墓过道东壁下部壁画和纪年题记(彭华士摄).webp" alt="第一号墓过道东壁下部壁画和纪年题记" loading="lazy" decoding="async" />
             <div class="inscription-lens" aria-hidden="true"></div>
             <button class="inscription-glyph fragment-year" data-char="年" data-fragment="D" type="button" style="left:34%;top:48%" aria-label="残字 D"><i></i><b></b><em>D</em></button>
             <button class="inscription-glyph fragment-two" data-char="二" data-fragment="C" type="button" style="left:45%;top:45%" aria-label="残字 C"><i></i><b></b><em>C</em></button>
@@ -311,7 +311,7 @@
         <div class="relic-layout">
           <div id="relicPageTabs" class="relic-album-tabs" aria-label="M1资料图册"></div>
           <div id="relicMap" class="relic-map" aria-label="后室出土物分布图">
-            <img id="relicMapImage" src="assets/M1/16_出土器物与人骨/M1出土物分布图.png" alt="第一号墓出土物分布图" />
+            <img id="relicMapImage" src="assets/optimized/M1/16_出土器物与人骨/M1出土物分布图.webp" alt="第一号墓出土物分布图" loading="lazy" decoding="async" />
             <div id="relicOverview" class="relic-overview" aria-label="M1展开地图"></div>
             <div class="relic-scan" aria-hidden="true"></div>
             <div id="relicLens" class="relic-lens" aria-hidden="true">
@@ -363,7 +363,7 @@
             <p class="eyebrow">通关成功</p>
             <h2 id="pipeSuccessTitle">线索已显现</h2>
             <div class="clue-image-frame">
-              <img id="pipeClueImage" src="assets/M1/16_出土器物与人骨/地券.png" alt="通关获得的线索图片" />
+              <img id="pipeClueImage" src="assets/optimized/M1/16_出土器物与人骨/地券.webp" alt="通关获得的线索图片" loading="lazy" decoding="async" />
             </div>
             <p id="pipeSuccessText">暗线连通后，一件可疑文物线索被照亮。</p>
             <button id="pipeReplayButton" class="primary-button pipe-replay-button" type="button">再玩一次</button>
@@ -388,6 +388,7 @@
     <script src="data/scenes.js?v=portraits-20260621"></script>
     <script src="data/story-vn.js?v=player-portrait-20260622"></script>
     <script src="data/conclusion-cards.js?v=conclusion-card-qa-step-questions-20260626"></script>
-    <script src="game.js?v=mobile-playtest-20260626"></script>
+    <script src="data/optimized-assets.js?v=fast-assets-20260626"></script>
+    <script src="game.js?v=fast-assets-20260626"></script>
   </body>
 </html>
