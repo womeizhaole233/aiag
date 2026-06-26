@@ -10,22 +10,22 @@
       "title": "楔子"
     },
     {
-      "id": "chapter_1",
-      "number": 1,
-      "title": "墓外",
       "background_image": "assets/M1/00_墓葬全景与结构图/第一号墓后室平、剖面图.png",
       "description": "",
+      "end_node": "n00092",
+      "id": "chapter_1",
+      "number": 1,
       "start_node": "n00060",
-      "end_node": "n00092"
+      "title": "墓外"
     },
     {
-      "id": "chapter_2",
-      "number": 2,
-      "title": "墓门",
       "background_image": "assets/M1/02墓道与墓门/封门砖的组织.png",
       "description": "",
+      "end_node": "n00148",
+      "id": "chapter_2",
+      "number": 2,
       "start_node": "n00093",
-      "end_node": "n00148"
+      "title": "墓门"
     },
     {
       "id": "chapter_3",
@@ -34,51 +34,51 @@
       "background_image": "assets/M1/03甬道/甬道顶叠胜彩画.png",
       "description": "",
       "start_node": "n00149",
-      "end_node": "n00180"
+      "end_node": "n00179"
     },
     {
-      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
-      "description": "",
-      "end_node": "n00218",
       "id": "chapter_4",
       "number": 4,
-      "start_node": "n00187",
-      "title": "前室"
+      "title": "前室",
+      "background_image": "assets/M1/16_出土器物与人骨/地券.png",
+      "description": "",
+      "start_node": "n00180",
+      "end_node": "n00202"
     },
     {
       "background_image": "assets/M1/09_过道/过道东壁壁画和纪年题记.png",
       "description": "",
-      "end_node": "n00246",
+      "end_node": "n00219",
       "id": "chapter_5",
       "number": 5,
-      "start_node": "n00219",
+      "start_node": "n00203",
       "title": "过道"
     },
     {
       "background_image": "assets/M1/16_出土器物与人骨/地券.png",
       "description": "",
-      "end_node": "n00308",
+      "end_node": "n00261",
       "id": "chapter_6",
       "number": 6,
-      "start_node": "n00247",
+      "start_node": "n00220",
       "title": "后室"
     },
     {
       "background_image": "assets/M1/16_出土器物与人骨/地券.png",
       "description": "",
-      "end_node": "n00346",
+      "end_node": "n00330",
       "id": "chapter_7",
       "number": 7,
-      "start_node": "n00309",
+      "start_node": "n00262",
       "title": "暗格"
     },
     {
       "background_image": "assets/M1/16_出土器物与人骨/地券.png",
       "description": "",
-      "end_node": "n00358",
+      "end_node": "n00345",
       "id": "finale",
       "number": 8,
-      "start_node": "n00347",
+      "start_node": "n00331",
       "title": "终章"
     },
     {
@@ -87,7 +87,7 @@
       "end_node": "n00362",
       "id": "closure",
       "number": 9,
-      "start_node": "n00359",
+      "start_node": "n00346",
       "title": "封存"
     }
   ]
