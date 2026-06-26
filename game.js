@@ -1,7 +1,16 @@
 const { SAVE_KEY, START_SCENE_ID, SCENES, POSITION_MAP, CONCLUSION_DATA, NPC_DATA, ANALYSIS_DATA } = window.M1_GAME_DATA;
 const STORY_DATA = window.M1_STORY_DATA || {};
+const CONCLUSION_CARD_DATA = window.M1_CONCLUSION_CARD_DATA || {
+  clueCards: [],
+  chapterCards: [],
+  chapterOrder: [],
+  chapterTitles: {},
+  docClueRecordMap: {},
+  referenceOnlyDocIds: []
+};
 const LEGACY_STORAGE_KEYS = ["m1-gate-immersive-state-v2-source-text"];
 const CURRENT_STORY_VERSION = "m1-story-initial-chapter-1-20260623";
+const LEGACY_WORKBENCH_ACTIONS_ENABLED = false;
 const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明", "白沙手记"]);
 const STORY_SELF_SPEAKERS = new Set(["你", "林砚秋"]);
 const DEFAULT_STORY_PORTRAITS = {
@@ -32,6 +41,14 @@ const state = {
   records: [],
   journalOpen: false,
   conclusionOpen: false,
+  conclusionLibraryTab: "clue",
+  conclusionCards: {
+    completedClueCardIds: [],
+    completedChapterCardIds: [],
+    pendingClueCardIds: [],
+    activeClueCardId: null,
+    activeStepIndex: 0
+  },
   workbenchOpen: false,
   workbench: {
     classifications: {},
@@ -532,28 +549,12 @@ function completePuzzle(puzzleId) {
 
 function completeScene(sceneId) {
   if (!sceneId || hasCompletedScene(sceneId)) return false;
-  const workflow = getAnalysisWorkflow(sceneId);
-  if (workflow?.combination?.resultRecord?.id && !hasRecord(workflow.combination.resultRecord.id)) {
-    queueDialogue(
-      {
-        kicker: "章节未收束",
-        speaker: "记录夹",
-        title: `${workflow.chapter}还未形成组合判断`,
-        body: `当前只完成了现场观察。请先在整理台完成线索分类、证据组合和存疑降级，再提交${workflow.chapter}的章节判断。`
-      },
-      `analysis_block:${sceneId}`
-    );
-    return false;
-  }
   state.completedSceneIds.push(sceneId);
-  if (getConclusionCard(sceneId)) {
-    showConclusionCard(sceneId);
-  }
   if (!queueSceneCompletionDialogue(sceneId)) {
     queueDialogue(buildSceneCompletionDialogue(sceneId), `scene_update:${sceneId}`);
   }
-  queueCompletionSummary(sceneId);
-  queueFinalReportSequence();
+  checkChapterCardUnlocks(sceneId);
+  if (sceneId !== "final_report") queueFinalReportSequence();
   return true;
 }
 
@@ -590,6 +591,212 @@ function getConclusionRelations() {
 
 function getFinalSynthesis() {
   return CONCLUSION_DATA?.finalSynthesis || { lanes: [], chapterOrder: [], chapterContributions: {} };
+}
+
+function getInferenceClueCards() {
+  return CONCLUSION_CARD_DATA?.clueCards || [];
+}
+
+function getInferenceChapterCards() {
+  return CONCLUSION_CARD_DATA?.chapterCards || [];
+}
+
+function getInferenceClueCard(cardId) {
+  return getInferenceClueCards().find((card) => card.id === cardId) || null;
+}
+
+function getInferenceChapterCard(cardId) {
+  return getInferenceChapterCards().find((card) => card.id === cardId) || null;
+}
+
+function getInferenceChapterCardByScene(sceneId) {
+  return getInferenceChapterCards().find((card) => card.chapterKey === sceneId) || null;
+}
+
+function getInferenceCardById(cardId) {
+  const clueCard = getInferenceClueCard(cardId);
+  if (clueCard) return { type: "clue", card: clueCard };
+  const chapterCard = getInferenceChapterCard(cardId);
+  if (chapterCard) return { type: "chapter", card: chapterCard };
+  return null;
+}
+
+function isCompletedClueCard(cardId) {
+  return state.conclusionCards.completedClueCardIds.includes(cardId);
+}
+
+function isCompletedChapterCard(cardId) {
+  return state.conclusionCards.completedChapterCardIds.includes(cardId);
+}
+
+function isPendingClueCard(cardId) {
+  return state.conclusionCards.pendingClueCardIds.includes(cardId);
+}
+
+function getRequiredRecordIdsForClueCard(card) {
+  return uniqueRecordIds(card?.requiredRecordIds || []);
+}
+
+function isClueCardReady(card) {
+  const requiredRecordIds = getRequiredRecordIdsForClueCard(card);
+  return requiredRecordIds.length > 0 && requiredRecordIds.every((recordId) => hasRecord(recordId));
+}
+
+function queueReadyClueCardQuizzes() {
+  let queued = false;
+  getInferenceClueCards().forEach((card) => {
+    if (!card?.id) return;
+    if (isCompletedClueCard(card.id) || isPendingClueCard(card.id) || state.conclusionCards.activeClueCardId === card.id) return;
+    if (!isClueCardReady(card)) return;
+    state.conclusionCards.pendingClueCardIds.push(card.id);
+    queued = true;
+  });
+  return queued;
+}
+
+function getChapterClueCards(chapterKey) {
+  return getInferenceClueCards().filter((card) => card.chapterKey === chapterKey);
+}
+
+function canUnlockChapterCard(chapterCard) {
+  if (!chapterCard?.id || !hasCompletedScene(chapterCard.chapterKey)) return false;
+  const requiredClueCardIds = chapterCard.requiredClueCardIds?.length
+    ? chapterCard.requiredClueCardIds
+    : getChapterClueCards(chapterCard.chapterKey).map((card) => card.id);
+  return requiredClueCardIds.length > 0 && requiredClueCardIds.every((cardId) => isCompletedClueCard(cardId));
+}
+
+function tryUnlockChapterCard(chapterKey) {
+  const chapterCard = getInferenceChapterCardByScene(chapterKey);
+  if (!chapterCard || isCompletedChapterCard(chapterCard.id) || !canUnlockChapterCard(chapterCard)) return false;
+  state.conclusionCards.completedChapterCardIds.push(chapterCard.id);
+  state.selectedConclusionId = chapterCard.id;
+  state.conclusionLibraryTab = "chapter";
+  state.conclusionOpen = true;
+  state.journalOpen = false;
+  queueDialogue(buildChapterCardAwardDialogue(chapterCard), `chapter_card_award:${chapterCard.id}`);
+  return true;
+}
+
+function checkChapterCardUnlocks(chapterKey = null) {
+  let unlocked = false;
+  const cards = chapterKey ? [getInferenceChapterCardByScene(chapterKey)] : getInferenceChapterCards();
+  cards.filter(Boolean).forEach((card) => {
+    unlocked = tryUnlockChapterCard(card.chapterKey) || unlocked;
+  });
+  return unlocked;
+}
+
+function checkConclusionTriggers(options = {}) {
+  const queued = queueReadyClueCardQuizzes();
+  const unlocked = checkChapterCardUnlocks(options.chapterKey || null);
+  if (queued || unlocked) {
+    save();
+    renderConclusions();
+  }
+  if (options.flush !== false) flushDialogueQueue();
+  return queued || unlocked;
+}
+
+function buildInferenceQuizDialogue(card, stepIndex) {
+  const steps = card?.steps || [];
+  const step = steps[stepIndex] || {};
+  const stepPrompt = step.question || step.prompt;
+  const bodyParts = stepIndex === 0 ? [card.corePuzzle, stepPrompt] : [stepPrompt];
+  return {
+    kicker: "线索推理",
+    speaker: "白沙手记",
+    title: `${card.title}（${stepIndex + 1}/${Math.max(steps.length, 1)}）`,
+    body: bodyParts.filter(Boolean).join("\n\n"),
+    closeLabel: "继续",
+    inferenceQuiz: {
+      cardId: card.id,
+      stepIndex
+    },
+    choices: (step.options || []).map((option) => ({
+      ...option,
+      text: option.text || option.explanation || "继续推理"
+    }))
+  };
+}
+
+function runPendingInferenceQuiz() {
+  while (state.conclusionCards.pendingClueCardIds.length) {
+    const cardId = state.conclusionCards.pendingClueCardIds.shift();
+    const card = getInferenceClueCard(cardId);
+    if (!card || isCompletedClueCard(cardId) || !isClueCardReady(card)) continue;
+    state.conclusionCards.activeClueCardId = card.id;
+    state.conclusionCards.activeStepIndex = 0;
+    activeDialogue = buildInferenceQuizDialogue(card, 0);
+    save();
+    renderActiveDialogue();
+    return true;
+  }
+  return false;
+}
+
+function buildClueCardAwardDialogue(card) {
+  return {
+    kicker: "线索结论卡",
+    speaker: "白沙手记",
+    title: card.title,
+    body: card.finalConclusion,
+    closeLabel: "收纳"
+  };
+}
+
+function buildChapterCardAwardDialogue(card) {
+  return {
+    kicker: "章节结论卡",
+    speaker: "白沙手记",
+    title: card.title,
+    body: card.conclusion,
+    closeLabel: "收纳"
+  };
+}
+
+function completeActiveClueCard(card) {
+  if (!card || isCompletedClueCard(card.id)) return;
+  state.conclusionCards.completedClueCardIds.push(card.id);
+  state.conclusionCards.activeClueCardId = null;
+  state.conclusionCards.activeStepIndex = 0;
+  state.selectedConclusionId = card.id;
+  state.conclusionLibraryTab = "clue";
+  state.conclusionOpen = true;
+  state.journalOpen = false;
+  checkChapterCardUnlocks(card.chapterKey);
+  activeDialogue = buildClueCardAwardDialogue(card);
+  save();
+  renderConclusions();
+  renderActiveDialogue();
+}
+
+function handleInferenceChoice(choiceIndex) {
+  if (!activeDialogue?.inferenceQuiz) return false;
+  const { cardId, stepIndex } = activeDialogue.inferenceQuiz;
+  const card = getInferenceClueCard(cardId);
+  const step = card?.steps?.[stepIndex];
+  const choice = step?.options?.[choiceIndex];
+  if (!card || !step || !choice) return true;
+
+  if (!choice.correct) {
+    activeDialogue.feedback = choice.feedback || "这一步还不成立，请重选。";
+    activeDialogue.wrongChoiceIndex = choiceIndex;
+    renderActiveDialogue();
+    return true;
+  }
+
+  const nextStepIndex = stepIndex + 1;
+  if (nextStepIndex < (card.steps || []).length) {
+    state.conclusionCards.activeStepIndex = nextStepIndex;
+    activeDialogue = buildInferenceQuizDialogue(card, nextStepIndex);
+    save();
+    renderActiveDialogue();
+    return true;
+  }
+
+  completeActiveClueCard(card);
+  return true;
 }
 
 function getNpcData() {
@@ -1106,7 +1313,7 @@ function createSceneCombination(sceneId) {
 }
 
 function buildSceneCompletionDialogue(sceneId) {
-  const card = getConclusionCard(sceneId);
+  const card = getInferenceChapterCardByScene(sceneId) || getConclusionCard(sceneId);
   const npcDialogue = getFirstDialogue(getNpcData().sceneCompletions?.[sceneId]);
   const summary = card?.completionSummary || {};
   const bodyParts = [];
@@ -1120,15 +1327,15 @@ function buildSceneCompletionDialogue(sceneId) {
   if (card) {
     const followUp =
       sceneId === "final_report"
-        ? "终章结论卡已更新，可在线索墙继续查看主线证据如何在终章收束。"
-        : `${card.chapter}结论卡已更新，可在线索墙继续查看这一章的阶段判断。`;
+        ? "终章结论卡已更新，可在结论卡册继续查看。"
+        : `${card.chapterTitle || card.chapter || "本章"}已完成。该章线索结论全部完成后，章节结论卡会自动收纳进结论卡册。`;
     bodyParts.push(followUp);
   }
 
   return {
     kicker: npcDialogue.kicker || (sceneId === "final_report" ? "终章更新" : "章节更新"),
     speaker: npcDialogue.speaker || "记录夹",
-    title: npcDialogue.title || summary.title || card?.generationPrompt?.title || `${card?.chapter || "当前"}更新`,
+    title: npcDialogue.title || summary.title || card?.generationPrompt?.title || `${card?.chapterTitle || card?.chapter || "当前"}更新`,
     body: bodyParts.join(" ")
   };
 }
@@ -1191,16 +1398,6 @@ function getMissingRequirements(transition, sceneId = state.currentSceneId) {
     }
     return false;
   });
-
-  const workflow = completingSceneId ? getAnalysisWorkflow(completingSceneId) : null;
-  const comboRecordId = workflow?.combination?.resultRecord?.id;
-  if (comboRecordId && !hasRecord(comboRecordId)) {
-    missing.push({
-      id: comboRecordId,
-      label: `${workflow.chapter}章节整理台`,
-      missingText: `请先在整理台完成${workflow.chapter}的线索分类、证据组合、存疑降级和章节判断。`
-    });
-  }
 
   return missing;
 }
@@ -1305,26 +1502,36 @@ function navigateAfterStory(navigation) {
 function renderActiveDialogue() {
   if (!activeDialogue) {
     dialogueLayer.classList.add("hidden");
-    dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc", "portrait-left", "portrait-center", "portrait-right");
+    dialogueLayer.classList.remove(
+      "has-portrait",
+      "has-choices",
+      "is-inference-quiz",
+      "is-narration",
+      "is-self",
+      "is-npc",
+      "portrait-left",
+      "portrait-center",
+      "portrait-right"
+    );
     clearDialogueBackground();
     dialoguePortrait?.classList.remove("is-visible");
     if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
     return;
   }
 
-  dialogueKicker.textContent = activeDialogue.kicker || "章节提示";
+  dialogueKicker.textContent = cleanPlayerFacingText(activeDialogue.kicker || "章节提示");
   const speaker = getDisplaySpeaker(activeDialogue.speaker);
   const speakerKind = activeDialogue.speakerKind || (activeDialogue.storyNodeId ? getStorySpeakerKind(speaker) : "dialogue");
   dialogueLayer.classList.toggle("is-narration", speakerKind === "narration");
   dialogueLayer.classList.toggle("is-self", speakerKind === "self");
   dialogueLayer.classList.toggle("is-npc", speakerKind === "npc");
   dialogueLayer.classList.remove("portrait-left", "portrait-center", "portrait-right");
-  dialogueSpeaker.textContent = speaker;
+  dialogueSpeaker.textContent = cleanPlayerFacingText(speaker);
   dialogueSpeaker.style.display = speaker && (!activeDialogue.storyNodeId || speakerKind === "npc") ? "inline-flex" : "none";
-  dialogueTitle.textContent = activeDialogue.title || "";
+  dialogueTitle.textContent = cleanPlayerFacingText(activeDialogue.title || "");
   dialogueTitle.style.display = activeDialogue.title ? "block" : "none";
-  dialogueBody.textContent = activeDialogue.body || "";
-  dialogueClose.textContent = activeDialogue.closeLabel || "继续";
+  dialogueBody.textContent = cleanPlayerFacingText([activeDialogue.body, activeDialogue.feedback].filter(Boolean).join("\n\n"));
+  dialogueClose.textContent = cleanPlayerFacingText(activeDialogue.closeLabel || "继续");
   setDialogueBackground(activeDialogue.backgroundImage, activeDialogue.backgroundPosition);
 
   const portrait = getDialoguePortrait(activeDialogue);
@@ -1349,13 +1556,16 @@ function renderActiveDialogue() {
   if (dialogueChoices) {
     dialogueChoices.innerHTML = "";
     const choices = activeDialogue.choices || [];
+    dialogueLayer.classList.toggle("has-choices", choices.length > 0);
+    dialogueLayer.classList.toggle("is-inference-quiz", Boolean(activeDialogue.inferenceQuiz));
     dialogueChoices.classList.toggle("is-visible", choices.length > 0);
     choices.forEach((choice, index) => {
       const button = document.createElement("button");
       button.className = "dialogue-choice-button";
+      if (activeDialogue.wrongChoiceIndex === index) button.classList.add("is-error");
       button.type = "button";
       button.dataset.choiceIndex = String(index);
-      button.textContent = choice.text || `选项 ${index + 1}`;
+      button.textContent = cleanPlayerFacingText(choice.text || `选项 ${index + 1}`);
       dialogueChoices.append(button);
     });
     dialogueClose.style.display = choices.length ? "none" : "";
@@ -1367,7 +1577,10 @@ function renderActiveDialogue() {
 function flushDialogueQueue() {
   if (!messageLayer.classList.contains("hidden")) return;
   if (!dialogueLayer.classList.contains("hidden")) return;
-  if (!dialogueQueue.length) return;
+  if (!dialogueQueue.length) {
+    runPendingInferenceQuiz();
+    return;
+  }
   activeDialogue = dialogueQueue.shift();
   renderActiveDialogue();
 }
@@ -1378,7 +1591,17 @@ function closeDialogue(options = {}) {
     queueStoryContinuation(dialogue.storyNext, dialogue);
   }
   dialogueLayer.classList.add("hidden");
-  dialogueLayer.classList.remove("has-portrait", "is-narration", "is-self", "is-npc", "portrait-left", "portrait-center", "portrait-right");
+  dialogueLayer.classList.remove(
+    "has-portrait",
+    "has-choices",
+    "is-inference-quiz",
+    "is-narration",
+    "is-self",
+    "is-npc",
+    "portrait-left",
+    "portrait-center",
+    "portrait-right"
+  );
   clearDialogueBackground();
   dialoguePortrait?.classList.remove("is-visible");
   if (dialoguePortrait) dialoguePortrait.removeAttribute("src");
@@ -1388,16 +1611,6 @@ function closeDialogue(options = {}) {
     dialogueChoices.classList.remove("is-visible");
   }
   activeDialogue = null;
-  if (
-    dialogue?.storyEventId === "opening" &&
-    !dialogue.storyNext &&
-    !state.leaderChatTriggered
-  ) {
-    state.leaderChatTriggered = true;
-    save();
-    openNpcChatPage({ chapter: "墓外", npcId: "leader_01", source: "opening_complete" });
-    return;
-  }
   flushDialogueQueue();
   runPendingStoryNavigation();
   runPendingStoryMiniGame();
@@ -1405,7 +1618,8 @@ function closeDialogue(options = {}) {
 
 function queueOpeningDialogues() {
   if (state.records.length || state.completedSceneIds.length || state.currentSceneId !== START_SCENE_ID) return false;
-  return queueStoryEvent("opening", "opening") || queueDialogueList(getNpcData().opening, "opening");
+  if (getStoryEvent("opening")?.start) return queueStoryEvent("opening", "opening");
+  return queueDialogueList(getNpcData().opening, "opening");
 }
 
 function queueSceneEntryDialogue(sceneId) {
@@ -1465,14 +1679,17 @@ function queueSceneCompletionDialogue(sceneId) {
 
 function queueFinalReportSequence() {
   const finalCard = getConclusionCard("final_report");
-  if (!finalCard) return;
-  if (getCardStatus(finalCard).status !== "generated") return;
+  if (!finalCard) return false;
+  if (getCardStatus(finalCard).status !== "generated") return false;
+  if (hasShownDialogue("final_report_sequence")) return false;
+  markDialogueShown("final_report_sequence");
 
   showConclusionCard("final_report");
   if (!queueSceneCompletionDialogue("final_report")) {
     queueDialogue(buildSceneCompletionDialogue("final_report"), "scene_update:final_report");
   }
   queueCompletionSummary("final_report");
+  return true;
 }
 
 function getStoryChapterOrder() {
@@ -1586,6 +1803,36 @@ function normalizeWorkbench(workbench) {
   return normalized;
 }
 
+function uniqueStringList(value) {
+  return Array.isArray(value) ? [...new Set(value.filter((item) => typeof item === "string" && item))] : [];
+}
+
+function normalizeConclusionCardState(cards) {
+  const source = cards && typeof cards === "object" && !Array.isArray(cards) ? cards : {};
+  const completedClueCardIds = uniqueStringList(source.completedClueCardIds).filter((cardId) => getInferenceClueCard(cardId));
+  const completedChapterCardIds = uniqueStringList(source.completedChapterCardIds).filter((cardId) => getInferenceChapterCard(cardId));
+  const pendingClueCardIds = uniqueStringList(source.pendingClueCardIds).filter(
+    (cardId) => getInferenceClueCard(cardId) && !completedClueCardIds.includes(cardId)
+  );
+
+  if (
+    typeof source.activeClueCardId === "string" &&
+    getInferenceClueCard(source.activeClueCardId) &&
+    !completedClueCardIds.includes(source.activeClueCardId) &&
+    !pendingClueCardIds.includes(source.activeClueCardId)
+  ) {
+    pendingClueCardIds.unshift(source.activeClueCardId);
+  }
+
+  return {
+    completedClueCardIds,
+    completedChapterCardIds,
+    pendingClueCardIds,
+    activeClueCardId: null,
+    activeStepIndex: 0
+  };
+}
+
 function load() {
   cleanupLegacyStorage();
   const raw = localStorage.getItem(SAVE_KEY);
@@ -1606,6 +1853,8 @@ function load() {
       : [];
     state.journalOpen = Boolean(data.journalOpen);
     state.conclusionOpen = Boolean(data.conclusionOpen);
+    state.conclusionLibraryTab = data.conclusionLibraryTab === "chapter" ? "chapter" : "clue";
+    state.conclusionCards = normalizeConclusionCardState(data.conclusionCards);
     state.workbenchOpen = false;
     state.workbench = normalizeWorkbench(data.workbench);
     state.selectedConclusionId = typeof data.selectedConclusionId === "string" ? data.selectedConclusionId : null;
@@ -1640,12 +1889,14 @@ function addRecord(hotspot) {
   const recordId = `${scene.id}:${hotspot.id}`;
   if (state.records.some((record) => record.id === recordId)) return false;
   state.records.push(buildObservationRecord(scene, hotspot));
+  queueReadyClueCardQuizzes();
   return true;
 }
 
 function addManualRecord(record) {
   if (!record?.id || state.records.some((item) => item.id === record.id)) return false;
   state.records.push(enrichRecord(record));
+  queueReadyClueCardQuizzes();
   return true;
 }
 
@@ -3152,6 +3403,8 @@ function setConclusionOpen(open) {
 
 function selectConclusionCard(cardId) {
   state.selectedConclusionId = cardId;
+  const cardInfo = getInferenceCardById(cardId);
+  if (cardInfo) state.conclusionLibraryTab = cardInfo.type;
   save();
   renderConclusions();
 }
@@ -3208,8 +3461,8 @@ function clamp(value, min, max) {
 function getSceneFitProfile(viewport) {
   if (viewport.width <= 560) {
     return {
-      widthRatio: 0.92,
-      heightRatio: 0.9
+      widthRatio: 1,
+      heightRatio: 0.94
     };
   }
 
@@ -3980,7 +4233,7 @@ function renderJournal() {
     const records = getTrackRecords(track.id);
     const sectionActions = [];
 
-    if (track.id === "review") {
+    if (LEGACY_WORKBENCH_ACTIONS_ENABLED && track.id === "review") {
       getAvailableReviewActions().forEach((item) => {
         const missingLabels = item.stateInfo.missingSourceIds.map((recordId) => getRecordLabel(recordId));
         const progressSteps = getReviewProgressSteps(item.step);
@@ -4068,7 +4321,7 @@ function renderJournal() {
         );
       }
 
-      if (record.track === "pending") {
+      if (LEGACY_WORKBENCH_ACTIONS_ENABLED && record.track === "pending") {
         const resolutionMatch = findPendingResolution(record.id);
         if (resolutionMatch) {
           const resolutionState = getPendingResolutionState(resolutionMatch.resolution);
@@ -4093,7 +4346,7 @@ function renderJournal() {
         notes.push(record.resolutionText);
       }
 
-      if (record.recordType === "combination" && getConclusionCard(record.sceneId)) {
+      if (LEGACY_WORKBENCH_ACTIONS_ENABLED && record.recordType === "combination" && getConclusionCard(record.sceneId)) {
         metaChips.push('<span class="status-chip is-met">已进入结论墙</span>');
         notes.push({
           text: "这条章节判断已进入结论墙，可在那里查看它如何汇入终章总线索。",
@@ -4128,7 +4381,240 @@ function getStatusLabel(status) {
   return "未完成";
 }
 
+function cleanPlayerFacingText(value) {
+  return String(value || "")
+    .replace(/\s*好的[，,]?\s*我们继续按照[\s\S]*$/g, "")
+    .replace(/\s*好的[，,]?\s*我们继续[\s\S]*$/g, "")
+    .replace(/\s*线索汇总\s*[→>]\s*核心谜题\s*[→>]\s*推理过程\s*[→>]\s*最终结论[\s\S]*$/g, "")
+    .trim();
+}
+
+function escapePlayerText(value) {
+  return escapeHtml(cleanPlayerFacingText(value));
+}
+
+function getUnlockedClueCards() {
+  return getInferenceClueCards().filter((card) => isCompletedClueCard(card.id));
+}
+
+function getUnlockedChapterCards() {
+  return getInferenceChapterCards().filter((card) => isCompletedChapterCard(card.id));
+}
+
+function isStoredConclusionCard(cardId, type) {
+  if (type === "chapter") return isCompletedChapterCard(cardId);
+  if (type === "clue") return isCompletedClueCard(cardId);
+  const cardInfo = getInferenceCardById(cardId);
+  if (!cardInfo) return false;
+  return cardInfo.type === "chapter" ? isCompletedChapterCard(cardId) : isCompletedClueCard(cardId);
+}
+
+function ensureSelectedStoredConclusionCard() {
+  const current = getInferenceCardById(state.selectedConclusionId);
+  if (current && isStoredConclusionCard(state.selectedConclusionId, current.type)) return current;
+
+  const clueCards = getUnlockedClueCards();
+  const chapterCards = getUnlockedChapterCards();
+  const fallback =
+    state.conclusionLibraryTab === "chapter"
+      ? chapterCards.at(-1) || clueCards.at(-1)
+      : clueCards.at(-1) || chapterCards.at(-1);
+
+  if (!fallback) {
+    state.selectedConclusionId = null;
+    return null;
+  }
+
+  const type = isCompletedChapterCard(fallback.id) ? "chapter" : "clue";
+  state.selectedConclusionId = fallback.id;
+  state.conclusionLibraryTab = type;
+  return { type, card: fallback };
+}
+
+function getDocClueState(docClue) {
+  const recordIds = uniqueRecordIds(docClue?.recordIds || CONCLUSION_CARD_DATA.docClueRecordMap?.[docClue?.docId] || []);
+  const collectedCount = recordIds.filter((recordId) => hasRecord(recordId)).length;
+  const referenceOnly = Boolean(docClue?.referenceOnly) || (CONCLUSION_CARD_DATA.referenceOnlyDocIds || []).includes(docClue?.docId);
+  const status = referenceOnly ? "reference" : recordIds.length && collectedCount === recordIds.length ? "met" : collectedCount ? "partial" : "missing";
+  return {
+    ...docClue,
+    recordIds,
+    referenceOnly,
+    status,
+    collectedCount
+  };
+}
+
+function buildStoredCardButton(card, type, selectedId) {
+  const cardTypeLabel = type === "chapter" ? "章节结论卡" : "线索结论卡";
+  const chapterLabel = card.chapterTitle || CONCLUSION_CARD_DATA.chapterTitles?.[card.chapterKey] || card.chapterKey || "";
+  const summary = type === "chapter" ? card.conclusion : card.finalConclusion;
+  return `
+    <button class="conclusion-card is-generated${selectedId === card.id ? " is-active" : ""}" type="button" data-conclusion-card="${escapeHtml(card.id)}">
+      <div class="conclusion-meta">
+        <span class="status-chip is-met">${cardTypeLabel}</span>
+        ${chapterLabel ? `<span class="status-chip">${escapeHtml(chapterLabel)}</span>` : ""}
+      </div>
+      <h2>${escapePlayerText(card.title)}</h2>
+      <p>${escapePlayerText(summary || "")}</p>
+    </button>
+  `;
+}
+
+function buildStoredCardSection(title, cards, type, selectedId) {
+  const emptyText = type === "chapter" ? "完成章节探索后，新的章节卡会收纳到这里。" : "继续探索后，新的线索卡会收纳到这里。";
+  return `
+    <section class="conclusion-library-section">
+      <div class="conclusion-library-heading">
+        <h2>${title}</h2>
+        <span>${cards.length}</span>
+      </div>
+      <div class="conclusion-library-card-list">
+        ${
+          cards.length
+            ? cards.map((card) => buildStoredCardButton(card, type, selectedId)).join("")
+            : `<p class="empty-note">${emptyText}</p>`
+        }
+      </div>
+    </section>
+  `;
+}
+
+function buildDocClueListHtml(card) {
+  const clues = (card.docClues || []).map(getDocClueState);
+  if (!clues.length) return "";
+  return `
+    <section>
+      <h3 class="conclusion-section-title">相关线索</h3>
+      <div class="evidence-list">
+        ${clues
+          .map((clue) => {
+            const label = clue.referenceOnly ? "文献参照" : clue.status === "met" ? "已收集" : clue.status === "partial" ? "部分收集" : "未收集";
+            const statusClass = clue.referenceOnly ? "locked" : clue.status;
+            return `
+              <article class="evidence-item">
+                <div class="evidence-meta">
+                  <span class="status-chip is-${statusClass}">${label}</span>
+                </div>
+                <p>${escapePlayerText(clue.text || "")}</p>
+              </article>
+            `;
+          })
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
+function buildReasoningStepsHtml(card) {
+  const steps = card.steps || [];
+  if (!steps.length) return "";
+  return `
+    <section>
+      <h3 class="conclusion-section-title">推理</h3>
+      <ol class="conclusion-step-list">
+        ${steps.map((step) => `<li>${escapePlayerText(step.sourceText || step.prompt || "")}</li>`).join("")}
+      </ol>
+    </section>
+  `;
+}
+
+function buildRequiredClueCardListHtml(card) {
+  const clueCards = (card.requiredClueCardIds || []).map(getInferenceClueCard).filter(Boolean);
+  if (!clueCards.length) return "";
+  return `
+    <section>
+      <h3 class="conclusion-section-title">相关结论</h3>
+      <div class="conclusion-linked-card-list">
+        ${clueCards
+          .map(
+            (clueCard) => `
+              <button class="relation-requirement is-met" type="button" data-conclusion-card="${escapeHtml(clueCard.id)}">
+                ${escapePlayerText(clueCard.title)}
+              </button>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
+function buildStoredClueCardDetail(card) {
+  return `
+    <article class="conclusion-detail-card">
+      <div class="conclusion-meta">
+        <span class="status-chip is-met">线索结论卡</span>
+        <span class="status-chip">${escapeHtml(card.chapterTitle || "")}</span>
+      </div>
+      <h2>${escapePlayerText(card.title)}</h2>
+      <h3 class="conclusion-section-title">问题</h3>
+      <p>${escapePlayerText(card.corePuzzle || "")}</p>
+      ${buildDocClueListHtml(card)}
+      ${buildReasoningStepsHtml(card)}
+      <h3 class="conclusion-section-title">结论</h3>
+      <p>${escapePlayerText(card.finalConclusion || "")}</p>
+    </article>
+  `;
+}
+
+function buildStoredChapterCardDetail(card) {
+  return `
+    <article class="conclusion-detail-card">
+      <div class="conclusion-meta">
+        <span class="status-chip is-met">章节结论卡</span>
+        <span class="status-chip">${escapeHtml(card.chapterTitle || "")}</span>
+      </div>
+      <h2>${escapePlayerText(card.title)}</h2>
+      <h3 class="conclusion-section-title">本章线索</h3>
+      <p>${escapePlayerText(card.objectiveClues || "")}</p>
+      <h3 class="conclusion-section-title">结论</h3>
+      <p>${escapePlayerText(card.conclusion || "")}</p>
+      ${buildRequiredClueCardListHtml(card)}
+    </article>
+  `;
+}
+
+function renderConclusionCardLibrary() {
+  const clueCards = getUnlockedClueCards();
+  const chapterCards = getUnlockedChapterCards();
+  const selected = ensureSelectedStoredConclusionCard();
+  const unlockedCount = clueCards.length + chapterCards.length;
+
+  conclusionPanel.classList.toggle("hidden", !state.conclusionOpen);
+  conclusionToggle.setAttribute("aria-expanded", String(state.conclusionOpen));
+  conclusionToggle.textContent = unlockedCount ? `结论卡 ${unlockedCount}` : "结论卡";
+  conclusionList.innerHTML = `
+    <div class="conclusion-library-summary">
+      <article>
+        <span>线索结论卡</span>
+        <strong>${clueCards.length}</strong>
+      </article>
+      <article>
+        <span>章节结论卡</span>
+        <strong>${chapterCards.length}</strong>
+      </article>
+    </div>
+    <div class="conclusion-library-panes">
+      ${buildStoredCardSection("线索结论卡", clueCards, "clue", selected?.card.id)}
+      ${buildStoredCardSection("章节结论卡", chapterCards, "chapter", selected?.card.id)}
+    </div>
+  `;
+
+  if (!selected) {
+    conclusionDetail.innerHTML = `
+      <p class="empty-note">继续探索墓室，新的结论卡会在合适的时候收纳到这里。</p>
+    `;
+  } else {
+    conclusionDetail.innerHTML =
+      selected.type === "chapter" ? buildStoredChapterCardDetail(selected.card) : buildStoredClueCardDetail(selected.card);
+  }
+
+  updateSceneSafeArea();
+}
+
 function renderConclusions() {
+  return renderConclusionCardLibrary();
   const statuses = getAllCardStatuses();
   const generatedStatuses = statuses.filter((item) => item.status === "generated");
   const selected = ensureSelectedConclusionCard();
@@ -4895,6 +5381,11 @@ journalList.addEventListener("click", (event) => {
   if (!comboTarget) return;
   createSceneCombination(comboTarget.getAttribute("data-create-scene-combo"));
 });
+conclusionList.addEventListener("click", (event) => {
+  const cardTarget = event.target.closest("[data-conclusion-card]");
+  if (!cardTarget) return;
+  selectConclusionCard(cardTarget.getAttribute("data-conclusion-card"));
+});
 conclusionDetail.addEventListener("click", (event) => {
   const cardTarget = event.target.closest("[data-conclusion-card]");
   if (cardTarget) {
@@ -4991,6 +5482,10 @@ dialogueClose.addEventListener("click", closeDialogue);
 dialogueChoices?.addEventListener("click", (event) => {
   const button = event.target.closest("[data-choice-index]");
   if (!button || !activeDialogue) return;
+  if (activeDialogue.inferenceQuiz) {
+    handleInferenceChoice(Number(button.dataset.choiceIndex));
+    return;
+  }
   const choice = (activeDialogue.choices || [])[Number(button.dataset.choiceIndex)];
   if (choice?.next) queueStoryContinuation(choice.next, activeDialogue);
   closeDialogue({ skipStoryNext: true });
@@ -5132,9 +5627,16 @@ renderScene();
 renderJournal();
 renderConclusions();
 renderWorkbench();
+checkConclusionTriggers({ flush: false });
 const openingQueued = queueOpeningDialogues();
 queueStoryUpgradeDialogues();
-if (!openingQueued) queueSceneEntryDialogue(state.currentSceneId);
+const skipStartupSceneEntryAfterOpening =
+  state.currentSceneId === START_SCENE_ID &&
+  hasShownDialogue("story:opening") &&
+  !state.records.length &&
+  !state.completedSceneIds.length;
+if (!openingQueued && !skipStartupSceneEntryAfterOpening) queueSceneEntryDialogue(state.currentSceneId);
+queueFinalReportSequence();
 flushDialogueQueue();
 runPendingStoryNavigation();
 runPendingStoryMiniGame();

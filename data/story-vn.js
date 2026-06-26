@@ -5041,11 +5041,11 @@
       "id": "final_report_014",
       "kicker": "第七章  暗格",
       "speaker": "白沙手记",
-      "body": "而你终于明白，这座墓真正教会你的，不是谁埋在这里，而是该怎样面对一座墓。\n---",
+      "body": "而你终于明白，这座墓真正教会你的，不是谁埋在这里，而是该怎样面对一座墓。\n\n白沙的风还在墓道口吹着。记录本合上时，M1 的阶段性报告也在这里收束。",
       "backgroundImage": "assets/M1/16_出土器物与人骨/地券.png",
       "portrait": null,
       "choices": [],
-      "next": "archive_000",
+      "next": null,
       "puzzle": null,
       "portraitPosition": "left"
     },

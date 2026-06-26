@@ -2,9 +2,9 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>白沙寻踪——AI考古解密向小游戏</title>
-    <link rel="stylesheet" href="styles.css?v=title-screen-20260622" />
+    <link rel="stylesheet" href="styles.css?v=mobile-playtest-20260626" />
   </head>
   <body class="title-screen-active">
     <section id="titleScreen" class="title-screen" aria-labelledby="titleScreenTitle">
@@ -20,13 +20,10 @@
       <div class="scene-toolbar" aria-label="界面导航">
         <div class="scene-toolbar-group">
           <button id="conclusionToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="conclusionPanel">
-            结论
+            结论卡
           </button>
           <button id="journalToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="journalPanel">
             记录
-          </button>
-          <button id="workbenchToggle" class="chrome-button" type="button" aria-expanded="false" aria-controls="workbenchLayer">
-            工作台
           </button>
           <button id="npcChatButton" class="chrome-button" type="button">
             对话
@@ -48,18 +45,18 @@
         <div id="journalList" class="journal-list"></div>
       </aside>
 
-      <aside id="conclusionPanel" class="conclusion-panel hidden" aria-label="结论墙与终章总线索">
+      <aside id="conclusionPanel" class="conclusion-panel hidden" aria-label="结论卡册">
         <header>
-          <p class="eyebrow">结论墙与总线索</p>
+          <p class="eyebrow">结论卡册</p>
           <button id="conclusionClose" class="plain-button" type="button">关闭</button>
         </header>
         <div class="conclusion-layout">
           <section class="conclusion-column" aria-label="结论卡列表">
-            <p class="eyebrow">结论卡</p>
+            <p class="eyebrow">已收纳</p>
             <div id="conclusionList" class="conclusion-list"></div>
           </section>
-          <section class="conclusion-column" aria-label="总线索详情">
-            <p class="eyebrow">总线索</p>
+          <section class="conclusion-column" aria-label="结论卡详情">
+            <p class="eyebrow">卡面详情</p>
             <div id="conclusionDetail" class="conclusion-detail"></div>
           </section>
         </div>
@@ -390,6 +387,7 @@
 
     <script src="data/scenes.js?v=portraits-20260621"></script>
     <script src="data/story-vn.js?v=player-portrait-20260622"></script>
-    <script src="game.js?v=title-screen-20260622"></script>
+    <script src="data/conclusion-cards.js?v=conclusion-card-qa-step-questions-20260626"></script>
+    <script src="game.js?v=mobile-playtest-20260626"></script>
   </body>
 </html>

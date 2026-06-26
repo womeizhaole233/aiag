@@ -1,3 +1,8 @@
+
+
+
+
+
 (function () {
 const SAVE_KEY = "m1-analysis-rebuild-state-v1";
 const START_SCENE_ID = "environment";
@@ -78,7 +83,6 @@ const POSITION_MAP = {
     front_south_west_niche_closeup: "前室 / 南壁西部壁函近景",
     front_south_column_closeup: "前室 / 南壁倚柱彩画近景",
     front_west_bottle_closeup: "前室 / 西壁高瓶近景",
-    front_west_entry_closeup: "前室 / 西壁入口关系",
     front_west_table_closeup: "前室 / 西壁砖砌桌近景",
     front_east_shoes_closeup: "前室 / 东壁尖鞋近景",
     front_west_ewer_closeup: "前室 / 西壁注子近景",
@@ -547,8 +551,8 @@ const SCENES = {
             shape: "rect",
             rect: [0.12, 0.12, 0.88, 0.82],
             title: "外层封门砖组织",
-            body: "这张图更适合承载封门砖的组织方式，而不是让玩家只在墓门主图上猜砖缝。",
-            record: "外层封门砖组织图可用于复核封门砖排列、灰缝和封堵方式。",
+            body: "封门砖共三层，都嵌砌在墓门内。\n外层用横砖和菱角牙子相混砌起；\n中层全部用横砖；内层全部用卧丁砖。\n“菱角牙子”是宋代砖砌建筑中常见的一种装饰性砌法，\n通过将砖斜砌成锯齿状，形如菱角牙，\n既增加结构稳定性又具装饰效果。",
+            record: "封门砖共三层，都嵌砌在墓门内。\n外层用横砖和菱角牙子相混砌起；\n中层全部用横砖；内层全部用卧丁砖。\n“菱角牙子”是宋代砖砌建筑中常见的一种装饰性砌法，\n通过将砖斜砌成锯齿状，形如菱角牙，\n既增加结构稳定性又具装饰效果。",
             sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
             sourceClueId: "GATE-P0-03"
           },
@@ -661,12 +665,12 @@ const SCENES = {
           },
           {
             id: "corridor_mid",
-            label: "顶部结构",
+            label: "底部结构",
             shape: "rect",
             rect: [0.30, 0.62, 0.70, 0.88],
-            title: "顶部结构",
-            body: "甬道顶部两侧用横砖砌平，使外部轮廓整齐。\n在东、西二壁上用横砖叠涩内收，逐层收进形成顶面。",
-            record: "甬道顶部两侧用横砖砌平，使外部轮廓整齐。\n在东、西二壁上用横砖叠涩内收，逐层收进形成顶面。",
+            title: "底部结构",
+            body: "甬道通铺砖地面，但北部与前室入口相接处低下二层砖，形成与前后室地面的高度差异。",
+            record: "甬道通铺砖地面，但北部与前室入口相接处低下二层砖，形成与前后室地面的高度差异。",
             sourceFile: "M1/03甬道/03甬道-线索映射-v1.0.md",
             sourceClueId: "E04"
           },
@@ -2908,24 +2912,6 @@ const SCENES = {
             }
           },
           {
-            id: "front_west_entry_relation",
-            label: "前室入口关系",
-            navLabel: "查看入口",
-            shape: "rect",
-            rect: [0.18, 0.58, 0.40, 0.92],
-            title: "前室入口关系",
-            body: "西壁中间下部可见前室入口图。\n入口图位于西壁下部，与通道方向相接。",
-            record: "前室入口图位于西壁中间下部，与通道方向相接。",
-            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
-            sourceClueId: "FRONT-E-01",
-            viewTransition: {
-              targetViewId: "front_west_entry_closeup",
-              title: "查看前室入口关系",
-              body: "前室入口关系近景进入视线。",
-              closeLabel: "查看"
-            }
-          },
-          {
             id: "turn_south_from_west",
             label: "转身观察南壁",
             navLabel: "转向南壁",
@@ -2995,47 +2981,6 @@ const SCENES = {
               title: "转向东壁",
               body: "前室另一侧的人物图像进入视线。",
               closeLabel: "转身"
-            }
-          }
-        ]
-      },
-      front_west_entry_closeup: {
-        id: "front_west_entry_closeup",
-        title: "前室西壁入口关系",
-        image: {
-          src: "assets/M1/05_前室_西壁/第一号墓西壁中间下部一一前室入口.png",
-          alt: "第一号墓西壁中间下部一一前室入口",
-          width: 1622,
-          height: 2092
-        },
-        hotspots: [
-          {
-            id: "front_entry_relation_detail",
-            label: "入口与西壁关系",
-            shape: "rect",
-            rect: [0.18, 0.12, 0.82, 0.78],
-            title: "入口与西壁关系",
-            body: "前室入口位于西壁下部。\n前室处在甬道、过道之间的中段空间。",
-            record: "前室入口位于西壁下部，前室处在甬道、过道之间。",
-            sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1前室线索精修版_v1.0.md",
-            sourceClueId: "FRONT-E-01"
-          },
-          {
-            id: "return_front_west_from_entry",
-            label: "返回西壁",
-            navLabel: "返回西壁",
-            shape: "rect",
-            rect: [0, 0.84, 1, 1],
-            title: "返回前室西壁",
-            body: "返回前室西壁主视图。",
-            record: "返回前室西壁主视图。",
-            sourceFile: "game-navigation",
-            sourceClueId: "NAV",
-            viewTransition: {
-              targetViewId: "front_west",
-              title: "返回西壁",
-              body: "视角回到前室西壁。",
-              closeLabel: "返回"
             }
           }
         ]
@@ -4277,12 +4222,12 @@ addSceneView("tomb_gate", "tomb_gate_structure_diagram", {
   hotspots: [
     {
       id: "gate_parts_relation",
-      label: "墓门各部分",
+      label: "墓门手稿图",
       shape: "rect",
       rect: [0.12, 0.12, 0.88, 0.78],
-      title: "墓门各部分",
-      body: "结构复原图适合做美工标注层：门额、门框、封门砖和门洞可以分别成为可视化标签。",
-      record: "墓门复原图可作为门额、门框、封门砖和门洞的结构标注底图。",
+      title: "墓门手稿图",
+      body: "墓门通高正面是摹仿木建筑的门楼，下部叠砖四层作门基，基上两侧砌四方抹角倚柱，柱上砌阑额，阑额两端砌在倚柱柱头内，倚柱、阑额之内砌出上额、𣏢柱两层和门额、立颊，门额正面砌出两枚方形门簪，面部浮雕四瓣蒂形，立颊下面各砌门砧一枚，倚柱柱头砌普拍方，方上砌砖砌柱头铺作二朵、补间铺作一朵，都是单抄单昂重栱五铺作。",
+      record: "墓门通高正面是摹仿木建筑的门楼，下部叠砖四层作门基，基上两侧砌四方抹角倚柱，柱上砌阑额，阑额两端砌在倚柱柱头内，倚柱、阑额之内砌出上额、𣏢柱两层和门额、立颊，门额正面砌出两枚方形门簪，面部浮雕四瓣蒂形，立颊下面各砌门砧一枚，倚柱柱头砌普拍方，方上砌砖砌柱头铺作二朵、补间铺作一朵，都是单抄单昂重栱五铺作。",
       sourceFile: "docs/handoff/线索交付文档/02_章节精修交付/M1墓门线索精修版_v1.0.md",
       sourceClueId: "GATE-P1-01"
     },
