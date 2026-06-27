@@ -140,7 +140,7 @@ function syncTitleActions() {
   if (!titleStart) return;
   const hasProgress = hasContinuableProgress();
   titleStart.textContent = hasProgress ? "继续寻踪" : "开始寻踪";
-  if (titleReset) titleReset.hidden = !hasProgress;
+  if (titleReset) titleReset.hidden = false;
 }
 
 function restartGameFromTitle() {
@@ -189,6 +189,7 @@ const sceneRoot = document.querySelector(".scene");
 const titleScreen = document.querySelector("#titleScreen");
 const titleStart = document.querySelector("#titleStart");
 const titleReset = document.querySelector("#titleReset");
+const gameResetButton = document.querySelector("#gameResetButton");
 const sceneStage = document.querySelector(".scene-stage");
 const sceneToolbar = document.querySelector(".scene-toolbar");
 const sceneHeading = document.querySelector("#sceneHeading");
@@ -5485,6 +5486,8 @@ if (titleScreen && titleStart) {
 } else {
   document.body.classList.remove("title-screen-active");
 }
+
+gameResetButton?.addEventListener("click", restartGameFromTitle);
 
 journalToggle.addEventListener("click", () => setJournal(!state.journalOpen));
 journalClose.addEventListener("click", () => setJournal(false));

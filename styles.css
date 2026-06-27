@@ -1725,7 +1725,7 @@ button {
 
   .scene-toolbar-group {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     width: 100%;
   }
@@ -4866,7 +4866,7 @@ button {
 
   .scene-toolbar-group {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     width: 100%;
   }
@@ -4875,7 +4875,7 @@ button {
     min-width: 0;
     min-height: 42px;
     padding: 0 8px;
-    font-size: 15px;
+    font-size: 14px;
     white-space: nowrap;
   }
 
