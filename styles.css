@@ -500,7 +500,7 @@ button {
   z-index: 0;
   opacity: 0;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: var(--dialogue-bg-position, center);
   background-size: cover;
   pointer-events: none;
   transform: scale(1.02);
@@ -4966,10 +4966,14 @@ button {
 
   .dialogue-layer {
     --dialogue-layer-x-padding: 10px;
-    --dialogue-portrait-width: clamp(96px, 30vw, 140px);
+    --dialogue-portrait-width: clamp(150px, 46vw, 220px);
     align-items: flex-end;
     padding: 0 max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
     overflow: hidden;
+  }
+
+  .dialogue-background {
+    background-position: var(--dialogue-bg-position-mobile, var(--dialogue-bg-position, center));
   }
 
   .dialogue-portrait-layer {
@@ -4977,9 +4981,9 @@ button {
     z-index: 5;
     left: 50%;
     right: auto;
-    bottom: min(42dvh, 320px);
+    bottom: min(37dvh, 320px);
     width: var(--dialogue-portrait-width);
-    height: min(34dvh, 300px);
+    height: min(44dvh, 370px);
     transform: translateX(-50%);
     opacity: 0.98;
   }

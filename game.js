@@ -17,6 +17,45 @@ const INTRO_REPLAY_DIALOGUE_KEYS = new Set([
   "opening:0",
   "scene_entry:environment:0"
 ]);
+const STORY_BACKGROUND_MOBILE_FOCUS = new Map([
+  ["assets/story/backgrounds/chapter-1/ChatGPT Image Jun 23, 2026, 01_54_22 AM.png", "50% center"],
+  ["assets/story/backgrounds/chapter-1/ChatGPT Image Jun 23, 2026, 02_00_24 AM.png", "56% center"],
+  ["assets/story/backgrounds/chapter-1/ChatGPT Image Jun 23, 2026, 02_26_56 AM.png", "56% center"],
+  ["assets/story/backgrounds/chapter-1/ChatGPT Image Jun 23, 2026, 03_06_18 AM.png", "68% center"],
+  ["assets/story/backgrounds/chapter-1/ChatGPT Image Jun 23, 2026, 03_36_06 AM.png", "70% center"],
+  ["assets/story/backgrounds/chapter-1/ChatGPT Image Jun 23, 2026, 03_51_45 AM.png", "50% center"],
+  ["assets/story/backgrounds/chapter-1/ChatGPT Image Jun 23, 2026, 03_58_55 AM.png", "50% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 01_32_12 AM.png", "38% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 21, 2026, 02_35_19 AM.png", "40% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 09_09_21 PM.png", "66% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 09_33_03 PM.png", "38% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_38_57 AM.png", "50% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 10_48_15 AM.png", "72% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 22, 2026, 11_03_32 AM.png", "50% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_06_36 AM.png", "50% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_31_18 AM.png", "50% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_33_34 AM.png", "50% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 01_38_55 AM.png", "50% center"],
+  ["assets/story/backgrounds/prologue/ChatGPT Image Jun 23, 2026, 06_42_34 PM.png", "48% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 01_03_10 PM.png", "68% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 01_09_31 PM.png", "34% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 01_25_24 PM.png", "58% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 01_37_52 PM.png", "42% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 01_49_53 PM.png", "48% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 02_16_52 AM.png", "46% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 02_22_16 AM.png", "36% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 02_59_32 AM.png", "30% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 03_58_46 AM.png", "34% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 10_22_16 AM.png", "55% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 10_37_32 AM.png", "50% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 11_01_17 PM.png", "34% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 11_01_45 AM.png", "50% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 11_26_42 AM.png", "34% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 11_27_36 AM.png", "44% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 12_51_10 PM.png", "34% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 23, 2026, 12_59_21 PM.png", "50% center"],
+  ["assets/story/backgrounds/tomb-gate/ChatGPT Image Jun 24, 2026, 12_05_37 AM.png", "34% center"]
+]);
 const LEGACY_WORKBENCH_ACTIONS_ENABLED = false;
 const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明", "白沙手记"]);
 const STORY_SELF_SPEAKERS = new Set(["你", "林砚秋"]);
@@ -893,6 +932,23 @@ function getStoryBackgroundPosition(value) {
   return positions[position] || "center";
 }
 
+function getFallbackMobileBackgroundPosition(position, portraitPosition = "") {
+  const normalizedPosition = normalizeStoryVisualPosition(position, ["top", "center", "bottom", "left", "right"], "center");
+  const normalizedPortraitPosition = normalizeStoryVisualPosition(portraitPosition, ["left", "center", "right"], "");
+  if (normalizedPosition === "left") return "30% center";
+  if (normalizedPosition === "right") return "70% center";
+  if (normalizedPosition === "top") return "center top";
+  if (normalizedPosition === "bottom") return "center bottom";
+  if (normalizedPortraitPosition === "left") return "42% center";
+  if (normalizedPortraitPosition === "right") return "58% center";
+  return "center";
+}
+
+function getStoryBackgroundMobilePosition(imagePath, position, portraitPosition = "") {
+  const normalized = normalizeStoryAssetPath(imagePath);
+  return STORY_BACKGROUND_MOBILE_FOCUS.get(normalized) || getFallbackMobileBackgroundPosition(position, portraitPosition);
+}
+
 function getStoryPortraitPosition(dialogue, speakerKind) {
   return "left";
 }
@@ -1049,17 +1105,21 @@ function clearDialogueBackground() {
   if (dialogueBackground) {
     dialogueBackground.style.backgroundImage = "";
     dialogueBackground.style.backgroundPosition = "";
+    dialogueBackground.style.removeProperty("--dialogue-bg-position");
+    dialogueBackground.style.removeProperty("--dialogue-bg-position-mobile");
   }
 }
 
-function setDialogueBackground(imagePath, position) {
+function setDialogueBackground(imagePath, position, portraitPosition = "") {
   const backgroundImage = getOptimizedAssetSrc(imagePath);
   if (!dialogueBackground || !backgroundImage) {
     clearDialogueBackground();
     return;
   }
   dialogueBackground.style.backgroundImage = `url("${backgroundImage.replace(/"/g, '\\"')}")`;
-  dialogueBackground.style.backgroundPosition = getStoryBackgroundPosition(position);
+  dialogueBackground.style.setProperty("--dialogue-bg-position", getStoryBackgroundPosition(position));
+  dialogueBackground.style.setProperty("--dialogue-bg-position-mobile", getStoryBackgroundMobilePosition(imagePath, position, portraitPosition));
+  dialogueBackground.style.backgroundPosition = "var(--dialogue-bg-position)";
   dialogueLayer.classList.add("has-background");
 }
 
@@ -1592,12 +1652,11 @@ function renderActiveDialogue() {
   dialogueTitle.style.display = activeDialogue.title ? "block" : "none";
   dialogueBody.textContent = cleanPlayerFacingText([activeDialogue.body, activeDialogue.feedback].filter(Boolean).join("\n\n"));
   dialogueClose.textContent = cleanPlayerFacingText(activeDialogue.closeLabel || "继续");
-  setDialogueBackground(activeDialogue.backgroundImage, activeDialogue.backgroundPosition);
-
   const portrait = getDialoguePortrait(activeDialogue);
+  const portraitPosition = portrait ? getStoryPortraitPosition(activeDialogue, speakerKind) : "";
+  setDialogueBackground(activeDialogue.backgroundImage, activeDialogue.backgroundPosition, portraitPosition);
   if (dialoguePortrait) {
     if (portrait) {
-      const portraitPosition = getStoryPortraitPosition(activeDialogue, speakerKind);
       dialoguePortrait.src = portrait;
       dialoguePortrait.alt = speaker ? `${speaker}立绘` : "";
       dialoguePortrait.classList.add("is-visible");
