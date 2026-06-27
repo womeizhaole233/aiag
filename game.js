@@ -10,7 +10,13 @@ const CONCLUSION_CARD_DATA = window.M1_CONCLUSION_CARD_DATA || {
 };
 const OPTIMIZED_ASSET_MAP = window.M1_OPTIMIZED_ASSETS || {};
 const LEGACY_STORAGE_KEYS = ["m1-gate-immersive-state-v2-source-text"];
-const CURRENT_STORY_VERSION = "m1-story-initial-chapter-1-20260623";
+const CURRENT_STORY_VERSION = "m1-story-initial-chapter-1-20260627";
+const INTRO_REPLAY_DIALOGUE_KEYS = new Set([
+  "story:opening",
+  "story:scene_entry:environment",
+  "opening:0",
+  "scene_entry:environment:0"
+]);
 const LEGACY_WORKBENCH_ACTIONS_ENABLED = false;
 const STORY_NARRATION_SPEAKERS = new Set(["旁白", "系统", "声明", "白沙手记"]);
 const STORY_SELF_SPEAKERS = new Set(["你", "林砚秋"]);
@@ -70,6 +76,8 @@ const state = {
 };
 
 let storyUpgradePending = false;
+const pendingDialogueKeys = new Set();
+const preloadedAssetSrcs = new Set();
 
 function enterGameFromTitle() {
   if (!titleScreen) return;
@@ -78,6 +86,27 @@ function enterGameFromTitle() {
   document.body.classList.remove("title-screen-active");
   sceneRoot?.removeAttribute("aria-hidden");
   flushDialogueQueue();
+}
+
+function hasContinuableProgress() {
+  return Boolean(
+    state.currentSceneId !== START_SCENE_ID ||
+      state.records.length ||
+      state.completedSceneIds.length ||
+      state.completedPuzzleIds.length
+  );
+}
+
+function syncTitleActions() {
+  if (!titleStart) return;
+  const hasProgress = hasContinuableProgress();
+  titleStart.textContent = hasProgress ? "继续寻踪" : "开始寻踪";
+  if (titleReset) titleReset.hidden = !hasProgress;
+}
+
+function restartGameFromTitle() {
+  localStorage.removeItem(SAVE_KEY);
+  window.location.reload();
 }
 
 const MAX_SCENE_IMAGE_SCALE = 3;
@@ -120,6 +149,7 @@ const REVIEW_READY_CLASSIFICATION_IDS = ["fact", "evidence", "doubt"];
 const sceneRoot = document.querySelector(".scene");
 const titleScreen = document.querySelector("#titleScreen");
 const titleStart = document.querySelector("#titleStart");
+const titleReset = document.querySelector("#titleReset");
 const sceneStage = document.querySelector(".scene-stage");
 const sceneToolbar = document.querySelector(".scene-toolbar");
 const sceneHeading = document.querySelector("#sceneHeading");
@@ -826,6 +856,26 @@ function getOptimizedAssetSrc(path) {
   return OPTIMIZED_ASSET_MAP[normalized] || normalized;
 }
 
+function preloadImageAsset(path) {
+  const src = getOptimizedAssetSrc(path);
+  if (!src || preloadedAssetSrcs.has(src)) return;
+  preloadedAssetSrcs.add(src);
+  const image = new Image();
+  image.decoding = "async";
+  image.src = src;
+}
+
+function preloadDialogueAssets(dialogue) {
+  if (!dialogue) return;
+  preloadImageAsset(dialogue.backgroundImage);
+  preloadImageAsset(getDialoguePortrait(dialogue));
+}
+
+function preloadStoryNextAssets(dialogue) {
+  if (!dialogue?.storyNext || !dialogue.storyEventId) return;
+  preloadDialogueAssets(buildStoryDialogue(dialogue.storyNext, dialogue.storyEventId));
+}
+
 function normalizeStoryVisualPosition(value, allowed, fallback = "") {
   const position = String(value || "").trim().toLowerCase();
   return allowed.includes(position) ? position : fallback;
@@ -1023,6 +1073,8 @@ function queueStoryEvent(eventId, key = eventId) {
 function queueStoryContinuation(nextNodeId, dialogue = activeDialogue) {
   const nextDialogue = buildStoryDialogue(nextNodeId, dialogue?.storyEventId);
   if (!nextDialogue) return false;
+  preloadDialogueAssets(nextDialogue);
+  preloadStoryNextAssets(nextDialogue);
   dialogueQueue.unshift(nextDialogue);
   return true;
 }
@@ -1433,9 +1485,11 @@ function markDialogueShown(key) {
 function queueDialogue(dialogue, key) {
   if (!dialogue) return false;
   if (key && hasShownDialogue(key)) return false;
-  if (key) markDialogueShown(key);
+  if (key && pendingDialogueKeys.has(key)) return false;
+  if (key) pendingDialogueKeys.add(key);
+  preloadDialogueAssets(dialogue);
+  preloadStoryNextAssets(dialogue);
   dialogueQueue.push({ ...dialogue, key });
-  save();
   return true;
 }
 
@@ -1581,6 +1635,7 @@ function renderActiveDialogue() {
 }
 
 function flushDialogueQueue() {
+  if (document.body.classList.contains("title-screen-active")) return;
   if (!messageLayer.classList.contains("hidden")) return;
   if (!dialogueLayer.classList.contains("hidden")) return;
   if (!dialogueQueue.length) {
@@ -1588,6 +1643,11 @@ function flushDialogueQueue() {
     return;
   }
   activeDialogue = dialogueQueue.shift();
+  if (activeDialogue.key) {
+    pendingDialogueKeys.delete(activeDialogue.key);
+    markDialogueShown(activeDialogue.key);
+    save();
+  }
   renderActiveDialogue();
 }
 
@@ -1864,10 +1924,14 @@ function load() {
     state.workbenchOpen = false;
     state.workbench = normalizeWorkbench(data.workbench);
     state.selectedConclusionId = typeof data.selectedConclusionId === "string" ? data.selectedConclusionId : null;
+    const previousStoryVersion = data.storyVersion || "";
     state.shownDialogueKeys = Array.isArray(data.shownDialogueKeys) ? data.shownDialogueKeys : [];
+    if (previousStoryVersion !== CURRENT_STORY_VERSION) {
+      state.shownDialogueKeys = state.shownDialogueKeys.filter((key) => !INTRO_REPLAY_DIALOGUE_KEYS.has(key));
+    }
     state.leaderChatTriggered = Boolean(data.leaderChatTriggered);
     storyUpgradePending =
-      data.storyVersion !== CURRENT_STORY_VERSION &&
+      previousStoryVersion !== CURRENT_STORY_VERSION &&
       (state.records.length > 0 || state.completedSceneIds.length > 0 || state.completedPuzzleIds.length > 0);
     state.storyVersion = CURRENT_STORY_VERSION;
     state.pendingStoryNavigation =
@@ -5358,6 +5422,7 @@ function renderWorkbenchClues() {
 if (titleScreen && titleStart) {
   sceneRoot?.setAttribute("aria-hidden", "true");
   titleStart.addEventListener("click", enterGameFromTitle);
+  titleReset?.addEventListener("click", restartGameFromTitle);
 } else {
   document.body.classList.remove("title-screen-active");
 }
@@ -5629,6 +5694,7 @@ sceneImage.addEventListener("load", () => {
 });
 
 load();
+syncTitleActions();
 navigateTo({ sceneId: state.currentSceneId });
 renderScene();
 renderJournal();

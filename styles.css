@@ -125,27 +125,53 @@ button {
   line-height: 1.8;
 }
 
-.title-start-button {
+.title-actions {
   justify-self: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.title-start-button,
+.title-reset-button {
   min-width: 172px;
   min-height: 48px;
-  margin-top: 16px;
   padding: 0 24px;
   border: 1px solid rgba(248, 224, 174, 0.76);
   border-radius: 999px;
-  background: rgba(241, 196, 118, 0.88);
-  color: #1b1209;
   cursor: pointer;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
   transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
 }
 
+.title-start-button {
+  background: rgba(241, 196, 118, 0.88);
+  color: #1b1209;
+}
+
+.title-reset-button {
+  background: rgba(35, 27, 19, 0.58);
+  color: rgba(249, 241, 223, 0.9);
+}
+
 .title-start-button:hover,
-.title-start-button:focus-visible {
+.title-start-button:focus-visible,
+.title-reset-button:hover,
+.title-reset-button:focus-visible {
   transform: translateY(-1px);
   border-color: rgba(255, 240, 204, 0.96);
-  background: #f8d393;
   outline: none;
+}
+
+.title-start-button:hover,
+.title-start-button:focus-visible {
+  background: #f8d393;
+}
+
+.title-reset-button:hover,
+.title-reset-button:focus-visible {
+  background: rgba(58, 43, 29, 0.74);
 }
 
 .scene {
@@ -4940,13 +4966,31 @@ button {
 
   .dialogue-layer {
     --dialogue-layer-x-padding: 10px;
+    --dialogue-portrait-width: clamp(96px, 30vw, 140px);
     align-items: flex-end;
     padding: 0 max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
     overflow: hidden;
   }
 
   .dialogue-portrait-layer {
-    display: none;
+    display: flex;
+    z-index: 5;
+    left: 50%;
+    right: auto;
+    bottom: min(42dvh, 320px);
+    width: var(--dialogue-portrait-width);
+    height: min(34dvh, 300px);
+    transform: translateX(-50%);
+    opacity: 0.98;
+  }
+
+  .dialogue-layer.is-self .dialogue-portrait-layer,
+  .dialogue-layer.portrait-left .dialogue-portrait-layer,
+  .dialogue-layer.portrait-center .dialogue-portrait-layer,
+  .dialogue-layer.portrait-right .dialogue-portrait-layer {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
   }
 
   .dialogue-layer .dialogue-box,
